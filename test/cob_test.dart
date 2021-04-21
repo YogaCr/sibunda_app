@@ -1,3 +1,5 @@
+import 'package:dio/dio.dart';
+
 class C1 {
   C1();
 }
@@ -15,7 +17,7 @@ class _Honored extends _Person {
 }
 
 
-void main(){
+void main() async {
   const p1 = _Person("hello", 10);
   const p2 = _Person("hello", 10);
   final p3 = _Person("hello", 10);
@@ -38,4 +40,10 @@ void main(){
   print(h1 == h3);
   print(h2 == h3);
   print(h1 == h4);
+
+  final url= "https://www.google.com/robots.txt";
+  final resp= await Dio().get(url);
+  print(resp.statusCode);
+  print(resp.runtimeType);
+  print(resp);
 }
