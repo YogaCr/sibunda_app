@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: pink_swatch,
       ),
 // */
-      home: SplashFrame(
+      home: NoAppBarFrame(
         body: SplashPage(),
         padding: EdgeInsets.all(20),
       )
