@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 
+import 'package:common/configs/manifest.dart';
+import 'package:common/ui/pages/splash_page.dart';
+import 'package:common/ui/pages/frames.dart';
+
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
@@ -8,6 +12,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
+      theme: Manifest.theme.materialData,
+/*
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -17,15 +23,20 @@ class MyApp extends StatelessWidget {
         // "hot reload" (press "r" in the console where you ran "flutter run",
         // or press Run > Flutter Hot Reload in a Flutter IDE). Notice that the
         // counter didn't reset back to zero; the application is not restarted.
-        primarySwatch: Colors.blue,
+        primarySwatch: pink_swatch,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+// */
+      home: SplashFrame(
+        body: SplashPage(),
+        padding: EdgeInsets.all(20),
+      )
+      //MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+  MyHomePage({Key? key, this.title}) : super(key: key);
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -36,7 +47,7 @@ class MyHomePage extends StatefulWidget {
   // used by the build method of the State. Fields in a Widget subclass are
   // always marked "final".
 
-  final String title;
+  final String? title;
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -68,7 +79,7 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
+        title: Text(widget.title ?? "null"),
       ),
       body: Center(
         // Center is a layout widget. It takes a single child and positions it

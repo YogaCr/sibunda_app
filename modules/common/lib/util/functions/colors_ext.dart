@@ -6,7 +6,7 @@ int _parseColor(String hex, int length) {
   String _rgb = hex;
   if(_rgb.startsWith("#"))
     _rgb = _rgb.substring(1);
-  if(_rgb.length != length)
+  if(_rgb.length != length * 2)
     switch(length){
       case 3: throw "parseColor$length() argument must be RRGGBB with/without # prefix. Current argument = '$hex'";
       case 4: throw "parseColor$length() argument must be AARRGGBB with/without # prefix. Current argument = '$hex'";
