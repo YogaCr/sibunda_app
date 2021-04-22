@@ -21,8 +21,11 @@ class _SignUpPageState extends State<SignUpPage> {
   final pswdTextController = TextEditingController();
   final rePswdTextController = TextEditingController();
 
+  String? existingPrevEmail;
+
   var isNameValid = false;
   var isEmailValid = false;
+  var isEmailAvailable = true;
   var isPswdValid = false;
   var isRePswdValid = false;
   var isInit = false;
@@ -52,9 +55,14 @@ class _SignUpPageState extends State<SignUpPage> {
             label: "Email",
             textController: emailTextController,
             onChanged: (txt) => setState(() {
-              isEmailValid = EmailValidator.validate(txt);
+              isEmailAvailable = txt != existingPrevEmail;
+              isEmailValid = isEmailAvailable && EmailValidator.validate(txt);
             }),
-            errorText: isEmailValid ? null : "Mohon masukan email yang benar.",
+            errorText: isEmailValid
+                ? null
+                : isEmailAvailable
+                  ? "Mohon masukan email yang benar."
+                  : "Email sudah ada.",
           ).withMargin(EdgeInsets.only(top: 20)),
           //Spacer(),
           TxtInput(
@@ -96,11 +104,24 @@ class _SignUpPageState extends State<SignUpPage> {
                   errorMsg = "$errorMsg \nDi login, msg= ${response2.message}";
                 }
               } else {
-                errorMsg = "$errorMsg \nDi signup, msg= ${response.message}";
+                if(response.statusCode == 500){
+                  final data = response.data.toString();
+                  if(data.contains("duplicate key value violates unique constraint")){
+                    errorMsg = "Email ${emailTextController.text} sudah ada.";
+                    setState(() {
+                      isEmailValid = false;
+                      isEmailAvailable = false;
+                      existingPrevEmail = emailTextController.text;
+                    });
+                  } else {
+                    errorMsg = "code= ${response.statusCode} message= ${response.message}";
+                  }
+                }
+                //errorMsg = "$errorMsg \nDi signup, msg= ${response.message}";
               }
               showSnackBar(context, errorMsg);
             } else {
-              showSnackBar(context, "Ada isian yg salah bro");
+              showSnackBar(context, "Mohon cek isian yang salah.");
             }
           }
       ).withMargin(EdgeInsets.only(top: 30)),

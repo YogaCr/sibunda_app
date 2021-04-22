@@ -69,10 +69,8 @@ class AuthService {
 
   static Future<SimpleNetResponse> signUp(String name, String email, String pswd) async {
     final response = await Auth.signUp(name, email, pswd);
-    print("AuthService.signUp() name= $name email= $email pswd= $pswd response.data= ${response.data}");
     if(response.statusCode == 200){
       final prefs = await Prefs.loadPrefs();
-      print("AuthService.signUp() prefs= $prefs");
       prefs.setString(Auth.KEY_NAME_CLIENT, name);
       prefs.setString(Auth.KEY_EMAIL, email);
     }
@@ -85,13 +83,10 @@ class AuthService {
     final clientId = DotEnv.env[Auth.KEY_CLIENT_ID]!;
     final fcmToken = DotEnv.env[Auth.KEY_FCM_TOKEN]!;
 
-    print("DotEnv.env[KEY_CLIENT_SECRET] = $secret");
     final response = await Auth.login(email, pswd, secret, clientId, fcmToken);
-    print("AuthService.login() response.data= ${response.data} status= ${response.statusCode} msg= ${response.message}");
     if(response.statusCode == 200){
       final prefs = await Prefs.loadPrefs();
       final accessToken = response.data["data"][Auth.KEY_ACCESS_TOKEN] as String;
-      print("AuthService.login() accessToken= $accessToken");
       prefs.setString(Auth.KEY_ACCESS_TOKEN, accessToken);
       prefs.setString(Auth.KEY_EMAIL, email);
     }
