@@ -62,3 +62,42 @@ class TxtLink extends StatelessWidget {
     ),
   );
 }
+
+class TxtInput extends StatelessWidget {
+  final String hint;
+  final String label;
+  final String? errorText;
+  final BorderSide borderSide = BorderSide(width: 2);
+  final void Function(String)? onChanged;
+  final void Function(String)? onSubmitted;
+
+  TxtInput({
+    required this.label,
+    String? hint,
+    this.errorText,
+    this.onChanged,
+    this.onSubmitted,
+  }): this.hint = hint ?? label;
+
+  @override
+  Widget build(BuildContext context) => TextField(
+    onChanged: onChanged,
+    onSubmitted: onSubmitted,
+    decoration: InputDecoration(
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(15),
+        borderSide: borderSide,
+      ),
+/*
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(15),
+        borderSide: borderSide.copyWith(color: Colors.yellow),
+      ),
+      labelStyle: Theme.of(context).textTheme.subtitle2?.copyWith(color: Colors.yellow),
+ */
+      errorText: errorText,
+      labelText: label,
+      hintText: hint,
+    ),
+  );
+}

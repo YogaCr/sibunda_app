@@ -1,10 +1,13 @@
 
 import 'package:common/res/themes/themes.dart';
+import 'package:common/ui/pages/sign_in_page.dart';
 import 'package:common/ui/widget/basic_widgets.dart';
+import 'package:common/util/functions/nav_ext.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:common/util/functions/assets_ext.dart';
 import 'package:flutter/material.dart';
 import 'package:common/util/functions/ui_ext.dart';
+import 'frames.dart';
 
 class SplashPage extends StatelessWidget {
 
@@ -26,7 +29,10 @@ class SplashPage extends StatelessWidget {
       TxtBtn(
         "Mulai Dari Sekarang",
         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-        onTap: () => showSnackBar(context, "Ntab bro"),
+        onTap: () => goToPage(context, (ctx) {
+          //showSnackBar(context, "Kuy login");
+          return SignInPage().framed(padding: EdgeInsets.all(20));
+        }),
       ).withMargin(EdgeInsets.only(top: 50)),
       Text(
         "Bunda belum punya akun?",

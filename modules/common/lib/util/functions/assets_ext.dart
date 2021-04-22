@@ -10,4 +10,5 @@ class Images {
       return SvgPicture.asset(dir, width: width, height: height, fit: fit,);
     return Image.asset(dir, width: width, height: height, fit: fit,);
   }
+  static String getDir(String fileName) => "images/$fileName";
 }
