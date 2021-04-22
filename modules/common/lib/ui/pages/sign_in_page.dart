@@ -1,7 +1,9 @@
 
+import 'package:common/configs/routes.dart';
 import 'package:common/res/themes/themes.dart';
 import 'package:common/ui/pages/sign_up_page.dart';
 import 'package:common/ui/widget/basic_widgets.dart';
+import 'package:common/util/auth.dart';
 import 'package:common/util/functions/assets_ext.dart';
 import 'package:common/util/functions/nav_ext.dart';
 import 'package:common/util/functions/ui_ext.dart';
@@ -66,9 +68,15 @@ class _SignInPageState extends State<SignInPage> {
           Icons.arrow_forward_rounded,
         ),
         backgroundColor: canProceed ? pink_300 : grey,
-        onPressed: () {
+        onPressed: () async {
           if(canProceed){
-            showSnackBar(context, "Ntab bro", backgroundColor: Colors.green);
+            final response = await AuthService.login(emailTextController.text, pswdTextController.text);
+            if(response.statusCode == 200){
+              Routes.homePage.goToPage(context, clearPrevs: true);
+            } else {
+              showSnackBar(context, "Email atau password tidak sesuai \n${response.message}");
+            }
+            //showSnackBar(context, "Ntab bro", backgroundColor: Colors.green);
           } else {
             showSnackBar(context, "Ada yg salah bro");
           }

@@ -1,7 +1,9 @@
 
+import 'package:common/configs/routes.dart';
 import 'package:common/res/themes/themes.dart';
 import 'package:common/ui/widget/basic_widgets.dart';
 import 'package:common/ui/widget/intermediate_widgets.dart';
+import 'package:common/util/auth.dart';
 import 'package:common/util/functions/assets_ext.dart';
 import 'package:common/util/functions/ui_ext.dart';
 import 'package:email_validator/email_validator.dart';
@@ -79,11 +81,24 @@ class _SignUpPageState extends State<SignUpPage> {
             Icons.arrow_forward_rounded,
           ),
           backgroundColor: canProceed ? pink_300 : grey,
-          onPressed: () {
+          onPressed: () async {
             if(canProceed){
-              showSnackBar(context, "Ntab bro", backgroundColor: Colors.green);
+              final response = await AuthService.signUp(nameTextController.text, emailTextController.text, pswdTextController.text);
+              var errorMsg = "Ada error bro!";
+              if(response.statusCode == 200){
+                final response2 = await AuthService.login(emailTextController.text, pswdTextController.text);
+                if(response2.statusCode == 200){
+                  Routes.homePage.goToPage(context, clearPrevs: true);
+                  return;
+                } else {
+                  errorMsg = "$errorMsg \nDi login, msg= ${response2.message}";
+                }
+              } else {
+                errorMsg = "$errorMsg \nDi signup, msg= ${response.message}";
+              }
+              showSnackBar(context, errorMsg);
             } else {
-              showSnackBar(context, "Ada yg salah bro");
+              showSnackBar(context, "Ada isian yg salah bro");
             }
           }
       ).withMargin(EdgeInsets.only(top: 30)),

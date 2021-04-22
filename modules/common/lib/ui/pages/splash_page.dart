@@ -1,4 +1,5 @@
 
+import 'package:common/configs/routes.dart';
 import 'package:common/res/themes/themes.dart';
 import 'package:common/ui/pages/sign_in_page.dart';
 import 'package:common/ui/pages/sign_up_page.dart';
@@ -30,10 +31,7 @@ class SplashPage extends StatelessWidget {
       TxtBtn(
         "Mulai Dari Sekarang",
         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-        onTap: () => goToPage(context, (ctx) {
-          //showSnackBar(context, "Kuy login");
-          return SignInPage().framed(padding: EdgeInsets.all(20));
-        }),
+        onTap: () => Routes.signInPage.goToPage(context),
       ).withMargin(EdgeInsets.only(top: 50)),
       Text(
         "Bunda belum punya akun?",
@@ -42,10 +40,7 @@ class SplashPage extends StatelessWidget {
       ).withMargin(EdgeInsets.only(top: 20)),
       TxtLink(
         "Daftar Disini Yuk",
-        onTap: () => goToPage(context, (ctx) => SignUpPage().framedWithPlainBack(
-          padding: EdgeInsets.all(20),
-          //onTap: () => showSnackBar(context, "halo Bro back"),
-        )),
+        onTap: () => Routes.signUpPage.goToPage(context),
       ).withMargin(EdgeInsets.only(top: 5)),
     ],
   );
