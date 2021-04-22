@@ -63,6 +63,33 @@ class TxtLink extends StatelessWidget {
   );
 }
 
+/*
+class TxtInput extends StatefulWidget {
+  final State Function() _builder;
+
+  TxtInput({
+    required String label,
+    String? hint,
+    String? errorText,
+    void Function(String)? onChanged,
+    void Function(String)? onSubmitted,
+    TextEditingController? textController,
+    bool isTypePassword = false,
+  }): _builder = (() => TxtInputState(
+    label: label,
+    hint: hint,
+    errorText: errorText,
+    onChanged: onChanged,
+    onSubmitted: onSubmitted,
+    textController: textController,
+    isTypePassword: isTypePassword,
+  ));
+
+  @override
+  State createState() => _builder();
+}
+ */
+
 class TxtInput extends StatelessWidget {
   final String hint;
   final String label;
@@ -71,6 +98,8 @@ class TxtInput extends StatelessWidget {
   final void Function(String)? onChanged;
   final void Function(String)? onSubmitted;
   final TextEditingController? textController;
+  final bool isTypePassword;
+  bool _isPasswordVisible = false;
 
   TxtInput({
     required this.label,
@@ -78,11 +107,15 @@ class TxtInput extends StatelessWidget {
     this.errorText,
     this.onChanged,
     this.onSubmitted,
-    this.textController
+    this.textController,
+    this.isTypePassword = false,
   }): this.hint = hint ?? label;
 
   @override
   Widget build(BuildContext context) => TextField(
+    obscureText: isTypePassword && !_isPasswordVisible,
+    autocorrect: !isTypePassword,
+    enableSuggestions: !isTypePassword,
     onChanged: onChanged,
     onSubmitted: onSubmitted,
     controller: textController,
@@ -91,6 +124,18 @@ class TxtInput extends StatelessWidget {
         borderRadius: BorderRadius.circular(15),
         borderSide: borderSide,
       ),
+/*
+      suffixIcon: !isTypePassword
+        ? null
+        : InkWell(
+          onTap: _togglePassword,
+          child: Icon(
+            _isPasswordVisible
+                ? Icons.visibility_off
+                : Icons.visibility
+          ),
+        ),
+ */
 /*
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(15),
@@ -103,4 +148,12 @@ class TxtInput extends StatelessWidget {
       hintText: hint,
     ),
   );
+
+  void _togglePassword(){
+/*
+    setState(() {
+      _isPasswordVisible = !_isPasswordVisible;
+    });
+ */
+  }
 }

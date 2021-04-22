@@ -59,13 +59,15 @@ class PlainBackFrame extends StatelessWidget {
         body,
         Transform.scale(
           scale: 1.5,
-          child: InkWell(
-            onTap: onTap ?? () => backPage(context),
-            customBorder: CircleBorder(),
-            child: Icon(
-              Icons.arrow_back_rounded,
-            ).withPadding(EdgeInsets.all(5)),
-          ),
+          child: !isInitialPage(context)
+            ? InkWell(
+              onTap: onTap ?? () => backPage(context),
+              customBorder: CircleBorder(),
+              child: Icon(
+                Icons.arrow_back_rounded,
+              ).withPadding(EdgeInsets.all(5)),
+            )
+            : null,
         ),
       ],
     ),

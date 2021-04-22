@@ -27,8 +27,8 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
-  equatable: ^1.1.1
-  provider: ^4.0.4
+  #equatable: ^1.1.1
+  #provider: ^4.0.4
   flutter_bloc: ^5.0.0 #^3.2.0
   dio: ^4.0.0
   flutter_svg: ^0.21.0
@@ -53,7 +53,8 @@ flutter:
   # like this:
   assets:
     - assets/images/
-    - .env
+    - env
+    #- .env
     #- assets/images/ilstr_mother_pregnant_process.png
 
   # An image asset can refer to one or more resolution-specific "variants", see

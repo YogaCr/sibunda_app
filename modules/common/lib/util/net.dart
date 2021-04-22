@@ -14,4 +14,18 @@ class SimpleNetResponse {
   const SimpleNetResponse(this.statusCode, this.message, [this.data]);
   SimpleNetResponse.from(Response response)
       : this(response.statusCode, response.statusMessage, response.data);
+
+  @override
+  String toString() {
+    final superStr = super.toString();
+    return "$superStr(statusCode=$statusCode, message=$message, data=$data)";
+  }
+}
+
+class SibDio {
+  SibDio._();
+  static Options defaultOptions() => Options(
+    followRedirects: false,
+    validateStatus: (code) => true, //So that every response, even errors, is returned.
+  );
 }

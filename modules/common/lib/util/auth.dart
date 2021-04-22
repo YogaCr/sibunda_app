@@ -1,12 +1,13 @@
 
+import 'package:common/values/prefs.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart' as DotEnv;
 import 'package:common/util/net.dart';
 import 'package:dio/dio.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class Auth {
   Auth._();
 
+  static const _ENV = "env";
   static const KEY_NAME = "nama";
   static const KEY_NAME_CLIENT = "user_name";
   static const KEY_EMAIL = "email";
@@ -25,33 +26,38 @@ class Auth {
       KEY_EMAIL: email,
       KEY_PASSWORD: pswd,
       KEY_RE_PASSWORD: pswd,
-    });
+    },
+      options: SibDio.defaultOptions(),
+    );
     return SimpleNetResponse.from(response);
   }
 
-  static Future<SimpleNetResponse> login(String email, String pswd) async {
-    await DotEnv.load();
+  static Future<SimpleNetResponse> login(
+      String email, String pswd, String secret, String clientId, [String fcmToken = "ini_token",]
+  ) async {
     final dio = Dio();
-    final response = await dio.post(ENDPOINT_REGISTER, data: {
-      KEY_CLIENT_ID: DotEnv.env[KEY_CLIENT_ID],
-      KEY_CLIENT_SECRET: DotEnv.env[KEY_CLIENT_SECRET],
-      KEY_FCM_TOKEN: DotEnv.env[KEY_FCM_TOKEN],
+    final response = await dio.post(ENDPOINT_LOGIN, data: {
+      KEY_CLIENT_ID: clientId, //DotEnv.env[KEY_CLIENT_ID],
+      KEY_CLIENT_SECRET: secret, //DotEnv.env[KEY_CLIENT_SECRET],
+      KEY_FCM_TOKEN: fcmToken, //DotEnv.env[KEY_FCM_TOKEN],
       KEY_EMAIL: email,
       KEY_PASSWORD: pswd,
       KEY_RE_PASSWORD: pswd,
-    });
+    },
+      options: SibDio.defaultOptions(),
+    );
     return SimpleNetResponse.from(response);
   }
 
   static Future<SimpleNetResponse> logout(String accessToken) async {
     final dio = Dio();
-    final response = await dio.post(ENDPOINT_REGISTER,
-        options: Options(
-          headers: {
-            HEADER_AUTH: "Bearer $accessToken",
-            Headers.acceptHeader: Headers.jsonContentType,
-          }
-        ),
+    final response = await dio.get(ENDPOINT_LOGOUT,
+        options: SibDio.defaultOptions().copyWith(
+            headers: {
+              HEADER_AUTH: "Bearer $accessToken",
+              Headers.acceptHeader: Headers.jsonContentType,
+            }
+        )
     );
     return SimpleNetResponse.from(response);
   }
@@ -65,7 +71,8 @@ class AuthService {
     final response = await Auth.signUp(name, email, pswd);
     print("AuthService.signUp() name= $name email= $email pswd= $pswd response.data= ${response.data}");
     if(response.statusCode == 200){
-      final prefs = await SharedPreferences.getInstance();
+      final prefs = await Prefs.loadPrefs();
+      print("AuthService.signUp() prefs= $prefs");
       prefs.setString(Auth.KEY_NAME_CLIENT, name);
       prefs.setString(Auth.KEY_EMAIL, email);
     }
@@ -73,22 +80,30 @@ class AuthService {
   }
 
   static Future<SimpleNetResponse> login(String email, String pswd) async {
-    final response = await Auth.login(email, pswd);
+    await DotEnv.load(fileName: Auth._ENV);
+    final secret = DotEnv.env[Auth.KEY_CLIENT_SECRET]!;
+    final clientId = DotEnv.env[Auth.KEY_CLIENT_ID]!;
+    final fcmToken = DotEnv.env[Auth.KEY_FCM_TOKEN]!;
+
+    print("DotEnv.env[KEY_CLIENT_SECRET] = $secret");
+    final response = await Auth.login(email, pswd, secret, clientId, fcmToken);
+    print("AuthService.login() response.data= ${response.data} status= ${response.statusCode} msg= ${response.message}");
     if(response.statusCode == 200){
-      final prefs = await SharedPreferences.getInstance();
+      final prefs = await Prefs.loadPrefs();
       final accessToken = response.data["data"][Auth.KEY_ACCESS_TOKEN] as String;
       print("AuthService.login() accessToken= $accessToken");
       prefs.setString(Auth.KEY_ACCESS_TOKEN, accessToken);
+      prefs.setString(Auth.KEY_EMAIL, email);
     }
     return response;
   }
 
   static Future<SimpleNetResponse> logout() async {
-    final prefs = await SharedPreferences.getInstance();
+    final prefs = await Prefs.loadPrefs();
     final accessToken = prefs.getString(Auth.KEY_ACCESS_TOKEN)!;
     final response = await Auth.logout(accessToken);
     if(response.statusCode == 200){
-      final prefs = await SharedPreferences.getInstance();
+      final prefs = await Prefs.loadPrefs();
       prefs.remove(Auth.KEY_ACCESS_TOKEN);
       prefs.remove(Auth.KEY_NAME_CLIENT);
       prefs.remove(Auth.KEY_EMAIL);

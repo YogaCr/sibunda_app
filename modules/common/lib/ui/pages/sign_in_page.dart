@@ -57,6 +57,7 @@ class _SignInPageState extends State<SignInPage> {
       ).withMargin(EdgeInsets.only(top: 70)),
       TxtInput(
         label: "Password",
+        isTypePassword: true,
         textController: pswdTextController,
         onChanged: (txt) => setState(() {
           isPswdValid = txt.length >= 8;

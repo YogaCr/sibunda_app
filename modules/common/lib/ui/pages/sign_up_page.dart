@@ -59,6 +59,7 @@ class _SignUpPageState extends State<SignUpPage> {
           //Spacer(),
           TxtInput(
             label: "Password",
+            isTypePassword: true,
             textController: pswdTextController,
             onChanged: (txt) => setState(() {
               isPswdValid = txt.length >= 8;
@@ -68,6 +69,7 @@ class _SignUpPageState extends State<SignUpPage> {
           //Spacer(),
           TxtInput(
             label: "Konfirmasi Password",
+            isTypePassword: true,
             textController: rePswdTextController,
             onChanged: (txt) => setState(() {
               isRePswdValid = txt == pswdTextController.text;
