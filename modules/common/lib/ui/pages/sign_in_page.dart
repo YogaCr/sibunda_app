@@ -79,7 +79,7 @@ class _SignInPageState extends State<SignInPage> {
             }
             //showSnackBar(context, "Ntab bro", backgroundColor: Colors.green);
           } else {
-            showSnackBar(context, "Ada yg salah bro");
+            showSnackBar(context, "Mohon cek isian yang salah.");
           }
         }
       ).withMargin(EdgeInsets.only(top: 30)),
@@ -95,5 +95,5 @@ class _SignInPageState extends State<SignInPage> {
         )),
       ).withMargin(EdgeInsets.only(top: 10)),
     ],
-  );
+  ).insideScroll();
 }

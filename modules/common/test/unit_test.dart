@@ -1,6 +1,6 @@
 
 import 'package:common/util/auth.dart';
-
+/*
 void main() async {
   final name = "ayu3";
   final email = "a6@a.a";
@@ -42,3 +42,5 @@ Future<void> logout(String token) async {
   assert (resp.statusCode == 200);
   print("Selesai logout()");
 }
+
+ */

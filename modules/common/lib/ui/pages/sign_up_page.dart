@@ -4,7 +4,6 @@ import 'package:common/res/themes/themes.dart';
 import 'package:common/ui/widget/basic_widgets.dart';
 import 'package:common/ui/widget/intermediate_widgets.dart';
 import 'package:common/util/auth.dart';
-import 'package:common/util/functions/assets_ext.dart';
 import 'package:common/util/functions/ui_ext.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/cupertino.dart';
