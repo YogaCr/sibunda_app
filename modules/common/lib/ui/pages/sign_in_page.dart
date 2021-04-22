@@ -1,8 +1,11 @@
 
 import 'package:common/res/themes/themes.dart';
+import 'package:common/ui/pages/sign_up_page.dart';
 import 'package:common/ui/widget/basic_widgets.dart';
 import 'package:common/util/functions/assets_ext.dart';
+import 'package:common/util/functions/nav_ext.dart';
 import 'package:common/util/functions/ui_ext.dart';
+import 'package:common/ui/pages/frames.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -44,6 +47,7 @@ class _SignInPageState extends State<SignInPage> {
       ),
       TxtInput(
         label: "Email",
+        textController: emailTextController,
         onChanged: (txt) => setState(() {
           isEmailValid = EmailValidator.validate(txt);
         }),
@@ -51,6 +55,7 @@ class _SignInPageState extends State<SignInPage> {
       ).withMargin(EdgeInsets.only(top: 70)),
       TxtInput(
         label: "Password",
+        textController: pswdTextController,
         onChanged: (txt) => setState(() {
           isPswdValid = txt.length >= 8;
         }),
@@ -75,7 +80,10 @@ class _SignInPageState extends State<SignInPage> {
       ).withMargin(EdgeInsets.only(top: 30)),
       TxtLink(
         "Daftar Disini Yuk",
-        onTap: () => showSnackBar(context, "Ntab bro"),
+        onTap: () => goToPage(context, (ctx) => SignUpPage().framedWithPlainBack(
+          padding: EdgeInsets.all(20),
+          //onTap: () => showSnackBar(context, "halo Bro back"),
+        )),
       ).withMargin(EdgeInsets.only(top: 10)),
     ],
   );

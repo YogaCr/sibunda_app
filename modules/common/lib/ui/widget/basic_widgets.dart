@@ -70,6 +70,7 @@ class TxtInput extends StatelessWidget {
   final BorderSide borderSide = BorderSide(width: 2);
   final void Function(String)? onChanged;
   final void Function(String)? onSubmitted;
+  final TextEditingController? textController;
 
   TxtInput({
     required this.label,
@@ -77,12 +78,14 @@ class TxtInput extends StatelessWidget {
     this.errorText,
     this.onChanged,
     this.onSubmitted,
+    this.textController
   }): this.hint = hint ?? label;
 
   @override
   Widget build(BuildContext context) => TextField(
     onChanged: onChanged,
     onSubmitted: onSubmitted,
+    controller: textController,
     decoration: InputDecoration(
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(15),

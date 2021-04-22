@@ -1,4 +1,7 @@
 
+import 'package:common/util/functions/ext_functions.dart';
+import 'package:common/util/functions/nav_ext.dart';
+import 'package:common/util/functions/ui_ext.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -35,7 +38,38 @@ class NoAppBarFrame extends StatelessWidget {
     body: body,
     padding: padding,
   );
+}
 
+class PlainBackFrame extends StatelessWidget {
+  final Widget body;
+  final EdgeInsetsGeometry? padding;
+  final GestureTapCallback? onTap;
+
+  PlainBackFrame({
+    required this.body,
+    this.padding,
+    this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) => Frame(
+    padding: padding,
+    body: Stack(
+      children: [
+        body,
+        Transform.scale(
+          scale: 1.5,
+          child: InkWell(
+            onTap: onTap ?? () => backPage(context),
+            customBorder: CircleBorder(),
+            child: Icon(
+              Icons.arrow_back_rounded,
+            ).withPadding(EdgeInsets.all(5)),
+          ),
+        ),
+      ],
+    ),
+  );
 }
 
 class Frame extends StatelessWidget {
@@ -68,4 +102,13 @@ extension FramedWidgetExt on Widget {
   }) => appBar != null
       ? MainFrame(body: this, appBar: appBar, padding: padding,)
       : NoAppBarFrame(body: this, padding: padding,);
+
+  Widget framedWithPlainBack({
+    EdgeInsetsGeometry? padding,
+    GestureTapCallback? onTap,
+  }) => PlainBackFrame(
+    body: this,
+    padding: padding,
+    onTap: onTap,
+  );
 }

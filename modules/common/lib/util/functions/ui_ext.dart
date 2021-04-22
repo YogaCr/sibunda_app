@@ -36,6 +36,9 @@ extension WidgetExt on Widget {
     child: this,
     padding: padding,
   );
+  Widget insideScroll() => ListView(
+    children: [this],
+  );
 /*
   Widget relativeConstraint({
     double top = 0,

@@ -1,6 +1,7 @@
 
 import 'package:common/res/themes/themes.dart';
 import 'package:common/ui/pages/sign_in_page.dart';
+import 'package:common/ui/pages/sign_up_page.dart';
 import 'package:common/ui/widget/basic_widgets.dart';
 import 'package:common/util/functions/nav_ext.dart';
 import 'package:flutter/cupertino.dart';
@@ -41,7 +42,10 @@ class SplashPage extends StatelessWidget {
       ).withMargin(EdgeInsets.only(top: 20)),
       TxtLink(
         "Daftar Disini Yuk",
-        onTap: () => showSnackBar(context, "Masuk bro", backgroundColor: Colors.green),
+        onTap: () => goToPage(context, (ctx) => SignUpPage().framedWithPlainBack(
+          padding: EdgeInsets.all(20),
+          //onTap: () => showSnackBar(context, "halo Bro back"),
+        )),
       ).withMargin(EdgeInsets.only(top: 5)),
     ],
   );

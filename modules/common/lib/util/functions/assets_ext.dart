@@ -5,10 +5,10 @@ import 'package:flutter_svg/svg.dart';
 
 class Images {
   static Widget get(String fileName, {double? width, double? height, BoxFit fit = BoxFit.fill}){
-    final dir = "images/$fileName";
+    final dir = getDir(fileName);
     if(fileName.endsWith(".svg"))
       return SvgPicture.asset(dir, width: width, height: height, fit: fit,);
     return Image.asset(dir, width: width, height: height, fit: fit,);
   }
-  static String getDir(String fileName) => "images/$fileName";
+  static String getDir(String fileName) => !fileName.contains("/") ? "images/$fileName" : fileName;
 }
