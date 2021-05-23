@@ -50,43 +50,43 @@ class SignUpPage extends StatelessWidget {
         BlocFormBuilder<SignUpFormBloc>(
           builders: [
             (context, formState) => TxtInput(
-              label: "Nama",
+              label: Strings.name,
               textController: bloc.nameTextController,
               textValidator: (txt) => bloc.isNameValid = txt.isNotEmpty,
-              errorText: "Mohon masukan nama Anda.",
+              errorText: Strings.please_enter_your_name,
               initIsTxtValid: formState is! OnInvalidForm || formState.errorMap[Const.KEY_NAME] != null,
             ),
             //Spacer(),
             (context, formState) => TxtInput(
-              label: "Email",
+              label: Strings.email,
               textController: bloc.emailTextController,
               textValidator: (txt) => bloc.isEmailValid = bloc.isEmailAvailable && DartEmailValidator.EmailValidator.validate(txt),
               errorTextGenerator: () => bloc.isEmailValid
                   ? null : bloc.isEmailAvailable
-                  ? "Mohon masukan email yang benar." : "Email sudah ada.",
+                  ? Strings.please_type_correct_email : Strings.email_has_already_registered,
               initIsTxtValid: formState is! OnInvalidForm || formState.errorMap[Const.KEY_EMAIL] != null,
             ).withMargin(EdgeInsets.only(top: 20)),
             //Spacer(),
             (context, formState) => TxtInput(
-              label: "Password",
+              label: Strings.password,
               isTypePassword: true,
               textController: bloc.pswdTextController,
               textValidator: (txt) => bloc.isPswdValid = txt.length >= 8,
-              errorText: "Panjang password minimal 8 karakter.",
+              errorText: Strings.password_at_least_8,
               initIsTxtValid: formState is! OnInvalidForm || formState.errorMap[Const.KEY_PSWD] != null,
             ).withMargin(EdgeInsets.only(top: 20)),
             //Spacer(),
             (context, formState) => TxtInput(
-              label: "Konfirmasi Password",
+              label: Strings.password_re,
               isTypePassword: true,
               textController: bloc.rePswdTextController,
               textValidator: (txt) => bloc.isRePswdValid = txt == bloc.pswdTextController.text,
-              errorText: "Password konfirmasi tidak sama.",
+              errorText: Strings.password_re_does_not_match,
               initIsTxtValid: formState is! OnInvalidForm || formState.errorMap[Const.KEY_RE_PSWD] != null,
             ).withMargin(EdgeInsets.only(top: 20)),
           ],
         ).withMargin(EdgeInsets.only(top: 30)),
-        BlocBuilder(
+        BlocBuilder<SignUpFormBloc, BlocFormState>(
           builder: (ctx, formState) {
             if(formState is OnSuccessEndForm) {
               SibRoutes.homePage.goToPage(context, clearPrevs: true);
@@ -148,6 +148,6 @@ class SignUpPage extends StatelessWidget {
             ).withMargin(EdgeInsets.only(top: 30));
           }),
       ],
-    ); //.insideScroll();
+    ).insideScroll();
   }
 }

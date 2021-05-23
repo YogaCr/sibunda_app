@@ -39,6 +39,7 @@ class TxtInput extends StatefulWidget {
     onChanged: onChanged,
     onSubmitted: onSubmitted,
     textController: textController,
+    textValidator: textValidator,
     isTypePassword: isTypePassword,
     initIsTxtValid: initIsTxtValid,
   );

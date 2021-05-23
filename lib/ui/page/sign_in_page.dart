@@ -14,6 +14,8 @@ import 'package:common/res/string/_string.dart';
 import 'package:sibunda_app/bloc/auth_form_bloc.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/src/bloc_builder.dart';
+import 'package:provider/src/provider.dart';
 
 class SignInPage extends StatelessWidget {
 /*
@@ -52,21 +54,24 @@ class SignInPage extends StatelessWidget {
         BlocFormBuilder<LoginFormBloc>(
           builders: [
             (ctx, formState) => TxtInput(
-              label: "Email",
+              label: Strings.email,
               textController: bloc.emailTextController,
-              textValidator: (txt) => bloc.isEmailValid = EmailValidator.validate(txt),
-              errorText: "Mohon masukan email yang benar.",
+              textValidator: (txt) {
+                bloc.isEmailAvailable = bloc.existingEmail != bloc.emailTextController.text;
+                return bloc.isEmailValid = bloc.isEmailAvailable && EmailValidator.validate(txt);
+              },
+              errorText: Strings.please_type_correct_email,
             ).withMargin(EdgeInsets.only(top: 70)),
             (ctx, formState) => TxtInput(
-              label: "Password",
+              label: Strings.password,
               isTypePassword: true,
               textController: bloc.pswdTextController,
               textValidator: (txt) => bloc.isPswdValid = txt.length >= 8,
-              errorText: "Panjang password minimal 8 karakter.",
+              errorText: Strings.password_at_least_8,
             ).withMargin(EdgeInsets.only(top: 20)),
           ],
         ),
-        BlocBuilder(
+        BlocBuilder<LoginFormBloc, BlocFormState>(
           builder: (ctx, formState) {
             if(formState is OnSuccessEndForm) {
               SibRoutes.homePage.goToPage(context, clearPrevs: true);
@@ -113,6 +118,6 @@ class SignInPage extends StatelessWidget {
           )),
         ).withMargin(EdgeInsets.only(top: 10)),
       ],
-    );//.insideScroll();
+    ).insideScroll();
   }
 }

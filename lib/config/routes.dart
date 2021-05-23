@@ -14,7 +14,8 @@ class SibRoutes {
     padding: EdgeInsets.all(20),
   ));
   static final signInPage = SibRoute("SignInPage", SignInPage, (ctx) => PlainBackFrame(
-    body: SignInPage().inBlocProvider<LoginFormBloc>((ctx) => LoginFormBloc(DataConfig.defaultAuthRepo)),
+    body: SignInPage()
+        .inBlocProvider<LoginFormBloc>((ctx) => LoginFormBloc(DataConfig.defaultAuthRepo)),
     padding: EdgeInsets.all(20),
   ));
   static final signUpPage = SibRoute("SignUpPage", SignUpPage, (ctx) => PlainBackFrame(
