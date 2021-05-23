@@ -30,10 +30,32 @@ abstract class AuthFormBloc extends FormBloc {
   var isRePswdValid = false;
   var isInit = false;
 
+  bool _canProceed = false;
   bool get canProceed;
 
   final AuthRepo repo;
   AuthFormBloc(this.repo);
+
+
+  @override
+  Stream<BlocFormState> specificMapEventToState(FormEvent event) async* {
+    if(event is CheckCanProceed) {
+      yield OnCanProceedChanged(_canProceed);
+    } else {
+      yield* authSpecificMapEventToState(event);
+    }
+  }
+  Stream<BlocFormState> authSpecificMapEventToState(FormEvent event);
+
+  // TODO 24 Mei 2021: Pakai method ini saat tiap is..Valid berubah nilai.
+  bool checkCanProceed() {
+    final newCanProceed = canProceed;
+    if(newCanProceed != _canProceed) {
+      _canProceed = newCanProceed;
+      add(CheckCanProceed());
+    }
+    return _canProceed;
+  }
 
   Stream<BlocFormState> signup(String name, String email, String pswd, Map<String, String?> errorMap) async* {
     final signUpResult = await repo.signup(SignUpData(
@@ -87,7 +109,7 @@ class SignUpFormBloc extends AuthFormBloc {
   bool get canProceed => isNameValid && isEmailValid && isPswdValid && isRePswdValid;
 
   @override
-  Stream<BlocFormState> specificMapEventToState(FormEvent event) async* {
+  Stream<BlocFormState> authSpecificMapEventToState(FormEvent event) async* {
     if(event is SubmitForm) {
       final inputs = event.formInputs;
       final errorMap = <String, String?>{};
@@ -109,10 +131,14 @@ class SignUpFormBloc extends AuthFormBloc {
       }
 
       if(canProceed) {
-        final signupResult = signup(name!, email!, pswd!, errorMap);
-        yield* signupResult;
+        final signupResult = await signup(name!, email!, pswd!, errorMap).first;
+        print("signupResult= $signupResult errorMap= $errorMap");
+        yield signupResult;
+        print("signupResult= $signupResult errorMap= $errorMap AKHIR =====");
         if(signupResult is OnValidFormSubmission) {
-          yield* login(email, pswd);
+          final loginResult = login(email, pswd);
+          print("loginResult= $loginResult");
+          yield* loginResult;
         }
       } else {
         yield OnInvalidForm(errorMap);
@@ -139,7 +165,7 @@ class LoginFormBloc extends AuthFormBloc {
   bool get canProceed => isEmailValid && isPswdValid;
 
   @override
-  Stream<BlocFormState> specificMapEventToState(FormEvent event) async* {
+  Stream<BlocFormState> authSpecificMapEventToState(FormEvent event) async* {
     if(event is SubmitForm) {
       final inputs = event.formInputs;
       final errorMap = <String, String?>{};

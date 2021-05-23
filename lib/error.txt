@@ -1,0 +1,43 @@
+TODO************************ 24 Mei 2021 *********************
+
+====================================================================================================
+signupResult= OnValidFormSubmission() errorMap= {}
+signupResult= OnValidFormSubmission() errorMap= {} AKHIR =====
+loginResult= Instance of '_ControllerStream<BlocFormState>'
+
+======== Exception caught by widgets library =======================================================
+The following assertion was thrown building BlocBuilder<SignUpFormBloc, BlocFormState>(dirty, state: _BlocBuilderBaseState<SignUpFormBloc, BlocFormState>#c8c68):
+setState() or markNeedsBuild() called during build.
+
+This _ModalScope<Object?> widget cannot be marked as needing to build because the framework is already in the process of building widgets.  A widget can be marked as needing to be built during the build phase only if one of its ancestors is currently building. This exception is allowed because the framework builds parent widgets before children, which means a dirty descendant will always be built. Otherwise, the framework might not visit this widget during this build phase.
+The widget on which setState() or markNeedsBuild() was called was: _ModalScope<Object?>-[LabeledGlobalKey<_ModalScopeState<Object?>>#ceecd]
+  state: _ModalScopeState<Object?>#cadfa
+The widget which was currently being built when the offending call was made was: BlocBuilder<SignUpFormBloc, BlocFormState>
+  dirty
+  state: _BlocBuilderBaseState<SignUpFormBloc, BlocFormState>#c8c68
+The relevant error-causing widget was:
+  BlocBuilder<SignUpFormBloc, BlocFormState> file:///D:/Data/Pemrograman/Dart/Flutter/Project/sibunda_app/lib/ui/page/sign_up_page.dart:89:9
+When the exception was thrown, this was the stack:
+C:/b/s/w/ir/cache/builder/src/out/host_debug/dart-sdk/lib/_internal/js_dev_runtime/private/ddc_runtime/errors.dart 236:49  throw_
+packages/flutter/src/widgets/framework.dart 4138:11                                                                        <fn>
+packages/flutter/src/widgets/framework.dart 4152:14                                                                        markNeedsBuild
+packages/flutter/src/widgets/framework.dart 1287:5                                                                         setState
+packages/flutter/src/widgets/routes.dart 778:5                                                                             [_routeSetState]
+...
+====================================================================================================
+Error: Assertion failed: file:///D:/Data/Pemrograman/Dart/SDK/flutter/packages/flutter/lib/src/widgets/navigator.dart:2997:18
+!navigator._debugLocked
+is not true
+    at Object.throw_ [as throw] (http://localhost:56870/dart_sdk.js:5032:11)
+    at Object.assertFailed (http://localhost:56870/dart_sdk.js:4971:15)
+    at http://localhost:56870/packages/flutter/src/widgets/widget_span.dart.lib.js:22901:63
+    at thunk (http://localhost:56870/packages/flutter/src/scheduler/ticker.dart.lib.js:307:9)
+    at _RootZone.runUnary (http://localhost:56870/dart_sdk.js:37081:59)
+    at _FutureListener.then.handleValue (http://localhost:56870/dart_sdk.js:32337:29)
+    at handleValueCallback (http://localhost:56870/dart_sdk.js:32864:49)
+    at Function._propagateToListeners (http://localhost:56870/dart_sdk.js:32902:17)
+    at _Future.new.[_completeWithValue] (http://localhost:56870/dart_sdk.js:32750:23)
+    at async._AsyncCallbackEntry.new.callback (http://localhost:56870/dart_sdk.js:32771:35)
+    at Object._microtaskLoop (http://localhost:56870/dart_sdk.js:37333:13)
+    at _startMicrotaskLoop (http://localhost:56870/dart_sdk.js:37339:13)
+    at http://localhost:56870/dart_sdk.js:33110:9

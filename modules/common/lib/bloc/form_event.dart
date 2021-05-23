@@ -37,3 +37,8 @@ class CancelForm extends FormEvent {
   @override
   List<Object?> get props => [extras];
 }
+
+class CheckCanProceed extends FormEvent {
+  @override
+  List<Object?> get props => [];
+}

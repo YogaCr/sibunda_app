@@ -55,3 +55,14 @@ class OnErrorSubmission extends BlocFormState {
   @override
   List<Object?> get props => [failure];
 }
+
+/// When overall validity is changed. If overall validity is `true`,
+/// then it means user can proceed to submit the form.
+class OnCanProceedChanged extends BlocFormState {
+  final bool canProceed;
+
+  OnCanProceedChanged(this.canProceed);
+
+  @override
+  List<Object?> get props => [canProceed];
+}
