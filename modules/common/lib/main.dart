@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'package:common/configs/manifest.dart';
-import 'package:common/ui/pages/splash_page.dart';
-import 'package:common/ui/pages/frames.dart';
-
+import 'package:common/config/manifest.dart';
+import 'package:common/ui/page/frames.dart';
+/*
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
@@ -119,3 +118,4 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
+ */

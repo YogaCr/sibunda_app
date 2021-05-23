@@ -1,5 +1,6 @@
 
 import 'package:common/util/auth.dart';
+import 'package:common/value/const_values.dart';
 
 void main() async {
   final name = "ayu3";
@@ -32,7 +33,7 @@ Future<String> login(
   print("resp= $resp");
   assert (resp.statusCode == 200);
   print("Selesai login()");
-  return resp.data["data"][Auth.KEY_ACCESS_TOKEN];
+  return resp.data["data"][Const.KEY_ACCESS_TOKEN];
 }
 
 Future<void> logout(String token) async {
