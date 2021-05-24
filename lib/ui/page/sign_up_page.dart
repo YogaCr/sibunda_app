@@ -9,7 +9,7 @@ import 'package:common/value/const_values.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sibunda_app/config/routes.dart';
 import 'package:sibunda_app/bloc/auth_form_bloc.dart';
-import 'package:email_validator/email_validator.dart' as DartEmailValidator;
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:common/res/string/_string.dart';
@@ -52,7 +52,7 @@ class SignUpPage extends StatelessWidget {
             (context, formState) => TxtInput(
               label: Strings.name,
               textController: bloc.nameTextController,
-              textValidator: (txt) => bloc.isNameValid = txt.isNotEmpty,
+              textValidator: (txt) => bloc.isNameValid.value = txt.isNotEmpty,
               errorText: Strings.please_enter_your_name,
               initIsTxtValid: formState is! OnInvalidForm || formState.errorMap[Const.KEY_NAME] != null,
             ),
@@ -60,12 +60,9 @@ class SignUpPage extends StatelessWidget {
             (context, formState) => TxtInput(
               label: Strings.email,
               textController: bloc.emailTextController,
-              textValidator: (txt) {
-                bloc.isEmailAvailable = bloc.emailTextController.text != bloc.existingEmail;
-                return bloc.isEmailValid = bloc.isEmailAvailable && DartEmailValidator.EmailValidator.validate(txt);
-              },
-              errorTextGenerator: () => bloc.isEmailValid
-                  ? null : bloc.isEmailAvailable
+              textValidator: (txt) => bloc.isEmailValid.value = bloc.isEmailAvailable.value && EmailValidator.validate(txt),
+              errorTextGenerator: () => bloc.isEmailValid.value
+                  ? null : bloc.isEmailAvailable.value
                   ? Strings.please_type_correct_email : Strings.email_has_already_registered,
               initIsTxtValid: formState is! OnInvalidForm || formState.errorMap[Const.KEY_EMAIL] != null,
             ).withMargin(EdgeInsets.only(top: 20)),
@@ -74,7 +71,7 @@ class SignUpPage extends StatelessWidget {
               label: Strings.password,
               isTypePassword: true,
               textController: bloc.pswdTextController,
-              textValidator: (txt) => bloc.isPswdValid = txt.length >= 8,
+              textValidator: (txt) => bloc.isPswdValid.value = txt.length >= 8,
               errorText: Strings.password_at_least_8,
               initIsTxtValid: formState is! OnInvalidForm || formState.errorMap[Const.KEY_PSWD] != null,
             ).withMargin(EdgeInsets.only(top: 20)),
@@ -83,7 +80,7 @@ class SignUpPage extends StatelessWidget {
               label: Strings.password_re,
               isTypePassword: true,
               textController: bloc.rePswdTextController,
-              textValidator: (txt) => bloc.isRePswdValid = txt == bloc.pswdTextController.text,
+              textValidator: (txt) => bloc.isRePswdValid.value,
               errorText: Strings.password_re_does_not_match,
               initIsTxtValid: formState is! OnInvalidForm || formState.errorMap[Const.KEY_RE_PSWD] != null,
             ).withMargin(EdgeInsets.only(top: 20)),

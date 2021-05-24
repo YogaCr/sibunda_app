@@ -56,17 +56,14 @@ class SignInPage extends StatelessWidget {
             (ctx, formState) => TxtInput(
               label: Strings.email,
               textController: bloc.emailTextController,
-              textValidator: (txt) {
-                bloc.isEmailAvailable = bloc.existingEmail != bloc.emailTextController.text;
-                return bloc.isEmailValid = bloc.isEmailAvailable && EmailValidator.validate(txt);
-              },
+              textValidator: (txt) => bloc.isEmailValid.value = EmailValidator.validate(txt),
               errorText: Strings.please_type_correct_email,
             ).withMargin(EdgeInsets.only(top: 70)),
             (ctx, formState) => TxtInput(
               label: Strings.password,
               isTypePassword: true,
               textController: bloc.pswdTextController,
-              textValidator: (txt) => bloc.isPswdValid = txt.length >= 8,
+              textValidator: (txt) => bloc.isPswdValid.value = txt.length >= 8,
               errorText: Strings.password_at_least_8,
             ).withMargin(EdgeInsets.only(top: 20)),
           ],
@@ -74,7 +71,8 @@ class SignInPage extends StatelessWidget {
         BlocBuilder<LoginFormBloc, BlocFormState>(
           builder: (ctx, formState) {
             if(formState is OnSuccessEndForm) {
-              SibRoutes.homePage.goToPage(context, clearPrevs: true);
+              WidgetsBinding.instance?.addPostFrameCallback((timeStamp) =>
+                  SibRoutes.homePage.goToPage(context, clearPrevs: true));
             } else if (formState is OnErrorSubmission) {
               showSnackBar(context, Strings.wrong_email_or_password);
             }

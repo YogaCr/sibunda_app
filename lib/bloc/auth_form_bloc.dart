@@ -6,6 +6,7 @@ import 'package:common/data/Result.dart';
 import 'package:common/res/string/_string.dart';
 import 'package:common/value/const_values.dart';
 import 'package:common/util/functions/txt_ext.dart';
+import 'package:common/util/prop.dart';
 import 'package:flutter/material.dart';
 
 abstract class AuthFormBloc extends FormBloc {
@@ -24,18 +25,32 @@ abstract class AuthFormBloc extends FormBloc {
 
   String? existingEmail;
 
-  var isNameValid = false;
-  var isEmailValid = false;
-  var isEmailAvailable = true;
-  var isPswdValid = false;
-  var isRePswdValid = false;
-  var isInit = false;
+  final isNameValid = LiveProp(false);
+  final isEmailValid = LiveProp(false);
+  final isEmailAvailable = LiveProp(true);
+  final isPswdValid = LiveProp(false);
+  final isRePswdValid = LiveProp(false);
+  //final isInit = LiveProp(false);
 
   bool _canProceed = false;
   bool get canProceed;
 
   final AuthRepo repo;
-  AuthFormBloc(this.repo);
+  AuthFormBloc(this.repo) {
+    isNameValid.onChanged = (v) => checkCanProceed();
+    isEmailValid.onChanged = (v) => checkCanProceed();
+    isEmailAvailable.onChanged = (v) => checkCanProceed();
+    isPswdValid.onChanged = (v) => checkCanProceed();
+    isRePswdValid.onChanged = (v) => checkCanProceed();
+
+    emailTextController.addListener(() {
+      isEmailAvailable.value = emailTextController.text != existingEmail;
+    });
+    rePswdTextController.addListener(() {
+      isRePswdValid.value = rePswdTextController.text == pswdTextController.text;
+    });
+    //isInit.onChanged = (v) => checkCanProceed();
+  }
 
 
   @override
@@ -73,8 +88,8 @@ abstract class AuthFormBloc extends FormBloc {
         if(data?.contains("duplicate key value violates unique constraint") == true){
           //errorMsg = "Email ${emailTextController.text} sudah ada.";
           errorMap[Const.KEY_EMAIL] = Strings.email_has_already_registered;
-          isEmailValid = false;
-          isEmailAvailable = false;
+          isEmailValid.value = false;
+          isEmailAvailable.value = false;
           existingEmail = emailTextController.text;
           yield OnInvalidForm(errorMap);
         } else {
@@ -116,7 +131,7 @@ class SignUpFormBloc extends AuthFormBloc {
   SignUpFormBloc(AuthRepo repo) : super(repo);
 
   @override
-  bool get canProceed => isNameValid && isEmailValid && isPswdValid && isRePswdValid;
+  bool get canProceed => isNameValid.value && isEmailValid.value && isPswdValid.value && isRePswdValid.value;
 
   @override
   Stream<BlocFormState> authSpecificMapEventToState(FormEvent event) async* {
@@ -136,8 +151,8 @@ class SignUpFormBloc extends AuthFormBloc {
 
       if(existingEmail != null && email == existingEmail) {
         errorMap[Const.KEY_EMAIL] = Strings.email_has_already_registered;
-        isEmailAvailable = false;
-        isEmailValid = false;
+        isEmailAvailable.value = false;
+        isEmailValid.value = false;
       }
 
       if(canProceed) {
@@ -158,7 +173,7 @@ class SignUpFormBloc extends AuthFormBloc {
   }
 
   @override
-  void submitForm() {
+  void submitForm([Map<String, String?>? extras]) {
     add(SubmitForm({
       Const.KEY_NAME: nameTextController.text,
       Const.KEY_EMAIL: emailTextController.text,
@@ -173,7 +188,7 @@ class LoginFormBloc extends AuthFormBloc {
   LoginFormBloc(AuthRepo repo) : super(repo);
 
   @override
-  bool get canProceed => isEmailValid && isPswdValid;
+  bool get canProceed => isEmailValid.value && isPswdValid.value;
 
   @override
   Stream<BlocFormState> authSpecificMapEventToState(FormEvent event) async* {
@@ -196,7 +211,7 @@ class LoginFormBloc extends AuthFormBloc {
   }
 
   @override
-  void submitForm() {
+  void submitForm([Map<String, String?>? extras]) {
     add(SubmitForm({
       Const.KEY_EMAIL: emailTextController.text,
       Const.KEY_PSWD: pswdTextController.text,
@@ -205,12 +220,8 @@ class LoginFormBloc extends AuthFormBloc {
 }
 
 
-
-/*
 class LogoutFormBloc extends AuthFormBloc {
   LogoutFormBloc(AuthRepo repo) : super(repo);
-
-  final accessTextController = TextEditingController();
 
   @override
   bool get canProceed => true;
@@ -218,16 +229,15 @@ class LogoutFormBloc extends AuthFormBloc {
   @override
   Stream<BlocFormState> authSpecificMapEventToState(FormEvent event) async* {
     if(event is SubmitForm) {
-
-
-      logout(accessToken);
-
+      final accessToken = event.formInputs[Const.KEY_ACCESS_TOKEN]!;
+      yield* logout(accessToken);
     }
   }
 
   @override
-  void submitForm() {
-
+  void submitForm([Map<String, String?>? extras]) {
+    final accessToken = extras?[Const.KEY_ACCESS_TOKEN];
+    if(accessToken == null) throw "${Const.KEY_ACCESS_TOKEN} should not be null";
+    add(SubmitForm({ Const.KEY_ACCESS_TOKEN : accessToken }));
   }
 }
- */

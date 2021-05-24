@@ -18,7 +18,7 @@ abstract class FormBloc extends Bloc<FormEvent, BlocFormState> {
   @override
   Stream<BlocFormState> specificMapEventToState(FormEvent event);
 
-  void submitForm();
+  void submitForm([Map<String, String?>? extras]);
 /*
   List<bool> createValidityList(int size, [List<int>? errorIndeces]) {
     if(errorIndeces == null) return List.generate(size, (index) => true);

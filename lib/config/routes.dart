@@ -23,7 +23,7 @@ class SibRoutes {
     padding: EdgeInsets.all(20),
   ));
   static final homePage = SibRoute("HomePage", HomePage, (ctx) => MainFrame(
-    body: HomePage(),
+    body: HomePage().inBlocProvider<LogoutFormBloc>((ctx) => LogoutFormBloc(DataConfig.defaultAuthRepo)),
     padding: EdgeInsets.all(20),
   ));
 }
