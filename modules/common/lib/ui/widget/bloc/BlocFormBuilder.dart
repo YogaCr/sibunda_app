@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class BlocFormBuilder<Bloc extends FormBloc> extends StatelessWidget {
-  final List<Widget Function(BuildContext, BlocFormState)> builders;
+  final List<Widget Function(BuildContext, BlocFormState, int)> builders;
 
   BlocFormBuilder({
     required this.builders,
@@ -12,7 +12,9 @@ class BlocFormBuilder<Bloc extends FormBloc> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final widgets = List<Widget>.generate(builders.length, (index) => BlocBuilder<Bloc, BlocFormState>(builder: builders[index]));
+    final widgets = List<Widget>.generate(builders.length, (index) => BlocBuilder<Bloc, BlocFormState>(
+        builder: (ctx, state) => builders[index](ctx, state, index))
+    );
     return Column(
       children: widgets,
     );

@@ -13,4 +13,23 @@ class Strings {
   static const password_at_least_8 = "Panjang password minimal 8 karakter";
   static const password_re_does_not_match = "Konfirmasi password tidak sama";
   static const wrong_email_or_password = "Email atau password salah";
+  static const make_new_mother_account = "Buat Akun Baru Bunda";
+  static const fill_mother_data = "Isi Data Bunda";
+  static const fill_father_data = "Isi Data Ayah";
+
+
+  static const nik = "nik";
+  static const jkn = "no_jkn";
+  static const faskes1 = "faskes_tk1";
+  static const faskes_rujukan = "faskes_rujukan";
+  static const salary = "pembiayaan";
+  static const blood_type = "gol_darah";
+  static const birth_place = "tempat_lahir";
+  static const birth_date = "tanggal_lahir";
+  static const education = "pendidikan";
+  static const occupancy = "pekerjaan";
+  static const address = "alamat_rumah";
+  static const phone = "telp";
+  static const puskesmas_domisili = "puskesmas_domisili";
+  static const cohort_no = "nomor_register_kohort_ibu";
 }

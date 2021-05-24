@@ -11,7 +11,6 @@ import 'package:sibunda_app/config/routes.dart';
 import 'package:sibunda_app/bloc/auth_form_bloc.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:common/res/string/_string.dart';
 
 
@@ -42,14 +41,14 @@ class SignUpPage extends StatelessWidget {
     return Column(
       children: [
         Text(
-          "Buat Akun Baru Bunda",
+          Strings.make_new_mother_account,
           style: SibTextStyles.header1,
         ).withMargin(EdgeInsets.only(top: 60)),
         ImgPick(imgUrl: "ic_profile.png")
             .withMargin(EdgeInsets.only(top: 10)),
         BlocFormBuilder<SignUpFormBloc>(
           builders: [
-            (context, formState) => TxtInput(
+            (context, formState, i) => TxtInput(
               label: Strings.name,
               textController: bloc.nameTextController,
               textValidator: (txt) => bloc.isNameValid.value = txt.isNotEmpty,
@@ -57,7 +56,7 @@ class SignUpPage extends StatelessWidget {
               initIsTxtValid: formState is! OnInvalidForm || formState.errorMap[Const.KEY_NAME] != null,
             ),
             //Spacer(),
-            (context, formState) => TxtInput(
+            (context, formState, i) => TxtInput(
               label: Strings.email,
               textController: bloc.emailTextController,
               textValidator: (txt) => bloc.isEmailValid.value = bloc.isEmailAvailable.value && EmailValidator.validate(txt),
@@ -67,7 +66,7 @@ class SignUpPage extends StatelessWidget {
               initIsTxtValid: formState is! OnInvalidForm || formState.errorMap[Const.KEY_EMAIL] != null,
             ).withMargin(EdgeInsets.only(top: 20)),
             //Spacer(),
-            (context, formState) => TxtInput(
+            (context, formState, i) => TxtInput(
               label: Strings.password,
               isTypePassword: true,
               textController: bloc.pswdTextController,
@@ -76,7 +75,7 @@ class SignUpPage extends StatelessWidget {
               initIsTxtValid: formState is! OnInvalidForm || formState.errorMap[Const.KEY_PSWD] != null,
             ).withMargin(EdgeInsets.only(top: 20)),
             //Spacer(),
-            (context, formState) => TxtInput(
+            (context, formState, i) => TxtInput(
               label: Strings.password_re,
               isTypePassword: true,
               textController: bloc.rePswdTextController,
@@ -89,8 +88,11 @@ class SignUpPage extends StatelessWidget {
         BlocBuilder<SignUpFormBloc, BlocFormState>(
           builder: (ctx, formState) {
             if(formState is OnSuccessEndForm) {
+              SibRoutes.motherDataPage.goToPage(context);
+/*
               WidgetsBinding.instance?.addPostFrameCallback((timeStamp) =>
                   SibRoutes.homePage.goToPage(ctx, clearPrevs: true));
+ */
             } else {
               String? errorMsg;
               if(formState is OnInvalidForm) {

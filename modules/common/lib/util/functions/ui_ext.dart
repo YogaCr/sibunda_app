@@ -11,15 +11,28 @@ extension SnackBarExt on SnackBar {
 void showSnackBar(
   BuildContext context, String text, {
   Color? backgroundColor,
-  Duration? duration
+  Duration? duration,
+  bool post = true,
 }) {
-  ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(
-      duration: duration ?? Duration(milliseconds: 1500),
-      backgroundColor: backgroundColor ?? Theme.of(context).errorColor,
-      content: Text(text),
-    )
-  );
+  if(post) {
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) =>
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            duration: duration ?? Duration(milliseconds: 1500),
+            backgroundColor: backgroundColor ?? Theme.of(context).errorColor,
+            content: Text(text),
+          )
+      )
+    );
+  } else {
+    ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          duration: duration ?? Duration(milliseconds: 1500),
+          backgroundColor: backgroundColor ?? Theme.of(context).errorColor,
+          content: Text(text),
+        )
+    );
+  }
 }
 
 extension SizeFactor on num {

@@ -53,13 +53,13 @@ class SignInPage extends StatelessWidget {
         ),
         BlocFormBuilder<LoginFormBloc>(
           builders: [
-            (ctx, formState) => TxtInput(
+            (ctx, formState, i) => TxtInput(
               label: Strings.email,
               textController: bloc.emailTextController,
               textValidator: (txt) => bloc.isEmailValid.value = EmailValidator.validate(txt),
               errorText: Strings.please_type_correct_email,
             ).withMargin(EdgeInsets.only(top: 70)),
-            (ctx, formState) => TxtInput(
+            (ctx, formState, i) => TxtInput(
               label: Strings.password,
               isTypePassword: true,
               textController: bloc.pswdTextController,

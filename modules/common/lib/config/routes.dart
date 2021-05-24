@@ -7,7 +7,12 @@ class SibRoute {
   final Widget Function(BuildContext) builder;
   const SibRoute(this.name, this.klass, this.builder);
 
-  void goToPage(BuildContext context, {bool clearPrevs = false,}){
-    NavExt.goToPage(context, builder, clearPrevs: clearPrevs);
+  void goToPage(BuildContext context, {bool clearPrevs = false, bool post = true}){
+    if(post) {
+      WidgetsBinding.instance?.addPostFrameCallback((timeStamp) =>
+          NavExt.goToPage(context, builder, clearPrevs: clearPrevs));
+    } else {
+      NavExt.goToPage(context, builder, clearPrevs: clearPrevs);
+    }
   }
 }
