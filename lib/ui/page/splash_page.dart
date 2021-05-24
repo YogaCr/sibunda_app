@@ -1,4 +1,5 @@
 
+import 'package:common/res/string/_string.dart';
 import 'package:common/res/theme/_theme.dart';
 import 'package:common/ui/widget/_basic_widget.dart';
 import 'package:sibunda_app/config/routes.dart';
@@ -16,26 +17,26 @@ class SplashPage extends StatelessWidget {
       Images.get("ilstr_mother_pregnant_process.png", fit: BoxFit.fill)
           .withMargin(EdgeInsets.symmetric(horizontal: 50).copyWith(top: 70)),
       Text(
-        "Siap Jadi Asisten Bunda",
+        Strings.ready_to_be_mother_assistant,
         style: SibTextStyles.header1,
       ).withMargin(EdgeInsets.only(top: 50)),
       Text(
-        "Dengan aplikasi kami, Bunda akan serasa memiliki asisten untuk merawat buah hati",
+        Strings.splash_motto_desc,
         style: SibTextStyles.regular_grey,
         textAlign: TextAlign.center,
       ).withMargin(EdgeInsets.only(top: 30)),
       TxtBtn(
-        "Mulai Dari Sekarang",
+        Strings.get_started,
         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         onTap: () => SibRoutes.signInPage.goToPage(context),
       ).withMargin(EdgeInsets.only(top: 50)),
       Text(
-        "Bunda belum punya akun?",
+        Strings.not_have_account,
         style: SibTextStyles.regular_grey,
         textAlign: TextAlign.center,
       ).withMargin(EdgeInsets.only(top: 20)),
       TxtLink(
-        "Daftar Disini Yuk",
+        Strings.register_here,
         onTap: () => SibRoutes.signUpPage.goToPage(context),
       ).withMargin(EdgeInsets.only(top: 5)),
     ],

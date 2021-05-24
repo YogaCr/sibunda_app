@@ -13,7 +13,14 @@ class Strings {
   static const password_at_least_8 = "Panjang password minimal 8 karakter";
   static const password_re_does_not_match = "Konfirmasi password tidak sama";
   static const wrong_email_or_password = "Email atau password salah";
+
+  static const ready_to_be_mother_assistant = "Siap Jadi Asisten Bunda";
+  static const splash_motto_desc = "Dengan aplikasi kami, Bunda akan serasa memiliki asisten untuk merawat buah hati";
+  static const get_started = "Mulai Dari Sekarang";
+  static const not_have_account = "Bunda belum punya akun?";
+  static const register_here = "Daftar Disini Yuk";
   static const make_new_mother_account = "Buat Akun Baru Bunda";
+  static const welcome_mother = "Selamat Datang Bunda!";
   static const fill_mother_data = "Isi Data Bunda";
   static const fill_father_data = "Isi Data Ayah";
 

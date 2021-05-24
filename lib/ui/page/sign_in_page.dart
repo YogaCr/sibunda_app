@@ -45,7 +45,7 @@ class SignInPage extends StatelessWidget {
                   height: 100,
                 ),
                 Text(
-                  "Selamat Datang Bunda!",
+                  Strings.welcome_mother,
                   style: SibTextStyles.header1,
                 ).withMargin(EdgeInsets.only(top: 60)),
               ],
@@ -105,11 +105,11 @@ class SignInPage extends StatelessWidget {
           }
         ),
         Text(
-          "Bunda belum punya akun?",
+          Strings.not_have_account,
           style: SibTextStyles.regular_grey,
         ).withMargin(EdgeInsets.only(top: 30)),
         TxtLink(
-          "Daftar Disini Yuk",
+          Strings.register_here,
           onTap: () => SibRoutes.signUpPage.goToPage(context),
 /*
           onTap: () => goToPage(context, (ctx) => SignUpPage().framedWithPlainBack(

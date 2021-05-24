@@ -12,6 +12,8 @@ import 'package:sibunda_app/ui/page/mother_data_page.dart';
 class SibRoutes {
   SibRoutes._();
 
+  static void backPage(BuildContext context) => Navigator.pop(context);
+
   static final splashPage = SibRoute("SplashPage", SplashPage, (ctx) => NoAppBarFrame(
     body: SplashPage(),
     padding: EdgeInsets.all(20),
