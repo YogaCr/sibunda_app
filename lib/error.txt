@@ -1,4 +1,5 @@
 TODO************************ 24 Mei 2021 *********************
+// Solusi awal: Jangan yield hasil dari Signup jika itu berhasil, karna setelah itu pasti yield hasil login.
 
 ====================================================================================================
 signupResult= OnValidFormSubmission() errorMap= {}

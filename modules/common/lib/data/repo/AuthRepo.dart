@@ -11,6 +11,7 @@ import 'package:common/data/dummy_data.dart';
 mixin AuthRepo {
   Future<Result<bool>> signup(SignUpData data);
   Future<Result<SessionData>> login(LoginData data);
+  Future<Result<bool>> logout(String accessToken);
 }
 
 class AuthApiRepo with AuthRepo {
@@ -40,6 +41,15 @@ class AuthApiRepo with AuthRepo {
       return Fail(message: resp.message, data: resp.data, code: resp.statusCode);
     }
   }
+
+  Future<Result<bool>> logout(String accessToken) async {
+    final resp = await Auth.logout(accessToken);
+    if(resp.statusCode == 200) {
+      return Success(true, 200);
+    } else {
+      return Fail(message: resp.message, data: resp.data, code: resp.statusCode);
+    }
+  }
 }
 
 
@@ -50,12 +60,10 @@ class AuthDummyRepo with AuthRepo {
   AuthDummyRepo._();
 
   @override
-  Future<Result<SessionData>> login(LoginData data) async {
-    return Success(dummySessionData1);
-  }
+  Future<Result<SessionData>> login(LoginData data) async => Success(dummySessionData1);
 
   @override
-  Future<Result<bool>> signup(SignUpData data) async {
-    return Success(true);
-  }
+  Future<Result<bool>> signup(SignUpData data) async => Success(true, 200);
+
+  Future<Result<bool>> logout(String accessToken) async => Success(true, 200);
 }

@@ -60,7 +60,10 @@ class SignUpPage extends StatelessWidget {
             (context, formState) => TxtInput(
               label: Strings.email,
               textController: bloc.emailTextController,
-              textValidator: (txt) => bloc.isEmailValid = bloc.isEmailAvailable && DartEmailValidator.EmailValidator.validate(txt),
+              textValidator: (txt) {
+                bloc.isEmailAvailable = bloc.emailTextController.text != bloc.existingEmail;
+                return bloc.isEmailValid = bloc.isEmailAvailable && DartEmailValidator.EmailValidator.validate(txt);
+              },
               errorTextGenerator: () => bloc.isEmailValid
                   ? null : bloc.isEmailAvailable
                   ? Strings.please_type_correct_email : Strings.email_has_already_registered,
@@ -89,7 +92,8 @@ class SignUpPage extends StatelessWidget {
         BlocBuilder<SignUpFormBloc, BlocFormState>(
           builder: (ctx, formState) {
             if(formState is OnSuccessEndForm) {
-              SibRoutes.homePage.goToPage(context, clearPrevs: true);
+              WidgetsBinding.instance?.addPostFrameCallback((timeStamp) =>
+                  SibRoutes.homePage.goToPage(ctx, clearPrevs: true));
             } else {
               String? errorMsg;
               if(formState is OnInvalidForm) {

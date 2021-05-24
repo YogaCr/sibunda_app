@@ -9,6 +9,7 @@ import 'package:common/util/functions/txt_ext.dart';
 import 'package:flutter/material.dart';
 
 abstract class AuthFormBloc extends FormBloc {
+
 /*
   static final NAME = "nama";
   static final EMAIL = "email";
@@ -97,6 +98,15 @@ abstract class AuthFormBloc extends FormBloc {
       yield OnErrorSubmission(loginResult);
     }
   }
+
+  Stream<BlocFormState> logout(String accessToken) async* {
+    final result = await repo.logout(accessToken);
+    if(result is Success<bool>) {
+      yield OnSuccessEndForm();
+    } else if(result is Fail<bool>) {
+      yield OnErrorSubmission(result);
+    }
+  }
 }
 
 
@@ -133,12 +143,13 @@ class SignUpFormBloc extends AuthFormBloc {
       if(canProceed) {
         final signupResult = await signup(name!, email!, pswd!, errorMap).first;
         print("signupResult= $signupResult errorMap= $errorMap");
-        yield signupResult;
         print("signupResult= $signupResult errorMap= $errorMap AKHIR =====");
         if(signupResult is OnValidFormSubmission) {
-          final loginResult = login(email, pswd);
+          final loginResult = await login(email, pswd).first;
           print("loginResult= $loginResult");
-          yield* loginResult;
+          yield loginResult;
+        } else {
+          yield signupResult;
         }
       } else {
         yield OnInvalidForm(errorMap);
@@ -192,3 +203,31 @@ class LoginFormBloc extends AuthFormBloc {
     }));
   }
 }
+
+
+
+/*
+class LogoutFormBloc extends AuthFormBloc {
+  LogoutFormBloc(AuthRepo repo) : super(repo);
+
+  final accessTextController = TextEditingController();
+
+  @override
+  bool get canProceed => true;
+
+  @override
+  Stream<BlocFormState> authSpecificMapEventToState(FormEvent event) async* {
+    if(event is SubmitForm) {
+
+
+      logout(accessToken);
+
+    }
+  }
+
+  @override
+  void submitForm() {
+
+  }
+}
+ */
