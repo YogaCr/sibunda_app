@@ -110,10 +110,13 @@ class SignInPage extends StatelessWidget {
         ).withMargin(EdgeInsets.only(top: 30)),
         TxtLink(
           "Daftar Disini Yuk",
+          onTap: () => SibRoutes.signUpPage.goToPage(context),
+/*
           onTap: () => goToPage(context, (ctx) => SignUpPage().framedWithPlainBack(
             padding: EdgeInsets.all(20),
             //onTap: () => showSnackBar(context, "halo Bro back"),
           )),
+ */
         ).withMargin(EdgeInsets.only(top: 10)),
       ],
     ).insideScroll();
