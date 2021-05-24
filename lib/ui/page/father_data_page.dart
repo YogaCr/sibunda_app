@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sibunda_app/bloc/family_form_bloc.dart';
 import 'package:common/util/functions/ui_ext.dart';
+import 'package:common/util/functions/txt_ext.dart';
 
 class FatherDataPage extends StatelessWidget {
 
@@ -41,8 +42,8 @@ class FatherDataPage extends StatelessWidget {
             (context, formState, i) => TxtInput(
               label: Strings.salary,
               textController: bloc.inputTxtList[i],
-              textValidator: (txt) => bloc.inputValidityList[i].value = txt.isNotEmpty,
-              errorText: Strings.field_can_not_be_empty,
+              textValidator: (txt) => bloc.inputValidityList[i].value = txt.isNumeric,
+              errorText: Strings.field_must_be_number,
             ).withMargin(EdgeInsets.only(top: 20)),
             //Spacer(),
             (context, formState, i) => TxtInput(

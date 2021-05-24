@@ -1,5 +1,6 @@
 extension StringExt on String {
   bool get isBlank => isEmpty || trim() == "";
+  bool get isNumeric => double.tryParse(this) != null;
 }
 
 extension StringNullExt on String? {
