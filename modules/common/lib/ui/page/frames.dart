@@ -1,4 +1,5 @@
 
+import 'package:common/ui/widget/custom_top_nav_bar.dart';
 import 'package:common/util/functions/nav_ext.dart';
 import 'package:common/util/functions/ui_ext.dart';
 import 'package:flutter/cupertino.dart';
@@ -72,6 +73,73 @@ class PlainBackFrame extends StatelessWidget {
       ],
     ),
   );
+}
+
+class TopBarTitleAndBackFrame extends StatelessWidget {
+  final Widget body;
+  final String title;
+  final Widget? topBarChild;
+  final EdgeInsets? padding;
+
+  TopBarTitleAndBackFrame({
+    required this.body,
+    required this.title,
+    this.topBarChild,
+    this.padding
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Frame(
+      padding: padding,
+      body: Column(
+        children: [
+          RoundedTopNavBarTitleAndBack(
+            title: title,
+            bottomChild: topBarChild,
+          ),
+          body,
+        ],
+      ),
+    );
+  }
+}
+
+class TopBarProfileFrame extends StatelessWidget {
+  final Widget body;
+  final String name;
+  final Widget image;
+  final Widget? actionBtn;
+  final EdgeInsets? padding;
+  final void Function()? onActionBtnClick;
+
+  TopBarProfileFrame({ //TODO 5 Juni 2021: Image akan sulit didapat jika dijadikan 1 sama Scaffold.
+    required this.name,
+    required this.image,
+    required this.body,
+    this.actionBtn,
+    this.onActionBtnClick,
+    this.padding,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Frame(
+      padding: padding,
+      body: Column(
+        mainAxisSize: MainAxisSize.max,
+        children: [
+          RoundedTopNavBarProfile(
+            name: name,
+            image: image,
+            actionBtn: actionBtn,
+            onActionBtnClick: onActionBtnClick,
+          ),
+          body,
+        ],
+      ),
+    );
+  }
 }
 
 class Frame extends StatelessWidget {

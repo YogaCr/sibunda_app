@@ -3,6 +3,9 @@ class Const {
 
   static const HEADER_AUTH = "Authorization";
 
+  static const GENDER_MALE = "M";
+  static const GENDER_FEMALE = "F";
+
   static const KEY_DATA = "data";
   static const KEY_ACCESS_TOKEN = "access_token";
   static const KEY_FCM_TOKEN = "fcm_token";
@@ -27,5 +30,14 @@ class Const {
   static const KEY_ADDRESS = "alamat_rumah";
   static const KEY_PHONE = "telp";
   static const KEY_PUSKESMAS_DOMISILI = "puskesmas_domisili";
+
   static const KEY_COHORT_REG = "nomor_register_kohort_ibu";
+
+  static const KEY_BABY_COHORT_REG = "nomor_register_kohort_bayi";
+  static const KEY_TODDLER_COHORT_REG = "nomor_register_kohort_balita";
+  static const KEY_CHILD_ORDER = "anak_ke";
+  static const KEY_GENDER = "kelamin";
+  static const KEY_BIRTH_CERT_NO = "no_akte";
+  static const KEY_JKN_START_DATE = "tgl_berlaku_jkn";
+  static const KEY_HOSPITAL_MEDIC_NO = "no_catatan_medis_rs";
 }

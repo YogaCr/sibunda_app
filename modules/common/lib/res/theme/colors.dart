@@ -30,6 +30,9 @@ const white_ripple = Color(0x55FFFFFF);
 const grey = Color(0xFFADADAD);
 const black = Color(0xFF000000);
 const red = Color(0xFFB00020);
+const red_warning = Color(0xFFF6EBEB);
+const green_calm = Color(0xFF3E9D9D);
+const green_safe = Color(0xFFD0F1BB);
 
 final colorPrimary = pink_300;
 final colorPrimaryVariant = pink_500;

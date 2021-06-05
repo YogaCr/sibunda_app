@@ -14,9 +14,28 @@ class SibTextStyles {
       fontFamily: fontFamily_nunito,
       fontSize: 15,
   );
+
+  static final size_plus_3 = default_.copyWith(fontSize: 23);
+  static final size_plus_2 = default_.copyWith(fontSize: 20);
+  static final size_plus_1 = default_.copyWith(fontSize: 18);
+  static final size_0 = default_;
+  static final size_min_1 = default_.copyWith(fontSize: 13);
+  static final size_min_2 = default_.copyWith(fontSize: 10);
+  static final size_min_3 = default_.copyWith(fontSize: 8);
+  static final size_min_4 = default_.copyWith(fontSize: 6);
+
+  static final size_min_1_grey = size_min_1.copyWith(color: Colors.grey);
+
+  static final size_0_colorPrimary = default_.copyWith(color: Manifest.theme.colorPrimary);
+
+  static final size_plus_2_colorOnPrimary = size_plus_2.copyWith(color: Manifest.theme.colorOnPrimary);
+
+  static final size_min_3_colorPrimary = size_min_3.copyWith(color: Manifest.theme.colorPrimary);
+  static final size_min_2_colorPrimary = size_min_2.copyWith(color: Manifest.theme.colorPrimary);
+
   static final bold = default_.copyWith(fontWeight: FontWeight.bold);
   static final regular_grey = default_.copyWith(color: grey);
-  static final regular_colorPrimary = default_.copyWith(color: Manifest.theme.colorPrimary);
+  static final regular_colorPrimary = size_0_colorPrimary;
 
   static final header1 = default_.copyWith(
     fontWeight: FontWeight.bold,
@@ -25,5 +44,10 @@ class SibTextStyles {
   static final header2 = default_.copyWith(
     fontWeight: FontWeight.bold,
     fontSize: 40
+  );
+
+  static final overText = size_min_1.copyWith(
+    fontWeight: FontWeight.bold,
+    color: Colors.grey,
   );
 }

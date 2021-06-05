@@ -12,7 +12,7 @@ import 'package:common/value/const_values.dart';
 import 'package:common/data/dummy_data.dart';
 import 'package:flutter/cupertino.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage_Old extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {

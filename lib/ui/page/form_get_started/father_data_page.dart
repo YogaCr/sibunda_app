@@ -9,6 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sibunda_app/bloc/family_form_bloc.dart';
 import 'package:common/util/functions/ui_ext.dart';
 import 'package:common/util/functions/txt_ext.dart';
+import 'package:sibunda_app/config/routes.dart';
 
 class FatherDataPage extends StatelessWidget {
 
@@ -121,7 +122,8 @@ class FatherDataPage extends StatelessWidget {
         BlocBuilder<FatherFormBloc, BlocFormState>(
             builder: (ctx, formState) {
               if(formState is OnSuccessEndForm) {
-                showSnackBar(context, "Berhasil bro", backgroundColor: Colors.green);
+                //showSnackBar(context, "Berhasil bro", backgroundColor: Colors.green);
+                SibRoutes.doMotherHavePregnancyPage.goToPage(context);
               } else {
                 String? errorMsg;
                 if(formState is OnInvalidForm) {

@@ -9,7 +9,7 @@ import 'package:flutter/cupertino.dart';
 abstract class FamilyFormBloc extends MultiFieldFormBloc {
   final FamilyRepo repo;
   FamilyFormBloc(this.repo, int fieldCount, [List<String>? inputKeyList]): super(fieldCount, inputKeyList);
-
+/*
   final puskesmasDomisiliTxt = TextEditingController();
   final cohortRegistNoTxt = TextEditingController();
   final nameTxt = TextEditingController();
@@ -25,6 +25,7 @@ abstract class FamilyFormBloc extends MultiFieldFormBloc {
   final occupancyTxt = TextEditingController();
   final addressTxt = TextEditingController();
   final phoneTxt = TextEditingController();
+ */
 
 
 }
@@ -120,6 +121,79 @@ class FatherFormBloc extends FamilyFormBloc {
     Const.KEY_PHONE,
   ]);
 
+  @override
+  Stream<BlocFormState> moreSpecificMapEventToState(FormEvent event) async* {
+    if(event is SubmitForm) {
+      if(canProceed) {
+        final data = Father.from(event.formInputs);
+        yield* sendFatherData(data);
+      } else {
+        yield OnInvalidForm({}); //TODO 25 Mei 2021: Smtr ini mapnya kosong.
+      }
+    }
+  }
+
+  Stream<BlocFormState> sendFatherData(Father data) async* {
+    final resp = await repo.sendFatherData(data);
+    if(resp is Success<bool>) {
+      yield OnSuccessEndForm();
+    } else if(resp is Fail<bool>) {
+      yield OnErrorSubmission(resp);
+    }
+  }
+/*
+  Stream<BlocFormState> getMotherData(String nik) async* {
+    final resp = await repo.getMotherData(nik);
+    if(resp is Success<Mother>) {
+      yield OnSuccessEndForm({ Const.KEY_DATA : resp.data });
+    } else if(resp is Fail<Mother>) {
+      yield OnErrorSubmission(resp);
+    }
+  }
+ */
+/*
+  @override
+  void submitForm([Map<String, String?>? extras]) {
+    add(SubmitForm({
+      Const.KEY_NAME : nameTxt.text,
+      Const.KEY_NIK : nikTxt.text,
+      Const.KEY_SALARY : salaryTxt.text,
+      Const.KEY_JKN : jknTxt.text,
+      Const.KEY_FASKES1 : faskes1Txt.text,
+      Const.KEY_FASKES_RUJUKAN : faskesRujukanTxt.text,
+      Const.KEY_BLOOD_TYPE : bloodTypeTxt.text,
+      Const.KEY_BIRTH_PLACE : birthCityTxt.text,
+      Const.KEY_BIRTH_DATE : birthDateTxt.text,
+      Const.KEY_EDUCATION : educationTxt.text,
+      Const.KEY_OCCUPANCY : occupancyTxt.text,
+      Const.KEY_ADDRESS : addressTxt.text,
+      Const.KEY_PHONE : phoneTxt.text,
+      Const.KEY_PUSKESMAS_DOMISILI : puskesmasDomisiliTxt.text,
+      Const.KEY_COHORT_REG : cohortRegistNoTxt.text,
+    }));
+  }
+ */
+}
+
+
+class ChildFormBloc extends FamilyFormBloc {
+  ChildFormBloc(FamilyRepo repo) : super(repo, 13, [
+    Const.KEY_NAME,
+    Const.KEY_NIK,
+    Const.KEY_JKN,
+    Const.KEY_BLOOD_TYPE,
+    Const.KEY_BIRTH_PLACE,
+    Const.KEY_BIRTH_DATE,
+    Const.KEY_CHILD_ORDER,
+    Const.KEY_GENDER,
+    Const.KEY_BIRTH_CERT_NO,
+    Const.KEY_JKN_START_DATE,
+    Const.KEY_BABY_COHORT_REG,
+    Const.KEY_TODDLER_COHORT_REG,
+    Const.KEY_HOSPITAL_MEDIC_NO,
+  ]);
+
+  //TODO 5 Juni 2021.
   @override
   Stream<BlocFormState> moreSpecificMapEventToState(FormEvent event) async* {
     if(event is SubmitForm) {

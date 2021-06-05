@@ -14,7 +14,7 @@ class SplashPage extends StatelessWidget {
   Widget build(BuildContext context) => Column(
     //clipBehavior: Clip.none,
     children: [
-      Images.get("ilstr_mother_pregnant_process.png", fit: BoxFit.fill)
+      SibImages.get("ilstr_mother_pregnant_process.png", fit: BoxFit.fill)
           .withMargin(EdgeInsets.symmetric(horizontal: 50).copyWith(top: 70)),
       Text(
         Strings.ready_to_be_mother_assistant,

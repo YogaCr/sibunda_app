@@ -4,6 +4,9 @@ class Strings {
   static const password = "Password";
   static const name = "Nama";
   static const email = "Email";
+  static const yes = "Ya";
+  static const no = "Tidak";
+  static const skip = "Lewati";
   static const password_re = "Konfirmasi Password";
   static const email_has_already_registered = "Email sudah terdaftar";
   static const field_can_not_be_empty = "Isian tidak boleh kosong";
@@ -24,6 +27,10 @@ class Strings {
   static const welcome_mother = "Selamat Datang Bunda!";
   static const fill_mother_data = "Isi Data Bunda";
   static const fill_father_data = "Isi Data Ayah";
+  static const confirm_new_account = "Konfirmasi Akun Baru";
+  static const create_my_account = "Buat Akun Saya";
+
+  static const mother_children_data = "Data Anak Bunda";
 
 
   static const nik = "NIK";
@@ -40,4 +47,6 @@ class Strings {
   static const phone = "No Telepon";
   static const puskesmas_domisili = "Puskesmas Domisili";
   static const cohort_no = "No Register Kohort Ibu";
+
+  static const save = "Simpan";
 }

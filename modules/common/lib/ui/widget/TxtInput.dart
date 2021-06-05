@@ -1,7 +1,7 @@
 
+import 'package:common/util/types.dart';
 import 'package:flutter/material.dart';
 
-typedef TxtValidator = bool Function(String);
 //TODO 23 Mei 2021: Add constructor with [FormState] as Param.
 class TxtInput extends StatefulWidget {
   final String hint;

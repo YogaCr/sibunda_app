@@ -22,8 +22,10 @@ class MotherDataPage extends StatelessWidget {
           Strings.fill_mother_data,
           style: SibTextStyles.header1,
         ).withMargin(EdgeInsets.only(top: 60)),
+/*
         ImgPick(imgUrl: "ic_profile.png")
             .withMargin(EdgeInsets.only(top: 10)),
+ */
         BlocFormBuilder<MotherFormBloc>(
           builders: [
             (context, formState, i) => TxtInput(

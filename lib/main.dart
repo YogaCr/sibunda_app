@@ -1,8 +1,13 @@
 import 'package:common/res/string/_string.dart';
+import 'package:common/util/functions/ui_ext.dart';
 import 'package:flutter/material.dart';
 
 import 'package:common/config/manifest.dart';
 import 'package:common/ui/page/frames.dart';
+import 'package:sibunda_app/cob.dart';
+import 'package:sibunda_app/ui/page/form_get_started/do_mother_have_pregnancy_page.dart';
+import 'package:sibunda_app/ui/page/form_get_started/mother_hpl_page.dart';
+import 'package:sibunda_app/ui/page/home/home_page.dart';
 import 'package:sibunda_app/ui/page/splash_page.dart';
 
 void main() => runApp(MyApp());
@@ -27,9 +32,24 @@ class MyApp extends StatelessWidget {
         primarySwatch: pink_swatch,
       ),
 // */
-      home: NoAppBarFrame(
-        body: SplashPage(),
-        padding: EdgeInsets.all(20),
+      home: TopBarProfileFrame( //NoAppB
+        name: 'Ayu',// arFrame
+        image: Container(
+          color: Colors.green,
+        ),
+        actionBtn: Icon(Icons.notifications_none_rounded, size: 30, ),
+        onActionBtnClick: () => print("halo bro"), //showSnackBar(context, "Notifikasi"),
+        body: HomePage(), //DoMotherHavePregnancyPage(), //SplashPage(), //MotherHplPage(),//CobPage(), //,
+/*
+        topBarChild: Row(
+          children: [
+            Text("Halo 1"),
+            Spacer(),
+            Text("Halo 2"),
+          ],
+        ),
+ */
+        //padding: EdgeInsets.all(20),
       )
       //MyHomePage(title: 'Flutter Demo Home Page'),
     );

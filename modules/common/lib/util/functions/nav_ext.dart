@@ -3,21 +3,27 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-Future goToPage(
+Future<Object?> goToPage(
   BuildContext context,
   Widget Function(BuildContext) builder, {
+  String? name,
+  Map<String, dynamic>? args,
   bool clearPrevs = false,
-}) => !clearPrevs
-    ? Navigator.push(
-        context,
-        MaterialPageRoute(builder: builder)
-    )
-    : Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(builder: builder),
-        ModalRoute.withName("/Home")
-    );
+}) {
+  RouteSettings settings = RouteSettings(name: name, arguments: args);
+  return !clearPrevs
+      ? Navigator.push(
+      context,
+      MaterialPageRoute(builder: builder, settings: settings)
+  ) : Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: builder, settings: settings),
+      ModalRoute.withName("/Home")
+  );
+}
 
 void backPage(BuildContext context) => Navigator.pop(context);
 
 bool isInitialPage(BuildContext context) => !Navigator.canPop(context);
+
+T? getArgs<T>(BuildContext context) => ModalRoute.of(context)?.settings.arguments as T?;
