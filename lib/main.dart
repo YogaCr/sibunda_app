@@ -33,12 +33,14 @@ class MyApp extends StatelessWidget {
       ),
 // */
       home: TopBarProfileFrame( //NoAppB
+///*
         name: 'Ayu',// arFrame
         image: Container(
           color: Colors.green,
         ),
-        actionBtn: Icon(Icons.notifications_none_rounded, size: 30, ),
+        actionBtn: Icon(Icons.notifications_none_rounded, size: 30, color: Colors.white,),
         onActionBtnClick: () => print("halo bro"), //showSnackBar(context, "Notifikasi"),
+// */
         body: HomePage(), //DoMotherHavePregnancyPage(), //SplashPage(), //MotherHplPage(),//CobPage(), //,
 /*
         topBarChild: Row(

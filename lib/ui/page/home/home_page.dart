@@ -10,10 +10,20 @@ class HomePage extends StatelessWidget {
     return Column(
       children: [
         Text("Yuk Lihat Kesehatan Keluarga"),
-        ListView.builder(itemBuilder: (ctx, i) => ItemDashboardStatus(
-          image: Container(color: Colors.blue,), content: "Halo pak $i",
-          bgColor: red_warning,
-        )),
+        Expanded(
+          child: SizedBox(
+            height: 200,
+            child: ListView.builder(
+              //itemCount: 3,
+              itemBuilder: (ctx, i) => ItemDashboardStatus(
+                image: Container(color: Colors.blue,), content: "Halo pak $i",
+                bgColor: red_warning,
+              ),
+              scrollDirection: Axis.horizontal,
+            ),
+          ),
+        ),
+
         Text("Jelajahi Menu siBunda"),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
