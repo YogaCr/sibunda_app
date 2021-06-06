@@ -112,7 +112,7 @@ class TopBarProfileFrame extends StatelessWidget {
   final Widget image;
   final Widget? actionBtn;
   final EdgeInsets? padding;
-  final void Function()? onActionBtnClick;
+  final void Function(BuildContext)? onActionBtnClick;
 
   TopBarProfileFrame({ //TODO 5 Juni 2021: Image akan sulit didapat jika dijadikan 1 sama Scaffold.
     required this.name,
@@ -138,8 +138,49 @@ class TopBarProfileFrame extends StatelessWidget {
             actionBtn: actionBtn,
             onActionBtnClick: onActionBtnClick,
           ),
-          body,
+          Expanded(child: body,),
         ],
+      ),
+    );
+  }
+}
+
+class TopBarTabFrame extends StatelessWidget {
+  final String title;
+  final EdgeInsets? padding;
+  final List<Tab> tabs;
+  final List<Widget> tabViews;
+
+  TopBarTabFrame({ //TODO 5 Juni 2021: Image akan sulit didapat jika dijadikan 1 sama Scaffold.
+    required this.title,
+    required this.tabs,
+    required this.tabViews,
+    this.padding,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Frame(
+      padding: padding,
+      body: DefaultTabController(
+        length: tabs.length,
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            RoundedTopNavBarTitleAndBack(
+              title: title,
+              bottomChild: TabBar(
+                tabs: tabs,
+              ),
+            ),
+            //body,
+            Expanded(
+              child: TabBarView(
+                children: tabViews,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

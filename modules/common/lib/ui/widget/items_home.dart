@@ -122,7 +122,7 @@ class ItemNotif extends StatelessWidget {
     required this.title,
     required this.content,
     required this.timestamp,
-    this.bgColor = green_safe,
+    this.bgColor = grey_calm,
   });
 
 
@@ -239,11 +239,17 @@ class ItemMessage extends StatelessWidget {
 
     return ClipRRect(
       borderRadius: BorderRadius.all(Radius.circular(_cornerRadius)),
-      child: Column(
-        children: [
-          imgChild,
-          txtChild,
-        ],
+      child: Container(
+        color: grey_calm,
+        child: SizedBox(
+          height: 300,
+          child: Column(
+            children: [
+              imgChild,
+              txtChild,
+            ],
+          ),
+        ),
       ),
     );
   }

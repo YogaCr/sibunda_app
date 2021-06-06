@@ -12,6 +12,7 @@ import 'package:sibunda_app/ui/page/form_get_started/mother_data_page.dart';
 import 'package:sibunda_app/ui/page/form_get_started/mother_hpl_page.dart';
 import 'package:sibunda_app/ui/page/form_get_started/do_mother_have_pregnancy_page.dart';
 import 'package:sibunda_app/ui/page/home/home_page.dart';
+import 'package:sibunda_app/ui/page/home/notif_and_message_page.dart';
 
 class SibRoutes {
   SibRoutes._();
@@ -38,6 +39,17 @@ class SibRoutes {
   static final homePage = SibRoute("HomePage", HomePage, (ctx) => MainFrame(
     body: HomePage().inBlocProvider<LogoutFormBloc>((ctx) => LogoutFormBloc(RepoDi.getAuthRepo())),
     padding: EdgeInsets.all(20),
+  ));
+  static final notifAndMessagePage = SibRoute("NotifAndMessagePage", HomePage, (ctx) => TopBarTabFrame(
+    title: "Notifikasi",
+    tabs: [
+      Tab(text: "Notifikasi",),
+      Tab(text: "Pesan",),
+    ],
+    tabViews: [
+      HomeNotifPage(),
+      HomeMessagePage(),
+    ],
   ));
 
   static final motherDataPage = SibRoute("MotherDataPage", MotherDataPage, (ctx) => MainFrame(
