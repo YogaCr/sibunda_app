@@ -4,38 +4,75 @@ import 'package:flutter/material.dart';
 class CobPage extends StatelessWidget {
 
   @override
-  Widget build(BuildContext context) => Stack(
+  Widget build(BuildContext context) => Column(
     children: [
-      createCustomBottomNavBar(context),
-      Align(
-        alignment: Alignment.bottomCenter,
-        child: Container(
-          height: 46,
-          width: 46,
-          margin: EdgeInsets.only(bottom: 42),
-          child: FloatingActionButton(
-              elevation: 0,
-              backgroundColor: Colors.green,
-              child: SizedBox( // It doesn't matter this widget ???
-                height: 26,
-                width: 26,
-                child: Icon(
-                  Icons.call,
-                  color: Colors.black.withOpacity(0.54),
+      Container(
+        height: 100,
+        width: double.infinity,
+        color: Colors.blue,
+      ),
+      Expanded(
+        //height: 500,
+        child: CustomScrollView(
+          slivers: [
+            SliverList(
+              delegate: SliverChildBuilderDelegate(
+                    (c, i) => Container(
+                  height: 20,
+                  width: 20,
+                  color: (i % 2 == 0) ? Colors.red : Colors.green,
+                  child: Text("Halo $i"),
                 ),
+                childCount: 30,
               ),
-              onPressed: () {
-                //showSnackBar(context, "Halo sis");
-                showDialog(context: context, builder: (ctx) => AlertDialog(
-                  title: Text("Halo bos"),
-                  content: Text("Ini kontennya"),
-                ));
-              }),
+            ),
+            SliverGrid.count(
+              crossAxisCount: 3,
+              children: List.generate(20, (i) => Container(
+                height: 20,
+                width: 20,
+                color: (i % 2 == 0) ? Colors.red : Colors.green,
+                child: Text("Hola $i"),
+              ),),
+            ),
+          ],
         ),
-      )
+      ),
     ],
   );
 }
+
+Widget createCustomBottomNavBarGroup(BuildContext context) => Stack(
+  children: [
+    createCustomBottomNavBar(context),
+    Align(
+      alignment: Alignment.bottomCenter,
+      child: Container(
+        height: 46,
+        width: 46,
+        margin: EdgeInsets.only(bottom: 42),
+        child: FloatingActionButton(
+            elevation: 0,
+            backgroundColor: Colors.green,
+            child: SizedBox( // It doesn't matter this widget ???
+              height: 26,
+              width: 26,
+              child: Icon(
+                Icons.call,
+                color: Colors.black.withOpacity(0.54),
+              ),
+            ),
+            onPressed: () {
+              //showSnackBar(context, "Halo sis");
+              showDialog(context: context, builder: (ctx) => AlertDialog(
+                title: Text("Halo bos"),
+                content: Text("Ini kontennya"),
+              ));
+            }),
+      ),
+    )
+  ],
+);
 
 Widget createCustomBottomNavBar(BuildContext ctx) => Align(
   alignment: Alignment.bottomCenter,

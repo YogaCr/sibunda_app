@@ -108,6 +108,7 @@ class TopBarTitleAndBackFrame extends StatelessWidget {
 class TopBarProfileFrame extends StatelessWidget {
   final Widget body;
   final String name;
+  final String? desc;
   final Widget image;
   final Widget? actionBtn;
   final EdgeInsets? padding;
@@ -117,6 +118,7 @@ class TopBarProfileFrame extends StatelessWidget {
     required this.name,
     required this.image,
     required this.body,
+    this.desc,
     this.actionBtn,
     this.onActionBtnClick,
     this.padding,
@@ -131,6 +133,7 @@ class TopBarProfileFrame extends StatelessWidget {
         children: [
           RoundedTopNavBarProfile(
             name: name,
+            desc: desc,
             image: image,
             actionBtn: actionBtn,
             onActionBtnClick: onActionBtnClick,

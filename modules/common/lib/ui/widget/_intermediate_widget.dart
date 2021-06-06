@@ -2,7 +2,7 @@
 import 'package:common/util/functions/assets_ext.dart';
 import 'package:flutter/cupertino.dart';
 
-export "items.dart";
+export "items_home.dart";
 
 /// Image with pick image icon.
 class ImgPick extends StatelessWidget {

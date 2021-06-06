@@ -51,7 +51,7 @@ class MiddleBtnBottomNavBar extends StatelessWidget {
             margin: EdgeInsets.only(bottom: 42),
             child: FloatingActionButton(
                 elevation: 0,
-                backgroundColor: Colors.green,
+                backgroundColor: Manifest.theme.colorPrimary,
                 child: midBtnChild,
                 onPressed: midBtnOnClick,
             ),

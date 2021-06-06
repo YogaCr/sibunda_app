@@ -35,6 +35,7 @@ class MyApp extends StatelessWidget {
       home: TopBarProfileFrame( //NoAppB
 ///*
         name: 'Ayu',// arFrame
+        desc: "21 tahun",
         image: Container(
           color: Colors.green,
         ),

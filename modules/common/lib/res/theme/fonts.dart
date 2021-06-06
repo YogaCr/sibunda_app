@@ -27,6 +27,7 @@ class SibTextStyles {
   static final size_min_1_grey = size_min_1.copyWith(color: Colors.grey);
 
   static final size_0_colorPrimary = default_.copyWith(color: Manifest.theme.colorPrimary);
+  static final size_0_bold = size_0.copyWith(fontWeight: FontWeight.bold);
 
   static final size_plus_2_colorOnPrimary = size_plus_2.copyWith(color: Manifest.theme.colorOnPrimary);
 
