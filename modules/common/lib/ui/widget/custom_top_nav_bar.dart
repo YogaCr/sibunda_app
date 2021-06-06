@@ -101,11 +101,18 @@ class RoundedTopNavBarProfile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    final txtChildren = List.generate(1, (index) => Text(name, style: SibTextStyles.size_plus_2_colorOnPrimary,));
-    if(desc != null)
+    final txtChildren = List<Widget>.generate(1, (index) => Text(name, style: SibTextStyles.size_plus_2_colorOnPrimary,));
+    if(desc != null){
       txtChildren.add(
-        Text(desc!),
+        Container(
+          margin: EdgeInsets.only(top: 10,),
+          child: Text(
+            desc!,
+            style: SibTextStyles.size_min_1.copyWith(color: yellow),
+          ),
+        ),
       );
+    }
 
     final actionBtnChild = (actionBtn != null)
       ? InkWell(
@@ -132,6 +139,8 @@ class RoundedTopNavBarProfile extends StatelessWidget {
                     ),
                   ),
                   Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: txtChildren,
                   ),
                 ],

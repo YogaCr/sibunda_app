@@ -33,6 +33,7 @@ const red = Color(0xFFB00020);
 const red_warning = Color(0xFFF6EBEB);
 const green_calm = Color(0xFF3E9D9D);
 const green_safe = Color(0xFFD0F1BB);
+const yellow = Color(0xFFFBD460);
 
 final colorPrimary = pink_300;
 final colorPrimaryVariant = pink_500;
