@@ -329,16 +329,92 @@ class ItemMotherRecomFood extends StatelessWidget {
   }
 }
 
-/*
+///*
 class ItemMotherReport extends StatelessWidget {
   final Widget image;
+  final String sizeString;
+  final double babyLen;
+  final double babyWeight;
+
+  ItemMotherReport({
+    required this.image,
+    required this.sizeString,
+    required this.babyLen,
+    required this.babyWeight,
+  });
 
   @override
   Widget build(BuildContext context) {
+    final imgChild = ClipRRect(
+      borderRadius: BorderRadius.all(Radius.circular(10)),
+      child: Container(
+        height: 70,
+        width: 60,
+        child: image,
+      ),
+    );
+
+    final descChild = Expanded(
+      child: RichText(
+        text: TextSpan(
+          style: SibTextStyles.size_0_bold_black,
+          children: [
+            TextSpan(text: "Selamat Bunda!\nSekarang si Kecil sudah sebesar "),
+            TextSpan(text: "$sizeString ", style: SibTextStyles.size_0_bold_colorPrimary),
+            TextSpan(text: "ya Bun"),
+          ],
+        ),
+      ),
+    );
+
+    final babyLenChild = RichText(
+      text: TextSpan(
+        style: SibTextStyles.size_min_2,
+        children: [
+          TextSpan(text: "Panjang Bayi : "),
+          TextSpan(text: "$babyLen inch", style: SibTextStyles.size_min_2_bold_colorPrimary),
+        ],
+      ),
+    );
+
+    final babyWeightChild = RichText(
+      text: TextSpan(
+        style: SibTextStyles.size_min_2,
+        children: [
+          TextSpan(text: "Berat Bayi : "),
+          TextSpan(text: "$babyWeight pounds", style: SibTextStyles.size_min_2_bold_colorPrimary),
+        ],
+      ),
+    );
 
     return ClipRRect(
-
+      borderRadius: BorderRadius.all(Radius.circular(10)),
+      child: Container(
+        color: grey_calm,
+        child: Padding(
+          padding: EdgeInsets.all(10),
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  imgChild,
+                  Container(width: 10,),
+                  descChild,
+                ],
+              ),
+              Container(height: 10,),
+              Row(
+                children: [
+                  babyLenChild,
+                  SizedBox(width: 15,),
+                  babyWeightChild,
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
- */
+// */
