@@ -1,4 +1,5 @@
 import 'package:common/res/string/_string.dart';
+import 'package:common/res/theme/_theme.dart';
 import 'package:common/util/functions/ui_ext.dart';
 import 'package:flutter/material.dart';
 
@@ -9,6 +10,7 @@ import 'package:sibunda_app/config/routes.dart';
 import 'package:sibunda_app/ui/page/form_get_started/do_mother_have_pregnancy_page.dart';
 import 'package:sibunda_app/ui/page/form_get_started/mother_hpl_page.dart';
 import 'package:sibunda_app/ui/page/home/home_page.dart';
+import 'package:sibunda_app/ui/page/mother/kehamilanku_home_page.dart';
 import 'package:sibunda_app/ui/page/splash_page.dart';
 
 void main() => runApp(MyApp());
@@ -43,7 +45,12 @@ class MyApp extends StatelessWidget {
         actionBtn: Icon(Icons.notifications_none_rounded, size: 30, color: Colors.white,),
         onActionBtnClick: (c) => SibRoutes.notifAndMessagePage.goToPage(c), //showSnackBar(c, "Notifikasi"),
 // */
-        body: HomePage(), //DoMotherHavePregnancyPage(), //SplashPage(), //MotherHplPage(),//CobPage(), //,
+        body: Expanded(
+          child: Container(
+            color: grey_calmer,
+            child: KehamilankuHomePage(),
+          ),
+        ), //DoMotherHavePregnancyPage(), //SplashPage(), //MotherHplPage(),//CobPage(), //,
 /*
         topBarChild: Row(
           children: [

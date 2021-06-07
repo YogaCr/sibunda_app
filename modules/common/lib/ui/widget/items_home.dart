@@ -283,26 +283,30 @@ class ItemDashboardTips extends StatelessWidget {
       ),
     );
 
-    final txtChild = Padding(
-      padding: EdgeInsets.all(5),
-      child: Expanded(
-        child: Stack(
-          children: [
-            Align(
-              alignment: Alignment.topLeft,
-              child: Text(
-                headline,
-                style: SibTextStyles.size_min_1.copyWith(fontWeight: FontWeight.bold),
+    final txtChild = Expanded( //Agak aneh karna expanded hanya expanded ke ukuran MainAxis dari parent.
+      child: Container(
+        height: parentHeight,
+        color: Colors.blue,
+        child: Padding(
+          padding: EdgeInsets.all(10),
+          child: Stack(
+            children: [
+              Align(
+                alignment: Alignment.topLeft,
+                child: Text(
+                  headline,
+                  style: SibTextStyles.size_min_1.copyWith(fontWeight: FontWeight.bold),
+                ),
               ),
-            ),
-            Align(
-              alignment: Alignment.bottomRight,
-              child: Text(
-                kind,
-                style: SibTextStyles.size_min_2_colorPrimary,
+              Align(
+                alignment: Alignment.bottomRight,
+                child: Text(
+                  kind,
+                  style: SibTextStyles.size_min_2_colorPrimary,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

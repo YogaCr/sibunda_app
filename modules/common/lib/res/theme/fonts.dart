@@ -28,11 +28,17 @@ class SibTextStyles {
 
   static final size_0_colorPrimary = default_.copyWith(color: Manifest.theme.colorPrimary);
   static final size_0_bold = size_0.copyWith(fontWeight: FontWeight.bold);
+  static final size_0_bold_black = size_0_bold.copyWith(color: Colors.black);
+  static final size_0_bold_colorPrimary = size_0_bold.copyWith(color: Manifest.theme.colorPrimary);
 
   static final size_plus_2_colorOnPrimary = size_plus_2.copyWith(color: Manifest.theme.colorOnPrimary);
 
+  static final size_min_1_bold = size_min_1.copyWith(fontWeight: FontWeight.bold);
+
   static final size_min_3_colorPrimary = size_min_3.copyWith(color: Manifest.theme.colorPrimary);
   static final size_min_2_colorPrimary = size_min_2.copyWith(color: Manifest.theme.colorPrimary);
+  static final size_min_2_bold_colorPrimary = size_min_2_colorPrimary.copyWith(fontWeight: FontWeight.bold);
+  static final size_min_2_bold = size_min_2.copyWith(fontWeight: FontWeight.bold);
 
   static final bold = default_.copyWith(fontWeight: FontWeight.bold);
   static final regular_grey = default_.copyWith(color: grey);

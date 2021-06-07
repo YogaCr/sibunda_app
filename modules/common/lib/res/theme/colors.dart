@@ -35,6 +35,7 @@ const green_calm = Color(0xFF3E9D9D);
 const green_safe = Color(0xFFD0F1BB);
 const yellow = Color(0xFFFBD460);
 const grey_calm = Color(0xFFEBEFF6);
+const grey_calmer = Color(0xFFF6F7F9);
 
 final colorPrimary = pink_300;
 final colorPrimaryVariant = pink_500;
