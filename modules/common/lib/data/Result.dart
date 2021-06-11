@@ -12,5 +12,5 @@ class Fail<T> extends Result<T> {
   final String? message;
   final Object? error;
   final dynamic data;
-  Fail({this.message, this.error, this.data, int? code = 0}) : super(code ?? 0);
+  Fail({this.message, this.error, this.data, int? code = -1}) : super(code ?? -1);
 }

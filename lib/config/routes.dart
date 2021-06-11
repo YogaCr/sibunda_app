@@ -53,11 +53,11 @@ class SibRoutes {
   ));
 
   static final motherDataPage = SibRoute("MotherDataPage", MotherDataPage, (ctx) => MainFrame(
-    body: MotherDataPage().inBlocProvider<MotherFormBloc>((ctx) => MotherFormBloc(RepoDi.getFamilyRepo())),
+    body: MotherDataPage().inBlocProvider<MotherFormBloc>((ctx) => MotherFormBloc(RepoDi.getMotherRepo())),
     padding: EdgeInsets.all(20),
   ));
   static final fatherDataPage = SibRoute("FatherDataPage", FatherDataPage, (ctx) => MainFrame(
-    body: FatherDataPage().inBlocProvider<FatherFormBloc>((ctx) => FatherFormBloc(RepoDi.getFamilyRepo())),
+    body: FatherDataPage().inBlocProvider<FatherFormBloc>((ctx) => FatherFormBloc(RepoDi.getFatherRepo())),
     padding: EdgeInsets.all(20),
   ));
   static final doMotherHavePregnancyPage = SibRoute("DoMotherHavePregnancyPage", DoMotherHavePregnancyPage, (ctx) => MainFrame(
@@ -69,7 +69,7 @@ class SibRoutes {
     padding: EdgeInsets.all(20),
   ));
   static final childrenCountPage = SibRoute("ChildrenCountPage", ChildrenCountPage, (ctx) => MainFrame(
-    body: ChildrenCountPage().inBlocProvider<ChildFormBloc>((ctx) => ChildFormBloc(RepoDi.getFamilyRepo())),
+    body: ChildrenCountPage().inBlocProvider<ChildFormBloc>((ctx) => ChildFormBloc(RepoDi.getChildRepo())),
     padding: EdgeInsets.all(20),
   ));
 }

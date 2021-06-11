@@ -41,3 +41,19 @@ final dummyMother = Mother(
   puskesmasDomisili: "Puskesmas 11",
   cohortRegistNo: "12312345",
 );
+
+final dummyChild = Child(
+  name: "Anak sinkong",
+  childOrder: 10,
+  gender: "M",
+  nik: "1201902",
+  bloodType: "O",
+  birthCity: "Asgard",
+  birthDate: "12 Okt 2077",
+  jkn: "JKN a",
+  jknStartDate: "10 Okt 2021",
+  babyCohortRegistNo: "12381927921",
+  toddlerCohortRegistNo: "123121424",
+  hospitalMedicalNumber: "12312412412412",
+  birthCertificateNo: "12123124",
+);

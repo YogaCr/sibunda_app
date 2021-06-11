@@ -1,4 +1,6 @@
-import 'package:common/value/const_values.dart';
+export 'father.dart';
+export 'mother.dart';
+export 'child.dart';
 
 class FamilyMember {
   final String name;
@@ -31,7 +33,7 @@ class FamilyMember {
     required this.phone,
   });
 }
-
+/*
 class Mother extends FamilyMember {
   final String puskesmasDomisili;
   final String cohortRegistNo;
@@ -183,3 +185,4 @@ class Child {
     hospitalMedicalNumber: map[Const.KEY_HOSPITAL_MEDIC_NO]!,
   );
 }
+ */

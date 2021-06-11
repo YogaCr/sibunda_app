@@ -7,7 +7,7 @@ import 'package:common/res/string/_string.dart';
 import 'package:common/value/const_values.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:tuple/tuple.dart';
-
+/*
 abstract class FamilyFormBloc extends MultiFieldFormBloc {
   final FamilyRepo repo;
   //FamilyFormBloc(this.repo, int fieldCount, [List<String>? inputKeyList]): super(fieldCount, inputKeyList);
@@ -33,12 +33,12 @@ abstract class FamilyFormBloc extends MultiFieldFormBloc {
   final addressTxt = TextEditingController();
   final phoneTxt = TextEditingController();
  */
-
-
 }
+ */
 
-class MotherFormBloc extends FamilyFormBloc {
-  MotherFormBloc(FamilyRepo repo) : super(repo, [
+class MotherFormBloc extends MultiFieldFormBloc {
+  final MotherRepo repo;
+  MotherFormBloc(this.repo) : super([
     Tuple2(Const.KEY_NAME, Strings.name),
     Tuple2(Const.KEY_NIK, Strings.nik),
     Tuple2(Const.KEY_SALARY, Strings.salary),
@@ -69,7 +69,7 @@ class MotherFormBloc extends FamilyFormBloc {
   }
 
   Stream<BlocFormState> sendMotherData(Mother data) async* {
-    final resp = await repo.sendMotherData(data);
+    final resp = await repo.saveMotherData(data);
     if(resp is Success<bool>) {
       yield OnSuccessEndForm();
     } else if(resp is Fail<bool>) {
@@ -111,8 +111,9 @@ class MotherFormBloc extends FamilyFormBloc {
 }
 
 
-class FatherFormBloc extends FamilyFormBloc {
-  FatherFormBloc(FamilyRepo repo) : super(repo, [
+class FatherFormBloc extends MultiFieldFormBloc {
+  final FatherRepo repo;
+  FatherFormBloc(this.repo) : super([
     Tuple2(Const.KEY_NAME, Strings.name),
     Tuple2(Const.KEY_NIK, Strings.nik),
     Tuple2(Const.KEY_SALARY, Strings.salary),
@@ -141,7 +142,7 @@ class FatherFormBloc extends FamilyFormBloc {
   }
 
   Stream<BlocFormState> sendFatherData(Father data) async* {
-    final resp = await repo.sendFatherData(data);
+    final resp = await repo.saveFatherData(data);
     if(resp is Success<bool>) {
       yield OnSuccessEndForm();
     } else if(resp is Fail<bool>) {
@@ -183,8 +184,9 @@ class FatherFormBloc extends FamilyFormBloc {
 }
 
 //TODO
-class ChildFormBloc extends FamilyFormBloc {
-  ChildFormBloc(FamilyRepo repo) : super(repo, [
+class ChildFormBloc extends MultiFieldFormBloc {
+  final ChildRepo repo;
+  ChildFormBloc(this.repo) : super([
     Tuple2(Const.KEY_NAME, Strings.name),
     Tuple2(Const.KEY_NIK, Strings.nik),
     Tuple2(Const.KEY_JKN, Strings.jkn),
@@ -205,7 +207,7 @@ class ChildFormBloc extends FamilyFormBloc {
   Stream<BlocFormState> moreSpecificMapEventToState(FormEvent event) async* {
     if(event is SubmitForm) {
       if(canProceed) {
-        final data = Father.from(event.formInputs);
+        final data = Child.from(event.formInputs);
         yield* sendFatherData(data);
       } else {
         yield OnInvalidForm({}); //TODO 25 Mei 2021: Smtr ini mapnya kosong.
@@ -213,8 +215,8 @@ class ChildFormBloc extends FamilyFormBloc {
     }
   }
 
-  Stream<BlocFormState> sendFatherData(Father data) async* {
-    final resp = await repo.sendFatherData(data);
+  Stream<BlocFormState> sendFatherData(Child data) async* {
+    final resp = await repo.saveChildData(data);
     if(resp is Success<bool>) {
       yield OnSuccessEndForm();
     } else if(resp is Fail<bool>) {

@@ -1,9 +1,9 @@
 
-import 'package:common/data/dummy_data.dart';
-import 'package:common/data/model/family_data.dart';
+export 'father_repo.dart';
+export 'mother_repo.dart';
+export 'child_repo.dart';
 
-import '../Result.dart';
-
+/*
 mixin FamilyRepo {
   Future<Result<Mother>> getMotherData(String nik);
   Future<Result<Father>> getFatherData(String nik);
@@ -41,3 +41,5 @@ class FamilyDummyRepo with FamilyRepo {
 }
 
 //class FamilyApiRepo with FamilyRepo {} //TODO 25 Mei 2021: Buat family repo pake api.
+
+ */
