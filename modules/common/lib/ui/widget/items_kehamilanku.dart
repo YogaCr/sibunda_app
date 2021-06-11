@@ -24,13 +24,15 @@ class ItemMotherOverview extends StatelessWidget {
   Widget build(BuildContext context) {
     final parentHeight = 120.0;
 
-    final imgChild = ClipRRect(
-      borderRadius: BorderRadius.all(Radius.circular(_cornerRadius)),
-      child: Container(
-        height: parentHeight,
-        margin: EdgeInsets.only(right: 10),
-        width: 80,
-        child: image,
+    final imgChild = Container(
+      margin: EdgeInsets.only(right: 10),
+      child: ClipRRect(
+        borderRadius: BorderRadius.all(Radius.circular(_cornerRadius)),
+        child: Container(
+          height: parentHeight,
+          width: 80,
+          child: image,
+        ),
       ),
     );
 
@@ -101,18 +103,23 @@ class ItemMotherTrimester extends StatelessWidget {
   Widget build(BuildContext context) {
     final parentHeight = 80.0;
 
-    final imgChild = ClipRRect(
-      borderRadius: BorderRadius.all(Radius.circular(10)),
+    final imgChild = Container(
+      margin: EdgeInsets.only(right: 15),
       child: Container(
-        margin: EdgeInsets.only(right: 15),
-        width: 90,
-        child: image,
-      ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.all(Radius.circular(10)),
+          child: Container(
+            width: 90,
+            child: image,
+          ),
+        ),
+      )
     );
 
     final txtChild = Expanded(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             "Trimester $trimester",
@@ -150,36 +157,44 @@ class ItemMotherImunization extends StatelessWidget {
   final Widget image;
   final String title;
   final String action;
+  final void Function()? onBtnClick;
 
   ItemMotherImunization({
     required this.image,
     this.title = "Jangan lupa ikut imunisasi ya Bunda",
     this.action = "Lihat imunisasi Bunda",
+    this.onBtnClick,
   });
 
   @override
   Widget build(BuildContext context) {
     final parentHeight = 120.0;
 
-    final imgChild = ClipRRect(
-      borderRadius: BorderRadius.all(Radius.circular(10)),
-      child: Container(
-        height: parentHeight,
-        margin: EdgeInsets.only(right: 10),
-        width: 70,
-        child: image,
+    final imgChild = Container(
+      margin: EdgeInsets.only(right: 10),
+      child: ClipRRect(
+        borderRadius: BorderRadius.all(Radius.circular(10)),
+        child: Container(
+          height: parentHeight,
+          width: 100,
+          child: image,
+        ),
       ),
     );
 
     final txtChild = Expanded(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             title,
             style: SibTextStyles.size_0_bold,
           ),
-          TxtBtn(action),
+          TxtBtn(
+            action,
+            onTap: onBtnClick,
+          ),
         ],
       ),
     );
@@ -190,7 +205,7 @@ class ItemMotherImunization extends StatelessWidget {
         color: Colors.white,
         height: parentHeight,
         child: Padding(
-          padding: EdgeInsets.all(10),
+          padding: EdgeInsets.all(10).copyWith(right: 20),
           child: Row(
             children: [
               imgChild,
@@ -215,14 +230,16 @@ class ItemMotherGraphMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final imgChild = ClipRRect(
-      borderRadius: BorderRadius.all(Radius.circular(_cornerRadius)),
-      child: Container(
-        height: 50,
-        width: 50,
-        margin: EdgeInsets.only(right: 10),
-        color: Manifest.theme.colorPrimary,
-        child: image,
+    final imgChild = Container(
+      margin: EdgeInsets.only(right: 10),
+      child: ClipRRect(
+        borderRadius: BorderRadius.all(Radius.circular(_cornerRadius)),
+        child: Container(
+          height: 50,
+          width: 50,
+          color: Manifest.theme.colorPrimary,
+          child: image,
+        ),
       ),
     );
 
@@ -271,23 +288,25 @@ class ItemMotherRecomFood extends StatelessWidget {
     //final parentHeight = 10.0;
     final parentMinHeight = 80.0;
 
-    final imgChild = SizedBox(
-      height: 180,
-      width: 50,
+    final imgChild = ConstrainedBox(
+      constraints: BoxConstraints(minHeight: parentMinHeight, maxWidth: 50,),
       child: Column(
         children: [
-          ClipRRect(
-            borderRadius: BorderRadius.all(Radius.circular(10)),
-            child: Container(
-              height: 50,
-              width: 50,
-              margin: EdgeInsets.only(bottom: 10),
-              child: image,
+          Container(
+            margin: EdgeInsets.only(bottom: 8),
+            child: ClipRRect(
+              borderRadius: BorderRadius.all(Radius.circular(10)),
+              child: Container(
+                height: 50,
+                width: 50,
+                child: image,
+              ),
             ),
           ),
           Text(
             foodName,
             style: SibTextStyles.size_min_1,
+            textAlign: TextAlign.center,
           ),
         ],
       ),
@@ -297,7 +316,7 @@ class ItemMotherRecomFood extends StatelessWidget {
       child: Text(
         desc,
         style: SibTextStyles.size_min_1_bold,
-        textAlign: TextAlign.center,
+        textAlign: TextAlign.start,
       ),
     );
 
@@ -314,9 +333,8 @@ class ItemMotherRecomFood extends StatelessWidget {
               children: [
                 imgChild,
                 Container(
+                  constraints: BoxConstraints(minHeight: parentMinHeight, maxWidth: 2, minWidth: 2,),
                   margin: EdgeInsets.symmetric(horizontal: 10),
-                  height: parentMinHeight,
-                  width: 2,
                   color: Manifest.theme.colorPrimary,
                 ),
                 txtChild

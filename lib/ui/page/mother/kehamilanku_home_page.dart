@@ -62,6 +62,13 @@ class KehamilankuHomePage extends StatelessWidget {
                     pregnancyAgeEnd: 40,
                   ),
                 ),
+                Container(
+                  margin: EdgeInsets.symmetric(vertical: 5),
+                  child: ItemMotherImunization(
+                    image: Container(color: Manifest.theme.colorPrimary,),
+                  ),
+                ),
+
 
 // */
                 Container(
