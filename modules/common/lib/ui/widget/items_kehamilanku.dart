@@ -91,12 +91,14 @@ class ItemMotherTrimester extends StatelessWidget {
   final int trimester;
   final int pregnancyAgeStart; //in weeks
   final int pregnancyAgeEnd; //in weeks
+  final void Function()? onClick; //in weeks
 
   ItemMotherTrimester({
     required this.image,
     required this.trimester,
     required this.pregnancyAgeStart,
     required this.pregnancyAgeEnd,
+    this.onClick,
   });
 
   @override
@@ -135,16 +137,19 @@ class ItemMotherTrimester extends StatelessWidget {
 
     return ClipRRect(
       borderRadius: BorderRadius.all(Radius.circular(10)),
-      child: Container(
-        color: grey_calm,
-        height: parentHeight,
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-          child: Row(
-            children: [
-              imgChild,
-              txtChild,
-            ],
+      child: InkWell(
+        onTap: onClick,
+        child: Container(
+          color: grey_calm,
+          height: parentHeight,
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+            child: Row(
+              children: [
+                imgChild,
+                txtChild,
+              ],
+            ),
           ),
         ),
       ),
@@ -286,10 +291,10 @@ class ItemMotherRecomFood extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //final parentHeight = 10.0;
-    final parentMinHeight = 80.0;
+    final parentMinHeight = 100.0;
 
     final imgChild = ConstrainedBox(
-      constraints: BoxConstraints(minHeight: parentMinHeight, maxWidth: 50,),
+      constraints: BoxConstraints(minHeight: parentMinHeight, maxWidth: 70,),
       child: Column(
         children: [
           Container(
@@ -297,8 +302,8 @@ class ItemMotherRecomFood extends StatelessWidget {
             child: ClipRRect(
               borderRadius: BorderRadius.all(Radius.circular(10)),
               child: Container(
-                height: 50,
-                width: 50,
+                height: 70,
+                width: 70,
                 child: image,
               ),
             ),
@@ -348,13 +353,13 @@ class ItemMotherRecomFood extends StatelessWidget {
 }
 
 ///*
-class ItemMotherReport extends StatelessWidget {
+class ItemMotherBabySizeOverview extends StatelessWidget {
   final Widget image;
   final String sizeString;
   final double babyLen;
   final double babyWeight;
 
-  ItemMotherReport({
+  ItemMotherBabySizeOverview({
     required this.image,
     required this.sizeString,
     required this.babyLen,

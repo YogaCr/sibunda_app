@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'form_state.dart';
 import 'form_event.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tuple/tuple.dart';
 
 export 'form_event.dart';
 export 'form_state.dart';
@@ -38,25 +39,32 @@ abstract class FormBloc extends Bloc<FormEvent, BlocFormState> {
 */
 }
 
-
+afa(){
+  Tuple2<String, int> ada;
+}
 
 abstract class MultiFieldFormBloc extends FormBloc {
   final int fieldCount;
   final List<LiveProp<bool>> inputValidityList;
   final List<TextEditingController> inputTxtList;
-  final List<String> inputKeyList;
+//  final List<String> inputKeyList;
+  final List<Tuple2<String, String>> labelKeyPairList;
 
   bool _canProceed = false;
   bool get canProceed => _canProceed;
 
-  MultiFieldFormBloc(fieldCount, [List<String>? inputKeyList]):
-    this.fieldCount = fieldCount,
-    inputValidityList = List.generate(fieldCount, (index) => LiveProp(false), growable: false),
-    inputTxtList = List.generate(fieldCount, (index) => TextEditingController(), growable: false),
-    inputKeyList = inputKeyList ?? List.generate(fieldCount, (index) => "", growable: false)
+  MultiFieldFormBloc(
+//      this.fieldCount,
+//      [List<String>? inputKeyList],
+      this.labelKeyPairList,
+  ):
+    this.fieldCount = labelKeyPairList.length,
+    inputValidityList = List.generate(labelKeyPairList.length, (index) => LiveProp(false), growable: false),
+    inputTxtList = List.generate(labelKeyPairList.length, (index) => TextEditingController(), growable: false)
+//    inputKeyList = inputKeyList ?? List.generate(fieldCount, (index) => "", growable: false)
   {
-    if(inputKeyList != null && inputKeyList.length != fieldCount)
-      throw "inputKeyList.length (${inputKeyList.length}) should be same as fieldCount= ($fieldCount)";
+    //if(inputKeyList != null && inputKeyList.length != fieldCount)
+      //throw "inputKeyList.length (${inputKeyList.length}) should be same as fieldCount= ($fieldCount)";
     for(final prop in inputValidityList) {
       prop.onChanged = (v) => checkCanProceed();
     }
@@ -90,7 +98,7 @@ abstract class MultiFieldFormBloc extends FormBloc {
   void submitForm([Map<String, String?>? extras]) {
     final map = <String, String>{};
     for(int i = 0; i < fieldCount; i++) {
-      map[inputKeyList[i]] = inputTxtList[i].text;
+      map[labelKeyPairList[i].item1] = inputTxtList[i].text;
     }
     add(SubmitForm(map));
   }

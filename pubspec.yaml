@@ -40,6 +40,7 @@ dependencies:
   flutter_dotenv: ^4.0.0-nullsafety.0 #^3.1.0
   shared_preferences: ^2.0.5
   equatable: ^2.0.2
+  tuple: ^2.0.0
 
   common:
     path: modules/common
