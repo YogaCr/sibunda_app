@@ -3,12 +3,19 @@ import 'package:common/bloc/_bloc.dart';
 import 'package:common/data/Result.dart';
 import 'package:common/data/repo/family_repo.dart';
 import 'package:common/data/model/family_data.dart';
+import 'package:common/res/string/_string.dart';
 import 'package:common/value/const_values.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:tuple/tuple.dart';
 
 abstract class FamilyFormBloc extends MultiFieldFormBloc {
   final FamilyRepo repo;
-  FamilyFormBloc(this.repo, int fieldCount, [List<String>? inputKeyList]): super(fieldCount, inputKeyList);
+  //FamilyFormBloc(this.repo, int fieldCount, [List<String>? inputKeyList]): super(fieldCount, inputKeyList);
+  FamilyFormBloc(
+      this.repo,
+      List<Tuple2<String, String>> labelKeyPairList,
+//      int fieldCount, [List<String>? inputKeyList],
+  ): super(labelKeyPairList);
 /*
   final puskesmasDomisiliTxt = TextEditingController();
   final cohortRegistNoTxt = TextEditingController();
@@ -31,22 +38,22 @@ abstract class FamilyFormBloc extends MultiFieldFormBloc {
 }
 
 class MotherFormBloc extends FamilyFormBloc {
-  MotherFormBloc(FamilyRepo repo) : super(repo, 15, [
-    Const.KEY_NAME,
-    Const.KEY_NIK,
-    Const.KEY_SALARY,
-    Const.KEY_JKN,
-    Const.KEY_FASKES1,
-    Const.KEY_FASKES_RUJUKAN,
-    Const.KEY_BLOOD_TYPE,
-    Const.KEY_BIRTH_PLACE,
-    Const.KEY_BIRTH_DATE,
-    Const.KEY_EDUCATION,
-    Const.KEY_OCCUPANCY,
-    Const.KEY_ADDRESS,
-    Const.KEY_PHONE,
-    Const.KEY_PUSKESMAS_DOMISILI,
-    Const.KEY_COHORT_REG,
+  MotherFormBloc(FamilyRepo repo) : super(repo, [
+    Tuple2(Const.KEY_NAME, Strings.name),
+    Tuple2(Const.KEY_NIK, Strings.nik),
+    Tuple2(Const.KEY_SALARY, Strings.salary),
+    Tuple2(Const.KEY_JKN, Strings.jkn),
+    Tuple2(Const.KEY_FASKES1, Strings.faskes1),
+    Tuple2(Const.KEY_FASKES_RUJUKAN, Strings.faskes_rujukan),
+    Tuple2(Const.KEY_BLOOD_TYPE, Strings.blood_type),
+    Tuple2(Const.KEY_BIRTH_PLACE, Strings.birth_place),
+    Tuple2(Const.KEY_BIRTH_DATE, Strings.birth_date),
+    Tuple2(Const.KEY_EDUCATION, Strings.education),
+    Tuple2(Const.KEY_OCCUPANCY, Strings.occupancy),
+    Tuple2(Const.KEY_ADDRESS, Strings.address),
+    Tuple2(Const.KEY_PHONE, Strings.phone),
+    Tuple2(Const.KEY_PUSKESMAS_DOMISILI, Strings.puskesmas_domisili),
+    Tuple2(Const.KEY_COHORT_REG, Strings.cohort_no),
   ]);
 
   @override
@@ -105,20 +112,20 @@ class MotherFormBloc extends FamilyFormBloc {
 
 
 class FatherFormBloc extends FamilyFormBloc {
-  FatherFormBloc(FamilyRepo repo) : super(repo, 13, [
-    Const.KEY_NAME,
-    Const.KEY_NIK,
-    Const.KEY_SALARY,
-    Const.KEY_JKN,
-    Const.KEY_FASKES1,
-    Const.KEY_FASKES_RUJUKAN,
-    Const.KEY_BLOOD_TYPE,
-    Const.KEY_BIRTH_PLACE,
-    Const.KEY_BIRTH_DATE,
-    Const.KEY_EDUCATION,
-    Const.KEY_OCCUPANCY,
-    Const.KEY_ADDRESS,
-    Const.KEY_PHONE,
+  FatherFormBloc(FamilyRepo repo) : super(repo, [
+    Tuple2(Const.KEY_NAME, Strings.name),
+    Tuple2(Const.KEY_NIK, Strings.nik),
+    Tuple2(Const.KEY_SALARY, Strings.salary),
+    Tuple2(Const.KEY_JKN, Strings.jkn),
+    Tuple2(Const.KEY_FASKES1, Strings.faskes1),
+    Tuple2(Const.KEY_FASKES_RUJUKAN, Strings.faskes_rujukan),
+    Tuple2(Const.KEY_BLOOD_TYPE, Strings.blood_type),
+    Tuple2(Const.KEY_BIRTH_PLACE, Strings.birth_place),
+    Tuple2(Const.KEY_BIRTH_DATE, Strings.birth_date),
+    Tuple2(Const.KEY_EDUCATION, Strings.education),
+    Tuple2(Const.KEY_OCCUPANCY, Strings.occupancy),
+    Tuple2(Const.KEY_ADDRESS, Strings.address),
+    Tuple2(Const.KEY_PHONE, Strings.phone),
   ]);
 
   @override
@@ -175,22 +182,22 @@ class FatherFormBloc extends FamilyFormBloc {
  */
 }
 
-
+//TODO
 class ChildFormBloc extends FamilyFormBloc {
-  ChildFormBloc(FamilyRepo repo) : super(repo, 13, [
-    Const.KEY_NAME,
-    Const.KEY_NIK,
-    Const.KEY_JKN,
-    Const.KEY_BLOOD_TYPE,
-    Const.KEY_BIRTH_PLACE,
-    Const.KEY_BIRTH_DATE,
-    Const.KEY_CHILD_ORDER,
-    Const.KEY_GENDER,
-    Const.KEY_BIRTH_CERT_NO,
-    Const.KEY_JKN_START_DATE,
-    Const.KEY_BABY_COHORT_REG,
-    Const.KEY_TODDLER_COHORT_REG,
-    Const.KEY_HOSPITAL_MEDIC_NO,
+  ChildFormBloc(FamilyRepo repo) : super(repo, [
+    Tuple2(Const.KEY_NAME, Strings.name),
+    Tuple2(Const.KEY_NIK, Strings.nik),
+    Tuple2(Const.KEY_JKN, Strings.jkn),
+    Tuple2(Const.KEY_BLOOD_TYPE, Strings.blood_type),
+    Tuple2(Const.KEY_BIRTH_PLACE, Strings.birth_place),
+    Tuple2(Const.KEY_BIRTH_DATE, Strings.birth_date),
+    Tuple2(Const.KEY_CHILD_ORDER, Strings.child_order),
+    Tuple2(Const.KEY_GENDER, Strings.gender),
+    Tuple2(Const.KEY_BIRTH_CERT_NO, Strings.birth_cert_no),
+    Tuple2(Const.KEY_JKN_START_DATE, Strings.jkn_start_date),
+    Tuple2(Const.KEY_BABY_COHORT_REG, Strings.baby_cohort_no),
+    Tuple2(Const.KEY_TODDLER_COHORT_REG, Strings.toddler_cohort_no),
+    Tuple2(Const.KEY_HOSPITAL_MEDIC_NO, Strings.hospital_medic_no),
   ]);
 
   //TODO 5 Juni 2021.

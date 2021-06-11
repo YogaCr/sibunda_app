@@ -16,12 +16,14 @@ class ChildDataPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bloc = BlocProvider.of<ChildFormBloc>(context);
+/*
     final formBuilders = List.generate(13, (index) => (context, formState, i) => TxtInput(
       label: Strings.name,
       textController: bloc.inputTxtList[i],
       textValidator: (txt) => bloc.inputValidityList[i].value = txt.isNotEmpty, //TODO form tuk child
       errorText: Strings.field_can_not_be_empty,
     ),);
+ */
 
     return Column(
       children: [
@@ -35,9 +37,8 @@ class ChildDataPage extends StatelessWidget {
           Strings.skip,
           onTap: () => showSnackBar(context, "dipencet"),
         ),
-        BlocFormBuilder<ChildFormBloc>(
-          builders: formBuilders,
-        ),
+        BlocMultiFieldFormBuilder<ChildFormBloc>.defaultInputField(),
+        //BlocFormBuilder<ChildFormBloc>(builders: formBuilders,),
         BlocBuilder<ChildFormBloc, BlocFormState>(
           builder: (ctx, formState) {
             return FloatingActionButton(

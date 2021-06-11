@@ -35,6 +35,7 @@ class Strings {
 
   static const nik = "NIK";
   static const jkn = "No JKN";
+  static const jkn_start_date = "Tanggal berlaku JKN";
   static const faskes1 = "Faskes Tingkat 1";
   static const faskes_rujukan = "Faskes Rujukan";
   static const salary = "Pembiayaan";
@@ -47,6 +48,12 @@ class Strings {
   static const phone = "No Telepon";
   static const puskesmas_domisili = "Puskesmas Domisili";
   static const cohort_no = "No Register Kohort Ibu";
+  static const baby_cohort_no = "No Register Kohort Bayi";
+  static const toddler_cohort_no = "No Register Kohort Balita";
+  static const hospital_medic_no = "No Catatan Medis RS";
+  static const child_order = "Anak Ke";
+  static const gender = "Kelamin";
+  static const birth_cert_no = "Nomor Akta";
 
   static const save = "Simpan";
 }
