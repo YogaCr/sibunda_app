@@ -27,27 +27,31 @@ class BlocFormBuilder<Bloc extends FormBloc> extends StatelessWidget {
 
 class BlocMultiFieldFormBuilder<Bloc extends MultiFieldFormBloc> extends BlocFormBuilder<Bloc> {
   final Map<int, String>? errorTxtMap;
-  final bool builderHasBeenInit;
+  ///returns `null` if there is no matches for given [int] and [String],
+  final bool? Function(int, String)? txtValidator;
+  final bool _builderHasBeenInit;
 
   BlocMultiFieldFormBuilder({
     required List<Widget Function(BuildContext, BlocFormState, int)> builders,
     this.errorTxtMap,
-  }) : builderHasBeenInit = true,
+    this.txtValidator,
+  }) : _builderHasBeenInit = true,
         super(builders: builders);
 
   BlocMultiFieldFormBuilder.defaultInputField({
-    this.errorTxtMap
-  }) : builderHasBeenInit = false,
+    this.errorTxtMap,
+    this.txtValidator,
+  }) : _builderHasBeenInit = false,
         super._();
 
   @override
   Widget build(BuildContext context) {
-    if(!builderHasBeenInit){
+    if(!_builderHasBeenInit){
       final bloc = BlocProvider.of<MultiFieldFormBloc>(context);
       builders = List.generate(bloc.fieldCount, (index) => (ctx, formState, i) => TxtInput(
         label: bloc.labelKeyPairList[i].item1,
         textController: bloc.inputTxtList[i],
-        textValidator: (txt) => bloc.inputValidityList[i].value = txt.isNotEmpty,
+        textValidator: (txt) => txtValidator?.call(i, txt) ?? (bloc.inputValidityList[i].value = txt.isNotEmpty),
         errorText: errorTxtMap?[i] ?? Strings.please_enter_your_name,
       ),);
     }

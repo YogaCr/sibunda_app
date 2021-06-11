@@ -1,6 +1,7 @@
 import 'package:common/data/model/auth_data.dart';
 
 import 'model/family_data.dart';
+import 'model/kehamilanku_data.dart';
 
 final dummyAccessToken = "aagajki1831huhf1i38y13";
 final dummySignUpData1 = SignUpData(name: "ayu", email: "a@a.a", password: "ayu123");
@@ -56,4 +57,28 @@ final dummyChild = Child(
   toddlerCohortRegistNo: "123121424",
   hospitalMedicalNumber: "12312412412412",
   birthCertificateNo: "12123124",
+);
+
+PregnancyCheck dummyPregnancyCheck(int week) => PregnancyCheck(
+  visitDate: "6 Okt 2021",
+  visitPlace: "Surabaya",
+  checkerName: "Suster Ami",
+  difficulty: "Boyok",
+  pregnancyAge: week,
+  babyGender: "M",
+  futureVisitDate: "13 Okt 2021",
+  HPHT: "10 Nov 2020",
+  HPL: "10 Nov 2021",
+  motherWeigth: 100,
+  motherWeigthDiff: 10,
+  motherHeight: 120,
+  TFU: 10,
+  DJJ: 100,
+  systolicPressure: 110,
+  diastolicPressure: 70,
+  MAP: 120,
+  babyMovement: "Lincah bun",
+  drugAllergy: "-",
+  deseaseHistory: "-",
+  note: "-",
 );
