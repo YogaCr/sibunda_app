@@ -305,7 +305,7 @@ class ItemMotherRecomFood extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //final parentHeight = 10.0;
-    final parentMinHeight = 100.0;
+    final parentMinHeight = 80.0;
 
     final imgChild = ConstrainedBox(
       constraints: BoxConstraints(minHeight: parentMinHeight, maxWidth: 70,),
@@ -316,8 +316,8 @@ class ItemMotherRecomFood extends StatelessWidget {
             child: ClipRRect(
               borderRadius: BorderRadius.all(Radius.circular(10)),
               child: Container(
-                height: 70,
-                width: 70,
+                height: 60,
+                width: 60,
                 child: image,
               ),
             ),

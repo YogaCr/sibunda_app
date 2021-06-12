@@ -21,7 +21,10 @@ class BlocPreAsyncBuilder<
     required this.blocDataGetter,
     required this.builder,
     Widget? preAsyncChild,
-  }): this.preAsyncChild = preAsyncChild ?? Container(color: Manifest.theme.colorPrimary,);
+  }): this.preAsyncChild = preAsyncChild ?? Container(
+    height: 100,
+    color: Manifest.theme.colorPrimary,
+  );
 
   @override
   Widget build(BuildContext context) {

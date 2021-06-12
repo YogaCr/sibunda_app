@@ -5,11 +5,11 @@ import 'package:common/data/repo/kehamilanku_repo.dart';
 class RepoDi {
   RepoDi._();
 
-  static AuthRepo getAuthRepo() => AuthDummyRepo(); //AuthApiRepo();
+  static AuthRepo get authRepo => AuthDummyRepo(); //AuthApiRepo();
   //static FamilyRepo getFamilyRepo() => FamilyDummyRepo(); //AuthApiRepo();
-  static MotherRepo getMotherRepo() => MotherRepoDummy.obj; //AuthApiRepo();
-  static FatherRepo getFatherRepo() => FatherRepoDummy.obj; //AuthApiRepo();
-  static ChildRepo getChildRepo() => ChildRepoDummy.obj; //AuthApiRepo();
-  static MotherFoodRecomRepo getFoodRepo() => MotherFoodRecomRepoDummy.obj; //AuthApiRepo();
-  static MotherPregnancyRepo getPregnancyRepo() => MotherPregnancyRepoDummy.obj; //AuthApiRepo();
+  static MotherRepo get motherRepo => MotherRepoDummy.obj; //AuthApiRepo();
+  static FatherRepo get fatherRepo => FatherRepoDummy.obj; //AuthApiRepo();
+  static ChildRepo get childRepo => ChildRepoDummy.obj; //AuthApiRepo();
+  static MotherFoodRecomRepo get foodRepo => MotherFoodRecomRepoDummy.obj; //AuthApiRepo();
+  static MotherPregnancyRepo get pregnancyRepo => MotherPregnancyRepoDummy.obj; //AuthApiRepo();
 }
