@@ -3,6 +3,7 @@ import 'package:common/ui/page/frames.dart';
 import 'package:flutter/material.dart';
 import 'package:sibunda_app/bloc/family_form_bloc.dart';
 import 'package:common/di/_di.dart';
+import 'package:sibunda_app/di/bloc_di.dart';
 import 'package:sibunda_app/ui/page/_page.dart';
 import 'package:common/bloc/bloc_extension.dart';
 import 'package:sibunda_app/bloc/auth_form_bloc.dart';
@@ -53,11 +54,11 @@ class SibRoutes {
   ));
 
   static final motherDataPage = SibRoute("MotherDataPage", MotherDataPage, (ctx) => MainFrame(
-    body: MotherDataPage().inBlocProvider<MotherFormBloc>((ctx) => MotherFormBloc(RepoDi.getMotherRepo())),
+    body: MotherDataPage().inBlocProvider<MotherFormBloc>((ctx) => BlocDi.motherFormBloc),
     padding: EdgeInsets.all(20),
   ));
   static final fatherDataPage = SibRoute("FatherDataPage", FatherDataPage, (ctx) => MainFrame(
-    body: FatherDataPage().inBlocProvider<FatherFormBloc>((ctx) => FatherFormBloc(RepoDi.getFatherRepo())),
+    body: FatherDataPage().inBlocProvider<FatherFormBloc>((ctx) => BlocDi.fatherFormBloc),
     padding: EdgeInsets.all(20),
   ));
   static final doMotherHavePregnancyPage = SibRoute("DoMotherHavePregnancyPage", DoMotherHavePregnancyPage, (ctx) => MainFrame(
@@ -69,7 +70,7 @@ class SibRoutes {
     padding: EdgeInsets.all(20),
   ));
   static final childrenCountPage = SibRoute("ChildrenCountPage", ChildrenCountPage, (ctx) => MainFrame(
-    body: ChildrenCountPage().inBlocProvider<ChildFormBloc>((ctx) => ChildFormBloc(RepoDi.getChildRepo())),
+    body: ChildrenCountPage().inBlocProvider<ChildFormBloc>((ctx) => BlocDi.childFormBloc),
     padding: EdgeInsets.all(20),
   ));
 }

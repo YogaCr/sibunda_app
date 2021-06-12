@@ -56,4 +56,28 @@ class Strings {
   static const birth_cert_no = "Nomor Akta";
 
   static const save = "Simpan";
+
+
+  static const visit_date =  "Tanggal Periksa";
+  static const visit_place =  "Tempat Periksa";
+  static const checker_name =  "Nama Pemeriksa";
+  static const mother_difficulty =  "Keluhan Bunda";
+  static const pregnancy_age =  "Usia Kehamilan";
+  static const baby_gender =  "Kelamin Bayi";
+  static const future_visit_date =  "Tanggal Periksa Kembali";
+  static const hpht =  "HPHT";
+  static const hpl =  "HPL";
+  static const mother_weight =  "Berat Badan Bunda";
+  static const mother_weight_diff =  "Kenaikan Berat Badan Bunda";
+  static const mother_height =  "Tinggi Badan Bunda";
+  static const tfu =  "TFU";
+  static const djj =  "DJJ";
+  static const systolic_pressure =  "Tekanan Darah Sistolik";
+  static const diastolic_pressure =  "Tekanan Darah Diastolik";
+  static const map =  "MAP";
+  static const baby_movement =  "Gerakan Bayi";
+  static const drug_prescript =  "Resep Obat";
+  static const drug_allergy =  "Alergi Obat";
+  static const disease_history =  "Riwayat Penyakit";
+  static const special_note =  "Catatan Khusus";
 }

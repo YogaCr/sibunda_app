@@ -208,14 +208,14 @@ class ChildFormBloc extends MultiFieldFormBloc {
     if(event is SubmitForm) {
       if(canProceed) {
         final data = Child.from(event.formInputs);
-        yield* sendFatherData(data);
+        yield* sendChildData(data);
       } else {
         yield OnInvalidForm({}); //TODO 25 Mei 2021: Smtr ini mapnya kosong.
       }
     }
   }
 
-  Stream<BlocFormState> sendFatherData(Child data) async* {
+  Stream<BlocFormState> sendChildData(Child data) async* {
     final resp = await repo.saveChildData(data);
     if(resp is Success<bool>) {
       yield OnSuccessEndForm();

@@ -1,4 +1,5 @@
 import 'package:common/config/manifest.dart';
+import 'package:common/data/model/kehamilanku_data.dart';
 import 'package:common/res/theme/_theme.dart';
 import 'package:common/ui/widget/_basic_widget.dart';
 import 'package:flutter/cupertino.dart';
@@ -19,6 +20,19 @@ class ItemMotherOverview extends StatelessWidget {
     required this.pregnancyAge,
     required this.pregnancyAgeRem,
   });
+
+  ItemMotherOverview.fromData(
+    MotherPregnancyAgeOverview data,
+  ): image = Container(color: Manifest.theme.colorPrimary,), //TODO 12 Juni 2021: img
+    pregnancyAge = data.weekAge,
+    pregnancyAgeRem = data.daysRemaining
+  ;
+
+  ItemMotherOverview.def():
+    image = Container(color: Manifest.theme.colorPrimary,),
+    pregnancyAge = -1,
+    pregnancyAgeRem = -1
+  ;
 
   @override
   Widget build(BuildContext context) {
@@ -365,6 +379,13 @@ class ItemMotherBabySizeOverview extends StatelessWidget {
     required this.babyLen,
     required this.babyWeight,
   });
+
+  ItemMotherBabySizeOverview.fromData(PregnancyBabySize data):
+    image = Container(color: Manifest.theme.colorPrimary,),
+    sizeString = data.sizeString,
+    babyLen = data.babyLen,
+    babyWeight = data.babyWeight
+  ;
 
   @override
   Widget build(BuildContext context) {

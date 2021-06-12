@@ -5,8 +5,11 @@ import 'package:flutter/material.dart';
 
 import 'package:common/config/manifest.dart';
 import 'package:common/ui/page/frames.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sibunda_app/bloc/kehamilanku_bloc.dart';
 import 'package:sibunda_app/cob.dart';
 import 'package:sibunda_app/config/routes.dart';
+import 'package:sibunda_app/di/bloc_di.dart';
 import 'package:sibunda_app/ui/page/form_get_started/do_mother_have_pregnancy_page.dart';
 import 'package:sibunda_app/ui/page/form_get_started/mother_hpl_page.dart';
 import 'package:sibunda_app/ui/page/home/home_page.dart';
@@ -48,7 +51,11 @@ class MyApp extends StatelessWidget {
         body: Expanded(
           child: Container(
             color: grey_calmer,
-            child: KehamilankuHomePage(),
+            child: BlocProvider<PregnancyHomeBloc>(
+              create: (ctx) => BlocDi.pregnancyHomeBloc,
+              child: KehamilankuHomePage(),
+            ),
+
           ),
         ), //DoMotherHavePregnancyPage(), //SplashPage(), //MotherHplPage(),//CobPage(), //,
 /*

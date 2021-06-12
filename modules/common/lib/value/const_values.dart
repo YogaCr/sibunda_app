@@ -40,4 +40,27 @@ class Const {
   static const KEY_BIRTH_CERT_NO = "no_akte";
   static const KEY_JKN_START_DATE = "tgl_berlaku_jkn";
   static const KEY_HOSPITAL_MEDIC_NO = "no_catatan_medis_rs";
+
+  static const KEY_VISIT_DATE = "tanggal_periksa";
+  static const KEY_VISIT_PLACE = "tempat_periksa";
+  static const KEY_CHECKER_NAME = "nama_pemeriksa";
+  static const KEY_MOTHER_DIFFICULTY = "keluhan_bunda";
+  static const KEY_PREGNANCY_AGE = "usia_kehamilan";
+  static const KEY_BABY_GENDER = "kelamin_bayi";
+  static const KEY_FUTURE_VISIT_DATE = "tanggal_periksa_kembali";
+  static const KEY_HPHT = "hpht";
+  static const KEY_HPL = "hpl";
+  static const KEY_MOTHER_WEIGHT = "berat_badan_bunda";
+  static const KEY_MOTHER_WEIGHT_DIFF = "kenaikan_berat_badan_bunda";
+  static const KEY_MOTHER_HEIGHT = "tinggi_badan_bunda";
+  static const KEY_TFU = "tfu";
+  static const KEY_DJJ = "djj";
+  static const KEY_SYSTOLIC_PRESSURE = "tekanan_darah_sistolik";
+  static const KEY_DIASTOLIC_PRESSURE = "tekanan_darah_diastolik";
+  static const KEY_MAP = "map";
+  static const KEY_BABY_MOVEMENT = "gerakan_bayi";
+  static const KEY_DRUG_PRESCRIPT = "resep_obat";
+  static const KEY_DRUG_ALLERGY = "alergi_obat";
+  static const KEY_DISEASE_HISTORY = "riwayat_penyakit";
+  static const KEY_SPECIAL_NOTE = "catatan_khusus";
 }

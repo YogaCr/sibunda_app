@@ -5,6 +5,7 @@ import 'package:common/ui/widget/bloc/BlocFormBuilder.dart';
 import 'package:common/ui/widget/items_kehamilanku.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:sibunda_app/bloc/family_form_bloc.dart';
+import 'package:sibunda_app/bloc/kehamilanku_bloc.dart';
 
 class KehamilankuTrimesterFormPage extends StatelessWidget {
 
@@ -24,7 +25,7 @@ class KehamilankuTrimesterFormPage extends StatelessWidget {
             "Form Pemeriksaan Bunda",
             style: SibTextStyles.size_0_bold,
           ),
-          BlocMultiFieldFormBuilder<FatherFormBloc>.defaultInputField(), //TODO ganti jenis form bloc
+          BlocMultiFieldFormBuilder<PregnancyCheckBloc>.defaultInputField(), //TODO ganti jenis form bloc
         ],
       ),
     );
