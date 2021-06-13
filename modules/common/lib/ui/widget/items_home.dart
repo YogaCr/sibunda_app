@@ -1,5 +1,6 @@
 import 'package:common/config/_config.dart';
 import 'package:common/data/model/home_data.dart';
+import 'package:common/data/model/notif_data.dart';
 import 'package:common/res/theme/_theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -142,18 +143,29 @@ class ItemNotif extends StatelessWidget {
     this.bgColor = grey_calm,
   });
 
+  ItemNotif.fromData(HomeNotifMsg data, {this.bgColor = grey_calm}):
+     title = data.title,
+     content = data.desc,
+     timestamp = data.time,
+     image = Container(color: Manifest.theme.colorPrimary,) // TODO: img
+  ;
 
   @override
   Widget build(BuildContext context) {
     final imgChild = Container(
       margin: EdgeInsets.only(right: _paddingSmall),
-      child: ClipRRect(
-        borderRadius: BorderRadius.all(Radius.circular(_cornerRadius)),
-        child: SizedBox(
-          width: _size_2,
-          height: _size_2,
-          child: image,
-        ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.all(Radius.circular(_cornerRadius)),
+            child: SizedBox(
+              width: _size_2,
+              height: _size_2,
+              child: image,
+            ),
+          ),
+        ],
       ),
     );
 
@@ -161,7 +173,7 @@ class ItemNotif extends StatelessWidget {
       borderRadius: BorderRadius.all(Radius.circular(_cornerRadius)),
       child: Container(
         width: double.infinity,
-        height: 70,
+        constraints: BoxConstraints(minHeight: 70,),
         color: bgColor,
         child: Padding(
           padding: EdgeInsets.all(10),
@@ -170,20 +182,43 @@ class ItemNotif extends StatelessWidget {
               Row(
                 children: [
                   imgChild,
-                  Column(
-                    children: [
-                      Text(
-                        title,
-                        style: SibTextStyles.size_min_1,
-                      ),
-                      Text(
-                        content,
-                        style: SibTextStyles.size_min_2,
-                      ),
-                    ],
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          title,
+                          style: SibTextStyles.size_min_1,
+                        ),
+                        SizedBox(height: 10,),
+                        Text(
+                          content,
+                          style: SibTextStyles.size_min_2,
+                        ),
+                        SizedBox(height: 5,),
+                      ],
+                    ),
                   ),
                 ],
               ),
+/*
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Container(
+                      margin: EdgeInsets.only(bottom: 10),
+                      child: Text(
+                        timestamp,
+                        style: SibTextStyles.size_min_3_colorPrimary,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+ */
+///*
               Align(
                 alignment: Alignment.bottomRight,
                 child: Container(
@@ -194,6 +229,7 @@ class ItemNotif extends StatelessWidget {
                   ),
                 ),
               ),
+// */
             ],
           ),
         ),
@@ -217,6 +253,12 @@ class ItemMessage extends StatelessWidget {
     required this.timestamp,
   });
 
+  ItemMessage.fromData(HomeNotifMsg data):
+      title = data.title,
+      content = data.desc,
+      timestamp = data.time,
+      image = Container(color: Manifest.theme.colorPrimary,) // TODO: img
+  ;
 
   @override
   Widget build(BuildContext context) {
@@ -241,18 +283,22 @@ class ItemMessage extends StatelessWidget {
                   Text(
                     title,
                     style: SibTextStyles.size_min_1,
+                    textAlign: TextAlign.center,
                   ),
+                  SizedBox(height: 10,),
                   Text(
                     content,
                     style: SibTextStyles.size_min_2,
+                    textAlign: TextAlign.center,
                   ),
+                  SizedBox(height: 10,),
                 ],
               ),
             ),
             Align(
               alignment: Alignment.bottomRight,
               child: Text(
-                content,
+                timestamp,
                 style: SibTextStyles.size_min_2_colorPrimary,
               ),
             ),
@@ -265,14 +311,12 @@ class ItemMessage extends StatelessWidget {
       borderRadius: BorderRadius.all(Radius.circular(_cornerRadius)),
       child: Container(
         color: grey_calm,
-        child: SizedBox(
-          height: 250,
-          child: Column(
-            children: [
-              imgChild,
-              txtChild,
-            ],
-          ),
+        constraints: BoxConstraints(minHeight: 250, maxHeight: 300),
+        child: Column(
+          children: [
+            imgChild,
+            txtChild,
+          ],
         ),
       ),
     );

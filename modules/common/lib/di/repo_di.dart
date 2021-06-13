@@ -2,6 +2,7 @@ import 'package:common/data/repo/AuthRepo.dart';
 import 'package:common/data/repo/family_repo.dart';
 import 'package:common/data/repo/home_repo.dart';
 import 'package:common/data/repo/kehamilanku_repo.dart';
+import 'package:common/data/repo/notif_repo.dart';
 
 class RepoDi {
   RepoDi._();
@@ -12,6 +13,7 @@ class RepoDi {
   static HomeStatusRepo get homeStatusRepo => HomeStatusRepoDummy.obj; //AuthApiRepo();
   static HomeMenuRepo get homeMenuRepo => HomeMenuRepoDummy.obj; //AuthApiRepo();
   static TipsRepo get tipsRepo => TipsRepoDummy.obj; //AuthApiRepo();
+  static NotifRepo get notifRepo => NotifRepoDummy.obj; //AuthApiRepo();
 
   //static FamilyRepo getFamilyRepo() => FamilyDummyRepo(); //AuthApiRepo();
   static MotherRepo get motherRepo => MotherRepoDummy.obj; //AuthApiRepo();

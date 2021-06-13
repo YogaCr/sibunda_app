@@ -1,4 +1,5 @@
 import 'package:common/data/model/auth_data.dart';
+import 'package:common/data/model/notif_data.dart';
 import 'package:common/res/string/_string.dart';
 import 'package:flutter/material.dart';
 
@@ -125,4 +126,16 @@ final dummyTipsList = <HomeTips>[
   HomeTips(desc: "Perkembangan Janin Usia 9 Minggu Kehamilan, Yuk Bun Ketahui Selengkapnya!", kind: "Kehamilan", imgLink: "",),
   HomeTips(desc: "Yuk Bun Ketahui Pola Asuh Bayi Baru Lahir Sampai Usia 1,5 Tahun", kind: "Kehamilan", imgLink: "",),
   HomeTips(desc: "Bagaimana Cara Memberikan ASI ke Bayi Baru Lahir 0-28 Hari (Neonatus)?", kind: "Kehamilan", imgLink: "",),
+];
+
+final dummyNotifList = <HomeNotifMsg>[
+  HomeNotifMsg(title: "Selamat Datang di SiBunda", desc: "Satu aplikasi untuk semua tahap kehamilan dan kesehatan bayi bunda, mulai dari usia 0 - 6 tahun", time: "12.00 - 11/05/2021", imgLink: "",),
+  HomeNotifMsg(title: "Sudahkah Anda Mandi?", desc: "Mandi dapat menyegarkan badan", time: "12.00 - 11/05/2021", imgLink: "",),
+  HomeNotifMsg(title: "Tahu kah Anda?", desc: "Minum air 1 liter per hari dapat menghilangkan rasa haus", time: "12.00 - 11/05/2021", imgLink: "",),
+];
+
+final dummyMessageList = <HomeNotifMsg>[
+  HomeNotifMsg(title: "Bunda, Pastikan Kehamilan Bunda Sehat Ya", desc: "Jangan lupa untuk periksa rutin ya, serta selalu isikan data perkembangan bunda dan calon buah hati di aplikasi ya.", time: "12.00 - 11/05/2021", imgLink: "",),
+  HomeNotifMsg(title: "Sudahkah Anda Mandi?", desc: "Mandi dapat menyegarkan badan", time: "12.00 - 11/05/2021", imgLink: "",),
+  HomeNotifMsg(title: "Tahu kah Anda?", desc: "Minum air 1 liter per hari dapat menghilangkan rasa haus", time: "12.00 - 11/05/2021", imgLink: "",),
 ];

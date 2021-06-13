@@ -3,6 +3,7 @@ import 'package:sibunda_app/bloc/auth_form_bloc.dart';
 import 'package:sibunda_app/bloc/family_form_bloc.dart';
 import 'package:sibunda_app/bloc/home_bloc.dart';
 import 'package:sibunda_app/bloc/kehamilanku_bloc.dart';
+import 'package:sibunda_app/bloc/notif_bloc.dart';
 
 class BlocDi {
   BlocDi._();
@@ -20,6 +21,8 @@ class BlocDi {
   static PregnancyHomeBloc get pregnancyHomeBloc => PregnancyHomeBloc(
     foodRepo: RepoDi.foodRepo, pregnancyRepo: RepoDi.pregnancyRepo,
   );
+
+  static NotifBloc get notifBloc => NotifBloc(RepoDi.notifRepo);
 
   static PregnancyCheckBloc get pregnancyCheckFormBloc => PregnancyCheckBloc(RepoDi.pregnancyCheckRepo);
 

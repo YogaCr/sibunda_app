@@ -9,6 +9,7 @@ import 'package:sibunda_app/bloc/family_form_bloc.dart';
 import 'package:common/di/_di.dart';
 import 'package:sibunda_app/bloc/home_bloc.dart';
 import 'package:sibunda_app/bloc/kehamilanku_bloc.dart';
+import 'package:sibunda_app/bloc/notif_bloc.dart';
 import 'package:sibunda_app/di/bloc_di.dart';
 import 'package:sibunda_app/ui/page/_page.dart';
 import 'package:common/bloc/bloc_extension.dart';
@@ -49,7 +50,7 @@ class SibRoutes {
     body: HomePage().inBlocProvider<HomeBloc>((ctx) => BlocDi.homeBloc),
   ));
   static final notifAndMessagePage = SibRoute("NotifAndMessagePage", HomePage, (ctx) => MainFrame(
-    body: HomeNotifAndMessagePage(),
+    body: HomeNotifAndMessagePage().inBlocProvider<NotifBloc>((ctx) => BlocDi.notifBloc),
   ));
 
   static final motherDataPage = SibRoute("MotherDataPage", MotherDataPage, (ctx) => MainFrame(
@@ -116,7 +117,7 @@ class SibRoutes {
 class PregnancyCheckPageRoute {
   PregnancyCheckPageRoute._();
 
-  final SibRoute route = SibRoute("", KehamilankuTrimesterFormPage, (ctx) => MainFrame(
+  final SibRoute _route = SibRoute("KehamilankuTrimesterFormPage", KehamilankuTrimesterFormPage, (ctx) => MainFrame(
     body: MultiBlocProvider(
       child: KehamilankuTrimesterFormPage(),
       providers: [
@@ -127,6 +128,6 @@ class PregnancyCheckPageRoute {
   ));
 
   void go(BuildContext context, MotherTrimester data) {
-    route.goToPage(context, args: {Const.KEY_TRIMESTER : data});
+    _route.goToPage(context, args: {Const.KEY_TRIMESTER : data});
   }
 }
