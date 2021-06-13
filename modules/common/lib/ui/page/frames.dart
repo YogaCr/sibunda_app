@@ -74,7 +74,7 @@ class PlainBackFrame extends StatelessWidget {
     ),
   );
 }
-
+/*
 class TopBarTitleAndBackFrame extends StatelessWidget {
   final Widget body;
   final String title;
@@ -185,6 +185,7 @@ class TopBarTabFrame extends StatelessWidget {
     );
   }
 }
+ */
 
 class Frame extends StatelessWidget {
   final Widget body;

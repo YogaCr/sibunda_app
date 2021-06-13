@@ -2,6 +2,24 @@
 import 'package:common/ui/widget/_intermediate_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:common/ui/page/secondary_frames.dart';
+
+class HomeNotifAndMessagePage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return TopBarTabFrame(
+      title: "Notifikasi",
+      tabs: [
+        Tab(text: "Notifikasi",),
+        Tab(text: "Pesan",),
+      ],
+      tabViews: [
+        HomeNotifPage(),
+        HomeMessagePage(),
+      ],
+    );
+  }
+}
 
 class HomeNotifPage extends StatelessWidget {
 

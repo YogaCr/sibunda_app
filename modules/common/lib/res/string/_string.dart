@@ -80,4 +80,8 @@ class Strings {
   static const drug_allergy =  "Alergi Obat";
   static const disease_history =  "Riwayat Penyakit";
   static const special_note =  "Catatan Khusus";
+
+  static const my_pregnancy =  "Kehamilanku";
+  static const my_baby =  "Bayiku";
+  static const covid_19 =  "Covid-19";
 }

@@ -1,7 +1,10 @@
 import 'package:common/data/model/auth_data.dart';
+import 'package:common/res/string/_string.dart';
+import 'package:flutter/material.dart';
 
 import 'model/family_data.dart';
 import 'model/kehamilanku_data.dart';
+import 'model/home_data.dart';
 
 final dummyAccessToken = "aagajki1831huhf1i38y13";
 final dummySignUpData1 = SignUpData(name: "ayu", email: "a@a.a", password: "ayu123");
@@ -99,3 +102,27 @@ List<MotherFoodRecom> dummyFoodRecomList(int week) => [
 ];
 
 final dummyPregnancyBabySize = PregnancyBabySize(sizeString: "Selada Kampung", babyWeight: 18.3, babyLen: 5.1,);
+
+final dummyProfile = Profile(
+  name: "Ayu",
+  age: 21,
+  imgLink: "",
+);
+
+final dummyStatusList = <HomeStatus>[
+  HomeStatus(desc: "Selamat Berat Badan Bunda Normal", imgLink: "", color: Colors.green,),
+  HomeStatus(desc: "Gerakan Anak Bunda Kurang Nih Bun!", imgLink: "", color: Colors.red,),
+];
+
+final dummyMenuList = <HomeMenu>[
+  HomeMenu(name: Strings.my_pregnancy, imgLink: "",),
+  HomeMenu(name: Strings.my_baby, imgLink: "",),
+  HomeMenu(name: Strings.covid_19, imgLink: "",),
+];
+
+final dummyTipsList = <HomeTips>[
+  HomeTips(desc: "Nih Bun 5 Makanan Rekomendasi untuk Bunda Hamil Trimester 2", kind: "Kehamilan", imgLink: "",),
+  HomeTips(desc: "Perkembangan Janin Usia 9 Minggu Kehamilan, Yuk Bun Ketahui Selengkapnya!", kind: "Kehamilan", imgLink: "",),
+  HomeTips(desc: "Yuk Bun Ketahui Pola Asuh Bayi Baru Lahir Sampai Usia 1,5 Tahun", kind: "Kehamilan", imgLink: "",),
+  HomeTips(desc: "Bagaimana Cara Memberikan ASI ke Bayi Baru Lahir 0-28 Hari (Neonatus)?", kind: "Kehamilan", imgLink: "",),
+];

@@ -44,17 +44,7 @@ class SibRoutes {
     body: HomePage().inBlocProvider<LogoutFormBloc>((ctx) => BlocDi.logoutFormBloc),
     padding: EdgeInsets.all(20),
   ));
-  static final notifAndMessagePage = SibRoute("NotifAndMessagePage", HomePage, (ctx) => TopBarTabFrame(
-    title: "Notifikasi",
-    tabs: [
-      Tab(text: "Notifikasi",),
-      Tab(text: "Pesan",),
-    ],
-    tabViews: [
-      HomeNotifPage(),
-      HomeMessagePage(),
-    ],
-  ));
+  static final notifAndMessagePage = SibRoute("NotifAndMessagePage", HomePage, (ctx) => HomeNotifAndMessagePage());
 
   static final motherDataPage = SibRoute("MotherDataPage", MotherDataPage, (ctx) => MainFrame(
     body: MotherDataPage().inBlocProvider<MotherFormBloc>((ctx) => BlocDi.motherFormBloc),
@@ -77,22 +67,11 @@ class SibRoutes {
     padding: EdgeInsets.all(20),
   ));
 
-  static final pregnancyHomePage = SibRoute("", KehamilankuHomePage, (ctx) => TopBarProfileFrame( //NoAppB
-    name: 'Ayu',// arFrame
-    desc: "21 tahun",
-    image: Container(
-      color: Colors.green,
-    ),
-    actionBtn: Icon(Icons.notifications_none_rounded, size: 30, color: Colors.white,),
-    onActionBtnClick: (c) => SibRoutes.notifAndMessagePage.goToPage(c), //showSnackBar(c, "Notifikasi"),
-// */
-    body: Expanded(
-      child: Container(
-        color: grey_calmer,
-        child: KehamilankuHomePage().inBlocProvider<PregnancyHomeBloc>((ctx) => BlocDi.pregnancyHomeBloc),
-      ),
-    ), //
+  static final pregnancyHomePage = SibRoute("", KehamilankuHomePage, (ctx) => MainFrame(
+    body: KehamilankuHomePage().inBlocProvider<PregnancyHomeBloc>((ctx) => BlocDi.pregnancyHomeBloc),
   ));
+
+  //
 /*
   static final pregnancyHomePage = SibRoute("", KehamilankuHomePage, (ctx) => TopBarProfileFrame( //NoAppB
     name: 'Ayu',// arFrame

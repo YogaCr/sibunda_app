@@ -1,5 +1,6 @@
 
 import 'package:common/res/theme/_theme.dart';
+import 'package:common/ui/page/secondary_frames.dart';
 import 'package:common/ui/widget/custom_bottom_nav_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +10,9 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    TopBarProfileFrame(
+      name: ,
+    );
     return Expanded(
       child: Stack(
         children: [
