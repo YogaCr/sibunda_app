@@ -14,6 +14,8 @@ class BlocDi {
     foodRepo: RepoDi.foodRepo, pregnancyRepo: RepoDi.pregnancyRepo,
   );
 
+  static PregnancyCheckBloc get pregnancyCheckFormBloc => PregnancyCheckBloc(RepoDi.pregnancyCheckRepo);
+
   static MotherFormBloc get motherFormBloc => MotherFormBloc(RepoDi.motherRepo);
   static FatherFormBloc get fatherFormBloc => FatherFormBloc(RepoDi.fatherRepo);
   static ChildFormBloc get childFormBloc => ChildFormBloc(RepoDi.childRepo);

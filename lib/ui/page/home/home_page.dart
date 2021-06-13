@@ -10,9 +10,11 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+/*
     TopBarProfileFrame(
       name: ,
     );
+ */
     return Expanded(
       child: Stack(
         children: [

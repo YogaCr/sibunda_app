@@ -69,10 +69,12 @@ class PregnancyHomeBloc extends Bloc<PregnancyHomeEvent, PregnancyHomeState> {
   MotherPregnancyAgeOverview? _ageOverview;
   List<MotherTrimester>? _trimesterList;
   List<MotherFoodRecom>? _foodRecomList;
+  PregnancyBabySize? _babySize;
 
   MotherPregnancyAgeOverview? get ageOverview => _ageOverview;
   List<MotherTrimester>? get trimesterList => _trimesterList;
   List<MotherFoodRecom>? get foodRecomList => _foodRecomList;
+  PregnancyBabySize? get babySize => _babySize;
 
   PregnancyHomeBloc({
     required this.foodRepo,
@@ -85,26 +87,26 @@ class PregnancyHomeBloc extends Bloc<PregnancyHomeEvent, PregnancyHomeState> {
       final res = await pregnancyRepo.getMotherPregnancyAgeOverview();
       if(res is Success<MotherPregnancyAgeOverview>) {
         _ageOverview = res.data;
-        yield OnPregnancyHomeAgeOverviewDataChanged(_ageOverview!);
-      } else {
-        yield OnPregnancyHomeErrorGetData(event: event, failure: res as Fail);
       }
+      yield OnPregnancyHomeAgeOverviewDataChanged(res);
     } else if(event is GetTrimester) {
       final res = await pregnancyRepo.getMotherTrimester();
       if(res is Success<List<MotherTrimester>>) {
         _trimesterList = res.data;
-        yield OnPregnancyHomeTrimesterDataChanged(_trimesterList!);
-      } else {
-        yield OnPregnancyHomeErrorGetData(event: event, failure: res as Fail);
       }
+      yield OnPregnancyHomeTrimesterDataChanged(res);
     } else if(event is GetFoodRecom) {
       final res = await foodRepo.getMotherFoodRecoms(event.pregnancyWeekAge);
       if(res is Success<List<MotherFoodRecom>>) {
         _foodRecomList = res.data;
-        yield OnPregnancyHomeFoodRecomDataChanged(_foodRecomList!);
-      } else {
-        yield OnPregnancyHomeErrorGetData(event: event, failure: res as Fail);
       }
+      yield OnPregnancyHomeFoodRecomDataChanged(res);
+    } else if(event is GetBabySize) {
+      final res = await pregnancyRepo.getPregnancyBabySize(event.pregnancyWeekAge);
+      if(res is Success<PregnancyBabySize>) {
+        _babySize = res.data;
+      }
+      yield OnPregnancyBabySizeDataChanged(res);
     }
   }
 

@@ -7,10 +7,8 @@ abstract class PregnancyHomeState extends Equatable {}
 
 
 class OnPregnancyHomeAgeOverviewDataChanged extends PregnancyHomeState {
-  final MotherPregnancyAgeOverview data;
-
+  final Result<MotherPregnancyAgeOverview> data;
   OnPregnancyHomeAgeOverviewDataChanged(this.data);
-
   @override
   List<Object?> get props => [data];
 }
@@ -21,24 +19,27 @@ class OnPregnancyHomeInit extends PregnancyHomeState {
 }
 
 class OnPregnancyHomeTrimesterDataChanged extends PregnancyHomeState {
-  final List<MotherTrimester> data;
-
+  final Result<List<MotherTrimester>> data;
   OnPregnancyHomeTrimesterDataChanged(this.data);
-
   @override
   List<Object?> get props => [data];
 }
 
 class OnPregnancyHomeFoodRecomDataChanged extends PregnancyHomeState {
-  final List<MotherFoodRecom> data;
-
+  final Result<List<MotherFoodRecom>> data;
   OnPregnancyHomeFoodRecomDataChanged(this.data);
-
   @override
   List<Object?> get props => [data];
 }
 
+class OnPregnancyBabySizeDataChanged extends PregnancyHomeState {
+  final Result<PregnancyBabySize> data;
+  OnPregnancyBabySizeDataChanged(this.data);
+  @override
+  List<Object?> get props => [data];
+}
 
+/*
 class OnPregnancyHomeErrorGetData extends PregnancyHomeState {
   final PregnancyHomeEvent event;
   final Fail failure;
@@ -51,3 +52,4 @@ class OnPregnancyHomeErrorGetData extends PregnancyHomeState {
   @override
   List<Object?> get props => [event, failure];
 }
+ */

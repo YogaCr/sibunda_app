@@ -24,6 +24,9 @@ class SibTextStyles {
   static final size_min_3 = default_.copyWith(fontSize: 8);
   static final size_min_4 = default_.copyWith(fontSize: 6);
 
+
+  static final size_min_2_black = size_min_2.copyWith(color: Colors.black);
+
   static final size_min_1_grey = size_min_1.copyWith(color: Colors.grey);
 
   static final size_0_colorPrimary = default_.copyWith(color: Manifest.theme.colorPrimary);

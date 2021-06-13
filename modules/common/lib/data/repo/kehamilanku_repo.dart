@@ -34,7 +34,7 @@ class MotherFoodRecomRepoDummy with MotherFoodRecomRepo {
 mixin MotherPregnancyRepo {
   Future<Result<List<MotherTrimester>>> getMotherTrimester();
   Future<Result<MotherPregnancyAgeOverview>> getMotherPregnancyAgeOverview();
-  Future<Result<PregnancyBabySize>> getPregnancyBabySize();
+  Future<Result<PregnancyBabySize>> getPregnancyBabySize(int pregnancyWeekAge);
 }
 
 class MotherPregnancyRepoDummy with MotherPregnancyRepo {
@@ -46,5 +46,5 @@ class MotherPregnancyRepoDummy with MotherPregnancyRepo {
   @override
   Future<Result<MotherPregnancyAgeOverview>> getMotherPregnancyAgeOverview() async => Success(dummyPregnancyAgeOverview);
   @override
-  Future<Result<PregnancyBabySize>> getPregnancyBabySize() async => Success(dummyPregnancyBabySize);
+  Future<Result<PregnancyBabySize>> getPregnancyBabySize(int pregnancyWeekAge) async => Success(dummyPregnancyBabySize);
 }

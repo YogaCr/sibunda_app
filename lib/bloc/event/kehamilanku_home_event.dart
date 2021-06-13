@@ -18,3 +18,10 @@ class GetFoodRecom extends PregnancyHomeEvent {
   @override
   List<Object?> get props => [pregnancyWeekAge];
 }
+
+class GetBabySize extends PregnancyHomeEvent {
+  final int pregnancyWeekAge;
+  GetBabySize(this.pregnancyWeekAge);
+  @override
+  List<Object?> get props => [pregnancyWeekAge];
+}

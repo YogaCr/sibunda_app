@@ -1,7 +1,10 @@
 import 'package:common/config/routes.dart';
+import 'package:common/data/model/kehamilanku_data.dart';
 import 'package:common/res/theme/_theme.dart';
 import 'package:common/ui/page/frames.dart';
+import 'package:common/value/const_values.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sibunda_app/bloc/family_form_bloc.dart';
 import 'package:common/di/_di.dart';
 import 'package:sibunda_app/bloc/kehamilanku_bloc.dart';
@@ -17,6 +20,7 @@ import 'package:sibunda_app/ui/page/form_get_started/do_mother_have_pregnancy_pa
 import 'package:sibunda_app/ui/page/home/home_page.dart';
 import 'package:sibunda_app/ui/page/home/notif_and_message_page.dart';
 import 'package:sibunda_app/ui/page/mother/kehamilanku_home_page.dart';
+import 'package:sibunda_app/ui/page/mother/kehamilanku_trimester_form_page.dart';
 
 class SibRoutes {
   SibRoutes._();
@@ -71,6 +75,19 @@ class SibRoutes {
     body: KehamilankuHomePage().inBlocProvider<PregnancyHomeBloc>((ctx) => BlocDi.pregnancyHomeBloc),
   ));
 
+  static final pregnancyCheckPage = PregnancyCheckPageRoute._();
+/*
+  static final pregnancyCheckPage = SibRoute("", KehamilankuTrimesterFormPage, (ctx) => MainFrame(
+    body: MultiBlocProvider(
+      child: KehamilankuTrimesterFormPage(),
+      providers: [
+        BlocProvider(create: (ctx) => BlocDi.pregnancyHomeBloc,),
+        BlocProvider(create: (ctx) => BlocDi.pregnancyCheckFormBloc,),
+      ],
+    ),//.inBlocProvider<PregnancyHomeBloc>((ctx) => BlocDi.pregnancyHomeBloc),
+  ));
+ */
+
   //
 /*
   static final pregnancyHomePage = SibRoute("", KehamilankuHomePage, (ctx) => TopBarProfileFrame( //NoAppB
@@ -90,4 +107,24 @@ class SibRoutes {
     ), //
   ));
 */
+}
+
+/// Special designed route with [SibRoute] inside it.
+/// The purpose of this class is to force outside library to add [MotherTrimester] as a argument to the page.
+class PregnancyCheckPageRoute {
+  PregnancyCheckPageRoute._();
+
+  final SibRoute route = SibRoute("", KehamilankuTrimesterFormPage, (ctx) => MainFrame(
+    body: MultiBlocProvider(
+      child: KehamilankuTrimesterFormPage(),
+      providers: [
+        BlocProvider(create: (ctx) => BlocDi.pregnancyHomeBloc,),
+        BlocProvider(create: (ctx) => BlocDi.pregnancyCheckFormBloc,),
+      ],
+    ),//.inBlocProvider<PregnancyHomeBloc>((ctx) => BlocDi.pregnancyHomeBloc),
+  ));
+
+  void go(BuildContext context, MotherTrimester data) {
+    route.goToPage(context, args: {Const.KEY_TRIMESTER : data});
+  }
 }

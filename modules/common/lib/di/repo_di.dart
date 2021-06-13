@@ -12,4 +12,5 @@ class RepoDi {
   static ChildRepo get childRepo => ChildRepoDummy.obj; //AuthApiRepo();
   static MotherFoodRecomRepo get foodRepo => MotherFoodRecomRepoDummy.obj; //AuthApiRepo();
   static MotherPregnancyRepo get pregnancyRepo => MotherPregnancyRepoDummy.obj; //AuthApiRepo();
+  static PregnancyCheckRepo get pregnancyCheckRepo => PregnancyCheckRepoDummy.obj; //AuthApiRepo();
 }

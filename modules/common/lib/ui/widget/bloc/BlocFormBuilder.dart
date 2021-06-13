@@ -47,12 +47,15 @@ class BlocMultiFieldFormBuilder<Bloc extends MultiFieldFormBloc> extends BlocFor
   @override
   Widget build(BuildContext context) {
     if(!_builderHasBeenInit){
-      final bloc = BlocProvider.of<MultiFieldFormBloc>(context);
-      builders = List.generate(bloc.fieldCount, (index) => (ctx, formState, i) => TxtInput(
-        label: bloc.labelKeyPairList[i].item1,
-        textController: bloc.inputTxtList[i],
-        textValidator: (txt) => txtValidator?.call(i, txt) ?? (bloc.inputValidityList[i].value = txt.isNotEmpty),
-        errorText: errorTxtMap?[i] ?? Strings.please_enter_your_name,
+      final bloc = BlocProvider.of<Bloc>(context);
+      builders = List.generate(bloc.fieldCount, (index) => (ctx, formState, i) => Container(
+        margin: EdgeInsets.symmetric(vertical: 10),
+        child: TxtInput(
+          label: bloc.labelKeyPairList[i].item1,
+          textController: bloc.inputTxtList[i],
+          textValidator: (txt) => txtValidator?.call(i, txt) ?? (bloc.inputValidityList[i].value = txt.isNotEmpty),
+          errorText: errorTxtMap?[i] ?? Strings.please_enter_your_name,
+        ),
       ),);
     }
 

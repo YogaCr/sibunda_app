@@ -8,3 +8,18 @@ class GetProfileData extends HomeEvent {
   @override
   List<Object?> get props => [email];
 }
+
+class GetHomeStatusData extends HomeEvent {
+  @override
+  List<Object?> get props => [];
+}
+
+class GetHomeMenuData extends HomeEvent {
+  @override
+  List<Object?> get props => [];
+}
+
+class GetHomeTipsData extends HomeEvent {
+  @override
+  List<Object?> get props => [];
+}

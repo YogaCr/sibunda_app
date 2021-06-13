@@ -37,9 +37,12 @@ class MyApp extends StatelessWidget {
         // counter didn't reset back to zero; the application is not restarted.
         primarySwatch: pink_swatch,
       ),
+
 // */
+      home: SibRoutes.pregnancyHomePage.build(context),
+/*
       home: TopBarProfileFrame( //NoAppB
-///*
+/// *
         name: 'Ayu',// arFrame
         desc: "21 tahun",
         image: Container(
@@ -47,7 +50,7 @@ class MyApp extends StatelessWidget {
         ),
         actionBtn: Icon(Icons.notifications_none_rounded, size: 30, color: Colors.white,),
         onActionBtnClick: (c) => SibRoutes.notifAndMessagePage.goToPage(c), //showSnackBar(c, "Notifikasi"),
-// */
+// * /
         body: Expanded(
           child: Container(
             color: grey_calmer,
@@ -58,6 +61,7 @@ class MyApp extends StatelessWidget {
 
           ),
         ), //DoMotherHavePregnancyPage(), //SplashPage(), //MotherHplPage(),//CobPage(), //,
+ */
 /*
         topBarChild: Row(
           children: [
@@ -68,7 +72,7 @@ class MyApp extends StatelessWidget {
         ),
  */
         //padding: EdgeInsets.all(20),
-      )
+//      )
       //MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }

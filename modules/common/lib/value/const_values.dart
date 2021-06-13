@@ -1,4 +1,6 @@
 class Const {
+  Const._();
+
   static const ENV = "env";
 
   static const HEADER_AUTH = "Authorization";
@@ -17,6 +19,7 @@ class Const {
   static const KEY_CLIENT_ID = "client_id";
   static const KEY_CLIENT_SECRET = "client_secret";
 
+  static const KEY_TRIMESTER = "trimester";
   static const KEY_NIK = "nik";
   static const KEY_JKN = "no_jkn";
   static const KEY_FASKES1 = "faskes_tk1";

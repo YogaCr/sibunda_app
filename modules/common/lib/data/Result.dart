@@ -14,3 +14,7 @@ class Fail<T> extends Result<T> {
   final dynamic data;
   Fail({this.message, this.error, this.data, int? code = -1}) : super(code ?? -1);
 }
+
+class Loading<T> extends Result<T> {
+  Loading([int? code = 0]) : super(code ?? 0);
+}

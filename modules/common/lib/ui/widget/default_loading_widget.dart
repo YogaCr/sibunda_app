@@ -9,3 +9,12 @@ class DefaultLoading extends StatelessWidget {
     color: Manifest.theme.colorPrimary,
   );
 }
+
+Widget get defaultLoading => Container(
+  height: 80,
+  color: Manifest.theme.colorPrimary,
+);
+
+Widget get defaultSliverLoading => SliverToBoxAdapter(
+  child: defaultLoading,
+);

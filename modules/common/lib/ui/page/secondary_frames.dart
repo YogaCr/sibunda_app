@@ -6,31 +6,52 @@ import 'package:flutter/material.dart';
 
 const _topBarHeight = 120.0;
 const _stdTopMargin = _topBarHeight + 10;
+const _stdContentAreaTopMargin = _topBarHeight - 20;
+
+/// Safe area below TopBar with default design of this app for scroll view mode.
+class BelowTopBarScrollContentArea extends StatelessWidget {
+  final List<Widget> slivers;
+
+  BelowTopBarScrollContentArea(this.slivers);
+
+  @override
+  Widget build(BuildContext context) {
+    final usedSlivers = <Widget>[
+      SliverToBoxAdapter(child: SizedBox(height: _stdTopMargin,),),
+    ];
+    usedSlivers.addAll(slivers);
+    return CustomScrollView(
+      slivers: usedSlivers,
+    );
+  }
+}
 
 class TopBarTitleAndBackFrame extends StatelessWidget {
   final Widget body;
   final String title;
   final Widget? topBarChild;
   final EdgeInsets? padding;
+  final bool isScroll;
 
   TopBarTitleAndBackFrame({
     required this.body,
     required this.title,
     this.topBarChild,
-    this.padding
+    this.padding,
+    this.isScroll = false,
   });
 
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
+        Container(
+          margin: !isScroll ? EdgeInsets.only(top: _stdTopMargin) : null,
+          child: body,
+        ),
         RoundedTopNavBarTitleAndBack(
           title: title,
           bottomChild: topBarChild,
-        ),
-        Container(
-          margin: EdgeInsets.only(top: _stdTopMargin),
-          child: body,
         ),
       ],
     );
@@ -74,16 +95,16 @@ class TopBarProfileFrame extends StatelessWidget {
     return Stack(
 //        mainAxisSize: MainAxisSize.max,
       children: [
+        Container(
+          margin: EdgeInsets.only(top: _stdTopMargin),
+          child: Expanded(child: body,),
+        ),
         RoundedTopNavBarProfile(
           name: name,
           desc: desc,
           image: image,
           actionBtn: actionBtn,
           onActionBtnClick: onActionBtnClick,
-        ),
-        Container(
-          margin: EdgeInsets.only(top: _stdTopMargin),
-          child: Expanded(child: body,),
         ),
       ],
     );
@@ -110,13 +131,6 @@ class TopBarTabFrame extends StatelessWidget {
       child: Stack(
         //mainAxisSize: MainAxisSize.max,
         children: [
-          RoundedTopNavBarTitleAndBack(
-            title: title,
-            bottomChild: TabBar(
-              tabs: tabs,
-            ),
-          ),
-          //body,
           Container(
             margin: EdgeInsets.only(top: _stdTopMargin,),
             child: Expanded(
@@ -125,6 +139,13 @@ class TopBarTabFrame extends StatelessWidget {
               ),
             ),
           ),
+          RoundedTopNavBarTitleAndBack(
+            title: title,
+            bottomChild: TabBar(
+              tabs: tabs,
+            ),
+          ),
+          //body,
         ],
       ),
     );

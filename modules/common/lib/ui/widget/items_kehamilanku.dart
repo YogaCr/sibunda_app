@@ -413,7 +413,7 @@ class ItemMotherBabySizeOverview extends StatelessWidget {
 
     final babyLenChild = RichText(
       text: TextSpan(
-        style: SibTextStyles.size_min_2,
+        style: SibTextStyles.size_min_2_black,
         children: [
           TextSpan(text: "Panjang Bayi : "),
           TextSpan(text: "$babyLen inch", style: SibTextStyles.size_min_2_bold_colorPrimary),
@@ -423,7 +423,7 @@ class ItemMotherBabySizeOverview extends StatelessWidget {
 
     final babyWeightChild = RichText(
       text: TextSpan(
-        style: SibTextStyles.size_min_2,
+        style: SibTextStyles.size_min_2_black,
         children: [
           TextSpan(text: "Berat Bayi : "),
           TextSpan(text: "$babyWeight pounds", style: SibTextStyles.size_min_2_bold_colorPrimary),

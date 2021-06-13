@@ -20,7 +20,12 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   }): super(OnHomeInit());
 
   Profile? _profile;
+  List<HomeStatus>? _statusList;
+  List<HomeTips>? _tipsList;
+
   Profile? get profile => _profile;
+  List<HomeStatus>? get statusList => _statusList;
+  List<HomeTips>? get tipsList => _tipsList;
 
   @override
   Stream<HomeState> mapEventToState(HomeEvent event) async* {
@@ -29,6 +34,18 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       if(res is Success<Profile>) {
         _profile = res.data;
         yield OnProfileDataChanged(_profile!);
+      }
+    } else if(event is GetHomeStatusData) {
+      final res = await statusRepo.getHomeStatusList();
+      if(res is Success<List<HomeStatus>>) {
+        _statusList = res.data;
+        yield OnHomeStatusDataChanged(_statusList!);
+      }
+    } else if(event is GetHomeTipsData) {
+      final res = await tipsRepo.getHomeTipsList();
+      if(res is Success<List<HomeTips>>) {
+        _tipsList = res.data;
+        yield OnHomeTipsDataChanged(_tipsList!);
       }
     }
   }
