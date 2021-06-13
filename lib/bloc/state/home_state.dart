@@ -1,3 +1,4 @@
+import 'package:common/data/Result.dart';
 import 'package:common/data/model/home_data.dart';
 import 'package:equatable/equatable.dart';
 
@@ -9,28 +10,28 @@ class OnHomeInit extends HomeState {
 }
 
 class OnProfileDataChanged extends HomeState {
-  final Profile data;
+  final Result<Profile> data;
   OnProfileDataChanged(this.data);
   @override
   List<Object?> get props => [data];
 }
 
 class OnHomeStatusDataChanged extends HomeState {
-  final List<HomeStatus> data;
+  final Result<List<HomeStatus>> data;
   OnHomeStatusDataChanged(this.data);
   @override
   List<Object?> get props => [data];
 }
 
 class OnHomeMenuDataChanged extends HomeState {
-  final List<HomeMenu> data;
+  final Result<List<HomeMenu>> data;
   OnHomeMenuDataChanged(this.data);
   @override
   List<Object?> get props => [data];
 }
 
 class OnHomeTipsDataChanged extends HomeState {
-  final List<HomeTips> data;
+  final Result<List<HomeTips>> data;
   OnHomeTipsDataChanged(this.data);
   @override
   List<Object?> get props => [data];

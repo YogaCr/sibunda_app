@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
       ),
 
 // */
-      home: SibRoutes.pregnancyHomePage.build(context),
+      home: SibRoutes.homePage.build(context),
 /*
       home: TopBarProfileFrame( //NoAppB
 /// *

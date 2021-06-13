@@ -1,4 +1,5 @@
 import 'package:common/config/_config.dart';
+import 'package:common/data/model/home_data.dart';
 import 'package:common/res/theme/_theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -29,14 +30,19 @@ class ItemDashboardStatus extends StatelessWidget {
     this.bgColor = green_safe,
   });
 
+  ItemDashboardStatus.fromData(HomeStatus data):
+      image = Container(color: Manifest.theme.colorPrimary,), //TODO img
+      content = data.desc,
+      bgColor = data.color
+  ;
+
 
   @override
   Widget build(BuildContext context) {
-
-    final imgChild = ClipRRect(
-      borderRadius: BorderRadius.all(Radius.circular(_cornerRadius)),
-      child: Container(
-        margin: EdgeInsets.only(right: _paddingSmall),
+    final imgChild = Container(
+      margin: EdgeInsets.only(right: _paddingSmall),
+      child: ClipRRect(
+        borderRadius: BorderRadius.all(Radius.circular(_cornerRadius)),
         child: SizedBox(
           width: _size_3,
           height: _size_3,
@@ -75,35 +81,46 @@ class ItemDashboardStatus extends StatelessWidget {
 class ItemDashboardMenu extends StatelessWidget {
   final Widget image;
   final String text;
+  final void Function()? onClick;
 
   ItemDashboardMenu({
     required this.image,
     required this.text,
+    this.onClick
   });
+
+  ItemDashboardMenu.fromData(HomeMenu data, {this.onClick}):
+      image = Container(color: Manifest.theme.colorPrimary,), //TODO 13 Juni 2021: img
+      text = data.name
+  ;
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 100,
-      child: Column(
-        children: [
-          ClipRRect(
-            borderRadius: BorderRadius.all(Radius.circular(_cornerRadius)),
-            child: Container(
-              height: _size_2,
-              width: _size_2,
-              color: Manifest.theme.colorPrimary,
-              child: image,
+    return InkWell(
+      splashColor: Manifest.theme.colorOnPrimaryRipple,
+      onTap: onClick,
+      child: SizedBox(
+        height: 200,
+        child: Column(
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.all(Radius.circular(_cornerRadius)),
+              child: Container(
+                color: Manifest.theme.colorPrimary,
+                height: 70,
+                width: 70,
+                child: image,
+              ),
             ),
-          ),
-          Container(
-            margin: EdgeInsets.only(top: 10,),
-            child: Text(
-              text,
-              style: SibTextStyles.size_min_2_colorPrimary,
+            Container(
+              margin: EdgeInsets.only(top: 10,),
+              child: Text(
+                text,
+                style: SibTextStyles.size_min_2_colorPrimary,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -128,14 +145,13 @@ class ItemNotif extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-    final imgChild = ClipRRect(
-      borderRadius: BorderRadius.all(Radius.circular(_cornerRadius)),
-      child: Container(
-        margin: EdgeInsets.only(right: _paddingSmall),
+    final imgChild = Container(
+      margin: EdgeInsets.only(right: _paddingSmall),
+      child: ClipRRect(
+        borderRadius: BorderRadius.all(Radius.circular(_cornerRadius)),
         child: SizedBox(
-          width: _size_1,
-          height: _size_1,
+          width: _size_2,
+          height: _size_2,
           child: image,
         ),
       ),
@@ -207,33 +223,41 @@ class ItemMessage extends StatelessWidget {
     final imgChild = Flexible(
       flex: 1,
       fit: FlexFit.tight,
-      child: Container(
-        margin: EdgeInsets.only(bottom: 20),
-        child: image,
-      ),
+      child: image
     );
 
     final txtChild = Flexible(
       flex: 1,
       fit: FlexFit.tight,
-      child: Column(
-        children: [
-          Text(
-            title,
-            style: SibTextStyles.size_min_1,
-          ),
-          Text(
-            content,
-            style: SibTextStyles.size_min_2,
-          ),
-          Align(
-            alignment: Alignment.bottomRight,
-            child: Text(
-              content,
-              style: SibTextStyles.size_min_2_colorPrimary,
+      child: Container(
+        margin: EdgeInsets.only(top: 10),
+        padding: EdgeInsets.all(10),
+        child: Stack(
+          children: [
+            Align(
+              alignment: Alignment.topCenter,
+              child: Column(
+                children: [
+                  Text(
+                    title,
+                    style: SibTextStyles.size_min_1,
+                  ),
+                  Text(
+                    content,
+                    style: SibTextStyles.size_min_2,
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+            Align(
+              alignment: Alignment.bottomRight,
+              child: Text(
+                content,
+                style: SibTextStyles.size_min_2_colorPrimary,
+              ),
+            ),
+          ],
+        ),
       ),
     );
 
@@ -242,7 +266,7 @@ class ItemMessage extends StatelessWidget {
       child: Container(
         color: grey_calm,
         child: SizedBox(
-          height: 300,
+          height: 250,
           child: Column(
             children: [
               imgChild,
@@ -267,14 +291,20 @@ class ItemDashboardTips extends StatelessWidget {
     required this.kind,
   });
 
+  ItemDashboardTips.fromData(HomeTips data):
+      image = Container(color: Manifest.theme.colorPrimary,), //Todo: img
+      headline = data.desc,
+      kind = data.kind
+  ;
+
   @override
   Widget build(BuildContext context) {
     final parentHeight = 100.0;
 
-    final imgChild = ClipRRect(
-      borderRadius: BorderRadius.all(Radius.circular(15)),
-      child: Container(
-        margin: EdgeInsets.only(right: 20),
+    final imgChild = Container(
+      margin: EdgeInsets.only(right: 10),
+      child: ClipRRect(
+        borderRadius: BorderRadius.all(Radius.circular(15)),
         child: SizedBox(
           height: parentHeight,
           width: parentHeight,
@@ -286,7 +316,6 @@ class ItemDashboardTips extends StatelessWidget {
     final txtChild = Expanded( //Agak aneh karna expanded hanya expanded ke ukuran MainAxis dari parent.
       child: Container(
         height: parentHeight,
-        color: Colors.blue,
         child: Padding(
           padding: EdgeInsets.all(10),
           child: Stack(

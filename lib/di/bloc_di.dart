@@ -1,6 +1,7 @@
 import 'package:common/di/_di.dart';
 import 'package:sibunda_app/bloc/auth_form_bloc.dart';
 import 'package:sibunda_app/bloc/family_form_bloc.dart';
+import 'package:sibunda_app/bloc/home_bloc.dart';
 import 'package:sibunda_app/bloc/kehamilanku_bloc.dart';
 
 class BlocDi {
@@ -9,6 +10,12 @@ class BlocDi {
   static LoginFormBloc get loginFormBloc => LoginFormBloc(RepoDi.authRepo);
   static SignUpFormBloc get signUpFormBloc => SignUpFormBloc(RepoDi.authRepo);
   static LogoutFormBloc get logoutFormBloc => LogoutFormBloc(RepoDi.authRepo);
+  static HomeBloc get homeBloc => HomeBloc(
+    profileRepo: RepoDi.profileRepo,
+    statusRepo: RepoDi.homeStatusRepo,
+    menuRepo: RepoDi.homeMenuRepo,
+    tipsRepo: RepoDi.tipsRepo,
+  );
 
   static PregnancyHomeBloc get pregnancyHomeBloc => PregnancyHomeBloc(
     foodRepo: RepoDi.foodRepo, pregnancyRepo: RepoDi.pregnancyRepo,

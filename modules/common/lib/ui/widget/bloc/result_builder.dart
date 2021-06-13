@@ -51,10 +51,10 @@ Widget Function(BuildContext, S) buildReactiveBlocBuilderFunction<
   return (ctx, state) {
     final bloc = (currentBloc ??= BlocProvider.of<B>(ctx));
     return (state is SuccessState)
-        ? oldWidget = buildResult(
+        ? (oldWidget = buildResult<Data>(
             result: stateDataGetter(state),
             builder: builder,
-        )
+        ))
         : (oldWidget ??= ((blocData = blocDataGetter(bloc)) != null)
           ? builder(blocData!)
           : null) ?? defaultWidget ?? defaultLoading; //buildResult(result: result, builder: builder),

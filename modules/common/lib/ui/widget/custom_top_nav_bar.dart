@@ -72,7 +72,7 @@ class RoundedTopNavBarTitleAndBack extends StatelessWidget {
         ),
         Expanded(
           child: Align(
-            alignment: Alignment.topCenter,
+            alignment: Alignment.bottomCenter,
             child: Container(
               margin: EdgeInsets.only(top: 40,),
               child: bottomChild,
@@ -117,10 +117,11 @@ class RoundedTopNavBarProfile extends StatelessWidget {
     }
 
     final actionBtnChild = (actionBtn != null)
-      ? InkWell(
-        child: actionBtn,
-        onTap: () => onActionBtnClick?.call(context),
-      ) : null;
+      ? Expanded(
+          child: InkWell(
+            child: actionBtn,
+            onTap: () => onActionBtnClick?.call(context),
+      )) : null;
 
     return RoundedTopNavBarBg(
       children: [

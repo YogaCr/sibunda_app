@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sibunda_app/bloc/family_form_bloc.dart';
 import 'package:common/di/_di.dart';
+import 'package:sibunda_app/bloc/home_bloc.dart';
 import 'package:sibunda_app/bloc/kehamilanku_bloc.dart';
 import 'package:sibunda_app/di/bloc_di.dart';
 import 'package:sibunda_app/ui/page/_page.dart';
@@ -45,10 +46,11 @@ class SibRoutes {
     padding: EdgeInsets.all(20),
   ));
   static final homePage = SibRoute("HomePage", HomePage, (ctx) => MainFrame(
-    body: HomePage().inBlocProvider<LogoutFormBloc>((ctx) => BlocDi.logoutFormBloc),
-    padding: EdgeInsets.all(20),
+    body: HomePage().inBlocProvider<HomeBloc>((ctx) => BlocDi.homeBloc),
   ));
-  static final notifAndMessagePage = SibRoute("NotifAndMessagePage", HomePage, (ctx) => HomeNotifAndMessagePage());
+  static final notifAndMessagePage = SibRoute("NotifAndMessagePage", HomePage, (ctx) => MainFrame(
+    body: HomeNotifAndMessagePage(),
+  ));
 
   static final motherDataPage = SibRoute("MotherDataPage", MotherDataPage, (ctx) => MainFrame(
     body: MotherDataPage().inBlocProvider<MotherFormBloc>((ctx) => BlocDi.motherFormBloc),

@@ -21,10 +21,12 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
   Profile? _profile;
   List<HomeStatus>? _statusList;
+  List<HomeMenu>? _menuList;
   List<HomeTips>? _tipsList;
 
   Profile? get profile => _profile;
   List<HomeStatus>? get statusList => _statusList;
+  List<HomeMenu>? get menuList => _menuList;
   List<HomeTips>? get tipsList => _tipsList;
 
   @override
@@ -33,19 +35,25 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       final res = await profileRepo.getProfile(event.email);
       if(res is Success<Profile>) {
         _profile = res.data;
-        yield OnProfileDataChanged(_profile!);
+        yield OnProfileDataChanged(res);
       }
     } else if(event is GetHomeStatusData) {
       final res = await statusRepo.getHomeStatusList();
       if(res is Success<List<HomeStatus>>) {
         _statusList = res.data;
-        yield OnHomeStatusDataChanged(_statusList!);
+        yield OnHomeStatusDataChanged(res);
+      }
+    } else if(event is GetHomeMenuData) {
+      final res = await menuRepo.getHomeMenuList();
+      if(res is Success<List<HomeMenu>>) {
+        _menuList = res.data;
+        yield OnHomeMenuDataChanged(res);
       }
     } else if(event is GetHomeTipsData) {
       final res = await tipsRepo.getHomeTipsList();
       if(res is Success<List<HomeTips>>) {
         _tipsList = res.data;
-        yield OnHomeTipsDataChanged(_tipsList!);
+        yield OnHomeTipsDataChanged(res);
       }
     }
   }

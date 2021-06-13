@@ -28,6 +28,7 @@ const pink_swatch = MaterialColor(
 const white = Color(0xFFFFFFFF);
 const white_ripple = Color(0x55FFFFFF);
 const grey = Color(0xFFADADAD);
+const grey_trans = Color(0xB7979797);
 const black = Color(0xFF000000);
 const red = Color(0xFFB00020);
 const red_warning = Color(0xFFF6EBEB);
