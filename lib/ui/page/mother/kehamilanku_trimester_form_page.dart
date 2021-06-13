@@ -6,8 +6,10 @@ import 'package:common/ui/page/secondary_frames.dart';
 import 'package:common/ui/widget/bloc/BlocFormBuilder.dart';
 import 'package:common/ui/widget/bloc/result_builder.dart';
 import 'package:common/ui/widget/items_kehamilanku.dart';
+import 'package:common/util/functions/ui_ext.dart';
 import 'package:common/value/const_values.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sibunda_app/bloc/event/kehamilanku_home_event.dart';
 import 'package:sibunda_app/bloc/kehamilanku_bloc.dart';
@@ -56,6 +58,25 @@ class KehamilankuTrimesterFormPage extends StatelessWidget {
                     ),
                   ),
                   BlocMultiFieldFormBuilder<PregnancyCheckBloc>.defaultInputField(),
+                  ClipRRect(
+                    borderRadius: BorderRadius.all(Radius.circular(20)),
+                    child: Container(
+                      margin: EdgeInsets.all(20).copyWith(bottom: 100),
+                      child: InkWell(
+
+                        splashColor: Manifest.theme.colorPrimary,
+                        //hoverColor: Manifest.theme.colorPrimary,
+                        child: Ink(
+                          height: 50, width: 100,
+                          child: Text("hagahogaigjag"),
+                          color: Colors.blue,
+                        ),
+                        onTap: () => showSnackBar(context, "aufhaoijf"),
+                      ),
+                    ),
+                  ),
+
+
                 ]),
               ),
             ],

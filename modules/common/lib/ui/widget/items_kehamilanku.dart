@@ -152,9 +152,14 @@ class ItemMotherTrimester extends StatelessWidget {
     return ClipRRect(
       borderRadius: BorderRadius.all(Radius.circular(10)),
       child: InkWell(
+        borderRadius: BorderRadius.all(Radius.circular(10)),
         onTap: onClick,
-        child: Container(
-          color: grey_calm,
+        splashColor: Colors.grey,
+        child: Ink(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(10)),
+            color: grey_calm,
+          ),
           height: parentHeight,
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),

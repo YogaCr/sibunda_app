@@ -51,7 +51,7 @@ class BlocMultiFieldFormBuilder<Bloc extends MultiFieldFormBloc> extends BlocFor
       builders = List.generate(bloc.fieldCount, (index) => (ctx, formState, i) => Container(
         margin: EdgeInsets.symmetric(vertical: 10),
         child: TxtInput(
-          label: bloc.labelKeyPairList[i].item1,
+          label: bloc.labelKeyPairList[i].item2,
           textController: bloc.inputTxtList[i],
           textValidator: (txt) => txtValidator?.call(i, txt) ?? (bloc.inputValidityList[i].value = txt.isNotEmpty),
           errorText: errorTxtMap?[i] ?? Strings.please_enter_your_name,
