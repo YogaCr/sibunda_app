@@ -205,7 +205,10 @@ class ItemHomeGraphMenu extends StatelessWidget {
       borderRadius: BorderRadius.all(Radius.circular(10)),
       onTap: onClick,
       child: Ink(
-        color: grey_calm,
+        decoration: BoxDecoration(
+          color: grey_calm,
+          borderRadius: BorderRadius.all(Radius.circular(10)),
+        ),
         height: 70,
         child: Padding(
           padding: EdgeInsets.all(10),
