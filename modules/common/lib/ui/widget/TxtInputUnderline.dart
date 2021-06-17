@@ -114,7 +114,7 @@ class TxtInputUnderlineState extends State<TxtInputUnderline> {
           controller: textController,
           decoration: InputDecoration(
             suffixIcon: InkWell(
-              child: Icon(Icons.calendar_today_rounded,),
+              child: Icon(Icons.calendar_today_rounded,), //TODO make icon as composition.
               onTap: onSuffixIconClick,
             ),
             border: UnderlineInputBorder(

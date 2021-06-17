@@ -1,3 +1,4 @@
+/*
 class WarningStatus {
   final String desc;
   final String imgLink;
@@ -9,3 +10,4 @@ class WarningStatus {
     required this.isNormal,
   });
 }
+ */

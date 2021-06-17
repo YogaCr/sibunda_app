@@ -5,11 +5,18 @@ import 'package:common/ui/widget/_basic_widget.dart';
 import 'package:common/util/functions/ui_ext.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:sibunda_app/config/routes.dart';
 
 class MotherHplPage extends StatelessWidget {
+  final TextEditingController hplTxtController = TextEditingController();
+  final TextEditingController hphtTxtController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    final now = DateTime.now();
+    DateTime? hplDate;
+    DateTime? hphtDate;
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
@@ -19,15 +26,37 @@ class MotherHplPage extends StatelessWidget {
         ), //TODO hardcode string
         Text("Sudah tahu kapan HPL Bunda?"),
         TxtInputUnderline(
+          textController: hphtTxtController,
           overText: "Masukkan hari perkiraan menurut dokter Bunda",
-          onSuffixIconClick: () => showSnackBar(context, "Dipencet"),
+          onSuffixIconClick: () async {
+            hphtDate = await showDatePicker(
+              context: context,
+              initialDate: hphtDate ?? now,
+              firstDate: DateTime(now.year -1),
+              lastDate: DateTime(now.year +1),
+            );
+            hphtTxtController.text = hphtDate?.toString() ?? "";
+          },
         ),
         Text("Atau"),
         //Spacer(flex: 1,),
         Text("Yuk hitung HPL Bunda"),
         TxtInputUnderline(
+          textController: hplTxtController,
           overText: "Masukkan HPHT Bunda",
-          onSuffixIconClick: () => showSnackBar(context, "Dipencet 2"),
+          onSuffixIconClick: () async {
+            hplDate = await showDatePicker(
+              context: context,
+              initialDate: hplDate ?? now,
+              firstDate: DateTime(now.year -1),
+              lastDate: DateTime(now.year +1),
+            );
+            hplTxtController.text = hplDate?.toString() ?? "";
+            if(hplDate != null) {
+              hplTxtController.text = "";
+              hphtDate = null;
+            }
+          },
         ),
         Card(
           shape: RoundedRectangleBorder(
@@ -49,7 +78,7 @@ class MotherHplPage extends StatelessWidget {
         ),
         TxtBtn(
           Strings.save,
-          onTap: () => showSnackBar(context, "Dipencet"),
+          onTap: () => SibRoutes.childrenCountPage.goToPage(context),
         ),
       ],
     );

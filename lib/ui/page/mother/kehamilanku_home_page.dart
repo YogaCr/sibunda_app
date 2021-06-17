@@ -6,10 +6,12 @@ import 'package:common/res/string/_string.dart';
 import 'package:common/res/theme/_theme.dart';
 import 'package:common/ui/widget/_basic_widget.dart';
 import 'package:common/ui/widget/bloc/result_builder.dart';
+import 'package:common/util/functions/ui_ext.dart';
 import 'package:common/value/const_values.dart';
 import 'package:flutter/cupertino.dart';
 
 import 'package:common/ui/widget/items_kehamilanku.dart';
+import 'package:common/ui/widget/_item_template.dart';
 import 'package:common/ui/widget/bloc/bloc_builder.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sibunda_app/bloc/event/kehamilanku_home_event.dart';
@@ -96,8 +98,9 @@ class KehamilankuHomePage extends StatelessWidget {
                 delegate: SliverChildListDelegate.fixed([
                   Container(
                     margin: EdgeInsets.only(top: 5),
-                    child: ItemMotherImunization(
+                    child: ItemMotherImmunizationHome(
                       image: Container(color: Manifest.theme.colorPrimary,),
+                      onBtnClick: () => showSnackBar(context, "dipencet",), //TODO
                     ),
                   ),
                   Container(
@@ -115,7 +118,7 @@ class KehamilankuHomePage extends StatelessWidget {
                     children: [
                       Flexible(
                         flex: 10,
-                        child: ItemMotherGraphMenu(
+                        child: ItemHomeGraphMenu(
                           image: Container(color: Manifest.theme.colorPrimary,),
                           text: "Grafik Evaluasi Kehamilan",
                         ),
@@ -123,7 +126,7 @@ class KehamilankuHomePage extends StatelessWidget {
                       Spacer(flex: 1,),
                       Flexible(
                         flex: 10,
-                        child: ItemMotherGraphMenu(
+                        child: ItemHomeGraphMenu(
                           image: Container(color: Manifest.theme.colorPrimary,),
                           text: "Grafik Berat Badan",
                         ),

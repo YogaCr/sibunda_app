@@ -17,11 +17,12 @@ class DoMotherHavePregnancyPage extends StatelessWidget {
           Strings.mother_children_data,
           style: SibTextStyles.header1,
         ), //TODO hardcode string
-        SibImages.get("") //TODO
+        SibImages.get("ilstr_mother_pregnant.png", package: "common",)
             .withMargin(EdgeInsets.symmetric(horizontal: 50).copyWith(top: 70)),
         Text(
           "Apakah Bunda sedang hamil?",
-          style: SibTextStyles.header2,
+          style: SibTextStyles.size_0_bold,
+          textAlign: TextAlign.center,
         ),
         Row(
           children: [

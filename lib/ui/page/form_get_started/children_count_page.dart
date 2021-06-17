@@ -5,6 +5,7 @@ import 'package:common/ui/widget/_intermediate_widget.dart';
 import 'package:common/util/functions/assets_ext.dart';
 import 'package:flutter/material.dart';
 import 'package:common/util/functions/ui_ext.dart';
+import 'package:sibunda_app/config/routes.dart';
 
 class ChildrenCountPage extends StatelessWidget {
 
@@ -18,7 +19,7 @@ class ChildrenCountPage extends StatelessWidget {
           Strings.mother_children_data,
           style: SibTextStyles.header1,
         ), //TODO hardcode string
-        SibImages.get("") //TODO
+        SibImages.get("ilstr_mother_carry_baby.png", package: "common",) //TODO
             .withMargin(EdgeInsets.symmetric(horizontal: 50).copyWith(top: 70)),
         Text("Berapa anak yang Bunda punya?",),
         NumberPicker(
@@ -31,7 +32,7 @@ class ChildrenCountPage extends StatelessWidget {
         ),
         FloatingActionButton(
           child: Icon(Icons.arrow_forward_rounded),
-          onPressed: () => showSnackBar(context, "Lanjut"),
+          onPressed: () => SibRoutes.homePage.goToPage(context),
         ),
       ],
     );

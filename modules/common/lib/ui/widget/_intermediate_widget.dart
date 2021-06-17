@@ -9,10 +9,12 @@ class ImgPick extends StatelessWidget {
   ///For the main image
   final String imgUrl;
   final String? pickImgUrl;
+  final String? package;
 
   ImgPick({
     required this.imgUrl,
     this.pickImgUrl,
+    this.package,
   });
 
   @override
@@ -20,15 +22,17 @@ class ImgPick extends StatelessWidget {
     clipBehavior: Clip.none,
     alignment: Alignment.center,
     children: [
-      Image.asset(
-        SibImages.getDir(imgUrl),
+      SibImages.get(
+        imgUrl,
+        package: package,
         width: 100,
         height: 100,
       ),
       Positioned(
         bottom: -20,
-        child: Image.asset(
-          SibImages.getDir(pickImgUrl ?? "ic_plus_color.png"),
+        child: SibImages.get(
+          pickImgUrl ?? "ic_plus_color.png",
+          package: package,
           width: 40,
           height: 40,
         ),

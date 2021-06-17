@@ -38,12 +38,20 @@ class SignInPage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                SibImages.get(
+                  "logo_app_color.png",
+                  package: "common",
+                  width: 100,
+                  height: 100,
+                ),
+/*
                 Image.asset(
-                  SibImages.getDir("logo_app_color.png"),
+                  SibImages.getDir("logo_app_color.png", packa),
                   color: pink_300,
                   width: 100,
                   height: 100,
                 ),
+ */
                 Text(
                   Strings.welcome_mother,
                   style: SibTextStyles.header1,
@@ -72,7 +80,7 @@ class SignInPage extends StatelessWidget {
           builder: (ctx, formState) {
             if(formState is OnSuccessEndForm) {
               WidgetsBinding.instance?.addPostFrameCallback((timeStamp) =>
-                  SibRoutes.homePage_old.goToPage(context, clearPrevs: true));
+                  SibRoutes.homePage.goToPage(context, clearPrevs: true));
             } else if (formState is OnErrorSubmission) {
               showSnackBar(context, Strings.wrong_email_or_password);
             }

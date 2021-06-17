@@ -2,6 +2,7 @@ import 'package:common/config/manifest.dart';
 import 'package:common/data/model/kehamilanku_data.dart';
 import 'package:common/res/theme/_theme.dart';
 import 'package:common/ui/widget/_basic_widget.dart';
+import 'package:common/ui/widget/_item_template.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -99,7 +100,7 @@ class ItemMotherOverview extends StatelessWidget {
   }
 }
 
-
+/*
 class ItemMotherTrimester extends StatelessWidget {
   final Widget image;
   final int trimester;
@@ -117,73 +118,48 @@ class ItemMotherTrimester extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final parentHeight = 80.0;
 
-    final imgChild = Container(
-      margin: EdgeInsets.only(right: 15),
-      child: Container(
-        child: ClipRRect(
-          borderRadius: BorderRadius.all(Radius.circular(10)),
-          child: Container(
-            width: 90,
-            child: image,
-          ),
-        ),
-      )
-    );
+  }
+}
+ */
 
-    final txtChild = Expanded(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            "Trimester $trimester",
-            style: SibTextStyles.size_0_bold_colorPrimary,
-          ),
-          Text(
-            "Usia kehamilan $pregnancyAgeStart hingga $pregnancyAgeEnd Minggu",
-            style: SibTextStyles.size_min_2,
-          ),
-        ],
-      ),
-    );
+///*
+class ItemMotherTrimester extends StatelessWidget {
+  final Widget image;
+  final int trimester;
+  final int pregnancyAgeStart; //in weeks
+  final int pregnancyAgeEnd; //in weeks
+  final void Function()? onClick; //in weeks
 
-    return ClipRRect(
-      borderRadius: BorderRadius.all(Radius.circular(10)),
-      child: InkWell(
-        borderRadius: BorderRadius.all(Radius.circular(10)),
-        onTap: onClick,
-        splashColor: Colors.grey,
-        child: Ink(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(10)),
-            color: grey_calm,
-          ),
-          height: parentHeight,
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-            child: Row(
-              children: [
-                imgChild,
-                txtChild,
-              ],
-            ),
-          ),
-        ),
-      ),
+  ItemMotherTrimester({
+    required this.image,
+    required this.trimester,
+    required this.pregnancyAgeStart,
+    required this.pregnancyAgeEnd,
+    this.onClick,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ItemHomeBigTitle(
+      image: image,
+      title: "Trimester $trimester",
+      desc: "Usia kehamilan $pregnancyAgeStart hingga $pregnancyAgeEnd Minggu",
+      onClick: onClick,
     );
   }
 }
 
+// */
 
-class ItemMotherImunization extends StatelessWidget {
+
+class ItemMotherImmunizationHome extends StatelessWidget {
   final Widget image;
   final String title;
   final String action;
   final void Function()? onBtnClick;
 
-  ItemMotherImunization({
+  ItemMotherImmunizationHome({
     required this.image,
     this.title = "Jangan lupa ikut imunisasi ya Bunda",
     this.action = "Lihat imunisasi Bunda",
@@ -192,57 +168,16 @@ class ItemMotherImunization extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final parentHeight = 120.0;
-
-    final imgChild = Container(
-      margin: EdgeInsets.only(right: 10),
-      child: ClipRRect(
-        borderRadius: BorderRadius.all(Radius.circular(10)),
-        child: Container(
-          height: parentHeight,
-          width: 100,
-          child: image,
-        ),
-      ),
-    );
-
-    final txtChild = Expanded(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            title,
-            style: SibTextStyles.size_0_bold,
-          ),
-          TxtBtn(
-            action,
-            onTap: onBtnClick,
-          ),
-        ],
-      ),
-    );
-
-    return ClipRRect(
-      borderRadius: BorderRadius.all(Radius.circular(10)),
-      child: Container(
-        color: Colors.white,
-        height: parentHeight,
-        child: Padding(
-          padding: EdgeInsets.all(10).copyWith(right: 20),
-          child: Row(
-            children: [
-              imgChild,
-              txtChild,
-            ],
-          ),
-        ),
-      ),
+    return ItemHomeImmunization(
+      image: image,
+      title: title,
+      action: action,
+      onBtnClick: onBtnClick,
     );
   }
 }
 
-
+/*
 class ItemMotherGraphMenu extends StatelessWidget {
   final Widget image;
   final String text;
@@ -254,46 +189,13 @@ class ItemMotherGraphMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final imgChild = Container(
-      margin: EdgeInsets.only(right: 10),
-      child: ClipRRect(
-        borderRadius: BorderRadius.all(Radius.circular(_cornerRadius)),
-        child: Container(
-          height: 50,
-          width: 50,
-          color: Manifest.theme.colorPrimary,
-          child: image,
-        ),
-      ),
-    );
-
-    final txtChild = Expanded(
-      child: Text(
-        text,
-        style: SibTextStyles.size_min_2_bold_colorPrimary,
-        textAlign: TextAlign.start,
-      ),
-    );
-
-
-    return ClipRRect(
-      borderRadius: BorderRadius.all(Radius.circular(10)),
-      child: Container(
-        color: grey_calm,
-        height: 70,
-        child: Padding(
-          padding: EdgeInsets.all(10),
-          child: Row(
-            children: [
-              imgChild,
-              txtChild,
-            ],
-          ),
-        ),
-      ),
+    return ItemHomeGraphMenu(
+      image: image,
+      text: text,
     );
   }
 }
+ */
 
 
 class ItemMotherRecomFood extends StatelessWidget {
@@ -467,3 +369,22 @@ class ItemMotherBabySizeOverview extends StatelessWidget {
   }
 }
 // */
+
+class ItemMotherImmunizationFill extends StatelessWidget {
+  final String immunizationName;
+  final String? date;
+
+  ItemMotherImmunizationFill({
+    required this.immunizationName,
+    this.date,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ItemImmunizationFill(
+      immunizationName: immunizationName,
+      date: date,
+    );
+  }
+}
+

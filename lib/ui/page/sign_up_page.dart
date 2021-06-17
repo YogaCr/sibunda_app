@@ -44,7 +44,7 @@ class SignUpPage extends StatelessWidget {
           Strings.make_new_mother_account,
           style: SibTextStyles.header1,
         ).withMargin(EdgeInsets.only(top: 60)),
-        ImgPick(imgUrl: "ic_profile.png")
+        ImgPick(imgUrl: "ic_profile.png", package: "common",)
             .withMargin(EdgeInsets.only(top: 10)),
         BlocFormBuilder<SignUpFormBloc>(
           builders: [
