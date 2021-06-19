@@ -38,6 +38,7 @@ dependencies:
   shared_preferences: ^2.0.5
   equatable: ^2.0.2
   tuple: ^2.0.0
+  nested: ^1.0.0
 
 dev_dependencies:
   flutter_test:

@@ -48,15 +48,18 @@ class BlocMultiFieldFormBuilder<Bloc extends MultiFieldFormBloc> extends BlocFor
   Widget build(BuildContext context) {
     if(!_builderHasBeenInit){
       final bloc = BlocProvider.of<Bloc>(context);
-      builders = List.generate(bloc.fieldCount, (index) => (ctx, formState, i) => Container(
-        margin: EdgeInsets.symmetric(vertical: 10),
-        child: TxtInput(
-          label: bloc.labelKeyPairList[i].item2,
-          textController: bloc.inputTxtList[i],
-          textValidator: (txt) => txtValidator?.call(i, txt) ?? (bloc.inputValidityList[i].value = txt.isNotEmpty),
-          errorText: errorTxtMap?[i] ?? Strings.please_enter_your_name,
-        ),
-      ),);
+      builders = List.generate(bloc.fieldCount, (index) => (ctx, formState, i) {
+        print("BlocMultiFieldFormBuilder builder BlocType= $Bloc i= $index bloc.labelKeyPairList[i] = ${bloc.labelKeyPairList[i]} build");
+        return Container(
+          margin: EdgeInsets.symmetric(vertical: 10),
+          child: TxtInput(
+            label: bloc.labelKeyPairList[i].item2,
+            textController: bloc.inputTxtList[i],
+            textValidator: (txt) => txtValidator?.call(i, txt) ?? (bloc.inputValidityList[i].value = txt.isNotEmpty),
+            errorText: errorTxtMap?[i] ?? Strings.please_enter_your_name,
+          ),
+        );
+      });
     }
 
     final widgets = List<Widget>.generate(builders.length, (index) => BlocBuilder<Bloc, BlocFormState>(

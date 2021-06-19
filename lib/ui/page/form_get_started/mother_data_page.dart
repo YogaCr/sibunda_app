@@ -26,6 +26,8 @@ class MotherDataPage extends StatelessWidget {
         ImgPick(imgUrl: "ic_profile.png")
             .withMargin(EdgeInsets.only(top: 10)),
  */
+      BlocMultiFieldFormBuilder<MotherFormBloc>.defaultInputField(),
+/*
         BlocFormBuilder<MotherFormBloc>(
           builders: [
             (context, formState, i) => TxtInput(
@@ -135,6 +137,7 @@ class MotherDataPage extends StatelessWidget {
             //Spacer(),
           ],
         ).withMargin(EdgeInsets.only(top: 30)),
+ */
         BlocBuilder<MotherFormBloc, BlocFormState>(
             builder: (ctx, formState) {
               if(formState is OnSuccessEndForm) {

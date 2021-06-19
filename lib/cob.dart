@@ -1,6 +1,77 @@
+import 'package:common/core/ui/live_data.dart';
+import 'package:common/core/ui/view_model.dart';
 import 'package:common/util/functions/ui_ext.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:provider/provider.dart';
+import 'package:provider/single_child_widget.dart';
 
+class CobPage extends StatelessWidget {
+
+  @override
+  Widget build(BuildContext context) => Scaffold(
+    body: ViewModelProvider(
+      creators: [
+        (ctx) => _CobVm(),
+      ],
+      child: _CobPageInner(),
+    ),
+  );
+}
+
+class _CobPageInner extends StatelessWidget {
+
+  @override
+  Widget build(BuildContext context) {
+    print("CobPageInner AWAL");
+    final vm = ViewModelProvider.of<_CobVm>(context);
+    print("CobPageInner AWAL2");
+    return Column(
+      children: [
+        Container(
+          margin: EdgeInsets.all(10),
+          color: Colors.green,
+          child: Text("Ini judul"),
+        ),
+        ViewModelObserver<_CobVm, int>(
+          liveDataGetter: (vm) => vm.val1,
+          builder: (ctx, it) {
+            print("Observer int = $it BUILD");
+            return Text("Observer int = $it");
+          },
+        ),
+        ViewModelObserver<_CobVm, String>(
+          liveDataGetter: (vm) => vm.val2,
+          builder: (ctx, it) {
+            print("Observer String = $it BUILD");
+            return Text("Observer String = $it");
+          },
+        ),
+        FloatingActionButton(
+          child: Text("Tambah int"),
+          onPressed: () => vm.val1.value = vm.val1.value! +1,
+        ),
+        FloatingActionButton(
+          child: Text("Tambah String"),
+          onPressed: () => vm.val2.value = vm.val2.value! +1.toString(),
+        ),
+      ],
+    );
+  }
+}
+
+
+class _CobVm extends ViewModel {
+
+  final val1 = MutableLiveData(1);
+  final val2 = MutableLiveData("Halo bro");
+
+  @override
+  List<LiveData> get liveDatas => [val1, val2];
+}
+
+
+/*
 class CobPage extends StatelessWidget {
 
   @override
@@ -41,6 +112,7 @@ class CobPage extends StatelessWidget {
     ],
   );
 }
+ */
 
 Widget createCustomBottomNavBarGroup(BuildContext context) => Stack(
   children: [
