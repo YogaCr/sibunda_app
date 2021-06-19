@@ -1,10 +1,12 @@
 
+import 'expirable.dart';
+
 class LiveData<T> {
   LiveData(this._value);
   T? _value;
   T? get value => _value;
 
-  List<void Function(T?)>? _observers = [];
+  Map<Expirable, void Function(T?)>? _observers = {};
 
   bool _assertNotDisposed() {
     assert((){
@@ -16,20 +18,27 @@ class LiveData<T> {
     return true;
   }
 
-  void observe(void Function(T?) onChange) {
+  void observe(Expirable observer, void Function(T?) onChange) {
     _assertNotDisposed();
-    _observers!.add(onChange);
+    _observers![observer] = onChange;
   }
+
+  bool get hasActiveObserver => _observers?.length.compareTo(0) == 1;
 
   void dispose() {
     _assertNotDisposed();
+    _observers!.clear();
     _observers = null;
   }
 
   void notifyListeners() {
     _assertNotDisposed();
-    for(final observer in _observers!) {
-      observer(_value);
+    for(final observer in _observers!.keys) {
+      if(observer.isActive) {
+        _observers![observer]!(_value);
+      } else {
+        _observers!.remove(observer);
+      }
     }
   }
 }

@@ -1,5 +1,6 @@
 part of 'view_model.dart';
 
+
 class _ViewModelStore extends InheritedWidget {
   _ViewModelStore({
     required List<ViewModel> viewModels,

@@ -47,6 +47,14 @@ class _CobPageInner extends StatelessWidget {
             return Text("Observer String = $it");
           },
         ),
+        ViewModelObserver<_CobVm, int>(
+          liveDataGetter: (vm) => vm.val1,
+          predicate: (data) => data?.remainder(2) == 0,
+          builder: (ctx, it) {
+            print("Observer int 2 = $it BUILD");
+            return Text("Observer int 2 = $it");
+          },
+        ),
         FloatingActionButton(
           child: Text("Tambah int"),
           onPressed: () => vm.val1.value = vm.val1.value! +1,
