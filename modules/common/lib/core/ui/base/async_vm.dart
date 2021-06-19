@@ -10,7 +10,7 @@ import 'package:tuple/tuple.dart';
 /// It can [cancelJob] async process before launching the same process based on [String] key.
 /// It can can also invoke [_preAsyncTaskMap] before launching the async process.
 abstract class AsyncVm extends ViewModel {
-  
+
   /// Its values, is a [Tuple2] of [CancelableOperation] and [Var]<bool>.
   /// The [Var]<bool> is for indication of parent async process [CancelableOperation]
   /// whether the parent is active or not. The [Var]<bool> is useful since

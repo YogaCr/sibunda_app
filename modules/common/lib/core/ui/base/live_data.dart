@@ -1,16 +1,19 @@
 
 import 'expirable.dart';
 
-class LiveData<T> {
+class LiveData<T> implements Expirable {
   LiveData(this._value);
   T? _value;
   T? get value => _value;
 
   Map<Expirable, void Function(T?)>? _observers = {};
 
+  @override
+  bool get isActive => _observers != null;
+
   bool _assertNotDisposed() {
     assert((){
-      if(_observers == null) {
+      if(!isActive) {
         throw "LiveData has been disposed but stil in use.";
       }
       return true;
@@ -31,7 +34,7 @@ class LiveData<T> {
     _observers = null;
   }
 
-  void notifyListeners() {
+  void notifyObservers() {
     _assertNotDisposed();
     for(final observer in _observers!.keys) {
       if(observer.isActive) {
@@ -47,7 +50,7 @@ class MutableLiveData<T> extends LiveData<T> {
   MutableLiveData([T? value]): super(value);
   set value(v) {
     _value = v;
-    notifyListeners();
+    notifyObservers();
   }
 }
 
