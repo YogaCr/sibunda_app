@@ -1,10 +1,12 @@
 import 'package:async/async.dart';
-import 'package:common/core/domain/model/wrapper.dart';
-import 'package:common/core/ui/base/expirable.dart';
-import 'package:common/core/ui/base/view_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:tuple/tuple.dart';
+
+import '../../domain/model/wrapper.dart';
+import 'expirable.dart';
+import 'view_model.dart';
+
 
 /// [ViewModel] that is designed to manage various async process.
 /// It can [cancelJob] async process before launching the same process based on [String] key.
