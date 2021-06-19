@@ -1,16 +1,16 @@
-import 'dart:async';
-
-import 'package:common/core/ui/expirable.dart';
-import 'package:common/core/ui/live_data.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:collection/collection.dart';
+
+import 'expirable.dart';
+import 'live_data.dart';
 
 part 'view_model_provider.dart';
 part 'view_model_observer.dart';
 
 
-abstract class ViewModel {
+abstract class ViewModel implements Expirable {
   bool _isActive = true;
+  @override
   bool get isActive => _isActive;
   List<LiveData<dynamic>> get liveDatas;
 

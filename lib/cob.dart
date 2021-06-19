@@ -1,5 +1,10 @@
-import 'package:common/core/ui/live_data.dart';
-import 'package:common/core/ui/view_model.dart';
+import 'dart:io';
+
+import 'package:async/async.dart';
+import 'package:common/core/ui/base/live_data.dart';
+import 'package:common/core/ui/base/view_model.dart';
+import 'package:common/core/ui/base/async_view_model_observer.dart';
+import 'package:common/core/ui/base/async_vm.dart';
 import 'package:common/util/functions/ui_ext.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -26,56 +31,93 @@ class _CobPageInner extends StatelessWidget {
     print("CobPageInner AWAL");
     final vm = ViewModelProvider.of<_CobVm>(context);
     print("CobPageInner AWAL2");
-    return Column(
-      children: [
-        Container(
-          margin: EdgeInsets.all(10),
-          color: Colors.green,
-          child: Text("Ini judul"),
-        ),
-        ViewModelObserver<_CobVm, int>(
-          liveDataGetter: (vm) => vm.val1,
-          builder: (ctx, it) {
-            print("Observer int = $it BUILD");
-            return Text("Observer int = $it");
-          },
-        ),
-        ViewModelObserver<_CobVm, String>(
-          liveDataGetter: (vm) => vm.val2,
-          builder: (ctx, it) {
-            print("Observer String = $it BUILD");
-            return Text("Observer String = $it");
-          },
-        ),
-        ViewModelObserver<_CobVm, int>(
-          liveDataGetter: (vm) => vm.val1,
-          predicate: (data) => data?.remainder(2) == 0,
-          builder: (ctx, it) {
-            print("Observer int 2 = $it BUILD");
-            return Text("Observer int 2 = $it");
-          },
-        ),
-        FloatingActionButton(
-          child: Text("Tambah int"),
-          onPressed: () => vm.val1.value = vm.val1.value! +1,
-        ),
-        FloatingActionButton(
-          child: Text("Tambah String"),
-          onPressed: () => vm.val2.value = vm.val2.value! +1.toString(),
-        ),
-      ],
+    return Center(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Container(
+            margin: EdgeInsets.all(10),
+            color: Colors.green,
+            child: Text("Ini judul"),
+          ),
+          ViewModelObserver<_CobVm, int>(
+            liveDataGetter: (vm) => vm.val1,
+            builder: (ctx, it) {
+              print("Observer int = $it BUILD");
+              return Text("Observer int = $it");
+            },
+          ),
+          ViewModelObserver<_CobVm, String>(
+            liveDataGetter: (vm) => vm.val2,
+            builder: (ctx, it) {
+              print("Observer String = $it BUILD");
+              return Text("Observer String = $it");
+            },
+          ),
+          ViewModelObserver<_CobVm, int>(
+            liveDataGetter: (vm) => vm.val1,
+            predicate: (data) => data?.remainder(2) == 0,
+            builder: (ctx, it) {
+              print("Observer int 2 = $it BUILD");
+              return Text("Observer int 2 = $it");
+            },
+          ),
+          AsyncVmObserver<_CobVm, int>(
+            liveDataGetter: (vm) => vm.val3,
+            preAsyncBuilder: (ctx, key) => Container(
+              padding: EdgeInsets.all(10),
+              color: Colors.yellow,
+              child: Text("Loading ...."),
+            ),
+            builder: (ctx, it) {
+              print("Observer int async = $it BUILD");
+              return Text("Observer int async = $it");
+            },
+          ),
+          ElevatedButton(
+            onPressed: () => vm.val1.value = vm.val1.value! +1,
+            child: Text("Tambah int", textAlign: TextAlign.center,),
+          ),
+          ElevatedButton(
+            child: Text("Tambah String", textAlign: TextAlign.center,),
+            onPressed: () => vm.val2.value = vm.val2.value! +1.toString(),
+          ),
+          ElevatedButton(
+            child: Text("Tambah int async", textAlign: TextAlign.center,),
+            onPressed: () => vm.addVal3Suspend(),
+          ),
+        ],
+      ),
     );
   }
 }
 
 
-class _CobVm extends ViewModel {
+class _CobVm extends AsyncVm {
 
   final val1 = MutableLiveData(1);
   final val2 = MutableLiveData("Halo bro");
+  final val3 = MutableLiveData(0);
+
+  void addVal3Suspend() {
+    startJob("val3", (isActive) async {
+      print("addVal3Suspend() TURU SEK");
+      //sleep(Duration(seconds: 2));
+      //val3.value = val3.value! +1;
+///*
+      CancelableOperation.fromFuture(Future.delayed(Duration(seconds: 2), () async {
+        print("addVal3Suspend() LANJUT PRE");
+        if(isActive.value) {
+          print("addVal3Suspend() LANJUT AKHIR IF");
+          val3.value = val3.value! +1;
+        }
+      }));
+// */
+    });
+  }
 
   @override
-  List<LiveData> get liveDatas => [val1, val2];
+  List<LiveData> get liveDatas => [val1, val2, val3];
 }
 
 

@@ -39,6 +39,7 @@ dependencies:
   equatable: ^2.0.2
   tuple: ^2.0.0
   nested: ^1.0.0
+  async: ^2.5.0
 
 dev_dependencies:
   flutter_test:
