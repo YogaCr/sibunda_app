@@ -49,8 +49,8 @@ extension WidgetExt on Widget {
     child: this,
     padding: padding,
   );
-  Widget insideScroll() => ListView(
-    children: [this],
+  Widget insideScroll() => SingleChildScrollView(
+    child: this,
   );
 /*
   Widget relativeConstraint({

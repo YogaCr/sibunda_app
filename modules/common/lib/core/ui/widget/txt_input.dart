@@ -2,8 +2,52 @@
 import 'package:common/util/types.dart';
 import 'package:flutter/material.dart';
 
-//TODO 23 Mei 2021: Add constructor with [FormState] as Param.
-class TxtInput extends StatefulWidget {
+
+
+class TxtInput extends StatelessWidget {
+  final String hint;
+  final String label;
+  final String? errorText;
+  final BorderSide borderSide = BorderSide(width: 2);
+  final void Function(String)? onChanged;
+  final void Function(String)? onSubmitted;
+  final TextEditingController? textController;
+  final bool isTypePassword;
+  final bool _isPasswordVisible = false;
+
+  TxtInput({
+    required this.label,
+    String? hint,
+    this.errorText,
+    this.onChanged,
+    this.onSubmitted,
+    this.textController,
+    this.isTypePassword = false,
+    bool initIsTxtValid = true,
+  }): this.hint = hint ?? label;
+
+  @override
+  Widget build(BuildContext context) => TextField(
+    obscureText: isTypePassword && !_isPasswordVisible,
+    autocorrect: !isTypePassword,
+    enableSuggestions: !isTypePassword,
+    onChanged: onChanged,
+    onSubmitted: onSubmitted,
+    controller: textController,
+    decoration: InputDecoration(
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(15),
+        borderSide: borderSide,
+      ),
+      errorText: errorText,
+      labelText: label,
+      hintText: hint,
+    ),
+  );
+}
+
+
+class TxtInput_Statefull extends StatefulWidget {
   final String hint;
   final String label;
   final String? errorText;
@@ -16,7 +60,7 @@ class TxtInput extends StatefulWidget {
   final bool _isPasswordVisible = false;
   final bool initIsTxtValid;
 
-  TxtInput({
+  TxtInput_Statefull({
     required this.label,
     String? hint,
     this.errorText,
@@ -31,7 +75,7 @@ class TxtInput extends StatefulWidget {
 
 
   @override
-  State createState() => TxtInputState(
+  State createState() => TxtInput_StatefullState(
     label: label,
     hint: hint,
     errorText: errorText,
@@ -45,7 +89,7 @@ class TxtInput extends StatefulWidget {
   );
 }
 
-class TxtInputState extends State<TxtInput> {
+class TxtInput_StatefullState extends State<TxtInput_Statefull> {
   final String hint;
   final String label;
   final String? errorText;
@@ -60,7 +104,7 @@ class TxtInputState extends State<TxtInput> {
   final TxtValidator? textValidator;
   bool _isTxtValid = true;
 
-  TxtInputState({
+  TxtInput_StatefullState({
     required this.label,
     String? hint,
     this.errorText,

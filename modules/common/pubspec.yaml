@@ -41,7 +41,6 @@ dependencies:
   nested: ^1.0.0
   async: ^2.5.0
 
-
   core:
     path: ../core
 

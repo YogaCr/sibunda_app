@@ -11,12 +11,14 @@ class AsyncVmObserver<Vm extends AsyncVm, V> extends StatefulWidget {
   final Widget Function(BuildContext, V?) builder;
   final bool Function(V?)? predicate;
   final Widget? Function(BuildContext ctx, String key)? preAsyncBuilder;
+  final bool distinctUntilChanged;
 
   AsyncVmObserver({
     required this.liveDataGetter,
     required this.builder,
     this.predicate,
     this.preAsyncBuilder,
+    this.distinctUntilChanged = false,
   });
 
   @override
@@ -25,6 +27,7 @@ class AsyncVmObserver<Vm extends AsyncVm, V> extends StatefulWidget {
     builder: builder,
     predicate: predicate,
     preAsyncBuilder: preAsyncBuilder,
+    distinctUntilChanged: distinctUntilChanged,
   );
 
 }
@@ -36,6 +39,7 @@ class _AsyncVmObserverState<Vm extends AsyncVm, V>
   final LiveData<V> Function(Vm) liveDataGetter;
   final Widget Function(BuildContext, V?) builder;
   final bool Function(V?)? predicate;
+  final bool distinctUntilChanged;
   LiveData<V>? _liveData;
 
   /// If it returns [Widget], it means the widget will be rebuilt using the returned [Widget].
@@ -49,6 +53,7 @@ class _AsyncVmObserverState<Vm extends AsyncVm, V>
     required this.builder,
     this.predicate,
     this.preAsyncBuilder,
+    this.distinctUntilChanged = false,
   });
 
   bool _isActive = true;
@@ -85,7 +90,9 @@ class _AsyncVmObserverState<Vm extends AsyncVm, V>
             incomingWidget = builder(context, _liveData!.value);
           });
         }
-      });
+      },
+        distinctUntilChanged: distinctUntilChanged,
+      );
     }
     return incomingWidget ?? builder(context, _liveData!.value);
   }

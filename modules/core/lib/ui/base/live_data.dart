@@ -1,4 +1,6 @@
 
+import 'package:tuple/tuple.dart';
+
 import 'expirable.dart';
 
 class LiveData<T> implements Expirable {
@@ -6,24 +8,37 @@ class LiveData<T> implements Expirable {
   T? _value;
   T? get value => _value;
 
-  Map<Expirable, void Function(T?)>? _observers = {};
+  Map<Tuple2<Expirable, String>, Tuple2<void Function(T?), bool>>? _observers = {};
 
   @override
   bool get isActive => _observers != null;
 
   bool _assertNotDisposed() {
+    print("_assertNotDisposed()");
     assert((){
       if(!isActive) {
         throw "LiveData has been disposed but stil in use.";
       }
       return true;
     }());
+    print("_assertNotDisposed() AKHIR");
     return true;
   }
 
-  void observe(Expirable observer, void Function(T?) onChange) {
+  /// [distinctUntilChanged] `true` when [observer] is only notified when [_value]
+  /// is different internally from the previous value. This means when setter of [value]
+  /// in [MutableLiveData] invoked but with the same internal representation of [_value],
+  /// [observer] won't be notified.
+  void observe(
+    Expirable observer,
+    void Function(T?) onChange,
+  {
+    bool distinctUntilChanged = false,
+    String tag = "",
+  }) {
     _assertNotDisposed();
-    _observers![observer] = onChange;
+    final key = Tuple2(observer, tag);
+    _observers![key] = Tuple2(onChange, distinctUntilChanged);
   }
 
   bool get hasActiveObserver => _observers?.length.compareTo(0) == 1;
@@ -34,11 +49,19 @@ class LiveData<T> implements Expirable {
     _observers = null;
   }
 
-  void notifyObservers() {
+  void notifyObservers({T? oldValue, T? newValue}) {
     _assertNotDisposed();
-    for(final observer in _observers!.keys) {
+    print("notifyObservers() oldValue= $oldValue newValue= $newValue _observers= $_observers");
+    for(final key in _observers!.keys) {
+      print("notifyObservers() FOR AWAL key= $key");
+      final observer = key.item1;
+      print("notifyObservers() FOR AWAL observer= $observer");
       if(observer.isActive) {
-        _observers![observer]!(_value);
+        final pair = _observers![key]!;
+        print("notifyObservers() FOR IF AWAL pair= $pair");
+        if(!pair.item2 || oldValue != newValue) {
+          pair.item1(_value);
+        }
       } else {
         _observers!.remove(observer);
       }
@@ -49,8 +72,9 @@ class LiveData<T> implements Expirable {
 class MutableLiveData<T> extends LiveData<T> {
   MutableLiveData([T? value]): super(value);
   set value(v) {
+    final old = _value;
     _value = v;
-    notifyObservers();
+    notifyObservers(oldValue: old, newValue: v);
   }
 }
 

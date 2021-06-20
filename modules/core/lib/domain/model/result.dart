@@ -28,6 +28,8 @@ class Fail<T> extends Result<T> {
   }) : super(code);
 }
 
+/*
 class Loading<T> extends Result<T> {
   Loading([int code = 0]): super(code);
 }
+ */
