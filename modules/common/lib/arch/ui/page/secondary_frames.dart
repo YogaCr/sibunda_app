@@ -1,6 +1,6 @@
 
+import 'package:common/arch/domain/model/profile.dart';
 import 'package:common/config/_config.dart';
-import 'package:common/data/model/home_data.dart';
 import 'package:common/res/theme/_theme.dart';
 import 'package:common/arch/ui/widget/custom_top_nav_bar.dart';
 import 'package:flutter/material.dart';

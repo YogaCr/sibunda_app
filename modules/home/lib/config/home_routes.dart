@@ -9,6 +9,8 @@ import 'package:home/ui/form_get_started/do_mother_have_pregnancy_page.dart';
 import 'package:home/ui/form_get_started/father_form_page.dart';
 import 'package:home/ui/form_get_started/mother_form_page.dart';
 import 'package:home/ui/form_get_started/mother_hpl_page.dart';
+import 'package:home/ui/home/home_page.dart';
+import 'package:home/ui/home/notif_and_message_page.dart';
 import 'package:home/ui/splash/splash_page.dart';
 import 'package:home/ui/login/login_page.dart';
 import 'package:home/ui/signup/sign_up_page.dart';
@@ -61,5 +63,16 @@ class HomeRoutes {
   static final childrenCountPage = SibRoute("ChildrenCountPage", ChildrenCountPage, (ctx) =>  PlainBackFrame(
     body: ChildrenCountPage(), //.inVmProvider([(ctx) => HomeVmDi.childFormVm,]),
     padding: EdgeInsets.all(20),
+  ));
+
+  static final homePage = SibRoute("HomePage", HomePage, (ctx) =>  MainFrame(
+    body: HomePage().inVmProvider([
+      (ctx) => HomeVmDi.homeVm,
+    ]), //.inVmProvider([(ctx) =
+  ));
+  static final homeNotifAndMessagePage = SibRoute("HomeNotifAndMessagePage", HomeNotifAndMessagePage, (ctx) =>  MainFrame(
+    body: HomeNotifAndMessagePage().inVmProvider([
+      (ctx) => HomeVmDi.notifAndMessageVm,
+    ]), //.inVmProvider([(ctx) => H
   ));
 }

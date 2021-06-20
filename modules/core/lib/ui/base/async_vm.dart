@@ -7,6 +7,7 @@ import '../../domain/model/wrapper.dart';
 import 'expirable.dart';
 import 'view_model.dart';
 
+//TODO 21 Juni 2021: Tambahi method doOnFail().
 
 /// [ViewModel] that is designed to manage various async process.
 /// It can [cancelJob] async process before launching the same process based on [String] key.
