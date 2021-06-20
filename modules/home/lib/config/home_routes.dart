@@ -15,8 +15,21 @@ import 'package:home/ui/splash/splash_page.dart';
 import 'package:home/ui/login/login_page.dart';
 import 'package:home/ui/signup/sign_up_page.dart';
 
-class HomeRoutes {
-  HomeRoutes._();
+class HomeRoutes extends ModuleRoute {
+  HomeRoutes._(): super(GlobalRoutes.manager);
+  static final obj = HomeRoutes._();
+
+  @override
+  SibRoute get entryPoint => splashPage;
+  @override
+  final String name = GlobalRoutes.home;
+  @override
+  Set<SibRoute> get routes => {
+    splashPage, signUpPage, loginPage,
+    motherFormPage, fatherFormPage, childFormPage,
+    doMotherHavePregnancyPage, motherHplPage, childrenCountPage,
+    homePage, homeNotifAndMessagePage,
+  };
 
   static final splashPage = SibRoute("SplashPage", SplashPage, (ctx) => NoAppBarFrame(
     body: SplashPage(),

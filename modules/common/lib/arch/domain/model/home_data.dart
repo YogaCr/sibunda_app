@@ -14,10 +14,12 @@ class HomeStatus {
 
 class HomeMenu {
   final String name;
+  final String moduleName;
   final String imgLink;
 
   HomeMenu({
     required this.name,
+    required this.moduleName,
     required this.imgLink,
   });
 }

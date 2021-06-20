@@ -4,6 +4,7 @@ import 'package:common/arch/domain/model/home_data.dart';
 import 'package:common/arch/ui/page/secondary_frames.dart';
 import 'package:common/arch/ui/widget/_items_home.dart';
 import 'package:common/arch/ui/widget/custom_bottom_nav_bar.dart';
+import 'package:common/config/_config.dart';
 import 'package:common/res/theme/_theme.dart';
 import 'package:core/ui/base/async_view_model_observer.dart';
 import 'package:core/ui/base/view_model.dart';
@@ -189,14 +190,14 @@ class _MenuList extends StatelessWidget {
       height: 100,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: List.generate(dataList.length, (index) => ItemDashboardMenu.fromData(
-          dataList[index],
-          onClick: () {
-            print("onClick() clicked index= $index");
-            //SibRoutes.pregnancyHomePage.goToPage(context);
-          },
-        )),
-      ),
+        children: List.generate(dataList.length, (index) {
+          final data = dataList[index];
+          return ItemDashboardMenu.fromData(
+            data,
+            onClick: () => HomeRoutes.obj.goToModule(context, data.moduleName),
+          );
+        }
+      ),),
     );
   }
 }

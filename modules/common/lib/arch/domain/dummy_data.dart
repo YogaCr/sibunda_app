@@ -1,4 +1,5 @@
 
+import 'package:common/config/routes.dart';
 import 'package:common/res/string/_string.dart';
 import 'package:flutter/material.dart';
 
@@ -120,9 +121,9 @@ final dummyStatusList = <HomeStatus>[
 ];
 
 final dummyMenuList = <HomeMenu>[
-  HomeMenu(name: Strings.my_pregnancy, imgLink: "",),
-  HomeMenu(name: Strings.my_baby, imgLink: "",),
-  HomeMenu(name: Strings.covid_19, imgLink: "",),
+  HomeMenu(name: Strings.my_pregnancy, moduleName: GlobalRoutes.kehamilanku, imgLink: "",),
+  HomeMenu(name: Strings.my_baby, moduleName: GlobalRoutes.bayiku, imgLink: "",),
+  HomeMenu(name: Strings.covid_19, moduleName: GlobalRoutes.covid19, imgLink: "",),
 ];
 
 final dummyTipsList = <HomeTips>[
