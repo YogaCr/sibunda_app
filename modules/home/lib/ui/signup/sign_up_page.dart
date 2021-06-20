@@ -1,19 +1,14 @@
 
-import 'package:common/core/ui/widget/form_bloc_observer.dart';
+import 'package:common/arch/ui/widget/form_bloc_observer.dart';
 import 'package:common/res/theme/_theme.dart';
-import 'package:common/ui/widget/_basic_widget.dart';
-import 'package:common/ui/widget/_intermediate_widget.dart';
-import 'package:common/util/functions/ui_ext.dart';
-import 'package:common/bloc/form_bloc.dart';
-import 'package:common/ui/widget/bloc/BlocFormBuilder.dart';
-import 'package:common/value/const_values.dart';
-import 'package:core/ui/base/view_model.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:email_validator/email_validator.dart';
-import 'package:flutter/material.dart';
 import 'package:common/res/string/_string.dart';
-import 'package:home/ui/signup/sign_up_bloc.dart';
+import 'package:common/util/ui.dart';
+import 'package:common/arch/ui/widget/img_pick.dart';
+import 'package:flutter/material.dart';
+import 'package:home/config/home_routes.dart';
+import 'package:home/ui/signup/sign_up_vm.dart';
 
+import 'sign_up_vm.dart';
 
 
 
@@ -30,10 +25,10 @@ class SignUpPage extends StatelessWidget {
           style: SibTextStyles.header1,
         ).withMargin(EdgeInsets.only(top: 60)),
         ImgPick(imgUrl: "ic_profile.png", package: "common",)
-            .withMargin(EdgeInsets.only(top: 10)),
-        FormBlocObserver<SignUpFormBloc>(
+            .withMargin(EdgeInsets.only(top: 10, bottom: 20,)),
+        FormVmObserver<SignUpFormVm>(
           onSubmit: (canProceed) => canProceed
-              ? showSnackBar(context, "Berhasil", backgroundColor: Colors.green)
+              ? HomeRoutes.motherFormPage.goToPage(context)
               : showSnackBar(context, "Gagal", backgroundColor: Colors.red),
           preSubmitBtnBuilder: (ctx, key) => Container(
             padding: EdgeInsets.all(10),
@@ -41,10 +36,8 @@ class SignUpPage extends StatelessWidget {
             child: Text("Sending..."),
           ),
           submitBtnBuilder: (ctx, canProceed) => FloatingActionButton(
-            backgroundColor: canProceed ? pink_300 : grey,
-            onPressed: () => canProceed
-                ? showSnackBar(context, "Valid", backgroundColor: Colors.green)
-                : showSnackBar(context, "Ada yg blum valid", backgroundColor: Colors.red),
+            backgroundColor: canProceed == true ? pink_300 : grey,
+            onPressed: canProceed == true ? null : () => showSnackBar(context, "Ada yg blum valid",),
             child: Icon(Icons.arrow_forward_rounded),
           ),
         ),

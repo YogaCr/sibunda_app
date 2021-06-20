@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'package:common/config/manifest.dart';
-import 'package:common/ui/page/frames.dart';
 /*
 void main() => runApp(MyApp());
 

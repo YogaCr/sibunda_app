@@ -1,9 +1,6 @@
 import 'package:common/config/manifest.dart';
-import 'package:common/res/string/_string.dart';
-import 'package:core/ui/base/view_model.dart';
 import 'package:flutter/material.dart';
-import 'package:home/ui/signup/sign_up_bloc.dart';
-import 'package:home/ui/signup/sign_up_page.dart';
+import 'package:home/config/home_routes.dart';
 
 void main() => runApp(MyApp());
 
@@ -14,18 +11,13 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: "Home Module",
       theme: Manifest.theme.materialData,
-      home: Scaffold(
-        body: ViewModelProvider(
-          child: SignUpPage(),
-          creators: [
-            (ctx) => SignUpFormBloc(),
-          ],
-        ),
-      ),
+      home: HomeRoutes.splashPage.build(context),
     );
   }
 }
 
+
+/*
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
 
@@ -110,3 +102,6 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
+
+
+ */

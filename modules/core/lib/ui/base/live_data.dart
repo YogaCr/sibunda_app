@@ -14,14 +14,12 @@ class LiveData<T> implements Expirable {
   bool get isActive => _observers != null;
 
   bool _assertNotDisposed() {
-    print("_assertNotDisposed()");
     assert((){
       if(!isActive) {
-        throw "LiveData has been disposed but stil in use.";
+        throw "LiveData has been disposed but still in use.";
       }
       return true;
     }());
-    print("_assertNotDisposed() AKHIR");
     return true;
   }
 
@@ -51,14 +49,14 @@ class LiveData<T> implements Expirable {
 
   void notifyObservers({T? oldValue, T? newValue}) {
     _assertNotDisposed();
-    print("notifyObservers() oldValue= $oldValue newValue= $newValue _observers= $_observers");
+    //print("notifyObservers() oldValue= $oldValue newValue= $newValue _observers= $_observers");
     for(final key in _observers!.keys) {
-      print("notifyObservers() FOR AWAL key= $key");
+      //print("notifyObservers() FOR AWAL key= $key");
       final observer = key.item1;
-      print("notifyObservers() FOR AWAL observer= $observer");
+      //print("notifyObservers() FOR AWAL observer= $observer");
       if(observer.isActive) {
         final pair = _observers![key]!;
-        print("notifyObservers() FOR IF AWAL pair= $pair");
+        //print("notifyObservers() FOR IF AWAL pair= $pair");
         if(!pair.item2 || oldValue != newValue) {
           pair.item1(_value);
         }

@@ -27,6 +27,7 @@ class Strings {
   static const welcome_mother = "Selamat Datang Bunda!";
   static const fill_mother_data = "Isi Data Bunda";
   static const fill_father_data = "Isi Data Ayah";
+  static const fill_child_data = "Isi Data Anak";
   static const confirm_new_account = "Konfirmasi Akun Baru";
   static const create_my_account = "Buat Akun Saya";
 

@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:common/util/functions/nav_ext.dart' as NavExt;
+import 'package:common/util/navigations.dart' as NavExt;
 import 'package:flutter/material.dart';
 
 class SibRoute {

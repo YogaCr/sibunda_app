@@ -39,21 +39,21 @@ class ViewModelProvider extends StatefulWidget {
 
   static V of<V extends ViewModel>(BuildContext context) {
     final store = context.dependOnInheritedWidgetOfExactType<_ViewModelStore>();
-    print("store = $store");
+    //print("store = $store");
     if(store == null) {
       throw "No _ViewModelStore in BuildContext $context";
     }
     final vms = store._viewModels;
-    print("vms = $vms");
+    //print("vms = $vms");
     V? vm = vms.firstWhereOrNull((it) => it.runtimeType == V) as V?;
-    print("vm = $vm");
+    //print("vm = $vm");
     if(vm == null) {
       final creators = store._viewModelCreators;
-      print("creators = $creators");
+      //print("creators = $creators");
       int i = vms.length -1;
       int creatorsLen = creators.length;
       while(++i < creatorsLen) {
-        print("while creatorsLen = $creatorsLen i = $i");
+        //print("while creatorsLen = $creatorsLen i = $i");
         final newVm = creators[i](context);
         vms.add(newVm);
         if(newVm.runtimeType == V) {
@@ -61,7 +61,7 @@ class ViewModelProvider extends StatefulWidget {
           break;
         }
       }
-      print("vm AKHIR = $vm");
+      //print("vm AKHIR = $vm");
       if(vm == null) {
         throw "No ViewModel type '$V' in BuildContext $context";
       }

@@ -1,8 +1,23 @@
 
 import 'package:common/util/auth.dart';
 import 'package:common/value/const_values.dart';
+import 'package:equatable/equatable.dart';
+import 'package:retrofit/http.dart';
+import 'package:retrofit/retrofit.dart';
+import 'package:json_annotation/json_annotation.dart';
+import 'package:retrofit/retrofit.dart';
+import 'package:dio/dio.dart';
+
+part 'unit_test.g.dart';
 
 void main() async {
+  final api = CobApi(Dio());
+  final users = await api.getUsers();
+  final repos = await api.getRepos("alfalifr");
+
+  print("users= $users");
+  print("repos= $repos");
+/*
   final name = "ayu3";
   final email = "a6@a.a";
   final pswd = "abcd1234";
@@ -14,7 +29,57 @@ void main() async {
   await signUpTest(name, email, pswd);
   final token = await login(email, pswd, secret, clientId, fcmToken);
   await logout(token);
+ */
 }
+///*
+@RestApi(baseUrl: "https://api.github.com")
+abstract class CobApi {
+  factory CobApi(Dio dio, {String? baseUrl}) => _CobApi(dio);
+  @GET("/users")
+  Future<List<User>> getUsers();
+  @GET("/users/{uname}/repos")
+  Future<List<Repo>> getRepos(@Path() String uname);
+}
+// */
+
+@JsonSerializable()
+class User extends Equatable {
+  final String login;
+  final int id;
+  final String avatar_url;
+
+  const User({
+    required this.login,
+    required this.id,
+    required this.avatar_url,
+  });
+
+  factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => [login, id, avatar_url];
+}
+
+@JsonSerializable()
+class Repo extends Equatable {
+  final String full_name;
+  final int id;
+  final String html_url;
+
+  const Repo({
+    required this.full_name,
+    required this.id,
+    required this.html_url,
+  });
+
+  factory Repo.fromJson(Map<String, dynamic> json) => _$RepoFromJson(json);
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => [full_name, id, html_url];
+}
+
 
 Future<void> signUpTest(String name, String email, String pswd) async {
   print("Mulai signUpTest()");
