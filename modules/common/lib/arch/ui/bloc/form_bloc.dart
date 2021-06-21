@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:tuple/tuple.dart';
 
 abstract class FormVm extends AsyncVm {
+  static const submitFormKey = "submitForm";
 
   /// The [Tuple2] format is (KEY, LABEL).
   final List<Tuple2<String, String>> txtKeyLabelList;
@@ -101,8 +102,10 @@ abstract class FormVm extends AsyncVm {
   }
 
   void submit(){
-    doSubmitJob().then((value) {
-      _onSubmit.value = value;
+    startJob(submitFormKey, (isActive) async {
+      doSubmitJob().then((value) {
+        _onSubmit.value = value;
+      });
     });
   }
   Future<Result<String>> doSubmitJob();

@@ -1,6 +1,6 @@
+import 'package:common/arch/domain/model/form_warning_status.dart';
 import 'package:common/config/_config.dart';
 import 'package:flutter/material.dart';
-import 'package:common/data/model/form_warning_status.dart';
 
 import '../widget/_item_template.dart';
 

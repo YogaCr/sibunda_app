@@ -36,10 +36,12 @@ class SibTextStyles {
 
   static final size_plus_2_colorOnPrimary = size_plus_2.copyWith(color: Manifest.theme.colorOnPrimary);
 
+  static final size_min_1_colorOnPrimary = size_min_1.copyWith(color: Manifest.theme.colorOnPrimary);
   static final size_min_1_bold = size_min_1.copyWith(fontWeight: FontWeight.bold);
 
   static final size_min_3_colorPrimary = size_min_3.copyWith(color: Manifest.theme.colorPrimary);
   static final size_min_2_colorPrimary = size_min_2.copyWith(color: Manifest.theme.colorPrimary);
+  static final size_min_2_colorOnPrimary = size_min_2.copyWith(color: Manifest.theme.colorOnPrimary);
   static final size_min_2_bold_colorPrimary = size_min_2_colorPrimary.copyWith(fontWeight: FontWeight.bold);
   static final size_min_2_bold = size_min_2.copyWith(fontWeight: FontWeight.bold);
 

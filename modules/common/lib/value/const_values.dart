@@ -5,6 +5,8 @@ class Const {
 
   static const HEADER_AUTH = "Authorization";
 
+  static const SEPARATOR_ANSWER_ITEM = ";~;";
+
   static const GENDER_MALE = "M";
   static const GENDER_FEMALE = "F";
 

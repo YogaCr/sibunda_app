@@ -3,6 +3,7 @@
 
 part of '_theme.dart';
 
+const pink_highlight = Color(0xFFFA1992);
 const pink_100 = Color(0xFFFF1493);
 const pink_200 = Color(0xFFE51284);
 const pink_300 = Color(0xFFCC1075); //parseColor3("CC1075")

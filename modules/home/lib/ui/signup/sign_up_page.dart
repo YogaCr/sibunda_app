@@ -11,8 +11,6 @@ import 'package:home/ui/signup/sign_up_vm.dart';
 import 'sign_up_vm.dart';
 
 
-
-//TODO 22 May 2021: Terapkan pattern provider atau BLOC
 class SignUpPage extends StatelessWidget {
 
   @override

@@ -1,27 +1,53 @@
 import 'package:common/value/const_values.dart';
+import 'package:json_annotation/json_annotation.dart';
 
+part 'kehamilanku_data.g.dart';
+
+@JsonSerializable()
 class PregnancyCheck {
+  @JsonKey(name: Const.KEY_VISIT_DATE)
   final String visitDate;
+  @JsonKey(name: Const.KEY_VISIT_PLACE)
   final String visitPlace;
+  @JsonKey(name: Const.KEY_CHECKER_NAME)
   final String checkerName;
+  @JsonKey(name: Const.KEY_MOTHER_DIFFICULTY)
   final String difficulty;
+  @JsonKey(name: Const.KEY_PREGNANCY_AGE)
   final int pregnancyAge; // in week
+  @JsonKey(name: Const.KEY_BABY_GENDER)
   final String babyGender;
+  @JsonKey(name: Const.KEY_FUTURE_VISIT_DATE)
   final String futureVisitDate;
+  @JsonKey(name: Const.KEY_HPHT)
   final String HPHT;
+  @JsonKey(name: Const.KEY_HPL)
   final String HPL;
+  @JsonKey(name: Const.KEY_MOTHER_WEIGHT)
   final int motherWeigth; // in kg
+  @JsonKey(name: Const.KEY_MOTHER_WEIGHT_DIFF)
   final int motherWeigthDiff; // in kg
+  @JsonKey(name: Const.KEY_MOTHER_HEIGHT)
   final int motherHeight; // in cm
+  @JsonKey(name: Const.KEY_TFU)
   final int TFU;
+  @JsonKey(name: Const.KEY_DJJ)
   final int DJJ;
+  @JsonKey(name: Const.KEY_SYSTOLIC_PRESSURE)
   final int systolicPressure;
+  @JsonKey(name: Const.KEY_DIASTOLIC_PRESSURE)
   final int diastolicPressure;
+  @JsonKey(name: Const.KEY_MAP)
   final int MAP;
+  @JsonKey(name: Const.KEY_BABY_MOVEMENT)
   final String babyMovement;
+  @JsonKey(name: Const.KEY_DRUG_PRESCRIPT)
   final String drugPrescript;
+  @JsonKey(name: Const.KEY_DRUG_ALLERGY)
   final String drugAllergy;
+  @JsonKey(name: Const.KEY_DISEASE_HISTORY)
   final String diseaseHistory;
+  @JsonKey(name: Const.KEY_SPECIAL_NOTE)
   final String note;
 
   PregnancyCheck({
@@ -74,6 +100,9 @@ class PregnancyCheck {
     diseaseHistory: map[Const.KEY_DISEASE_HISTORY]!,
     note: map[Const.KEY_SPECIAL_NOTE]!,
   );
+
+  factory PregnancyCheck.fromJson(Map<String, dynamic> json) => _$PregnancyCheckFromJson(json);
+  Map<String, dynamic> toJson() => _$PregnancyCheckToJson(this);
 }
 
 

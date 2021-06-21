@@ -22,10 +22,10 @@ class ItemMotherOverview extends StatelessWidget {
   });
 
   ItemMotherOverview.fromData(
-    MotherPregnancyAgeOverview data,
+    MotherPregnancyAgeOverview? data,
   ): image = Container(color: Manifest.theme.colorPrimary,), //TODO 12 Juni 2021: img
-    pregnancyAge = data.weekAge,
-    pregnancyAgeRem = data.daysRemaining
+    pregnancyAge = data?.weekAge ?? -1,
+    pregnancyAgeRem = data?.daysRemaining ?? -1
   ;
 
   ItemMotherOverview.def():
@@ -286,11 +286,11 @@ class ItemMotherBabySizeOverview extends StatelessWidget {
     required this.babyWeight,
   });
 
-  ItemMotherBabySizeOverview.fromData(PregnancyBabySize data):
+  ItemMotherBabySizeOverview.fromData(PregnancyBabySize? data):
     image = Container(color: Manifest.theme.colorPrimary,),
-    sizeString = data.sizeString,
-    babyLen = data.babyLen,
-    babyWeight = data.babyWeight
+    sizeString = data?.sizeString ?? "<null>",
+    babyLen = data?.babyLen ?? -1,
+    babyWeight = data?.babyWeight ?? -1
   ;
 
   @override

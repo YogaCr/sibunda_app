@@ -1,4 +1,5 @@
 import 'package:common/arch/domain/repo/_repos.dart';
+import 'package:common/arch/domain/repo/form_warning_status_repo.dart';
 
 class RepoDi {
   RepoDi._();
@@ -18,4 +19,5 @@ class RepoDi {
   static MotherFoodRecomRepo get foodRepo => MotherFoodRecomRepoDummy.obj; //AuthApiRepo();
   static MotherPregnancyRepo get pregnancyRepo => MotherPregnancyRepoDummy.obj; //AuthApiRepo();
   static PregnancyCheckRepo get pregnancyCheckRepo => PregnancyCheckRepoDummy.obj; //AuthApiRepo();
+  static FormWarningStatusRepo get formWarningStatusRepo => FormWarningStatusRepoDummy.obj; //AuthApiRepo();
 }

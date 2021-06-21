@@ -8,7 +8,7 @@ mixin GetTrimesterList {
 }
 
 mixin GetMotherFoodRecomList {
-  Future<Result<List<MotherFoodRecom>>> call();
+  Future<Result<List<MotherFoodRecom>>> call(int pregnancyWeekAge);
 }
 
 mixin GetPregnancyAgeOverview {
@@ -23,8 +23,13 @@ class GetTrimesterListImpl with GetTrimesterList {
   Future<Result<List<MotherTrimester>>> call() => _repo.getMotherTrimester();
 }
 class GetMotherFoodRecomListImpl with GetMotherFoodRecomList {
-  GetTrimesterListImpl(this._repo);
-  final MotherPregnancyRepo _repo;
+  GetMotherFoodRecomListImpl(this._repo);
+  final MotherFoodRecomRepo _repo;
   @override
-  Future<Result<List<MotherTrimester>>> call() => _repo.getMotherTrimester();
+  Future<Result<List<MotherFoodRecom>>> call(int pregnancyWeekAge) => _repo.getMotherFoodRecoms(pregnancyWeekAge);
+}
+class GetPregnancyAgeOverviewImpl with GetPregnancyAgeOverview {
+  GetPregnancyAgeOverviewImpl(this._repo);
+  final MotherPregnancyRepo _repo;
+  Future<Result<MotherPregnancyAgeOverview>> call() => _repo.getMotherPregnancyAgeOverview();
 }

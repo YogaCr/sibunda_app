@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'model/auth.dart';
 import 'model/child.dart';
 import 'model/father.dart';
+import 'model/form_warning_status.dart';
 import 'model/kehamilanku_data.dart';
 import 'model/home_data.dart';
 import 'model/mother.dart';
@@ -143,4 +144,47 @@ final dummyMessageList = <HomeNotifMsg>[
   HomeNotifMsg(title: "Bunda, Pastikan Kehamilan Bunda Sehat Ya", desc: "Jangan lupa untuk periksa rutin ya, serta selalu isikan data perkembangan bunda dan calon buah hati di aplikasi ya.", time: "12.00 - 11/05/2021", imgLink: "",),
   HomeNotifMsg(title: "Sudahkah Anda Mandi?", desc: "Mandi dapat menyegarkan badan", time: "12.00 - 11/05/2021", imgLink: "",),
   HomeNotifMsg(title: "Tahu kah Anda?", desc: "Minum air 1 liter per hari dapat menghilangkan rasa haus", time: "12.00 - 11/05/2021", imgLink: "",),
+];
+
+
+final motherWarningStatusList = <FormWarningStatus>[
+  FormWarningStatus(
+    desc: "Berat Badan Bunda kurang sesuai ya Bun. ",
+    action: "Lihat rekomendasi makanan",
+    isSafe: false,
+    imgLink: "",
+  ),
+  FormWarningStatus(
+    desc: "Denyut Jantung Janin Bunda kurang ya. Silahkan periksa ke faskes ya Bun",
+    action: "Cari Faskes terdekat",
+    isSafe: false,
+    imgLink: "",
+  ),
+  FormWarningStatus(
+    desc: "Selamat Bunda! \nTinggi Fundus Uterus Bunda normal ya Bun.",
+    action: "Cari Faskes terdekat",
+    isSafe: true,
+    imgLink: "",
+  ),
+];
+
+final babyWarningStatusList = <FormWarningStatus>[
+  FormWarningStatus(
+    desc: "Bunda, berat badan bayi tidak normal ya Bun menurut usia bayi.",
+    action: "Cari Faskes terdekat",
+    isSafe: false,
+    imgLink: "",
+  ),
+  FormWarningStatus(
+    desc: "Selamat Bunda! \n Panjang badan atau tinggi badan menurut usia bayi normal.",
+    action: "Cari Faskes terdekat",
+    isSafe: true,
+    imgLink: "",
+  ),
+  FormWarningStatus(
+    desc: "Bunda, berat badan bayi menurut panjang/tinggi badan tidak normal.",
+    action: "Cari Faskes terdekat",
+    isSafe: false,
+    imgLink: "",
+  ),
 ];
