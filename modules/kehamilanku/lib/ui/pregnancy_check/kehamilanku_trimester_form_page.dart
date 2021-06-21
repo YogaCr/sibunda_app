@@ -112,6 +112,9 @@ class KehamilankuTrimesterFormPage extends StatelessWidget {
                     ),
                   ),
                   FormVmObserver<KehamilankuCheckFormVm>(
+                    onSubmit: (canProceed) => canProceed
+                        ? showSnackBar(context, "Berhasil bro", backgroundColor: Colors.green)
+                        : showSnackBar(context, "Gagal bro"),
                     submitBtnBuilder: (ctx, canProceed) => Container(
                       margin: EdgeInsets.only(bottom: 20),
                       child: TxtBtn(
