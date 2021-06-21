@@ -3,6 +3,18 @@ import 'package:common/arch/domain/model/immunization.dart';
 import 'package:core/domain/model/range.dart';
 
 
+class HomeImmunizationData {
+  final String imgLink;
+  final String title;
+  final String action;
+
+  HomeImmunizationData({
+    required this.action,
+    required this.title,
+    required this.imgLink,
+  });
+}
+
 /// [monthExact] and [monthExact] can't be displayed at the same time.
 /// So both [monthExact] and [monthExact] are present, then [monthExact] takes precedence.
 /// But, both [monthExact] and [monthExact] can't be null.
@@ -59,4 +71,14 @@ class ImmunizationListItem {
     );
 
   ImmunizationListItem.fromModel(ImmunizationData data): core = data, detail = null;
+}
+
+class ImmunizationListGroup {
+  final List<ImmunizationListItem> immunizationList;
+  final String header;
+
+  ImmunizationListGroup({
+    required this.immunizationList,
+    required this.header,
+  });
 }

@@ -1,4 +1,5 @@
 import 'package:common/arch/domain/model/kehamilanku_data.dart';
+import 'package:common/arch/ui/model/immunization.dart';
 import 'package:common/config/manifest.dart';
 import 'package:common/res/theme/_theme.dart';
 import 'package:common/arch/ui/widget/_item_template.dart';
@@ -377,6 +378,11 @@ class ItemMotherImmunizationFill extends StatelessWidget {
     required this.immunizationName,
     this.date,
   });
+
+  ItemMotherImmunizationFill.fromData(ImmunizationListItem data):
+    immunizationName = data.core.name,
+    date = data.core.date
+  ;
 
   @override
   Widget build(BuildContext context) {

@@ -1,3 +1,6 @@
+import 'package:common/arch/domain/model/form_warning_status.dart';
+import 'package:common/arch/domain/model/home_graph_menu.dart';
+import 'package:common/arch/ui/model/immunization.dart';
 import 'package:common/config/manifest.dart';
 import 'package:common/res/theme/_theme.dart';
 import 'package:flutter/material.dart';
@@ -114,6 +117,15 @@ class ItemHomeImmunization extends StatelessWidget {
     this.onBtnClick,
   });
 
+  ItemHomeImmunization.fromData(
+      HomeImmunizationData data, {
+      this.onBtnClick,
+  }):
+    title = data.title,
+    action = data.action,
+    image = Container(color: Manifest.theme.colorPrimary,) //TODO: img
+  ;
+
   @override
   Widget build(BuildContext context) {
     final parentHeight = 120.0;
@@ -178,6 +190,14 @@ class ItemHomeGraphMenu extends StatelessWidget {
     this.onClick,
   });
 
+  ItemHomeGraphMenu.fromData(
+      HomeGraphMenu data,{
+      this.onClick,
+  }):
+    text = data.name,
+    image = Container(color: Manifest.theme.colorPrimary,) //TODO: img
+  ;
+
   @override
   Widget build(BuildContext context) {
     final imgChild = Container(
@@ -237,6 +257,14 @@ class ItemFormWarningStatus extends StatelessWidget {
     this.onClick,
     this.warningTxt,
   });
+  ItemFormWarningStatus.fromData(
+      FormWarningStatus data, {
+      this.onClick,
+  }):
+    desc = data.desc,
+    warningTxt = data.isSafe ? null : data.action,
+    image = Container(color: Manifest.theme.colorPrimary,) //TODO: img
+  ;
 
   @override
   Widget build(BuildContext context) {
@@ -315,6 +343,30 @@ class ItemImmunizationFill extends StatelessWidget {
     this.descLeft,
     this.descRight,
   });
+
+  factory ItemImmunizationFill.fromData(ImmunizationListItem data) {
+    final detail = data.detail;
+    String? descRight;
+    String? descLeft;
+
+    if(detail != null) {
+      descLeft = "Bulan ke ";
+      if(detail.monthExact != null) {
+        descLeft += detail.monthExact.toString() +".";
+      } else if(detail.monthRange != null) {
+        final start = detail.monthRange!.start;
+        final end = detail.monthRange!.end;
+        descLeft += "$start-$end.";
+      }
+      descRight = "No. Batch: ${detail.batchNo ?? "-"}";
+    }
+    return ItemImmunizationFill(
+      immunizationName: data.core.name,
+      date: data.core.date,
+      descLeft: descLeft,
+      descRight: descRight,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {

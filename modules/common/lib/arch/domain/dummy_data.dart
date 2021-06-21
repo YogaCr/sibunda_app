@@ -1,12 +1,14 @@
 
 import 'package:common/config/routes.dart';
 import 'package:common/res/string/_string.dart';
+import 'package:core/domain/model/range.dart';
 import 'package:flutter/material.dart';
 
 import 'model/auth.dart';
 import 'model/child.dart';
 import 'model/father.dart';
 import 'model/form_warning_status.dart';
+import 'model/immunization.dart';
 import 'model/kehamilanku_data.dart';
 import 'model/home_data.dart';
 import 'model/mother.dart';
@@ -188,3 +190,31 @@ final babyWarningStatusList = <FormWarningStatus>[
     imgLink: "",
   ),
 ];
+
+
+// ========== Immunization ============
+final motherImmunizationList = <ImmunizationData>[
+  ImmunizationData(name: "Tetanus", date: "13 Desember 2020"),
+  ImmunizationData(name: "Tetanus", date: "17 Desember 2020"),
+  ImmunizationData(name: "Tetanus",),
+  ImmunizationData(name: "Tetanus",),
+  ImmunizationData(name: "Tetanus", date: "14 November 2021"),
+  ImmunizationData(name: "Tetanus",),
+];
+final babyImmunizationList = <ImmunizationData>[
+  ImmunizationData(name: "Hepatitis B (<24 Jam)", date: "13 Desember 2020"),
+  ImmunizationData(name: "BCG", date: "17 Desember 2020"),
+  ImmunizationData(name: "Polio Tetes 1",),
+  ImmunizationData(name: "DPT-HB-Hib 1",),
+  ImmunizationData(name: "Polio Tetes 2", date: "14 November 2021"),
+  ImmunizationData(name: "DPT-HB-Hib 2",),
+];
+
+final motherImmunizationDetailList = motherImmunizationList.map((e) => ImmunizationDetail(
+  immunization: e,
+)).toList(growable: false);
+final babyImmunizationDetailList = babyImmunizationList.map((e) => ImmunizationDetail(
+  immunization: e,
+  monthRange: IntRange(0, 4),
+  batchNo: "001",
+)).toList(growable: false);

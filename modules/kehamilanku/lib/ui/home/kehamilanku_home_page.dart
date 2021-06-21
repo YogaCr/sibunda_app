@@ -98,6 +98,10 @@ class KehamilankuHomePage extends StatelessWidget {
 
             SliverList(
               delegate: SliverChildListDelegate.fixed([
+                ItemHomeImmunization(
+                  image: Container(color: Manifest.theme.colorPrimary,),
+                  onBtnClick: () => showSnackBar(context, "dipencet",), //TODO
+                ),
                 Container(
                   margin: EdgeInsets.only(top: 5),
                   child: ItemMotherImmunizationHome(

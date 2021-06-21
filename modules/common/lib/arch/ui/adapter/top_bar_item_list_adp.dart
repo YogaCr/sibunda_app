@@ -40,6 +40,7 @@ class _TopBarItemCenterAlignListState
   final MutableLiveData<int> _globalSelectedPosition = MutableLiveData(-1);
   late double screenWidth;
   late double borderWidgetWidth;
+  bool _isScrolling = false;
 
   _TopBarItemCenterAlignListState({
     required this.dataList,
@@ -48,18 +49,23 @@ class _TopBarItemCenterAlignListState
     this.onItemClick,
   }) {
     _globalSelectedPosition.observe(this, (selectedPos) {
-      if(selectedPos != null) {
-        pageController?.animateToPage(selectedPos, duration: Duration(milliseconds: 500), curve: Curves.fastOutSlowIn);
+      if(selectedPos != null && !_isScrolling) {
+        _isScrolling = true;
+        pageController?.animateToPage(selectedPos, duration: Duration(milliseconds: 1000), curve: Curves.fastOutSlowIn);
         onItemClick?.call(selectedPos);
         _scrollTo(selectedPos);
+        _isScrolling = false;
       }
     }, distinctUntilChanged: true,);
     pageController?.addListener(() {
-      if(isActive) {
+      if(isActive && !_isScrolling) {
+        _isScrolling = true;
         final currentPage = pageController!.page?.toInt();
         if(currentPage != null) {
+          _globalSelectedPosition.value = currentPage;
           _scrollTo(currentPage);
         }
+        _isScrolling = false;
       }
     });
   }

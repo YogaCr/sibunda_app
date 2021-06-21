@@ -19,10 +19,12 @@ class ImmunizationDetail {
   final ImmunizationData immunization;
   final IntRange? monthRange;
   final int? monthExact;
+  final int? maxMonthLimit;
   final String? batchNo;
 
   ImmunizationDetail({
     required this.immunization,
+    this.maxMonthLimit,
     this.monthRange,
     this.monthExact,
     this.batchNo,
