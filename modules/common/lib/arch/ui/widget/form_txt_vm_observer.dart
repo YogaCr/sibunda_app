@@ -12,8 +12,9 @@ import 'package:flutter/material.dart';
 class FormTxtVmObserver<B extends FormTxtVm>
     extends StatefulWidget
 {
-  final bool? Function(int, String)? txtValidator;
 /*
+  final bool? Function(int, String)? txtValidator;
+
   /// Its keys are key to [FormTxtVm.txtKeyLabelList], not the label.
   final Map<String, String>? errorTxtMap;
  */
@@ -29,7 +30,6 @@ class FormTxtVmObserver<B extends FormTxtVm>
   FormTxtVmObserver({
     required this.submitBtnBuilder,
     this.preSubmitBtnBuilder,
-    this.txtValidator,
     this.onSubmit,
   });
 
@@ -37,7 +37,6 @@ class FormTxtVmObserver<B extends FormTxtVm>
   FormTxtVmObserverState<B> createState() => FormTxtVmObserverState(
     submitBtnBuilder: submitBtnBuilder,
     preSubmitBtnBuilder: preSubmitBtnBuilder,
-    txtValidator: txtValidator,
     onSubmit: onSubmit,
   );
 }
@@ -45,8 +44,9 @@ class FormTxtVmObserverState<B extends FormTxtVm>
     extends State<FormTxtVmObserver<B>>
     implements Expirable
 {
-  final bool? Function(int, String)? txtValidator;
 /*
+  final bool? Function(int, String)? txtValidator;
+
   /// Its keys are key to [FormTxtVm.txtKeyLabelList], not the label.
   final Map<String, String>? errorTxtMap;
  */
@@ -62,7 +62,6 @@ class FormTxtVmObserverState<B extends FormTxtVm>
   FormTxtVmObserverState({
     required this.submitBtnBuilder,
     this.preSubmitBtnBuilder,
-    this.txtValidator,
     this.onSubmit,
   });
 

@@ -1,4 +1,3 @@
-import 'package:bayiku/config/baby_routes.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
@@ -8,7 +7,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Flutter Cob',
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -20,7 +19,28 @@ class MyApp extends StatelessWidget {
         // counter didn't reset back to zero; the application is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: BabyRoutes.babyCheckPage.build(context),
+      home: Scaffold(
+        body: Column(
+          children: [
+            ListTile(
+              leading: Radio<String>(
+                value: "A",
+                groupValue: "A",
+                onChanged: (value) => print("Kepilih = A value= $value"),
+              ),
+              title: Text("A ok"),
+            ),
+            ListTile(
+              leading: Radio<String>(
+                value: "B",
+                groupValue: "A",
+                onChanged: (value) => print("Kepilih = B value= $value"),
+              ),
+              title: Text("B aja"),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

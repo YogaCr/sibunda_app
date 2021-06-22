@@ -1,5 +1,5 @@
 
-import 'package:common/arch/ui/widget/form_vm_observer.dart';
+import 'package:common/arch/ui/widget/form_txt_vm_observer.dart';
 import 'package:common/res/theme/_theme.dart';
 import 'package:common/res/string/_string.dart';
 import 'package:common/util/ui.dart';

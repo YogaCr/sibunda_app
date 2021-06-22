@@ -319,6 +319,34 @@ abstract class FormTxtVm extends FormVm {
   final List<TextEditingController> txtControllerList;
 }
 
+abstract class FormGenericVm extends FormVm {
+  FormGenericVm({
+    required List<Tuple2<String, String>> keyLabelList,
+    required List<FormUiData> itemDataList,
+    String defaultInvalidMsg = Strings.field_can_not_be_empty,
+  }) : txtControllerList = List.generate(keyLabelList.length, (index) => TextEditingController(), growable: false),
+    this.itemDataList = itemDataList,
+  super(
+    keyLabelList: keyLabelList,
+    defaultInvalidMsg: defaultInvalidMsg,
+  ) {
+    if(keyLabelList.length != itemDataList.length) {
+      throw "keyLabelList.length (${keyLabelList.length}) != itemDataList.length (${itemDataList.length})";
+    }
+    for(int i = 0; i < txtControllerList.length; i++) {
+      final txtControl = txtControllerList[i];
+      final response = _responseList[i];
+      txtControl.addListener(() {
+        if(isActive) {
+          response.value = txtControl.text;
+        }
+      });
+    }
+  }
+  final List<TextEditingController> txtControllerList;
+  final List<FormUiData> itemDataList;
+}
+
 
 
 /*
