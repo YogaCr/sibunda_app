@@ -175,6 +175,7 @@ mixin FormVmMixin {
   Future<Result<String>> doSubmitJob();
   Future<bool> validateField(String inputKey, dynamic response);
   String getInvalidMsg(String inputKey, dynamic response) => defaultInvalidMsg;
+  int getKeyIndex(String inputKey) => keyLabelList.indexWhere((element) => element.item1 == inputKey);
 }
 
 
@@ -345,6 +346,13 @@ abstract class FormGenericVm extends FormVm {
   }
   final List<TextEditingController> txtControllerList;
   final List<FormUiData> itemDataList;
+
+  /// [response] has 3 cases:
+  ///   When [FormType.text] => `String` for answer text,
+  ///   When [FormType.radio] => `String` for selected item value,
+  ///   When [FormType.check] => `Set<int>` for selected item indices,
+  @override
+  Future<bool> validateField(String inputKey, dynamic response);
 }
 
 
