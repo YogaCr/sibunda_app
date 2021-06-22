@@ -1,6 +1,9 @@
 
 import 'package:common/arch/domain/model/immunization.dart';
+import 'package:common/res/theme/_theme.dart';
 import 'package:core/domain/model/range.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 
 class HomeImmunizationData {
@@ -18,12 +21,12 @@ class HomeImmunizationData {
 /// [monthExact] and [monthExact] can't be displayed at the same time.
 /// So both [monthExact] and [monthExact] are present, then [monthExact] takes precedence.
 /// But, both [monthExact] and [monthExact] can't be null.
-class ImmunizationListItemDetail {
+class UiImmunizationListItemDetail {
   final IntRange? monthRange;
   final int? monthExact;
   final String? batchNo;
 
-  ImmunizationListItemDetail({
+  UiImmunizationListItemDetail({
     this.monthRange,
     this.monthExact,
     this.batchNo,
@@ -33,7 +36,7 @@ class ImmunizationListItemDetail {
     }
   }
 
-  ImmunizationListItemDetail.fromModelDetail(ImmunizationDetail detailData):
+  UiImmunizationListItemDetail.fromModelDetail(ImmunizationDetail detailData):
     monthRange = detailData.monthRange,
     monthExact = detailData.monthExact,
     batchNo = detailData.batchNo
@@ -41,11 +44,11 @@ class ImmunizationListItemDetail {
 }
 
 
-class ImmunizationListItem {
+class UiImmunizationListItem {
   final ImmunizationData core;
-  final ImmunizationListItemDetail? detail;
+  final UiImmunizationListItemDetail? detail;
 
-  ImmunizationListItem({
+  UiImmunizationListItem({
     required this.core,
     this.detail,
   }) {
@@ -62,23 +65,40 @@ class ImmunizationListItem {
     }
   }
 
-  ImmunizationListItem.fromModelDetail(ImmunizationDetail detailData):
+  UiImmunizationListItem.fromModelDetail(ImmunizationDetail detailData):
     core = detailData.immunization,
-    detail = ImmunizationListItemDetail(
-      monthRange: detailData.monthRange,
-      monthExact: detailData.monthExact,
-      batchNo: detailData.batchNo,
-    );
+    detail = detailData.noDetail ? null : UiImmunizationListItemDetail.fromModelDetail(detailData)
+  ;
 
-  ImmunizationListItem.fromModel(ImmunizationData data): core = data, detail = null;
+  UiImmunizationListItem.fromModel(ImmunizationData data): core = data, detail = null;
 }
 
-class ImmunizationListGroup {
-  final List<ImmunizationListItem> immunizationList;
+class UiImmunizationListGroup {
+  final List<UiImmunizationListItem> immunizationList;
   final String header;
 
-  ImmunizationListGroup({
+  UiImmunizationListGroup({
     required this.immunizationList,
     required this.header,
   });
+  UiImmunizationListGroup.fromDomainModel(ImmunizationDetailGroup data):
+    immunizationList = data.immunizationList.map((e) => UiImmunizationListItem.fromModelDetail(e)).toList(growable: false),
+    header = data.header
+  ;
 }
+
+class UiImmunizationOverview {
+  final String text;
+  final String imgLink;
+
+  UiImmunizationOverview({
+    required this.imgLink,
+    required this.text,
+  });
+}
+/*
+class UiImmunizationOnConfirm {
+  final
+}
+
+ */

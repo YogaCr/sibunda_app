@@ -21,6 +21,7 @@ class ImmunizationDetail {
   final int? monthExact;
   final int? maxMonthLimit;
   final String? batchNo;
+  final bool noDetail;
 
   ImmunizationDetail({
     required this.immunization,
@@ -28,15 +29,40 @@ class ImmunizationDetail {
     this.monthRange,
     this.monthExact,
     this.batchNo,
+    this.noDetail = false,
   }) {
-    if(immunization.date != null && batchNo == null
-      || immunization.date == null && batchNo != null) {
-      throw "If immunization.date != null then batchNo != null. \n"
-          "If immunization.date == null then batchNo == null. \n"
-          "Current immunization.date = '${immunization.date}', current batchNo = '$batchNo'";
-    }
-    if(monthExact == null && monthRange == null) {
-      throw "both `monthExact` and `monthExact` can't be null";
+    if(!noDetail) {
+      if(immunization.date != null && batchNo == null
+          || immunization.date == null && batchNo != null) {
+        throw "If immunization.date != null then batchNo != null. \n"
+            "If immunization.date == null then batchNo == null. \n"
+            "Current immunization.date = '${immunization.date}', current batchNo = '$batchNo'";
+      }
+      if(monthExact == null && monthRange == null) {
+        throw "both `monthExact` and `monthExact` can't be null";
+      }
     }
   }
+}
+
+
+class ImmunizationDetailGroup {
+  final List<ImmunizationDetail> immunizationList;
+  final String header;
+
+  ImmunizationDetailGroup({
+    required this.immunizationList,
+    required this.header,
+  });
+}
+
+
+class ImmunizationOverview {
+  final String text;
+  final String imgLink;
+
+  ImmunizationOverview({
+    required this.imgLink,
+    required this.text,
+  });
 }

@@ -212,9 +212,44 @@ final babyImmunizationList = <ImmunizationData>[
 
 final motherImmunizationDetailList = motherImmunizationList.map((e) => ImmunizationDetail(
   immunization: e,
+  noDetail: true,
 )).toList(growable: false);
 final babyImmunizationDetailList = babyImmunizationList.map((e) => ImmunizationDetail(
   immunization: e,
   monthRange: IntRange(0, 4),
   batchNo: "001",
 )).toList(growable: false);
+
+
+final motherImmunizationOverview = ImmunizationOverview(text: "Yuk cek apakah Bunda sudah mendapatkan semua imunisasi ya Bun", imgLink: "");
+final babyImmunizationOverview = ImmunizationOverview(text: "Yuk cek apakah Bayi sudah mendapatkan semua imunisasi ya Bun", imgLink: "");
+
+final motherImmunizationGroupList = <ImmunizationDetailGroup>[
+  ImmunizationDetailGroup(
+    immunizationList: motherImmunizationDetailList.sublist(0, 2),
+    header: "Trimester 1",
+  ),
+  ImmunizationDetailGroup(
+    immunizationList: motherImmunizationDetailList.sublist(2, 4),
+    header: "Trimester 2",
+  ),
+  ImmunizationDetailGroup(
+    immunizationList: motherImmunizationDetailList.sublist(4, 6),
+    header: "Trimester 3",
+  ),
+];
+
+final babyImmunizationGroupList = <ImmunizationDetailGroup>[
+  ImmunizationDetailGroup(
+    immunizationList: babyImmunizationDetailList.sublist(0, 2),
+    header: "Bulan ke 0 - 2",
+  ),
+  ImmunizationDetailGroup(
+    immunizationList: babyImmunizationDetailList.sublist(2, 4),
+    header: "Bulan ke 3 - 4",
+  ),
+  ImmunizationDetailGroup(
+    immunizationList: babyImmunizationDetailList.sublist(4, 6),
+    header: "Bulan ke 5 - 20++",
+  ),
+];

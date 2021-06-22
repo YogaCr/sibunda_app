@@ -9,6 +9,7 @@ class LiveDataObserver<T> extends StatefulWidget {
   final Widget? Function(BuildContext, T?) builder;
   final Widget Function(BuildContext)? initBuilder;
   final bool Function(T?)? predicate;
+  final bool isLiveDataOwner;
 
   LiveDataObserver({
     this.initBuilder,
@@ -16,6 +17,7 @@ class LiveDataObserver<T> extends StatefulWidget {
     required this.liveData,
     this.predicate,
     this.distinctUtilChanged = false,
+    this.isLiveDataOwner = false,
   });
 
   @override
@@ -25,6 +27,7 @@ class LiveDataObserver<T> extends StatefulWidget {
     liveData: liveData,
     predicate: predicate,
     distinctUtilChanged: distinctUtilChanged,
+    isLiveDataOwner: isLiveDataOwner,
   );
 }
 
@@ -38,11 +41,13 @@ class _LiveDataObserverState<T>
   final Widget Function(BuildContext)? initBuilder;
   final bool Function(T?)? predicate;
   bool isInit = true;
+  final bool isLiveDataOwner;
 
   _LiveDataObserverState({
     this.initBuilder,
     required this.builder,
     required this.liveData,
+    required this.isLiveDataOwner,
     this.predicate,
     this.distinctUtilChanged = false,
   }) {
@@ -80,6 +85,9 @@ class _LiveDataObserverState<T>
   @override
   void dispose() {
     _isActive = false;
+    if(isLiveDataOwner) {
+      liveData.dispose();
+    }
     super.dispose();
   }
 }

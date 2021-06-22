@@ -14,6 +14,9 @@ class MaterialTheme {
 
   final ColorSwatch primarySwatch;
 
+  final Color textBodyColor;
+  final Color textDisplayColor;
+
   final Color colorPrimary;
   final Color colorPrimaryVariant;
   final Color colorOnPrimary;
@@ -36,36 +39,42 @@ class MaterialTheme {
   final String fontFamily;
 
   const MaterialTheme({
-      this.primarySwatch = pink_swatch,
-      this.colorPrimary = pink_300,
-      this.colorPrimaryVariant = pink_400,
-      this.colorOnPrimary = white,
-      this.colorPrimaryRipple = pink_300_ripple,
-      this.colorOnPrimaryRipple = white_ripple,
-      this.colorSecondary = pink_300,
-      this.colorSecondaryVariant = pink_400,
-      this.colorOnSecondary = white,
-      this.colorBackground = white,
-      this.colorOnBackground = black,
-      this.colorSurface = white,
-      this.colorOnSurface = black,
-      this.colorError = red,
-      this.colorOnError = white,
-      this.fontFamily = fontFamily_nunito,
-      this.brightness = Brightness.light,
+    this.primarySwatch = pink_swatch,
+    this.colorPrimary = pink_300,
+    this.colorPrimaryVariant = pink_400,
+    this.colorOnPrimary = white,
+    this.colorPrimaryRipple = pink_300_ripple,
+    this.colorOnPrimaryRipple = white_ripple,
+    this.colorSecondary = pink_300,
+    this.colorSecondaryVariant = pink_400,
+    this.colorOnSecondary = white,
+    this.colorBackground = white,
+    this.colorOnBackground = black,
+    this.colorSurface = white,
+    this.colorOnSurface = black,
+    this.colorError = red,
+    this.colorOnError = white,
+    this.fontFamily = fontFamily_nunito,
+    this.brightness = Brightness.light,
+    this.textBodyColor = Colors.black,
+    this.textDisplayColor = Colors.black,
   });
 
   ThemeData get materialData => ThemeData(
-      brightness: brightness,
-      primaryColor: colorPrimary,
-      primaryColorLight: colorPrimary,
-      primaryColorDark: colorPrimaryVariant,
-      accentColor: colorPrimaryVariant,
-      backgroundColor: colorBackground,
-      cardColor: colorSurface,
-      buttonColor: colorSecondary,
-      errorColor: colorError,
-      fontFamily: fontFamily,
+    textTheme: TextTheme().apply(
+      bodyColor: textBodyColor,
+      displayColor: textDisplayColor,
+    ),
+    brightness: brightness,
+    primaryColor: colorPrimary,
+    primaryColorLight: colorPrimary,
+    primaryColorDark: colorPrimaryVariant,
+    accentColor: colorPrimaryVariant,
+    backgroundColor: colorBackground,
+    cardColor: colorSurface,
+    buttonColor: colorSecondary,
+    errorColor: colorError,
+    fontFamily: fontFamily,
   );
 }
 
@@ -75,5 +84,7 @@ class SibThemes {
     colorBackground: black,
     colorOnBackground: white,
     brightness: Brightness.dark,
+    textBodyColor: white,
+    textDisplayColor: white,
   );
 }

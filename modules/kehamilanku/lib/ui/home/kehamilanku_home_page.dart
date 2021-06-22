@@ -1,4 +1,5 @@
 import 'package:common/arch/domain/model/kehamilanku_data.dart';
+import 'package:common/arch/ui/model/dummy_ui_data.dart';
 import 'package:common/arch/ui/page/secondary_frames.dart';
 import 'package:common/arch/ui/widget/_item_template.dart';
 import 'package:common/arch/ui/widget/_items_kehamilanku.dart';
@@ -22,10 +23,10 @@ class KehamilankuHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final vm = ViewModelProvider.of<KehamilankuHomeVm>(context)
-    ..getAgeOverview()
-    ..getTrimesterList()
-    ..getFoodRecomList();
+    ViewModelProvider.of<KehamilankuHomeVm>(context)
+      ..getAgeOverview()
+      ..getTrimesterList()
+      ..getFoodRecomList();
 
     return TopBarTitleAndBackFrame(
       title: Strings.my_pregnancy,
@@ -98,15 +99,11 @@ class KehamilankuHomePage extends StatelessWidget {
 
             SliverList(
               delegate: SliverChildListDelegate.fixed([
-                ItemHomeImmunization(
-                  image: Container(color: Manifest.theme.colorPrimary,),
-                  onBtnClick: () => showSnackBar(context, "dipencet",), //TODO
-                ),
                 Container(
                   margin: EdgeInsets.only(top: 5),
-                  child: ItemMotherImmunizationHome(
-                    image: Container(color: Manifest.theme.colorPrimary,),
-                    onBtnClick: () => showSnackBar(context, "dipencet",), //TODO
+                  child: ItemHomeImmunization.fromData(
+                    motherHomeImmunization_ui,
+                    onBtnClick: () => KehamilankuRoutes.immunizationPage.goToPage(context),
                   ),
                 ),
                 Container(

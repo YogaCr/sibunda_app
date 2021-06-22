@@ -1,5 +1,6 @@
 import 'package:kehamilanku/core/di/kehamilanku_usecase_di.dart';
 import 'package:kehamilanku/ui/home/kehamilanku_home_vm.dart';
+import 'package:kehamilanku/ui/immunization/pregnancy_immunization_vm.dart';
 import 'package:kehamilanku/ui/pregnancy_check/kehamilanku_trimester_form_vm.dart';
 
 class KehamilankuVmDi {
@@ -15,5 +16,10 @@ class KehamilankuVmDi {
     savePregnancyCheck: KehamilankuUseCaseDi.savePregnancyCheck,
     getMotherFormWarningStatus: KehamilankuUseCaseDi.getMotherFormWarningStatus,
     getPregnancyBabySize: KehamilankuUseCaseDi.getPregnancyBabySize,
+  );
+  static PregnancyImmunizationVm get immunizationVm => PregnancyImmunizationVm(
+    getMotherImmunizationGroupList: KehamilankuUseCaseDi.getMotherImmunizationGroupList,
+    getMotherImmunizationOverview: KehamilankuUseCaseDi.getMotherImmunizationOverview,
+    confirmMotherImmunization: KehamilankuUseCaseDi.confirmMotherImmunization,
   );
 }

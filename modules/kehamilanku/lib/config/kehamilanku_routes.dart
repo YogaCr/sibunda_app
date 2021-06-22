@@ -6,6 +6,7 @@ import 'package:common/value/const_values.dart';
 import 'package:flutter/material.dart';
 import 'package:kehamilanku/di/kehamilanku_vm_di.dart';
 import 'package:kehamilanku/ui/home/kehamilanku_home_page.dart';
+import 'package:kehamilanku/ui/immunization/pregnancy_immunization_page.dart';
 import 'package:kehamilanku/ui/pregnancy_check/kehamilanku_trimester_form_page.dart';
 
 
@@ -32,6 +33,11 @@ class KehamilankuRoutes extends ModuleRoute {
     ]),
   ));
   static final pregnancyCheckPage = _PregnancyCheckPageRoute.obj;
+  static final immunizationPage = SibRoute("PregnancyImmunizationPage", PregnancyImmunizationPage, (ctx) => MainFrame(
+    body: PregnancyImmunizationPage().inVmProvider([
+      (ctx) => KehamilankuVmDi.immunizationVm,
+    ]),
+  ));
 }
 
 
