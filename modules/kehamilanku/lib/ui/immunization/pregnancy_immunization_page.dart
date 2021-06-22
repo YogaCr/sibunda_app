@@ -34,7 +34,7 @@ class PregnancyImmunizationPage extends StatelessWidget {
                     liveDataGetter: (vm2) => vm2.immunizationGroups,
                     builder: (ctx, data) => ImmunizationListGroupView(
                       data ?? List.empty(),
-                      onBtnClick: (group, child) => showSnackBar(context, "group= $group child= $child"),
+                      onBtnClick: (group, child) => showSnackBar(ctx, "group= $group child= $child"),
                     ),
                   ),
                 ],

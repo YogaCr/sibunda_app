@@ -2,6 +2,7 @@
 
 import 'package:common/arch/domain/model/form_data.dart';
 import 'package:common/value/const_values.dart';
+import 'package:equatable/equatable.dart';
 
 enum FormType {
   text,
@@ -19,6 +20,24 @@ class FormAnswerItem {
   });
 }
  */
+
+class FormTxtFieldState extends Equatable {
+  final String text;
+  final bool isValid;
+
+  FormTxtFieldState({
+    required this.text,
+    required this.isValid,
+  });
+
+  @override
+  List<Object?> get props => [text, isValid];
+
+  FormTxtFieldState copy({
+    String? text,
+    bool? isValid,
+  }) => FormTxtFieldState(text: text ?? this.text, isValid: isValid ?? this.isValid);
+}
 
 
 abstract class FormUiData {

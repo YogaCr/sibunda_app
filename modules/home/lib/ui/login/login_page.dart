@@ -1,5 +1,5 @@
 
-import 'package:common/arch/ui/widget/form_bloc_observer.dart';
+import 'package:common/arch/ui/widget/form_vm_observer.dart';
 import 'package:common/arch/ui/widget/txt_link.dart';
 import 'package:common/util/assets.dart';
 import 'package:common/util/ui.dart';
