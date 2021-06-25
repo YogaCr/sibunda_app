@@ -5,7 +5,7 @@ import 'live_data.dart';
 
 class LiveDataObserver<T> extends StatefulWidget {
   final LiveData<T> liveData;
-  final bool distinctUtilChanged;
+  final bool distinctUntilChanged;
   final Widget? Function(BuildContext, T?) builder;
   final Widget Function(BuildContext)? initBuilder;
   final bool Function(T?)? predicate;
@@ -16,7 +16,7 @@ class LiveDataObserver<T> extends StatefulWidget {
     required this.builder,
     required this.liveData,
     this.predicate,
-    this.distinctUtilChanged = false,
+    this.distinctUntilChanged = false,
     this.isLiveDataOwner = false,
   });
 
@@ -26,7 +26,7 @@ class LiveDataObserver<T> extends StatefulWidget {
     builder: builder,
     liveData: liveData,
     predicate: predicate,
-    distinctUtilChanged: distinctUtilChanged,
+    distinctUtilChanged: distinctUntilChanged,
     isLiveDataOwner: isLiveDataOwner,
   );
 }

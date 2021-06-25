@@ -9,7 +9,7 @@ import 'package:core/ui/base/view_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class FormTxtVmObserver<B extends FormTxtVm>
+class FormTxtVmObserver<B extends FormTxtVmMixin>
     extends StatefulWidget
 {
 /*
@@ -40,7 +40,7 @@ class FormTxtVmObserver<B extends FormTxtVm>
     onSubmit: onSubmit,
   );
 }
-class FormTxtVmObserverState<B extends FormTxtVm>
+class FormTxtVmObserverState<B extends FormTxtVmMixin>
     extends State<FormTxtVmObserver<B>>
     implements Expirable
 {

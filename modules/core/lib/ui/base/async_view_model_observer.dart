@@ -12,6 +12,7 @@ class AsyncVmObserver<Vm extends AsyncVm, V> extends StatefulWidget {
   final bool Function(V?)? predicate;
   final Widget? Function(BuildContext ctx, String key)? preAsyncBuilder;
   final bool distinctUntilChanged;
+  final Vm? vm;
 
   AsyncVmObserver({
     required this.liveDataGetter,
@@ -19,10 +20,13 @@ class AsyncVmObserver<Vm extends AsyncVm, V> extends StatefulWidget {
     this.predicate,
     this.preAsyncBuilder,
     this.distinctUntilChanged = false,
+    /// This way, this.[AsyncVmObserver] won't be busy of looking for [Vm] in parent tree.
+    this.vm,
   });
 
   @override
   _AsyncVmObserverState<Vm, V> createState() => _AsyncVmObserverState<Vm, V>(
+    vm: vm,
     liveDataGetter: liveDataGetter,
     builder: builder,
     predicate: predicate,
@@ -40,6 +44,7 @@ class _AsyncVmObserverState<Vm extends AsyncVm, V>
   final Widget Function(BuildContext, V?) builder;
   final bool Function(V?)? predicate;
   final bool distinctUntilChanged;
+  Vm? vm;
   LiveData<V>? _liveData;
 
   /// If it returns [Widget], it means the widget will be rebuilt using the returned [Widget].
@@ -51,6 +56,8 @@ class _AsyncVmObserverState<Vm extends AsyncVm, V>
   _AsyncVmObserverState({
     required this.liveDataGetter,
     required this.builder,
+    /// This way, this.[AsyncVmObserver] won't be busy of looking for [Vm] in parent tree.
+    required this.vm,
     this.predicate,
     this.preAsyncBuilder,
     this.distinctUntilChanged = false,
@@ -65,12 +72,13 @@ class _AsyncVmObserverState<Vm extends AsyncVm, V>
     super.dispose();
     _isActive = false;
     _liveData = null;
+    vm = null;
   }
 
   @override
   Widget build(BuildContext context) {
     if(_liveData == null) {
-      final vm = ViewModelProvider.of<Vm>(context);
+      final vm = this.vm ??= ViewModelProvider.of<Vm>(context);
       final vmPreAsyncTask = (preAsyncBuilder != null) ? (String key) {
         final newPreWidget = preAsyncBuilder!(this.context, key);
         print("AsyncVmObserver.build() newPreWidget= $newPreWidget");

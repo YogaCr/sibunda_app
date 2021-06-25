@@ -10,7 +10,9 @@ import 'package:core/ui/base/view_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class FormGenericVmObserver<Vm extends FormGenericVm> extends StatefulWidget {
+import 'form_generic_item.dart';
+
+class FormGenericVmObserver<Vm extends FormGenericVmMixin> extends StatefulWidget {
   /// The [bool] in its parameter is for representation of [FormTxtVm.canProceed].
   final Widget Function(BuildContext, bool?) submitBtnBuilder;
 
@@ -36,7 +38,7 @@ class FormGenericVmObserver<Vm extends FormGenericVm> extends StatefulWidget {
   );
 }
 
-class _FormGenericVmObserverState<Vm extends FormGenericVm>
+class _FormGenericVmObserverState<Vm extends FormGenericVmMixin>
     extends State<FormGenericVmObserver<Vm>>
     implements Expirable
 {
@@ -65,68 +67,65 @@ class _FormGenericVmObserverState<Vm extends FormGenericVm>
     final formWidgets = List<Widget>.generate(
       keyLabelList.length,
           (i) {
-            Widget Function(BuildContext, bool?)? fieldBuilder;
+            final key = keyLabelList[i].item1;
+            Widget field;
+            //Widget Function(BuildContext, bool?)? fieldBuilder_old;
             final itemData = vm.itemDataList[i];
             switch(itemData.type) {
               case FormType.text:
-                fieldBuilder = (ctx, isValid) => TxtInput(
-                  label: keyLabelList[i].item2,
-                  textController: vm.txtControllerList[i],
-                  errorText: (isValid == false && !vm.isResponseInit(i))
-                      ? vm.getInvalidMsg(keyLabelList[i].item1, vm.txtControllerList[i].text)
-                      : null,
+                final txtControl = TextEditingController();
+                final txtLiveData = MutableChangeNotifLiveData<String>(
+                  txtControl,
+                  getNotif: (notif) => txtControl.text,
+                  setNotif: (notif, data) => txtControl.text = data ?? "",
+                  isNotifierOwner: true,
+                );
+                itemLiveDatas[key] = txtLiveData;
+
+                field = LiveDataObserver<bool>(
+                  liveData: vm.isResponseValidList[i],
+                  builder: (ctx, isValid) => TxtInput(
+                    label: keyLabelList[i].item2,
+                    textController: txtControl,
+                    errorText: (isValid == false && !vm.isResponseInit(i))
+                        ? vm.getInvalidMsg(key, txtControl.text)
+                        : null,
+                  ),
                 );
                 final answer = (itemData as FormUiTxt).answer;
                 if(answer != null) {
-                  vm.txtControllerList[i].text = answer;
+                  txtControl.text = answer;
                 }
                 break;
               case FormType.radio:
-              //TODO: `isValid` blum kepake.
-                fieldBuilder = (ctx, isValid) {
-                  final optionWidgetList = <Widget>[];
-                  final selectedAnswerIndex = (itemData as FormUiRadio).selectedAnswer;
-                  final selectedAnswer = selectedAnswerIndex != null
-                      ? itemData.answerItems[selectedAnswerIndex]
-                      : null;
+                final selectedAnswerIndex = (itemData as FormUiRadio).selectedAnswer;
+                final selectedAnswer = selectedAnswerIndex != null
+                    ? itemData.answerItems[selectedAnswerIndex]
+                    : null;
 
-                  final groupValue = MutableLiveData(selectedAnswer);
-                  itemLiveDatas[keyLabelList[i].item1] = groupValue;
+                //final isValid = vm.isResponseValidList[i];
+                final groupValue = MutableLiveData(selectedAnswer);
+                itemLiveDatas[key] = groupValue;
 
-                  for(final option in itemData.answerItems) {
-                    optionWidgetList.add(
-                      Flexible(
-                        child: ListTile(
-                          title: Text(option),
-                          leading: LiveDataObserver<String>(
-                            liveData: groupValue,
-                            builder: (ctx, data) => Radio<String>(
-                              value: option,
-                              groupValue: data,
-                              onChanged: (value) => groupValue.value = value,
-                            ),
-                          ),
-                        ),
-                      ),
-                    );
-                  }
-
-                  final optionsWidget = Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: optionWidgetList,
-                  );
-
-                  return Column(
-                    children: [
-                      Text(itemData.question),
-                      optionsWidget,
-                    ],
-                  );
-                };
+                field = RadioGroup(
+                  itemData: itemData,
+                  isValid: vm.isResponseValidList[i],
+                  invalidMsgGenerator: (response) => vm.getInvalidMsg(key, groupValue.value),
+                  groupValueLiveData: groupValue,
+                );
                 break;
               case FormType.check:
-                //TODO: `isValid` blum kepake.
-                fieldBuilder = (ctx, isValid) {
+                final selectedAnswerIndices = MutableLiveData<Set<int>>((itemData as FormUiCheck).selectedAnswers);
+                itemLiveDatas[key] = selectedAnswerIndices;
+
+                field = CheckGroup(
+                  itemData: itemData,
+                  isValid: vm.isResponseValidList[i],
+                  invalidMsgGenerator: (response) => vm.getInvalidMsg(key, selectedAnswerIndices.value),
+                  selectedIndicesLiveData: selectedAnswerIndices,
+                );
+/*
+                fieldBuilder_old = (ctx, isValid) {
                   final optionWidgetList = <Widget>[];
 
                   final selectedAnswerIndices = MutableLiveData<Set<int>>((itemData as FormUiCheck).selectedAnswers);
@@ -172,20 +171,19 @@ class _FormGenericVmObserverState<Vm extends FormGenericVm>
                     ],
                   );
                 };
+ */
                 break;
             }
 
             return Container(
               margin: EdgeInsets.all(10),
-              child: AsyncVmObserver<Vm, bool>(
-                liveDataGetter: (vm2) => vm2.isResponseValidList[i],
-                builder: fieldBuilder,
-              ),
+              child: field,
             );
           },
     );
 
     final submitBtn = AsyncVmObserver<Vm, bool>(
+      vm: vm,
       liveDataGetter: (vm) => vm.canProceed,
       distinctUntilChanged: true,
       builder: (ctx, canProceed) => InkWell(

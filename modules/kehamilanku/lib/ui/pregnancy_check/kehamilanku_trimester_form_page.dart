@@ -105,7 +105,7 @@ class _WeeklyFormPage extends StatelessWidget {
                 style: SibTextStyles.size_0_bold,
               ),
             ),
-            FormVmObserver<KehamilankuCheckFormVm>(
+            FormTxtVmObserver<KehamilankuCheckFormVm>(
               onSubmit: (canProceed) => canProceed
                   ? showSnackBar(context, "Berhasil bro", backgroundColor: Colors.green)
                   : showSnackBar(context, "Gagal bro"),

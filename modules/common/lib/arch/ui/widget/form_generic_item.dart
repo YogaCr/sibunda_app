@@ -9,16 +9,19 @@ import 'package:flutter/material.dart';
 
 class RadioGroup extends StatelessWidget {
   final FormUiRadio itemData;
-  //TODO: `isValid` blum kepake.
   final LiveData<bool>? isValid;
   final MutableLiveData<String> groupValueLiveData;
   final bool isLiveDataOwner;
+
+  /// This will become default invalid message.
   final String invalidMsg;
+  final String? Function(String? response)? invalidMsgGenerator;
 
   RadioGroup({
     required this.itemData,
     this.isValid,
     this.invalidMsg = Strings.field_can_not_be_empty,
+    this.invalidMsgGenerator,
     MutableLiveData<String>? groupValueLiveData,
     bool? isLiveDataOwner,
   }):
@@ -71,9 +74,8 @@ class RadioGroup extends StatelessWidget {
       outerColumChildren.insert(1, LiveDataObserver<bool>(
         liveData: isValid!,
         builder: (ctx, isValid) => isValid == false
-            ? Text(
-              invalidMsg,
-              style: SibTextStyles.size_min_2.copyWith(color: red),
+            ? Text( invalidMsgGenerator?.call(groupValueLiveData.value) ?? invalidMsg,
+                style: SibTextStyles.size_min_2.copyWith(color: red),
             ) : SizedBox(),
       ));
     }
@@ -87,16 +89,19 @@ class RadioGroup extends StatelessWidget {
 //TODO: lanjutkan
 class CheckGroup extends StatelessWidget {
   final FormUiCheck itemData;
-  //TODO: `isValid` blum kepake.
   final LiveData<bool>? isValid;
   final MutableLiveData<Set<int>> selectedIndicesLiveData;
   final bool isLiveDataOwner;
+
+  /// This will become default invalid message.
   final String invalidMsg;
+  final String? Function(Set<int> responses)? invalidMsgGenerator;
 
   CheckGroup({
     required this.itemData,
     this.isValid,
     this.invalidMsg = Strings.field_can_not_be_empty,
+    this.invalidMsgGenerator,
     MutableLiveData<Set<int>>? selectedIndicesLiveData,
     bool? isLiveDataOwner,
   }):
@@ -114,26 +119,33 @@ class CheckGroup extends StatelessWidget {
     }
 
     for(int i = 0; i < itemData.answerItems.length; i++) {
+      final i2 = i;
       final option = itemData.answerItems[i];
       optionWidgetList.add(
         Flexible(
+          flex: 0,
           child: ListTile(
             title: Text(option),
             leading: LiveDataObserver<Set<int>>(
               isLiveDataOwner: isLiveDataOwner,
               liveData: selectedIndicesLiveData,
               builder: (ctx, data) => Checkbox(
-                value: selectedIndicesLiveData.value!.contains(i),
-                onChanged: (isSelected) => isSelected == true
-                    ? selectedIndicesLiveData.value!.add(i)
-                    : selectedIndicesLiveData.value!.remove(i),
+                value: selectedIndicesLiveData.value!.contains(i2),
+                onChanged: (isSelected) {
+                  if(isSelected == true) {
+                    selectedIndicesLiveData.value!.add(i2);
+                  } else {
+                    selectedIndicesLiveData.value!.remove(i2);
+                  }
+                  selectedIndicesLiveData.notifyObservers();
+                },
               ),
             ),
           ),
         ),
       );
     }
-
+///*
     final optionsWidget = Column(
       //mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: optionWidgetList,
@@ -143,15 +155,22 @@ class CheckGroup extends StatelessWidget {
       Text(itemData.question),
       optionsWidget,
     ];
+// */
+/*
+    final outerColumChildren = optionWidgetList;
+    outerColumChildren.insert(0, Text(itemData.question));
+ */
 
     if(isValid != null) {
       outerColumChildren.insert(1, LiveDataObserver<bool>(
         liveData: isValid!,
         builder: (ctx, isValid) => isValid == false
-            ? Text(
-          invalidMsg,
-          style: SibTextStyles.size_min_2.copyWith(color: red),
-        ) : SizedBox(),
+            ? Text( invalidMsgGenerator?.call(selectedIndicesLiveData.value!) ?? invalidMsg,
+                style: SibTextStyles.size_min_2.copyWith(color: red),
+            ) : SizedBox(
+          height: 10,
+          width: 10,
+        ),
       ));
     }
 

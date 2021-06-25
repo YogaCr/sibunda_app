@@ -1,4 +1,5 @@
 
+import 'package:flutter/cupertino.dart';
 import 'package:tuple/tuple.dart';
 
 import 'expirable.dart';
@@ -41,6 +42,7 @@ class LiveData<T> implements Expirable {
 
   bool get hasActiveObserver => _observers?.length.compareTo(0) == 1;
 
+  @mustCallSuper
   void dispose() {
     _assertNotDisposed();
     _observers!.clear();
@@ -76,3 +78,64 @@ class MutableLiveData<T> extends LiveData<T> {
   }
 }
 
+
+
+/// Extended version of [LiveData] that can map [ChangeNotifier] change into
+/// [LiveData.notifyObservers].
+class ChangeNotifLiveData<T> extends LiveData<T> {
+  ChangeNotifLiveData(
+    this._notifier,
+    this.onChange, {
+    this.isNotifierOwner = false,
+  }): super(onChange(_notifier)) {
+    notifierCallback = () {
+      if(isActive) {
+        final oldValue = _value;
+        _value = onChange(_notifier);
+        notifyObservers(oldValue: oldValue, newValue: _value);
+      } else {
+        _notifier.removeListener(notifierCallback);
+      }
+    };
+    _notifier.addListener(notifierCallback);
+  }
+
+  final bool isNotifierOwner;
+  ChangeNotifier _notifier;
+  T? Function(ChangeNotifier) onChange;
+  late final void Function() notifierCallback;
+
+  void dispose() {
+    super.dispose();
+    _notifier.removeListener(notifierCallback);
+    if(isNotifierOwner) {
+      _notifier.dispose();
+    }
+  }
+}
+
+
+class MutableChangeNotifLiveData<T>
+    extends ChangeNotifLiveData<T>
+    implements MutableLiveData<T>
+{
+  MutableChangeNotifLiveData(
+    ChangeNotifier notifier, {
+    required T? Function(ChangeNotifier p1) getNotif,
+    required this.setNotif,
+    bool isNotifierOwner = false,
+  }): super(notifier, getNotif, isNotifierOwner: isNotifierOwner,) {
+    observe(this, (data) {
+      setNotif(_notifier, data);
+    }, tag: "MutableChangeNotifLiveData<$T>");
+  }
+
+  @override
+  set value(T? v) {
+    final old = _value;
+    _value = v;
+    notifyObservers(oldValue: old, newValue: v);
+  }
+
+  final void Function(ChangeNotifier p1, T? value) setNotif;
+}

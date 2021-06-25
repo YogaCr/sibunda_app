@@ -3,8 +3,12 @@ import 'package:common/res/string/_string.dart';
 import 'package:core/domain/model/result.dart';
 import 'package:core/ui/base/live_data.dart';
 import 'package:core/ui/base/async_vm.dart';
+import 'package:core/ui/base/view_model.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:tuple/tuple.dart';
+
+part 'form_vm_late.dart';
 /*
 abstract class FormTxtVm extends AsyncVm {
   static const submitFormKey = "submitForm";
@@ -145,7 +149,8 @@ abstract class FormTxtVm extends AsyncVm {
 }
  */
 
-mixin FormVmMixin {
+//TODO: gmn caranya biar child widget pada form (TxtInput, RadioGroup, atau CHeckGroup) bisa ngakses responseList, namun aman dari jangkauan tangan (class) tak bertanggung jawab.
+mixin FormVmMixin implements AsyncVm {
   //List<String> get keyList;
 
   /// The [Tuple2] format is (KEY, LABEL).
@@ -298,7 +303,11 @@ abstract class FormVm
 }
 
 
-abstract class FormTxtVm extends FormVm {
+mixin FormTxtVmMixin implements FormVmMixin {
+  List<TextEditingController> get txtControllerList;
+}
+
+abstract class FormTxtVm extends FormVm with FormTxtVmMixin {
   FormTxtVm({
     required List<Tuple2<String, String>> keyLabelList,
     String defaultInvalidMsg = Strings.field_can_not_be_empty,
@@ -317,16 +326,29 @@ abstract class FormTxtVm extends FormVm {
       });
     }
   }
+  @override
   final List<TextEditingController> txtControllerList;
 }
 
-abstract class FormGenericVm extends FormVm {
+
+mixin FormGenericVmMixin implements FormVmMixin {
+  List<FormUiData> get itemDataList;
+
+  /// [response] has 3 cases:
+  ///   When [FormType.text] => `String` for answer text,
+  ///   When [FormType.radio] => `String` for selected item value,
+  ///   When [FormType.check] => `Set<int>` for selected item indices,
+  @override
+  Future<bool> validateField(String inputKey, dynamic response);
+}
+
+abstract class FormGenericVm extends FormVm with FormGenericVmMixin {
   FormGenericVm({
     required List<Tuple2<String, String>> keyLabelList,
     required List<FormUiData> itemDataList,
     String defaultInvalidMsg = Strings.field_can_not_be_empty,
-  }) : txtControllerList = List.generate(keyLabelList.length, (index) => TextEditingController(), growable: false),
-    this.itemDataList = itemDataList,
+  }) : //txtControllerList = List.generate(keyLabelList.length, (index) => TextEditingController(), growable: false),
+    this.itemDataList = List.unmodifiable(itemDataList),
   super(
     keyLabelList: keyLabelList,
     defaultInvalidMsg: defaultInvalidMsg,
@@ -334,6 +356,7 @@ abstract class FormGenericVm extends FormVm {
     if(keyLabelList.length != itemDataList.length) {
       throw "keyLabelList.length (${keyLabelList.length}) != itemDataList.length (${itemDataList.length})";
     }
+/*
     for(int i = 0; i < txtControllerList.length; i++) {
       final txtControl = txtControllerList[i];
       final response = _responseList[i];
@@ -343,8 +366,10 @@ abstract class FormGenericVm extends FormVm {
         }
       });
     }
+ */
   }
-  final List<TextEditingController> txtControllerList;
+  //final List<TextEditingController> txtControllerList;
+  @override
   final List<FormUiData> itemDataList;
 
   /// [response] has 3 cases:

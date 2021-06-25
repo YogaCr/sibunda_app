@@ -6,16 +6,19 @@ class ViewModelObserver<Vm extends ViewModel, V> extends StatefulWidget {
   final Widget Function(BuildContext, V?) builder;
   final bool Function(V?)? predicate;
   final bool distinctUntilChanged;
+  final Vm? vm;
 
   ViewModelObserver({
     required this.liveDataGetter,
     required this.builder,
+    this.vm,
     this.predicate,
     this.distinctUntilChanged = false,
   });
 
   @override
   _ViewModelObserverState<Vm, V> createState() => _ViewModelObserverState<Vm, V>(
+    vm: vm,
     liveDataGetter: liveDataGetter,
     builder: builder,
     predicate: predicate,
@@ -32,12 +35,14 @@ class _ViewModelObserverState<Vm extends ViewModel, V>
   final Widget Function(BuildContext, V?) builder;
   final bool Function(V?)? predicate;
   final bool distinctUntilChanged;
+  Vm? vm;
   LiveData<V>? _liveData;
 
   _ViewModelObserverState({
     required this.liveDataGetter,
     required this.builder,
     required this.distinctUntilChanged,
+    required this.vm,
     this.predicate,
   });
 
@@ -50,12 +55,13 @@ class _ViewModelObserverState<Vm extends ViewModel, V>
     _isActive = false;
     super.dispose();
     _liveData = null;
+    vm = null;
   }
 
   @override
   Widget build(BuildContext context) {
     if(_liveData == null) {
-      final vm = ViewModelProvider.of<Vm>(context);
+      final vm = this.vm ??= ViewModelProvider.of<Vm>(context);
       _liveData = liveDataGetter(vm);
       _liveData!.observe(this, (data) {
         if(predicate == null || predicate!(data)) {
