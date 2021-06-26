@@ -4,6 +4,7 @@ mixin LateFormVmMixin implements FormVmMixin {
   bool get isFormReady;
   @protected
   Future<List<Tuple2<String, String>>> getKeyLabelList();
+  void addOnReady(void Function() callback);
 }
 
 abstract class LateFormVm extends FormVm with LateFormVmMixin {
@@ -71,7 +72,24 @@ abstract class LateFormVm extends FormVm with LateFormVmMixin {
   }
 
   /// Called when the first value of [_keyLabelList] arrived.
-  void onKeyLabelListInit(List<Tuple2<String, String>> newKeyLabelList) {}
+  @mustCallSuper
+  void onKeyLabelListInit(List<Tuple2<String, String>> newKeyLabelList) {
+    for(final callback in _onReadyCallbacks) {
+      callback();
+    }
+  }
+
+  /// These will be called once right after this [LateFormVm] is ready.
+  /// If this [LateFormVm] is currently ready, then newly added callback
+  /// will be called right away.
+  final List<void Function()> _onReadyCallbacks = [];
+  void addOnReady(void Function() callback) {
+    if(isFormReady) {
+      callback();
+    } else {
+      _onReadyCallbacks.add(callback);
+    }
+  }
 
   @override
   @protected
@@ -107,6 +125,7 @@ abstract class LateFormTxtVm extends LateFormVm with FormTxtVmMixin {
         }
       });
     }
+    super.onKeyLabelListInit(newKeyLabelList);
   }
 }
 
@@ -143,6 +162,7 @@ abstract class LateFormGenericVm extends LateFormVm with FormGenericVmMixin {
     if(_itemDataList != null) {
       _assertItemDataCount();
     }
+    super.onKeyLabelListInit(newKeyLabelList);
   }
 
   void _assertItemDataCount() {

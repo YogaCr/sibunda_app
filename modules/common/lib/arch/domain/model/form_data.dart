@@ -1,10 +1,20 @@
+enum FormType {
+  text,
+  radio,
+  check,
+}
+
 class FormData {
   final String question;
   final String? answer;
   final List<FormOption>? options;
+  final List<String>? imgLink;
+  final FormType type;
 
   FormData({
     required this.question,
+    required this.type,
+    this.imgLink,
     this.answer,
     this.options,
   });

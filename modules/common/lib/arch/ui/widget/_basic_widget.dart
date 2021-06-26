@@ -5,7 +5,7 @@ export 'txt_btn.dart';
 export 'txt_link.dart';
 export 'circle_btn.dart';
 export 'number_picker.dart';
-export 'default_loading_widget.dart';
+export 'default_widget.dart';
 
 
 

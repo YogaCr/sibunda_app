@@ -1,3 +1,4 @@
+import 'package:common/arch/domain/model/form_data.dart';
 import 'package:common/arch/ui/model/form_data.dart';
 import 'package:common/arch/ui/vm/form_vm.dart';
 import 'package:core/domain/model/result.dart';

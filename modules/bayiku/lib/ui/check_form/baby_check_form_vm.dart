@@ -15,15 +15,28 @@ class BabyCheckFormVm extends FormGenericVm {
       FormUiRadio(
         question: "question 1",
         answerItems: ["option 1", "option 2", ],
+        imgLink: [
+        //  "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/1a052c60-b6a8-476f-87d9-04b7f5f0f903/d52ha02-7eebab18-a875-4185-94de-6fd44be0206a.jpg/v1/fill/w_900,h_675,q_75,strp/smiling_cat_by_omniamohamed_d52ha02-fullview.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9Njc1IiwicGF0aCI6IlwvZlwvMWEwNTJjNjAtYjZhOC00NzZmLTg3ZDktMDRiN2Y1ZjBmOTAzXC9kNTJoYTAyLTdlZWJhYjE4LWE4NzUtNDE4NS05NGRlLTZmZDQ0YmUwMjA2YS5qcGciLCJ3aWR0aCI6Ijw9OTAwIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmltYWdlLm9wZXJhdGlvbnMiXX0.uEgwgBfq7faRJ9GPWtsJLmc8_kqG11HHAfdtNX5j56A",
+          //"https://i.pinimg.com/originals/bf/f5/d0/bff5d074d399bdfec6071e9168398406.jpg",
+          //"https://images.pexels.com/photos/462118/pexels-photo-462118.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+          //"http://s3.amazonaws.com/pix.iemoji.com/images/emoji/apple/ios-12/256/smiling-cat-face-with-open-mouth.png",
+        ],
         //selectedAnswer: 1,
       ),
       FormUiCheck(
         question: "question 2",
         answerItems: ["option 1", "option 2", "option 3", ],
+///*
+        imgLink: [
+          //"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQrf_51MS8dpCJfxVBFyQgCQtpbfS2wT6spDgVkFxAkHVf44j3NJ0n8VWV03DdAiteO8D8&usqp=CAU",
+          "https://i.redd.it/uxilb61s0fo41.jpg",
+        ],
+// */
         //selectedAnswers: {0, 2},
       ),
       FormUiTxt(
         question: "question 3",
+        //imgLink: ["https://static.boredpanda.com/blog/wp-content/uploads/2015/07/smiling-cat-28__605.jpg",],
       ),
     ],
   );
@@ -38,3 +51,30 @@ class BabyCheckFormVm extends FormGenericVm {
   Future<bool> validateField(String inputKey, response) async => response is String
       ? response.isNotEmpty : (response as Set<int>).isNotEmpty;
 }
+/*
+class BabyCheckFormVm_Late extends LateFormGenericVm {
+  BabyCheckFormVm_Late() : super();
+
+  @override
+  Future<Result<String>> doSubmitJob() async => Success("data");
+
+  @override
+  List<LiveData> get liveDatas => [];
+
+  @override
+  Future<bool> validateField(String inputKey, response) async => response is String
+      ? response.isNotEmpty : (response as Set<int>).isNotEmpty;
+
+  @override
+  Future<List<FormUiData>> getItemDataList() {
+    // TODO: implement getItemDataList
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<List<Tuple2<String, String>>> getKeyLabelList() {
+    // TODO: implement getKeyLabelList
+    throw UnimplementedError();
+  }
+}
+ */

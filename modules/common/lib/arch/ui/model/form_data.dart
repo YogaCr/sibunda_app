@@ -1,15 +1,5 @@
-
-
 import 'package:common/arch/domain/model/form_data.dart';
-import 'package:common/value/const_values.dart';
-import 'package:collection/collection.dart';
-import 'package:equatable/equatable.dart';
 
-enum FormType {
-  text,
-  radio,
-  check,
-}
 /*
 class FormAnswerItem {
   final String text;
@@ -45,10 +35,12 @@ class FormTxtFieldState extends Equatable {
 abstract class FormUiData {
   final FormType type;
   final String question;
+  final List<String>? imgLink;
 
   FormUiData({
     required this.type,
     required this.question,
+    this.imgLink,
   });
 }
 
@@ -58,13 +50,15 @@ class FormUiTxt extends FormUiData {
   FormUiTxt({
     required String question,
     this.answer,
+    List<String>? imgLink,
   }): super(
     type: FormType.text,
     question: question,
+    imgLink: imgLink,
   );
 
   factory FormUiTxt.fromModel(FormData data) => FormUiTxt(
-    question: data.question, answer: data.answer,
+    question: data.question, answer: data.answer, imgLink: data.imgLink,
   );
 }
 
@@ -76,9 +70,11 @@ class FormUiRadio extends FormUiData {
     required String question,
     required this.answerItems,
     this.selectedAnswer,
+    List<String>? imgLink
   }): super(
     type: FormType.radio,
     question: question,
+    imgLink: imgLink,
   );
 
   factory FormUiRadio.fromModel(FormData data) {
@@ -94,7 +90,12 @@ class FormUiRadio extends FormUiData {
         }
       }
     }
-    return FormUiRadio(question: data.question, answerItems: options ?? List.empty(), selectedAnswer: selectedItem);
+    return FormUiRadio(
+      question: data.question,
+      answerItems: options ?? List.empty(),
+      selectedAnswer: selectedItem,
+      imgLink: data.imgLink,
+    );
   }
 }
 
@@ -106,10 +107,12 @@ class FormUiCheck extends FormUiData {
     required String question,
     required this.answerItems,
     Set<int>? selectedAnswers,
+    List<String>? imgLink
   }): this.selectedAnswers = selectedAnswers ?? {},
   super(
     type: FormType.check,
     question: question,
+    imgLink: imgLink,
   );
 
   factory FormUiCheck.fromModel(FormData data,) {
@@ -124,6 +127,11 @@ class FormUiCheck extends FormUiData {
         }
       }
     }
-    return FormUiCheck(question: data.question, answerItems: options ?? List.empty(), selectedAnswers: selectedItems);
+    return FormUiCheck(
+      question: data.question,
+      answerItems: options ?? List.empty(),
+      selectedAnswers: selectedItems,
+      imgLink: data.imgLink,
+    );
   }
 }

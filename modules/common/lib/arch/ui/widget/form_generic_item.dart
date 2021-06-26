@@ -1,4 +1,5 @@
 import 'package:common/arch/ui/model/form_data.dart';
+import 'package:common/arch/ui/widget/img_widget.dart';
 import 'package:common/arch/ui/widget/txt_input.dart';
 import 'package:common/res/string/_string.dart';
 import 'package:common/res/theme/_theme.dart';
@@ -6,6 +7,8 @@ import 'package:core/ui/base/live_data.dart';
 import 'package:core/ui/base/live_data_observer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+import 'default_widget.dart';
 
 
 abstract class SibFormField extends StatelessWidget {
@@ -81,7 +84,17 @@ class TxtField extends SibFormField {
     if(isLiveDataOwner && itemData.answer != null) {
       textController.text = itemData.answer!;
     }
-    return widget;
+    final colChildren = <Widget>[widget,];
+    if(itemData.imgLink?.isNotEmpty == true) {
+      for(final link in itemData.imgLink!) {
+        colChildren.add(
+          defaultFormItemImg(link),
+        );
+      }
+    }
+    return Column(
+      children: colChildren,
+    );
   }
 }
 
@@ -151,14 +164,25 @@ class RadioGroup extends SibFormField {
       optionsWidget,
     ];
 
+    if(itemData.imgLink?.isNotEmpty == true) {
+      for(final link in itemData.imgLink!) {
+        outerColumChildren.insert(outerColumChildren.length -1,
+          defaultFormItemImg(link),
+        );
+      }
+    }
+
     //bool _isInit = true;
     if(isValid != null) {
-      outerColumChildren.insert(1, LiveDataObserver<bool>(
-        liveData: isValid!,
-        builder: (ctx, isValid) => isValid == false
-            ? Text( invalidMsgGenerator?.call(groupValueLiveData.value) ?? invalidMsg,
-          style: SibTextStyles.size_min_2.copyWith(color: red),
-        ) : SizedBox(),
+      outerColumChildren.insert(1, Container(
+        margin: EdgeInsets.symmetric(vertical: 5,),
+        child: LiveDataObserver<bool>(
+          liveData: isValid!,
+          builder: (ctx, isValid) => isValid == false
+              ? Text( invalidMsgGenerator?.call(groupValueLiveData.value) ?? invalidMsg,
+            style: SibTextStyles.size_min_2.copyWith(color: red),
+          ) : SizedBox(),
+        ),
       ));
     }
 
@@ -246,13 +270,24 @@ class CheckGroup extends SibFormField {
     outerColumChildren.insert(0, Text(itemData.question));
  */
 
+    if(itemData.imgLink?.isNotEmpty == true) {
+      for(final link in itemData.imgLink!) {
+        outerColumChildren.insert(outerColumChildren.length -1,
+          defaultFormItemImg(link),
+        );
+      }
+    }
+
     if(isValid != null) {
-      outerColumChildren.insert(1, LiveDataObserver<bool>(
-        liveData: isValid!,
-        builder: (ctx, isValid) => isValid == false
-            ? Text( invalidMsgGenerator?.call(selectedIndicesLiveData.value!) ?? invalidMsg,
-          style: SibTextStyles.size_min_2.copyWith(color: red),
-        ) : SizedBox(),
+      outerColumChildren.insert(1, Container(
+        margin: EdgeInsets.symmetric(vertical: 5),
+        child: LiveDataObserver<bool>(
+          liveData: isValid!,
+          builder: (ctx, isValid) => isValid == false
+              ? Text( invalidMsgGenerator?.call(selectedIndicesLiveData.value!) ?? invalidMsg,
+            style: SibTextStyles.size_min_2.copyWith(color: red),
+          ) : SizedBox(),
+        ),
       ));
     }
 
