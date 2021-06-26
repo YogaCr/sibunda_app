@@ -75,7 +75,7 @@ class FormUiRadio extends FormUiData {
   FormUiRadio({
     required String question,
     required this.answerItems,
-    required this.selectedAnswer,
+    this.selectedAnswer,
   }): super(
     type: FormType.radio,
     question: question,
@@ -105,8 +105,9 @@ class FormUiCheck extends FormUiData {
   FormUiCheck({
     required String question,
     required this.answerItems,
-    required this.selectedAnswers,
-  }): super(
+    Set<int>? selectedAnswers,
+  }): this.selectedAnswers = selectedAnswers ?? {},
+  super(
     type: FormType.check,
     question: question,
   );

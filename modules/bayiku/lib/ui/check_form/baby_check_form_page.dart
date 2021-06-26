@@ -10,6 +10,9 @@ class BabyCheckFormPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FormGenericVmObserver<BabyCheckFormVm>(
+      onPreSubmit: (valid) => valid == true
+          ? showSnackBar(context, "Submitting",backgroundColor: Colors.green)
+          : showSnackBar(context, "There still invalid fields"),
       onSubmit: (success) => success
           ? showSnackBar(context, "Sukses",backgroundColor: Colors.green)
           : showSnackBar(context, "Gagal"),

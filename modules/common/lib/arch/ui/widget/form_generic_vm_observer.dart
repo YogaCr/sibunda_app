@@ -1,11 +1,9 @@
 import 'package:common/arch/ui/model/form_data.dart';
 import 'package:common/arch/ui/vm/form_vm.dart';
-import 'package:common/arch/ui/widget/_basic_widget.dart';
 import 'package:core/domain/model/result.dart';
 import 'package:core/ui/base/async_view_model_observer.dart';
 import 'package:core/ui/base/expirable.dart';
 import 'package:core/ui/base/live_data.dart';
-import 'package:core/ui/base/live_data_observer.dart';
 import 'package:core/ui/base/view_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +17,15 @@ class FormGenericVmObserver<Vm extends FormGenericVmMixin> extends StatefulWidge
   /// The [String] in its parameter is for async key from [FormTxtVm.doPreAsyncTask].
   final Widget? Function(BuildContext, String)? preSubmitBtnBuilder;
 
-  final void Function(bool)? onSubmit;
+  /// This will be called after [Vm.submit] method is called.
+  /// This callback parameter `true` if the [Vm.submit] is success.
+  final void Function(bool isSuccess)? onSubmit;
+  /// This will be called right before [Vm.submit] method is called.
+  /// For this callback parameter:
+  ///   `true` means [Vm] can proceed to submit the form.
+  ///   `false` means there still some invalid form fields.
+  ///   `null` means the form is still in initial state.
+  final void Function(bool? canProceed)? onPreSubmit;
 
   /// Its keys are keys of [FormGenericVm.keyLabelList].
   final Map<String, MutableLiveData> itemLiveDatas = {};
@@ -28,6 +34,7 @@ class FormGenericVmObserver<Vm extends FormGenericVmMixin> extends StatefulWidge
     required this.submitBtnBuilder,
     this.preSubmitBtnBuilder,
     this.onSubmit,
+    this.onPreSubmit,
   });
 
   @override
@@ -35,6 +42,7 @@ class FormGenericVmObserver<Vm extends FormGenericVmMixin> extends StatefulWidge
     submitBtnBuilder: submitBtnBuilder,
     preSubmitBtnBuilder: preSubmitBtnBuilder,
     onSubmit: onSubmit,
+    onPreSubmit: onPreSubmit,
   );
 }
 
@@ -48,7 +56,15 @@ class _FormGenericVmObserverState<Vm extends FormGenericVmMixin>
   /// The [String] in its parameter is for async key from [FormTxtVm.doPreAsyncTask].
   final Widget? Function(BuildContext, String)? preSubmitBtnBuilder;
 
-  final void Function(bool)? onSubmit;
+  /// This will be called after [Vm.submit] method is called.
+  /// This callback parameter `true` if the [Vm.submit] is success.
+  final void Function(bool isSuccess)? onSubmit;
+  /// This will be called right before [Vm.submit] method is called.
+  /// For this callback parameter:
+  ///   `true` means [Vm] can proceed to submit the form.
+  ///   `false` means there still some invalid form fields.
+  ///   `null` means the form is still in initial state.
+  final void Function(bool? canProceed)? onPreSubmit;
 
   /// Its keys are keys of [FormGenericVm.keyLabelList].
   final Map<String, MutableLiveData> itemLiveDatas = {};
@@ -57,6 +73,7 @@ class _FormGenericVmObserverState<Vm extends FormGenericVmMixin>
     required this.submitBtnBuilder,
     required this.preSubmitBtnBuilder,
     required this.onSubmit,
+    required this.onPreSubmit,
   });
 
   @override
@@ -74,104 +91,59 @@ class _FormGenericVmObserverState<Vm extends FormGenericVmMixin>
             switch(itemData.type) {
               case FormType.text:
                 final txtControl = TextEditingController();
-                final txtLiveData = MutableChangeNotifLiveData<String>(
-                  txtControl,
-                  getNotif: (notif) => txtControl.text,
-                  setNotif: (notif, data) => txtControl.text = data ?? "",
-                  isNotifierOwner: true,
-                );
+                final txtLiveData = MutableLiveData<String>();
                 itemLiveDatas[key] = txtLiveData;
 
-                field = LiveDataObserver<bool>(
-                  liveData: vm.isResponseValidList[i],
-                  builder: (ctx, isValid) => TxtInput(
-                    label: keyLabelList[i].item2,
-                    textController: txtControl,
-                    errorText: (isValid == false && !vm.isResponseInit(i))
-                        ? vm.getInvalidMsg(key, txtControl.text)
-                        : null,
-                  ),
+                field = TxtField(
+                  itemData: itemData as FormUiTxt,
+                  isValid: vm.isResponseValidList[i],
+                  invalidMsgGenerator: (response) => vm.getInvalidMsg(key, txtLiveData.value),
+                  responseLiveData: txtLiveData,
                 );
-                final answer = (itemData as FormUiTxt).answer;
+
+                vm.registerField(i, field as SibFormField);
+
+                final answer = itemData.answer;
                 if(answer != null) {
                   txtControl.text = answer;
                 }
                 break;
               case FormType.radio:
-                final selectedAnswerIndex = (itemData as FormUiRadio).selectedAnswer;
-                final selectedAnswer = selectedAnswerIndex != null
-                    ? itemData.answerItems[selectedAnswerIndex]
-                    : null;
-
                 //final isValid = vm.isResponseValidList[i];
-                final groupValue = MutableLiveData(selectedAnswer);
+                final groupValue = MutableLiveData<String>();
                 itemLiveDatas[key] = groupValue;
 
                 field = RadioGroup(
-                  itemData: itemData,
+                  itemData: itemData as FormUiRadio,
                   isValid: vm.isResponseValidList[i],
                   invalidMsgGenerator: (response) => vm.getInvalidMsg(key, groupValue.value),
                   groupValueLiveData: groupValue,
                 );
+
+                vm.registerField(i, field as SibFormField);
+
+                final selectedAnswerIndex = itemData.selectedAnswer;
+                if(selectedAnswerIndex != null) {
+                  groupValue.value = itemData.answerItems[selectedAnswerIndex];
+                }
                 break;
               case FormType.check:
-                final selectedAnswerIndices = MutableLiveData<Set<int>>((itemData as FormUiCheck).selectedAnswers);
+                final selectedAnswerIndices = MutableLiveData<Set<int>>({});
                 itemLiveDatas[key] = selectedAnswerIndices;
 
                 field = CheckGroup(
-                  itemData: itemData,
+                  itemData: itemData as FormUiCheck,
                   isValid: vm.isResponseValidList[i],
                   invalidMsgGenerator: (response) => vm.getInvalidMsg(key, selectedAnswerIndices.value),
                   selectedIndicesLiveData: selectedAnswerIndices,
                 );
-/*
-                fieldBuilder_old = (ctx, isValid) {
-                  final optionWidgetList = <Widget>[];
 
-                  final selectedAnswerIndices = MutableLiveData<Set<int>>((itemData as FormUiCheck).selectedAnswers);
-                  itemLiveDatas[keyLabelList[i].item1] = selectedAnswerIndices;
+                vm.registerField(i, field as SibFormField);
+                final selectedAnswers = itemData.selectedAnswers;
 
-                  for(int i = 0; i < itemData.answerItems.length; i++) {
-                    final i2 = i;
-                    final option = itemData.answerItems[i];
-                    optionWidgetList.add(
-                      ListTile(
-                        title: Text(option),
-                        leading: Container(
-                          margin: EdgeInsets.symmetric(vertical: 5),
-                          child: LiveDataObserver<Set<int>>(
-                            distinctUtilChanged: false,
-                            liveData: selectedAnswerIndices,
-                            builder: (ctx, data) => Checkbox(
-                              value: selectedAnswerIndices.value!.contains(i2),
-                              onChanged: (isSelected) {
-                                print("CheckBox i2 = $i2 isSelected= $isSelected");
-                                if(isSelected == true) {
-                                  selectedAnswerIndices.value!.add(i2);
-                                } else {
-                                  selectedAnswerIndices.value!.remove(i2);
-                                }
-                                selectedAnswerIndices.notifyObservers();
-                              },
-                            ),
-                          ),
-                        ),
-                      ),
-                    );
-                  }
-
-                  final optionsWidget = Column(
-                    children: optionWidgetList,
-                  );
-
-                  return Column(
-                    children: [
-                      Text(itemData.question),
-                      optionsWidget,
-                    ],
-                  );
-                };
- */
+                if(selectedAnswers.isNotEmpty) {
+                  selectedAnswerIndices.value = selectedAnswers;
+                }
                 break;
             }
 
@@ -190,6 +162,7 @@ class _FormGenericVmObserverState<Vm extends FormGenericVmMixin>
         child: submitBtnBuilder(ctx, canProceed),
         onTap: () {
           //print("SignUpPage.onTap() submit canProceed= $canProceed");
+          onPreSubmit?.call(canProceed);
           if(canProceed == true) {
             vm.submit();
           }

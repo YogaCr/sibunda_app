@@ -25,12 +25,21 @@ class FormTxtVmObserver<B extends FormTxtVmMixin>
   /// The [String] in its parameter is for async key from [FormTxtVm.doPreAsyncTask].
   final Widget? Function(BuildContext, String)? preSubmitBtnBuilder;
 
-  final void Function(bool)? onSubmit;
+  /// This will be called after [Vm.submit] method is called.
+  /// This callback parameter `true` if the [Vm.submit] is success.
+  final void Function(bool isSuccess)? onSubmit;
+  /// This will be called right before [Vm.submit] method is called.
+  /// For this callback parameter:
+  ///   `true` means [Vm] can proceed to submit the form.
+  ///   `false` means there still some invalid form fields.
+  ///   `null` means the form is still in initial state.
+  final void Function(bool? canProceed)? onPreSubmit;
 
   FormTxtVmObserver({
     required this.submitBtnBuilder,
     this.preSubmitBtnBuilder,
     this.onSubmit,
+    this.onPreSubmit
   });
 
   @override
@@ -38,6 +47,7 @@ class FormTxtVmObserver<B extends FormTxtVmMixin>
     submitBtnBuilder: submitBtnBuilder,
     preSubmitBtnBuilder: preSubmitBtnBuilder,
     onSubmit: onSubmit,
+    onPreSubmit: onPreSubmit,
   );
 }
 class FormTxtVmObserverState<B extends FormTxtVmMixin>
@@ -57,12 +67,21 @@ class FormTxtVmObserverState<B extends FormTxtVmMixin>
   /// The [String] in its parameter is for async key from [FormTxtVm.doPreAsyncTask].
   final Widget? Function(BuildContext, String)? preSubmitBtnBuilder;
 
-  final void Function(bool)? onSubmit;
+  /// This will be called after [Vm.submit] method is called.
+  /// This callback parameter `true` if the [Vm.submit] is success.
+  final void Function(bool isSuccess)? onSubmit;
+  /// This will be called right before [Vm.submit] method is called.
+  /// For this callback parameter:
+  ///   `true` means [Vm] can proceed to submit the form.
+  ///   `false` means there still some invalid form fields.
+  ///   `null` means the form is still in initial state.
+  final void Function(bool? canProceed)? onPreSubmit;
 
   FormTxtVmObserverState({
     required this.submitBtnBuilder,
-    this.preSubmitBtnBuilder,
-    this.onSubmit,
+    required this.preSubmitBtnBuilder,
+    required this.onSubmit,
+    required this.onPreSubmit,
   });
 
   @override
@@ -79,7 +98,7 @@ class FormTxtVmObserverState<B extends FormTxtVmMixin>
               builder: (ctx, isValid) => TxtInput(
                 label: keyLabelList[i].item2,
                 textController: vm.txtControllerList[i],
-                errorText: (isValid == false && !vm.isResponseInit(i))
+                errorText: (isValid == false)
                     ? vm.getInvalidMsg(keyLabelList[i].item1, vm.txtControllerList[i].text)
                     : null,
               ),
@@ -94,6 +113,7 @@ class FormTxtVmObserverState<B extends FormTxtVmMixin>
         child: submitBtnBuilder(ctx, canProceed),
         onTap: () {
           //print("SignUpPage.onTap() submit canProceed= $canProceed");
+          onPreSubmit?.call(canProceed);
           if(canProceed == true) {
             vm.submit();
           }

@@ -15,12 +15,12 @@ class BabyCheckFormVm extends FormGenericVm {
       FormUiRadio(
         question: "question 1",
         answerItems: ["option 1", "option 2", ],
-        selectedAnswer: 1,
+        //selectedAnswer: 1,
       ),
       FormUiCheck(
         question: "question 2",
         answerItems: ["option 1", "option 2", "option 3", ],
-        selectedAnswers: {0, 2},
+        //selectedAnswers: {0, 2},
       ),
       FormUiTxt(
         question: "question 3",
@@ -35,5 +35,6 @@ class BabyCheckFormVm extends FormGenericVm {
   List<LiveData> get liveDatas => [];
 
   @override
-  Future<bool> validateField(String inputKey, response) async => true;
+  Future<bool> validateField(String inputKey, response) async => response is String
+      ? response.isNotEmpty : (response as Set<int>).isNotEmpty;
 }

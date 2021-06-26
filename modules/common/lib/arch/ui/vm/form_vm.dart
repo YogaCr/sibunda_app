@@ -1,9 +1,9 @@
 import 'package:common/arch/ui/model/form_data.dart';
+import 'package:common/arch/ui/widget/form_generic_item.dart';
 import 'package:common/res/string/_string.dart';
 import 'package:core/domain/model/result.dart';
 import 'package:core/ui/base/live_data.dart';
 import 'package:core/ui/base/async_vm.dart';
-import 'package:core/ui/base/view_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:tuple/tuple.dart';
@@ -158,7 +158,7 @@ mixin FormVmMixin implements AsyncVm {
 
   List<MutableLiveData<bool>> get _isResponseValidList;
   List<MutableLiveData<dynamic>> get _responseList;
-  List<bool> get _isResponseInitList;
+  //List<bool> get _isResponseInitList;
   MutableLiveData<bool> get _canProceed;
   MutableLiveData<Result<String>> get _onSubmit;
 
@@ -169,11 +169,18 @@ mixin FormVmMixin implements AsyncVm {
 
   String defaultInvalidMsg = "not valid";
 
-  bool isResponseInit(int position) => _isResponseInitList[position];
+  bool isResponseInit(int position) => _isResponseValidList[position].value != null;
   Map<String, dynamic> getResponseMap({
     Set<String>? mappedKey,
     dynamic Function(String key, dynamic response)? mapper
   });
+
+  void registerField(int position, SibFormField field) {
+    field.responseLiveData.observe(this, (data) {
+      //print("registerField() position= $position data= $data field.responseLiveData= ${field.responseLiveData}");
+      _responseList[position].value = data;
+    }, tag: "FormVmMixin.registerField() $position",);
+  }
 
   void _checkCanProceed();
   void submit();
@@ -206,8 +213,8 @@ abstract class FormVm
   final MutableLiveData<bool> _canProceed = MutableLiveData(false);
   @override
   final MutableLiveData<Result<String>> _onSubmit = MutableLiveData();
-  @override
-  final List<bool> _isResponseInitList;
+  //@override
+  //final List<bool> _isResponseInitList;
   @override
   final String defaultInvalidMsg;
 
@@ -216,8 +223,8 @@ abstract class FormVm
     this.defaultInvalidMsg = Strings.field_can_not_be_empty,
   }):
     this.keyLabelList = List.unmodifiable(keyLabelList),
-    _isResponseInitList = List.generate(keyLabelList.length, (index) => true, growable: false),
-    _isResponseValidList = List.generate(keyLabelList.length, (index) => MutableLiveData(false), growable: false),
+    //_isResponseInitList = List.generate(keyLabelList.length, (index) => true, growable: false),
+    _isResponseValidList = List.generate(keyLabelList.length, (index) => MutableLiveData(), growable: false),
     _responseList = List.generate(keyLabelList.length, (index) => MutableLiveData(), growable: false)
   {
     for(int i = 0; i < keyLabelList.length; i++) {
@@ -225,15 +232,19 @@ abstract class FormVm
       final response = _responseList[i];
       final fieldKey = keyLabelList[i].item1;
       response.observe(this, (data) {
+        //print("_responseList[$i] data= $data response= $response _isResponseInitList[i]= ${_isResponseInitList[i]}");
+/*
         if(_isResponseInitList[i]) {
           _isResponseInitList[i] = false;
           return;
         }
+ */
         validateField(fieldKey, data).then((isValid) {
+          //print("_responseList[$i] validateField() fieldKey= $fieldKey data= $data isValid= $isValid");
           isResponseValid.value = isValid;
         });
       },
-        distinctUntilChanged: true,
+        //distinctUntilChanged: true,
         tag: "FormVm_$i",
       );
       isResponseValid.observe(this, (isValid) {
@@ -247,8 +258,8 @@ abstract class FormVm
   void _checkCanProceed() {
     for(int i = 0; i < _isResponseValidList.length ; i++) {
       final isResponseValid = _isResponseValidList[i];
-      final isResponseInit = _isResponseInitList[i];
-      if(!isResponseValid.value! || isResponseInit) {
+      //final isResponseInit = _isResponseInitList[i];
+      if(isResponseValid.value != true) {
         _canProceed.value = false;
         return;
       }

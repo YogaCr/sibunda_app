@@ -1,4 +1,5 @@
 import 'package:common/arch/ui/model/form_data.dart';
+import 'package:common/arch/ui/widget/txt_input.dart';
 import 'package:common/res/string/_string.dart';
 import 'package:common/res/theme/_theme.dart';
 import 'package:core/ui/base/live_data.dart';
@@ -7,10 +8,90 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 
-class RadioGroup extends StatelessWidget {
+abstract class SibFormField extends StatelessWidget {
+  LiveData<dynamic> get responseLiveData;
+  LiveData<bool>? get isValid;
+}
+
+
+class TxtField extends SibFormField {
+  final FormUiTxt itemData;
+  @override
+  final LiveData<bool>? isValid;
+  late final LiveData<String> _response;
+  final TextEditingController textController = TextEditingController();
+  @override
+  LiveData<String> get responseLiveData => _response;
+  final bool isLiveDataOwner;
+
+  /// This will become default invalid message.
+  final String invalidMsg;
+  final String? Function(String? response)? invalidMsgGenerator;
+
+  TxtField({
+    required this.itemData,
+    this.isValid,
+    this.invalidMsgGenerator,
+    this.invalidMsg = Strings.field_can_not_be_empty,
+    bool? isLiveDataOwner,
+    //TextEditingController? textController,
+    MutableLiveData<String>? responseLiveData
+  }): this.isLiveDataOwner = isLiveDataOwner ?? responseLiveData != null
+  //  this.textController = textController ?? TextEditingController()
+  {
+    _response = responseLiveData ?? ChangeNotifLiveData(
+      this.textController,
+      (notif) => this.textController.text,
+    );
+    if(responseLiveData != null) {
+      this.textController.addListener(() {
+        if(responseLiveData.isActive) {
+          responseLiveData.value = this.textController.text;
+        }
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    bool isInit = true;
+    final widget = isValid == null
+        ? TxtInput(
+          textController: textController,
+          label: itemData.question,
+        ) : LiveDataObserver<bool>(
+          isLiveDataOwner: isLiveDataOwner,
+          liveData: isValid!,
+          builder: (ctx, isValid) {
+            //print("TxtField.builder isValid= $isValid isInit= $isInit");
+            final txtWidget = TxtInput(
+              textController: textController,
+              label: itemData.question,
+              errorText: (isValid == false && !isInit)
+                  ? invalidMsgGenerator?.call(textController.text) ?? invalidMsg
+                  : null,
+            );
+            if(isValid != null) { //if `isValid` still null, then this widget is still init (`isInit` == true)
+              isInit = false;
+            }
+            return txtWidget;
+          },
+        );
+
+    if(isLiveDataOwner && itemData.answer != null) {
+      textController.text = itemData.answer!;
+    }
+    return widget;
+  }
+}
+
+class RadioGroup extends SibFormField {
   final FormUiRadio itemData;
+  @override
   final LiveData<bool>? isValid;
   final MutableLiveData<String> groupValueLiveData;
+  @override
+  LiveData<String> get responseLiveData => groupValueLiveData;
   final bool isLiveDataOwner;
 
   /// This will become default invalid message.
@@ -70,13 +151,14 @@ class RadioGroup extends StatelessWidget {
       optionsWidget,
     ];
 
+    //bool _isInit = true;
     if(isValid != null) {
       outerColumChildren.insert(1, LiveDataObserver<bool>(
         liveData: isValid!,
         builder: (ctx, isValid) => isValid == false
             ? Text( invalidMsgGenerator?.call(groupValueLiveData.value) ?? invalidMsg,
-                style: SibTextStyles.size_min_2.copyWith(color: red),
-            ) : SizedBox(),
+          style: SibTextStyles.size_min_2.copyWith(color: red),
+        ) : SizedBox(),
       ));
     }
 
@@ -87,10 +169,13 @@ class RadioGroup extends StatelessWidget {
 }
 
 //TODO: lanjutkan
-class CheckGroup extends StatelessWidget {
+class CheckGroup extends SibFormField {
   final FormUiCheck itemData;
+  @override
   final LiveData<bool>? isValid;
   final MutableLiveData<Set<int>> selectedIndicesLiveData;
+  @override
+  LiveData<Set<int>> get responseLiveData => selectedIndicesLiveData;
   final bool isLiveDataOwner;
 
   /// This will become default invalid message.
@@ -166,11 +251,8 @@ class CheckGroup extends StatelessWidget {
         liveData: isValid!,
         builder: (ctx, isValid) => isValid == false
             ? Text( invalidMsgGenerator?.call(selectedIndicesLiveData.value!) ?? invalidMsg,
-                style: SibTextStyles.size_min_2.copyWith(color: red),
-            ) : SizedBox(
-          height: 10,
-          width: 10,
-        ),
+          style: SibTextStyles.size_min_2.copyWith(color: red),
+        ) : SizedBox(),
       ));
     }
 

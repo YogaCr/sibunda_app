@@ -42,7 +42,7 @@ abstract class LateFormVm extends FormVm with LateFormVmMixin {
     _assertReady();
     return _mResponseList!;
   }
-
+/*
   @nonVirtual
   List<bool>? _mIsResponseInitList;
   @override
@@ -50,6 +50,7 @@ abstract class LateFormVm extends FormVm with LateFormVmMixin {
     _assertReady();
     return _mIsResponseInitList!;
   }
+*/
 
   @protected
   void _assertReady() {
@@ -64,7 +65,7 @@ abstract class LateFormVm extends FormVm with LateFormVmMixin {
       _keyLabelList = keyLabelList;
       _mIsResponseValidList = List.generate(keyLabelList.length, (index) => MutableLiveData(false));
       _mResponseList = List.generate(keyLabelList.length, (index) => MutableLiveData());
-      _mIsResponseInitList = List.generate(keyLabelList.length, (index) => true);
+      //_mIsResponseInitList = List.generate(keyLabelList.length, (index) => true);
       onKeyLabelListInit(keyLabelList);
     });
   }
