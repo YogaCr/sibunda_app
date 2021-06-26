@@ -30,9 +30,9 @@ class KehamilankuTrimesterFormPage extends StatelessWidget {
     final startWeek = trimester.startWeek;
     final weekCount = trimester.endWeek - startWeek +1;
     final vm = ViewModelProvider.of<KehamilankuCheckFormVm>(context)
-    ..getPregnancyCheck(motherNik: "", week: 1)
-    ..getPregnancyBabySize(pregnancyWeekAge: 1)
-    ..getMotherFormWarningStatus(motherNik: "", week: 1);
+      ..getPregnancyCheck(motherNik: "", week: 1)
+      ..getPregnancyBabySize(pregnancyWeekAge: 1)
+      ..getMotherFormWarningStatus(motherNik: "", week: 1);
 
     final weekList = List.generate(weekCount, (index) => "Minggu ${index + startWeek}");
 /*

@@ -1,4 +1,5 @@
 import 'package:common/arch/domain/dummy_data.dart';
+import 'package:common/arch/domain/model/baby_data.dart';
 import 'package:common/arch/ui/model/immunization.dart';
 
 import 'home_graph_menu.dart';
@@ -25,6 +26,12 @@ final babyHomeImmunization_ui = HomeImmunizationData(
   title: "Jangan lupa ikut imunisasi Bayi ya Bun",
   imgLink: "",
 );
+
+final babyFormMenuList_ui = List<BabyFormMenuData>.generate(5, (i) => BabyFormMenuData(
+  year: i+1,
+  monthStart: i*12 +1,
+  monthEnd: (i+1)*12,
+));
 
 
 final motherImmunizationOverview_ui = UiImmunizationOverview(text: "Yuk cek apakah Bunda sudah mendapatkan semua imunisasi ya Bun", imgLink: "");

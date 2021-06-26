@@ -1,5 +1,5 @@
 import 'package:common/arch/ui/model/form_data.dart';
-import 'package:common/arch/ui/widget/form_generic_item.dart';
+import 'package:common/arch/ui/widget/form_generic_field.dart';
 import 'package:common/res/string/_string.dart';
 import 'package:core/domain/model/result.dart';
 import 'package:core/ui/base/live_data.dart';
@@ -341,7 +341,7 @@ abstract class FormTxtVm extends FormVm with FormTxtVmMixin {
   final List<TextEditingController> txtControllerList;
 }
 
-
+//TODO: FormGenericVmMixin: pikirkan caranya biar bisa data ttg formnya diganti sama [FormGroupData].
 mixin FormGenericVmMixin implements FormVmMixin {
   List<FormUiData> get itemDataList;
 

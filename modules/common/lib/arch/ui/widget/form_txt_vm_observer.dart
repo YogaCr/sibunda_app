@@ -1,13 +1,5 @@
-import 'package:common/arch/ui/vm/form_vm.dart';
-import 'package:common/arch/ui/widget/txt_input.dart';
-import 'package:common/res/string/_string.dart';
-import 'package:core/domain/model/result.dart';
-import 'package:core/ui/base/async_view_model_multi_observer.dart';
-import 'package:core/ui/base/async_view_model_observer.dart';
-import 'package:core/ui/base/expirable.dart';
-import 'package:core/ui/base/view_model.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+
+part of 'form_vm_observer.dart';
 
 class FormTxtVmObserver<B extends FormTxtVmMixin>
     extends StatefulWidget
@@ -34,23 +26,26 @@ class FormTxtVmObserver<B extends FormTxtVmMixin>
   ///   `false` means there still some invalid form fields.
   ///   `null` means the form is still in initial state.
   final void Function(bool? canProceed)? onPreSubmit;
+  final B? vm;
 
   FormTxtVmObserver({
     required this.submitBtnBuilder,
     this.preSubmitBtnBuilder,
     this.onSubmit,
-    this.onPreSubmit
+    this.onPreSubmit,
+    this.vm,
   });
 
   @override
-  FormTxtVmObserverState<B> createState() => FormTxtVmObserverState(
+  _FormTxtVmObserverState<B> createState() => _FormTxtVmObserverState(
+    vm: vm,
     submitBtnBuilder: submitBtnBuilder,
     preSubmitBtnBuilder: preSubmitBtnBuilder,
     onSubmit: onSubmit,
     onPreSubmit: onPreSubmit,
   );
 }
-class FormTxtVmObserverState<B extends FormTxtVmMixin>
+class _FormTxtVmObserverState<B extends FormTxtVmMixin>
     extends State<FormTxtVmObserver<B>>
     implements Expirable
 {
@@ -76,17 +71,19 @@ class FormTxtVmObserverState<B extends FormTxtVmMixin>
   ///   `false` means there still some invalid form fields.
   ///   `null` means the form is still in initial state.
   final void Function(bool? canProceed)? onPreSubmit;
+  B? vm;
 
-  FormTxtVmObserverState({
+  _FormTxtVmObserverState({
     required this.submitBtnBuilder,
     required this.preSubmitBtnBuilder,
     required this.onSubmit,
     required this.onPreSubmit,
+    required this.vm,
   });
 
   @override
   Widget build(BuildContext context) {
-    final vm = ViewModelProvider.of<B>(context);
+    final vm = this.vm ??= ViewModelProvider.of<B>(context);
     final keyLabelList = vm.keyLabelList;
 
     final formWidgets = List<Widget>.generate(
@@ -146,6 +143,94 @@ class FormTxtVmObserverState<B extends FormTxtVmMixin>
   @override
   void dispose() {
     _isActive = false;
+    vm = null;
     super.dispose();
+  }
+}
+
+
+
+
+class LateFormTxtVmObserver<Vm extends LateFormTxtVm>
+    extends FormTxtVmObserver<Vm> {
+
+  final Widget Function(BuildContext)? onVmNotReadyBuilder;
+
+  LateFormTxtVmObserver({
+    this.onVmNotReadyBuilder,
+    required Widget Function(BuildContext, bool?) submitBtnBuilder,
+    Widget? Function(BuildContext, String)? preSubmitBtnBuilder,
+    void Function(bool isSuccess)? onSubmit,
+    void Function(bool? canProceed)? onPreSubmit,
+    Vm? vm,
+  }) : super(
+    vm: vm,
+    submitBtnBuilder: submitBtnBuilder,
+    preSubmitBtnBuilder: preSubmitBtnBuilder,
+    onSubmit: onSubmit,
+    onPreSubmit: onPreSubmit,
+  );
+
+  @override
+  _LateFormTxtVmObserverState<Vm> createState() => _LateFormTxtVmObserverState<Vm>(
+    onVmNotReadyBuilder: onVmNotReadyBuilder,
+    vm: vm,
+    submitBtnBuilder: submitBtnBuilder,
+    preSubmitBtnBuilder: preSubmitBtnBuilder,
+    onSubmit: onSubmit,
+    onPreSubmit: onPreSubmit,
+  );
+}
+
+class _LateFormTxtVmObserverState<Vm extends LateFormTxtVm>
+    extends _FormTxtVmObserverState<Vm> {
+
+  final Widget Function(BuildContext) onVmNotReadyBuilder;
+  Vm? _vm;
+
+  Vm? get vm => _vm;
+  set vm(v) {
+    if(v != null) {
+      _addOnReadyCallbackToVm(v);
+    }
+    _vm = v;
+  }
+
+  _LateFormTxtVmObserverState({
+    required Widget Function(BuildContext)? onVmNotReadyBuilder,
+    required Widget Function(BuildContext, bool?) submitBtnBuilder,
+    required Widget? Function(BuildContext, String)? preSubmitBtnBuilder,
+    required Function(bool isSuccess)? onSubmit,
+    required Function(bool? canProceed)? onPreSubmit,
+    required Vm? vm,
+  }): this._vm = vm,
+        this.onVmNotReadyBuilder = onVmNotReadyBuilder ?? ((ctx) => defaultImg()),
+        super(
+        submitBtnBuilder: submitBtnBuilder,
+        preSubmitBtnBuilder: preSubmitBtnBuilder,
+        onSubmit: onSubmit,
+        onPreSubmit: onPreSubmit,
+        vm: vm,
+      ) {
+    if(vm != null) {
+      _addOnReadyCallbackToVm(vm);
+    }
+  }
+
+  void _addOnReadyCallbackToVm(Vm vm){
+    vm.addOnReady((){
+      if(isActive) {
+        setState(() {});
+      }
+    });
+  }
+
+  Widget build(BuildContext context) {
+    final vm = this.vm ??= ViewModelProvider.of<Vm>(context);
+    if(vm.isFormReady){
+      return super.build(context);
+    } else {
+      return onVmNotReadyBuilder(context);
+    }
   }
 }

@@ -43,25 +43,6 @@ class KehamilankuHomePage extends StatelessWidget {
                     liveDataGetter: (vm2) => vm2.ageOverview,
                     builder: (ctx, data) => ItemMotherOverview.fromData(data),
                   ),
-                  /*
-                    child: buildReactiveBloc<
-                        PregnancyHomeBloc, PregnancyHomeState,
-                        OnPregnancyHomeAgeOverviewDataChanged, MotherPregnancyAgeOverview
-                    >(
-                      context, state,
-                      stateDataGetter: (state) => state.data,
-                      blocDataGetter: (bloc) => bloc.ageOverview,
-                      builder: (data) => ItemMotherOverview.fromData(data),
-                      defaultWidget: defaultSliverLoading,
-                    ),
-// */
-/*
-                      child: (state is OnPregnancyHomeAgeOverviewDataChanged)
-                          ? ItemMotherOverview.fromData((state.data as Success).data)
-                          : (bloc.ageOverview != null)
-                          ? ItemMotherOverview.fromData(bloc.ageOverview!)
-                          : DefaultLoading(),
-// */
                 ),
                 Container(
                   margin: EdgeInsets.only(bottom: 20),

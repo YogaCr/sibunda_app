@@ -2,9 +2,10 @@ part of 'form_vm.dart';
 
 mixin LateFormVmMixin implements FormVmMixin {
   bool get isFormReady;
+  LiveData<List<Tuple2<String, String>>> get keyLabelListLiveData;
+  void addOnReady(void Function() callback);
   @protected
   Future<List<Tuple2<String, String>>> getKeyLabelList();
-  void addOnReady(void Function() callback);
 }
 
 abstract class LateFormVm extends FormVm with LateFormVmMixin {
@@ -27,6 +28,10 @@ abstract class LateFormVm extends FormVm with LateFormVmMixin {
     initKeyLabelList();
     return _keyLabelList!;
   }
+
+  MutableLiveData<List<Tuple2<String, String>>> _keyLabelListLiveData = MutableLiveData();
+  @override
+  LiveData<List<Tuple2<String, String>>> get keyLabelListLiveData => _keyLabelListLiveData;
 
   @nonVirtual
   List<MutableLiveData<bool>>? _mIsResponseValidList;
@@ -72,8 +77,9 @@ abstract class LateFormVm extends FormVm with LateFormVmMixin {
   }
 
   /// Called when the first value of [_keyLabelList] arrived.
-  @mustCallSuper
+  //@mustCallSuper
   void onKeyLabelListInit(List<Tuple2<String, String>> newKeyLabelList) {
+    _keyLabelListLiveData.value = newKeyLabelList;
     for(final callback in _onReadyCallbacks) {
       callback();
     }
@@ -94,6 +100,12 @@ abstract class LateFormVm extends FormVm with LateFormVmMixin {
   @override
   @protected
   Future<List<Tuple2<String, String>>> getKeyLabelList();
+
+  @override
+  void dispose() {
+    _onReadyCallbacks.clear();
+    super.dispose();
+  }
 }
 
 
@@ -129,8 +141,13 @@ abstract class LateFormTxtVm extends LateFormVm with FormTxtVmMixin {
   }
 }
 
+mixin LateFormGenericVmMixin implements LateFormVmMixin, FormGenericVmMixin {
+  LiveData<List<FormUiData>> get fieldDataList;
+  @protected
+  Future<List<FormUiData>> getItemDataList();
+}
 
-abstract class LateFormGenericVm extends LateFormVm with FormGenericVmMixin {
+abstract class LateFormGenericVm extends LateFormVm with LateFormGenericVmMixin {
   LateFormGenericVm({
     String defaultInvalidMsg = Strings.field_can_not_be_empty,
   }): super(
@@ -138,6 +155,8 @@ abstract class LateFormGenericVm extends LateFormVm with FormGenericVmMixin {
   );
 
   bool get isFormReady => super.isFormReady && _itemDataList != null;
+  bool _isKeyLabelDownloading = false;
+  bool _isItemDataDownloading = false;
 
   List<FormUiData>? _itemDataList;
   @override
@@ -145,32 +164,52 @@ abstract class LateFormGenericVm extends LateFormVm with FormGenericVmMixin {
     _assertReady();
     return _itemDataList!;
   }
-
-  void initKeyLabelList() {
-    super.initKeyLabelList();
-    getItemDataList().then((itemDataList) {
-      _itemDataList = itemDataList;
-      if(_keyLabelList != null) {
-        _assertItemDataCount();
-      }
-     });
-  }
+  MutableLiveData<List<FormUiData>> _fieldDataList = MutableLiveData();
+  @override
+  LiveData<List<FormUiData>> get fieldDataList => _fieldDataList;
 
   /// Called when the first value of [_keyLabelList] arrived.
   @override
   void onKeyLabelListInit(List<Tuple2<String, String>> newKeyLabelList) {
-    if(_itemDataList != null) {
-      _assertItemDataCount();
+    _isKeyLabelDownloading = false;
+    if(!_isItemDataDownloading) {
+      _assertFormDataReady();
     }
-    super.onKeyLabelListInit(newKeyLabelList);
+    _keyLabelListLiveData.value = newKeyLabelList;
+    //super.onKeyLabelListInit(newKeyLabelList);
   }
 
-  void _assertItemDataCount() {
+  void initKeyLabelList() {
+    super.initKeyLabelList();
+    _getItemDataList().then((itemDataList) {
+      _itemDataList = itemDataList;
+      _isItemDataDownloading = false;
+      if(!_isKeyLabelDownloading) {
+        _assertFormDataReady();
+      }
+      _fieldDataList.value = itemDataList;
+     });
+  }
+
+  Future<List<Tuple2<String, String>>> _getKeyLabelList() {
+    _isKeyLabelDownloading = true;
+    return getKeyLabelList();
+  }
+  Future<List<FormUiData>> _getItemDataList() {
+    _isItemDataDownloading = true;
+    return getItemDataList();
+  }
+
+  void _assertFormDataReady() {
     if(_itemDataList?.length != _keyLabelList?.length) {
-      throw "`_itemDataList?.length != _keyLabelList?.length`";
+      throw "_itemDataList?.length (${_itemDataList?.length} )!= _keyLabelList?.length (${_keyLabelList?.length})";
+    }
+    // _OnReadyCallbacks are called here because this kind of FormVm
+    // needs 2 types of data to be ready:
+    //   1. List<Tuple2<String key, String label>>
+    //   2. List<FormUiData>
+    for(final callback in _onReadyCallbacks) {
+      callback();
     }
   }
-
-  @protected
-  Future<List<FormUiData>> getItemDataList();
 }

@@ -1,6 +1,6 @@
 import 'package:common/arch/domain/model/form_warning_status.dart';
 import 'package:common/arch/domain/model/kehamilanku_data.dart';
-import 'package:common/arch/ui/bloc/form_vm.dart';
+import 'package:common/arch/ui/vm/form_vm.dart';
 import 'package:common/res/string/_string.dart';
 import 'package:common/value/const_values.dart';
 import 'package:core/domain/model/result.dart';

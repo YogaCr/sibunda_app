@@ -39,62 +39,24 @@ class ItemMotherOverview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final parentHeight = 120.0;
-
-    final imgChild = Container(
-      margin: EdgeInsets.only(right: 10),
-      child: ClipRRect(
-        borderRadius: BorderRadius.all(Radius.circular(_cornerRadius)),
-        child: Container(
-          height: parentHeight,
-          width: 80,
-          child: image,
-        ),
-      ),
-    );
-
-    final txtChild = Expanded(
-      child: Padding(
-        padding: EdgeInsets.only(right: 10),
-        child: Container(
-          height: parentHeight,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              RichText(
-                text: TextSpan(
-                  style: SibTextStyles.size_0_bold_black,
-                  children: [
-                    TextSpan(text: "Bunda sekarang sudah masuk ke usia "),
-                    TextSpan(text: "$pregnancyAge Minggu ", style: SibTextStyles.size_0_bold_colorPrimary),
-                    TextSpan(text: "kehamilan ya"),
-                  ],
-                ),
-              ),
-              Container(height: 20,),
-              RichText(
-                text: TextSpan(
-                  style: SibTextStyles.size_0_bold_black,
-                  children: [
-                    TextSpan(text: "$pregnancyAgeRem hari ", style: SibTextStyles.size_0_bold_colorPrimary),
-                    TextSpan(text: "lagi menuju kelahiran ya Bun"),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-
-    return ClipRRect(
-      borderRadius: BorderRadius.all(Radius.circular(_cornerRadius)),
-      child: Container(
-        color: Colors.white,
-        child: Row(
+    return ItemMenuHomeOverview(
+      image: image,
+      upperText: RichText(
+        text: TextSpan(
+          style: SibTextStyles.size_0_bold_black,
           children: [
-            imgChild,
-            txtChild,
+            TextSpan(text: "Bunda sekarang sudah masuk ke usia "),
+            TextSpan(text: "$pregnancyAge Minggu ", style: SibTextStyles.size_0_bold_colorPrimary),
+            TextSpan(text: "kehamilan ya"),
+          ],
+        ),
+      ),
+      lowerText: RichText(
+        text: TextSpan(
+          style: SibTextStyles.size_0_bold_black,
+          children: [
+            TextSpan(text: "$pregnancyAgeRem hari ", style: SibTextStyles.size_0_bold_colorPrimary),
+            TextSpan(text: "lagi menuju kelahiran ya Bun"),
           ],
         ),
       ),
@@ -277,6 +239,7 @@ class ItemMotherRecomFood extends StatelessWidget {
 }
 
 ///*
+/// Used in mother pregnancy check form.
 class ItemMotherBabySizeOverview extends StatelessWidget {
   final Widget image;
   final String sizeString;

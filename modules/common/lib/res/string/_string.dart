@@ -82,6 +82,10 @@ class Strings {
   static const disease_history =  "Riwayat Penyakit";
   static const special_note =  "Catatan Khusus";
 
+  static const year =  "Tahun";
+  static const month =  "Bulan";
+  static const day =  "Hari";
+
   static const my_pregnancy =  "Kehamilanku";
   static const my_baby =  "Bayiku";
   static const covid_19 =  "Covid-19";

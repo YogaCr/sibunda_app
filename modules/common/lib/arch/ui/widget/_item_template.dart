@@ -10,6 +10,68 @@ import 'txt_btn.dart';
 final _cornerRadius = 10.0;
 
 
+/// Home overview for each module.
+class ItemMenuHomeOverview extends StatelessWidget {
+  final Widget image;
+  final Widget upperText;
+  final Widget? lowerText;
+
+  ItemMenuHomeOverview({
+    required this.image,
+    required this.upperText,
+    this.lowerText,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final parentHeight = 120.0;
+
+    final imgChild = Container(
+      margin: EdgeInsets.only(right: 10),
+      child: ClipRRect(
+        borderRadius: BorderRadius.all(Radius.circular(_cornerRadius)),
+        child: Container(
+          height: parentHeight,
+          width: 80,
+          child: image,
+        ),
+      ),
+    );
+
+    final txtChildrenList = <Widget>[upperText,];
+    if(lowerText != null) {
+      txtChildrenList.add(Container(height: 20,));
+      txtChildrenList.add(lowerText!);
+    }
+
+    final txtChild = Expanded(
+      child: Padding(
+        padding: EdgeInsets.only(right: 10),
+        child: Container(
+          height: parentHeight,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: txtChildrenList,
+          ),
+        ),
+      ),
+    );
+
+    return ClipRRect(
+      borderRadius: BorderRadius.all(Radius.circular(_cornerRadius)),
+      child: Container(
+        color: Colors.white,
+        child: Row(
+          children: [
+            imgChild,
+            txtChild,
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 class ItemHomeBigTitle extends StatelessWidget {
   final Widget image;
   final String title;

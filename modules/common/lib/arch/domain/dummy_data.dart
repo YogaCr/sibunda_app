@@ -1,4 +1,5 @@
 
+import 'package:common/arch/domain/model/baby_data.dart';
 import 'package:common/config/routes.dart';
 import 'package:common/res/string/_string.dart';
 import 'package:core/domain/model/range.dart';
@@ -71,6 +72,16 @@ final dummyChild = Child(
   birthCertificateNo: "12123124",
 );
 
+
+final dummyPregnancyAgeOverview = MotherPregnancyAgeOverview(weekAge: 2, daysRemaining: 256);
+final dummyBabyAgeOverview = BabyAgeOverview(year: 1, month: 10, day: 3);
+
+
+/*
+=====================
+Kehamilanku
+=====================
+ */
 PregnancyCheck dummyPregnancyCheck(int week) => PregnancyCheck(
   visitDate: "6 Okt 2021",
   visitPlace: "Surabaya",
@@ -95,8 +106,6 @@ PregnancyCheck dummyPregnancyCheck(int week) => PregnancyCheck(
   diseaseHistory: "-",
   note: "-",
 );
-
-final dummyPregnancyAgeOverview = MotherPregnancyAgeOverview(weekAge: 2, daysRemaining: 256);
 
 final dummyTrimesterList = <MotherTrimester>[
   MotherTrimester(trimester: 1, startWeek: 0, endWeek: 12, imgLink: "",),
@@ -148,6 +157,8 @@ final dummyMessageList = <HomeNotifMsg>[
   HomeNotifMsg(title: "Tahu kah Anda?", desc: "Minum air 1 liter per hari dapat menghilangkan rasa haus", time: "12.00 - 11/05/2021", imgLink: "",),
 ];
 
+
+//============ FormWarningStatus ==============
 
 final motherWarningStatusList = <FormWarningStatus>[
   FormWarningStatus(

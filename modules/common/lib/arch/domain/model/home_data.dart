@@ -1,3 +1,4 @@
+import 'package:core/domain/model/range.dart';
 import 'package:flutter/material.dart';
 
 class HomeStatus {
@@ -32,6 +33,18 @@ class HomeTips {
   HomeTips({
     required this.desc,
     required this.kind,
+    required this.imgLink,
+  });
+}
+
+class HomeFormMenu {
+  final String title;
+  final IntRange range;
+  final String imgLink;
+
+  HomeFormMenu({
+    required this.title,
+    required this.range,
     required this.imgLink,
   });
 }

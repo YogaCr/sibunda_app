@@ -5,6 +5,7 @@ enum FormType {
 }
 
 class FormData {
+  final String key;
   final String question;
   final String? answer;
   final List<FormOption>? options;
@@ -12,6 +13,7 @@ class FormData {
   final FormType type;
 
   FormData({
+    required this.key,
     required this.question,
     required this.type,
     this.imgLink,
@@ -27,6 +29,16 @@ class FormOption {
   FormOption({
     required this.label,
     required this.isSelected,
+  });
+}
+
+class FormGroupData {
+  final String header;
+  final List<FormData> data;
+
+  FormGroupData({
+    required this.header,
+    required this.data,
   });
 }
 
