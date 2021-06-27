@@ -1,3 +1,4 @@
+import 'package:common/arch/ui/page/secondary_frames.dart';
 import 'package:common/arch/ui/widget/form_generic_vm_group_observer.dart';
 import 'package:common/config/_config.dart';
 import 'package:common/util/ui.dart';
@@ -12,18 +13,30 @@ class BabyCheckFormPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final vm = ViewModelProvider.of<BabyCheckFormVm>(context)
       ..init();
-    return FormVmGroupObserver<BabyCheckFormVm>(
-      vm: vm,
-      onPreSubmit: (valid) => valid == true
-          ? showSnackBar(context, "Submitting",backgroundColor: Colors.green)
-          : showSnackBar(context, "There still invalid fields"),
-      onSubmit: (success) => success
-          ? showSnackBar(context, "Sukses",backgroundColor: Colors.green)
-          : showSnackBar(context, "Gagal"),
-      submitBtnBuilder: (ctx, canProceed) => Container(
-        padding: EdgeInsets.all(10),
-        color: canProceed == true ? Manifest.theme.colorPrimary : Colors.grey,
-        child: Text("submit"),
+
+    return TopBarTitleAndBackFrame(
+      isScroll: true,
+      title: "Form Bayiku",
+      body: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 10),
+        child: BelowTopBarScrollContentArea([
+          SliverList(delegate: SliverChildListDelegate.fixed([
+            FormVmGroupObserver<BabyCheckFormVm>(
+              vm: vm,
+              onPreSubmit: (valid) => valid == true
+                  ? showSnackBar(context, "Submitting",backgroundColor: Colors.green)
+                  : showSnackBar(context, "There still invalid fields"),
+              onSubmit: (success) => success
+                  ? showSnackBar(context, "Sukses",backgroundColor: Colors.green)
+                  : showSnackBar(context, "Gagal"),
+              submitBtnBuilder: (ctx, canProceed) => Container(
+                padding: EdgeInsets.all(10),
+                color: canProceed == true ? Manifest.theme.colorPrimary : Colors.grey,
+                child: Text("submit"),
+              ),
+            ),
+          ])),
+        ]),
       ),
     );
 /*

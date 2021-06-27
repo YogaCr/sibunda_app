@@ -46,9 +46,6 @@ class _FormGenericGroupState extends State<FormGenericGroup> {
 
   @override
   Widget build(BuildContext context) {
-    print("this $runtimeType.build() vm.responseGroupList = ${vm.responseGroupList} len = ${vm.responseGroupList.length}");
-    print("this $runtimeType.build() groupData = $groupData");
-    print("this $runtimeType.build() groupData.data = ${groupData.data} len = ${groupData.data.length}");
     final groupRespMap = vm.responseGroupList[groupPosition];
 
     final formWidgets = List<Widget>.generate(

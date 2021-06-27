@@ -155,10 +155,8 @@ abstract class FormVmGroup extends AsyncVm with FormVmGroupMixin {
 
   @override
   void init({bool isOneShot = true}){
-    print("FormVmGroup.init() isOneShot= $isOneShot isFormReady.value = ${isFormReady.value}");
     if(isOneShot && isFormReady.value == true) return;
     getFieldGroupList().then((fieldGroupList) {
-      print("FormVmGroup.init() getFieldGroupList().then fieldGroupList= $fieldGroupList len = ${fieldGroupList.length}");
       _fieldGroupList = fieldGroupList.map((e) => MutableLiveData(e)).toList(growable: false);
       int i = 0;
       _responseGroupList = fieldGroupList.map((e) {
