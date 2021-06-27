@@ -23,12 +23,12 @@ class BabyCheckFormPage extends StatelessWidget {
           SliverList(delegate: SliverChildListDelegate.fixed([
             FormVmGroupObserver<BabyCheckFormVm>(
               vm: vm,
-              onPreSubmit: (valid) => valid == true
-                  ? showSnackBar(context, "Submitting",backgroundColor: Colors.green)
-                  : showSnackBar(context, "There still invalid fields"),
-              onSubmit: (success) => success
-                  ? showSnackBar(context, "Sukses",backgroundColor: Colors.green)
-                  : showSnackBar(context, "Gagal"),
+              onPreSubmit: (ctx, valid) => valid == true
+                  ? showSnackBar(ctx, "Submitting",backgroundColor: Colors.green)
+                  : showSnackBar(ctx, "There still invalid fields"),
+              onSubmit: (ctx, success) => success
+                  ? showSnackBar(ctx, "Sukses",backgroundColor: Colors.green)
+                  : showSnackBar(ctx, "Gagal"),
               submitBtnBuilder: (ctx, canProceed) => Container(
                 padding: EdgeInsets.all(10),
                 color: canProceed == true ? Manifest.theme.colorPrimary : Colors.grey,

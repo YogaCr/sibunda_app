@@ -19,13 +19,13 @@ class FormVmGroupObserver<VM extends FormVmGroup> extends StatefulWidget {
 
   /// This will be called after [Vm.submit] method is called.
   /// This callback parameter `true` if the [Vm.submit] is success.
-  final void Function(bool isSuccess)? onSubmit;
+  final void Function(BuildContext, bool isSuccess)? onSubmit;
   /// This will be called right before [Vm.submit] method is called.
   /// For this callback parameter:
   ///   `true` means [Vm] can proceed to submit the form.
   ///   `false` means there still some invalid form fields.
   ///   `null` means the form is still in initial state.
-  final void Function(bool? canProceed)? onPreSubmit;
+  final void Function(BuildContext, bool? canProceed)? onPreSubmit;
   final VM? vm;
 
   FormVmGroupObserver({
@@ -58,13 +58,13 @@ class _FormVmGroupObserverState<VM extends FormVmGroup>
 
   /// This will be called after [Vm.submit] method is called.
   /// This callback parameter `true` if the [Vm.submit] is success.
-  final void Function(bool isSuccess)? onSubmit;
+  final void Function(BuildContext, bool isSuccess)? onSubmit;
   /// This will be called right before [Vm.submit] method is called.
   /// For this callback parameter:
   ///   `true` means [Vm] can proceed to submit the form.
   ///   `false` means there still some invalid form fields.
   ///   `null` means the form is still in initial state.
-  final void Function(bool? canProceed)? onPreSubmit;
+  final void Function(BuildContext, bool? canProceed)? onPreSubmit;
   VM? vm;
 
   _FormVmGroupObserverState({
@@ -117,7 +117,7 @@ class _FormVmGroupObserverState<VM extends FormVmGroup>
         child: submitBtnBuilder(ctx, canProceed),
         onTap: () {
           //print("SignUpPage.onTap() submit canProceed= $canProceed");
-          onPreSubmit?.call(canProceed);
+          onPreSubmit?.call(ctx, canProceed);
           if(canProceed == true) {
             vm.submit();
           }
@@ -136,7 +136,7 @@ class _FormVmGroupObserverState<VM extends FormVmGroup>
 
     vm.onSubmit.observe(this, (result) {
       if(result != null) {
-        onSubmit?.call(result is Success<String>);
+        onSubmit?.call(context, result is Success<String>);
       }
     });
 
