@@ -1,3 +1,7 @@
+import 'package:common/arch/domain/model/img_data.dart';
+import 'package:common/util/collections.dart';
+import 'package:core/ui/base/live_data.dart';
+
 enum FormType {
   text,
   radio,
@@ -9,14 +13,14 @@ class FormData {
   final String question;
   final String? answer;
   final List<FormOption>? options;
-  final List<String>? imgLink;
+  final List<ImgData>? img;
   final FormType type;
 
   FormData({
     required this.key,
     required this.question,
     required this.type,
-    this.imgLink,
+    this.img,
     this.answer,
     this.options,
   });
@@ -36,44 +40,59 @@ class FormGroupData {
   final String header;
   final List<FormData> data;
 
-  FormGroupData({
+  FormGroupData._({
     required this.header,
     required this.data,
   });
+
+  factory FormGroupData({
+    required String header,
+    required List<FormData> data,
+  }) => FormGroupData._(
+    header: header,
+    data: distinctList(data, selector: (e) => e.key),  // filter first to assure that `key` is unique.
+  );
 }
 
-/*
-class FormTxtData {
-  final String question;
-  final String? answer;
 
-  FormTxtData({
-    required this.question,
-    this.answer,
+class FormGroupResponse {
+  /// Its keys are the key of each [FormResponse].
+  final Map<String, Map<String, dynamic>> responseGroups;
+
+  FormGroupResponse._({
+    //required this.headers,
+    required this.responseGroups,
+  });
+  factory FormGroupResponse(List<FormResponse> responseGroups) {
+    final map = <String, Map<String, dynamic>>{};
+    for(final group in responseGroups) {
+      map[group.header] = group.responses;
+    }
+    return FormGroupResponse._(responseGroups: map);
+  }
+
+  Map<String, dynamic>? operator [](String header) => responseGroups[header];
+  Map<String, dynamic> toLinear() {
+    final map = <String, dynamic>{};
+    for(final groupResp in responseGroups.values) {
+      for(final key in groupResp.keys) {
+        if(map.containsKey(key)) {
+          print("`key` '$key' already exists in map result with value '${map[key]}'. Old value is Overwritten");
+        }
+        map[key] = groupResp[key];
+      }
+    }
+    return map;
+  }
+}
+
+class FormResponse {
+  final String header;
+  /// Its keys are the key of each [FormData].
+  final Map<String, dynamic> responses;
+
+  FormResponse({
+    required this.header,
+    required this.responses,
   });
 }
-
-class FormRadioData {
-  final String question;
-  final List<String> options;
-  final int? selected;
-
-  FormRadioData({
-    required this.question,
-    required this.options,
-    this.selected,
-  });
-}
-
-class FormCheckData {
-  final String question;
-  final List<String> options;
-  final List<int> selected;
-
-  FormCheckData({
-    required this.question,
-    required this.options,
-    required this.selected,
-  });
-}
- */

@@ -1,4 +1,8 @@
 import 'package:common/arch/domain/model/form_data.dart';
+import 'package:common/arch/domain/model/img_data.dart';
+import 'package:common/util/collections.dart';
+import 'package:core/ui/base/live_data.dart';
+import 'package:equatable/equatable.dart';
 
 /*
 class FormAnswerItem {
@@ -32,33 +36,40 @@ class FormTxtFieldState extends Equatable {
  */
 
 
-abstract class FormUiData {
+abstract class FormUiData extends Equatable {
   final FormType type;
+  final String key;
   final String question;
-  final List<String>? imgLink;
+  final List<ImgData>? img;
 
   FormUiData({
     required this.type,
+    required this.key,
     required this.question,
-    this.imgLink,
+    this.img,
   });
+
+  @override
+  List<Object> get props => [type, key, question, img ?? "<null>"];
 }
 
 class FormUiTxt extends FormUiData {
   final String? answer;
 
   FormUiTxt({
+    required String key,
     required String question,
     this.answer,
-    List<String>? imgLink,
+    List<ImgData>? img,
   }): super(
     type: FormType.text,
+    key: key,
     question: question,
-    imgLink: imgLink,
+    img: img,
   );
 
   factory FormUiTxt.fromModel(FormData data) => FormUiTxt(
-    question: data.question, answer: data.answer, imgLink: data.imgLink,
+    key: data.key, question: data.question, answer: data.answer, img: data.img,
   );
 }
 
@@ -67,14 +78,16 @@ class FormUiRadio extends FormUiData {
   final int? selectedAnswer;
 
   FormUiRadio({
+    required String key,
     required String question,
     required this.answerItems,
     this.selectedAnswer,
-    List<String>? imgLink
+    List<ImgData>? img
   }): super(
     type: FormType.radio,
+    key: key,
     question: question,
-    imgLink: imgLink,
+    img: img,
   );
 
   factory FormUiRadio.fromModel(FormData data) {
@@ -91,10 +104,11 @@ class FormUiRadio extends FormUiData {
       }
     }
     return FormUiRadio(
+      key: data.key,
       question: data.question,
       answerItems: options ?? List.empty(),
       selectedAnswer: selectedItem,
-      imgLink: data.imgLink,
+      img: data.img,
     );
   }
 }
@@ -104,15 +118,17 @@ class FormUiCheck extends FormUiData {
   final Set<int> selectedAnswers;
 
   FormUiCheck({
+    required String key,
     required String question,
     required this.answerItems,
     Set<int>? selectedAnswers,
-    List<String>? imgLink
+    List<ImgData>? img
   }): this.selectedAnswers = selectedAnswers ?? {},
   super(
     type: FormType.check,
+    key: key,
     question: question,
-    imgLink: imgLink,
+    img: img,
   );
 
   factory FormUiCheck.fromModel(FormData data,) {
@@ -128,10 +144,80 @@ class FormUiCheck extends FormUiData {
       }
     }
     return FormUiCheck(
+      key: data.key,
       question: data.question,
       answerItems: options ?? List.empty(),
       selectedAnswers: selectedItems,
-      imgLink: data.imgLink,
+      img: data.img,
     );
   }
+}
+
+class FormUiGroupData extends Equatable {
+  final String header;
+  final List<FormUiData> data;
+
+  FormUiGroupData._({
+    required this.header,
+    required this.data,
+  });
+
+  factory FormUiGroupData({
+    required String header,
+    required List<FormUiData> data,
+  }) => FormUiGroupData._(
+    header: header,
+    data: distinctList(data, selector: (e) => e.key), // filter first to assure that `key` is unique.
+  );
+
+  factory FormUiGroupData.fromModel(FormGroupData data) {
+    final fieldData = data.data.map<FormUiData>((e) {
+      switch(e.type) {
+        case FormType.text: return FormUiTxt.fromModel(e);
+        case FormType.check: return FormUiCheck.fromModel(e);
+        case FormType.radio: return FormUiRadio.fromModel(e);
+      }
+    }).toList(growable: false);
+    return FormUiGroupData._(
+      header: data.header,
+      data: fieldData, // No need to filter first, cuz we are sure that `key` from `FormGroupData` is unique.
+    );
+  }
+
+  @override
+  List<Object?> get props => [header, data];
+}
+
+
+class FormVmResponse extends Equatable {
+  final LiveData<dynamic> response;
+  final LiveData<bool> isValid;
+
+  FormVmResponse({
+    required this.response,
+    required this.isValid,
+  });
+
+  @override
+  List<Object?> get props => [response, isValid];
+}
+
+class MutableFormVmResponse extends FormVmResponse {
+  @override
+  final MutableLiveData<dynamic> response;
+  @override
+  final MutableLiveData<bool> isValid;
+
+  MutableFormVmResponse({
+    required this.response,
+    required this.isValid,
+  }) : super(
+    response: response,
+    isValid: isValid,
+  );
+
+  factory MutableFormVmResponse.def() => MutableFormVmResponse(
+    response: MutableLiveData(),
+    isValid: MutableLiveData(),
+  );
 }

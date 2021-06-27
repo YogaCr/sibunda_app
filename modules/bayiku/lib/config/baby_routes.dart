@@ -39,7 +39,7 @@ class _BabyCheckFormPage {
 
   final SibRoute _route = SibRoute("BabyCheckFormPage", BabyCheckFormPage, (ctx) => MainFrame(
     body: BabyCheckFormPage().inVmProvider([
-          (ctx) => BabyCheckFormVm(),
+          (ctx) => BabyVmDi.babyCheckFormVm,
     ]),
   ));
 

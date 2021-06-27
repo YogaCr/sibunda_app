@@ -16,6 +16,21 @@ Widget defaultImg({
   color: Manifest.theme.colorPrimary,
 );
 
+Widget defaultLoading({
+  String? text = "Loading...",
+  double? width = 80,
+  double? height = 80,
+}) => Container(
+  padding: EdgeInsets.all(10),
+  width: width,
+  height: height,
+  color: Manifest.theme.colorPrimary,
+  child: Text(
+    text ?? "Error",
+    textAlign: TextAlign.center,
+  ),
+);
+
 Widget defaultError({
   String? text = "Error",
   double? width = 80,

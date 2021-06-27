@@ -143,6 +143,7 @@ abstract class LateFormTxtVm extends LateFormVm with FormTxtVmMixin {
 
 mixin LateFormGenericVmMixin implements LateFormVmMixin, FormGenericVmMixin {
   LiveData<List<FormUiData>> get fieldDataList;
+
   @protected
   Future<List<FormUiData>> getItemDataList();
 }

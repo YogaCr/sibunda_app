@@ -1,3 +1,4 @@
+import 'package:bayiku/core/domain/usecase/baby_check_usecase.dart';
 import 'package:bayiku/core/domain/usecase/baby_home_usecase.dart';
 import 'package:common/arch/di/repo_di.dart';
 
@@ -7,4 +8,5 @@ class BabyUseCaseDi {
 
   static GetBabyAgeOverview get getBabyAgeOverview => GetBabyAgeOverviewImpl(RepoDi.myBabyRepo);
   static GetBabyFormMenuList get getBabyFormMenuList => GetBabyFormMenuListImpl(RepoDi.myBabyRepo);
+  static GetBabyCheckForm get getBabyCheckForm => GetBabyCheckFormImpl(RepoDi.formFieldRepo);
 }

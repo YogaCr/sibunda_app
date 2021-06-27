@@ -1,9 +1,43 @@
+import 'package:bayiku/core/domain/usecase/baby_check_usecase.dart';
+import 'package:common/arch/domain/model/form_data.dart';
 import 'package:common/arch/ui/model/form_data.dart';
-import 'package:common/arch/ui/vm/form_vm.dart';
+import 'package:common/arch/ui/vm/form_vm_group.dart';
 import 'package:core/domain/model/result.dart';
 import 'package:core/ui/base/live_data.dart';
-import 'package:tuple/tuple.dart';
 
+class BabyCheckFormVm extends FormVmGroup {
+  BabyCheckFormVm({
+    required GetBabyCheckForm getBabyCheckForm,
+  }): _getBabyCheckForm = getBabyCheckForm
+  ;
+
+  final GetBabyCheckForm _getBabyCheckForm;
+
+  @override
+  Future<Result<String>> doSubmitJob() async => Success("ok");
+
+  @override
+  Future<List<FormUiGroupData>> getFieldGroupList() async {
+    final res = await _getBabyCheckForm();
+    if(res is Success<List<FormGroupData>>) {
+      return res.data.map((e) => FormUiGroupData.fromModel(e)).toList(growable: false);
+    } else {
+      return List.empty(growable: false);
+    }
+  }
+
+  @override
+  List<LiveData> get liveDatas => [];
+
+  @override
+  Future<bool> validateField(int groupPosition, String inputKey, response) async =>
+      response is String ? response.isNotEmpty
+        : response is Set<int> ? response.isNotEmpty
+          : false;
+}
+
+
+/*
 class BabyCheckFormVm extends FormGenericVm {
   BabyCheckFormVm() : super(
     keyLabelList: [
@@ -51,6 +85,7 @@ class BabyCheckFormVm extends FormGenericVm {
   Future<bool> validateField(String inputKey, response) async => response is String
       ? response.isNotEmpty : (response as Set<int>).isNotEmpty;
 }
+ */
 /*
 class BabyCheckFormVm_Late extends LateFormGenericVm {
   BabyCheckFormVm_Late() : super();

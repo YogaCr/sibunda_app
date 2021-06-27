@@ -15,7 +15,7 @@ Widget buildImgNetwork(
 );
 
 Widget Function(BuildContext context,Widget child, ImageChunkEvent? loadingProgress,) buildDefaultImgNetworkLoading() =>
-        (context, child, loadingProgress) => defaultImg();
+        (context, child, loadingProgress) => defaultLoading();
 
 Widget Function(BuildContext context, Object error, StackTrace? stackTrace,) buildDefaultImgNetworkError() =>
         (context, error, stackTrace,) => defaultError(text: "Img Load Error");

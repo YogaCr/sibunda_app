@@ -67,6 +67,9 @@ class LiveData<T> implements Expirable {
       }
     }
   }
+
+  @override
+  String toString() => "LiveData<$T>(value=$value)";
 }
 
 class MutableLiveData<T> extends LiveData<T> {
@@ -138,4 +141,7 @@ class MutableChangeNotifLiveData<T>
   }
 
   final void Function(ChangeNotifier p1, T? value) setNotif;
+
+  @override
+  String toString() => "MutableLiveData<$T>(value=$value)";
 }

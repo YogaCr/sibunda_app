@@ -1,3 +1,4 @@
+import 'package:common/arch/domain/model/form_data.dart';
 import 'package:common/arch/ui/model/form_data.dart';
 import 'package:common/arch/ui/widget/form_generic_field.dart';
 import 'package:common/res/string/_string.dart';

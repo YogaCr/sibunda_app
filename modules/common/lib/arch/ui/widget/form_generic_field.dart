@@ -3,6 +3,7 @@ import 'package:common/arch/ui/widget/img_widget.dart';
 import 'package:common/arch/ui/widget/txt_input.dart';
 import 'package:common/res/string/_string.dart';
 import 'package:common/res/theme/_theme.dart';
+import 'package:common/util/assets.dart';
 import 'package:core/ui/base/live_data.dart';
 import 'package:core/ui/base/live_data_observer.dart';
 import 'package:flutter/cupertino.dart';
@@ -85,10 +86,10 @@ class TxtField extends SibFormField {
       textController.text = itemData.answer!;
     }
     final colChildren = <Widget>[widget,];
-    if(itemData.imgLink?.isNotEmpty == true) {
-      for(final link in itemData.imgLink!) {
+    if(itemData.img?.isNotEmpty == true) {
+      for(final img in itemData.img!) {
         colChildren.add(
-          defaultFormItemImg(link),
+          SibImages.resolve(img),
         );
       }
     }
@@ -164,10 +165,10 @@ class RadioGroup extends SibFormField {
       optionsWidget,
     ];
 
-    if(itemData.imgLink?.isNotEmpty == true) {
-      for(final link in itemData.imgLink!) {
+    if(itemData.img?.isNotEmpty == true) {
+      for(final img in itemData.img!) {
         outerColumChildren.insert(outerColumChildren.length -1,
-          defaultFormItemImg(link),
+          SibImages.resolve(img),
         );
       }
     }
@@ -270,10 +271,10 @@ class CheckGroup extends SibFormField {
     outerColumChildren.insert(0, Text(itemData.question));
  */
 
-    if(itemData.imgLink?.isNotEmpty == true) {
-      for(final link in itemData.imgLink!) {
+    if(itemData.img?.isNotEmpty == true) {
+      for(final img in itemData.img!) {
         outerColumChildren.insert(outerColumChildren.length -1,
-          defaultFormItemImg(link),
+          SibImages.resolve(img),
         );
       }
     }
