@@ -5,7 +5,7 @@ class ImgData {
 
   ImgData({
     required this.link,
-    required this.package,
+    this.package,
     required this.isLocal,
   });
 }
