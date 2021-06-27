@@ -2,6 +2,7 @@ import 'package:common/arch/ui/model/form_data.dart';
 import 'package:common/arch/ui/vm/form_vm_group.dart';
 import 'package:common/arch/ui/widget/_basic_widget.dart';
 import 'package:common/arch/ui/widget/form_generic_group.dart';
+import 'package:common/value/enums.dart';
 import 'package:core/domain/model/result.dart';
 import 'package:core/ui/base/async_view_model_observer.dart';
 import 'package:core/ui/base/expirable.dart';
@@ -27,6 +28,7 @@ class FormVmGroupObserver<VM extends FormVmGroup> extends StatefulWidget {
   ///   `null` means the form is still in initial state.
   final void Function(BuildContext, bool? canProceed)? onPreSubmit;
   final VM? vm;
+  final RelativePosition imgPosition;
 
   FormVmGroupObserver({
     required this.submitBtnBuilder,
@@ -34,6 +36,7 @@ class FormVmGroupObserver<VM extends FormVmGroup> extends StatefulWidget {
     this.onSubmit,
     this.onPreSubmit,
     this.vm,
+    this.imgPosition = RelativePosition.below,
   });
 
   @override
@@ -43,6 +46,7 @@ class FormVmGroupObserver<VM extends FormVmGroup> extends StatefulWidget {
     onSubmit: onSubmit,
     onPreSubmit: onPreSubmit,
     vm: vm,
+    imgPosition: imgPosition,
   );
 }
 
@@ -66,6 +70,7 @@ class _FormVmGroupObserverState<VM extends FormVmGroup>
   ///   `null` means the form is still in initial state.
   final void Function(BuildContext, bool? canProceed)? onPreSubmit;
   VM? vm;
+  final RelativePosition imgPosition;
 
   _FormVmGroupObserverState({
     required this.submitBtnBuilder,
@@ -73,6 +78,7 @@ class _FormVmGroupObserverState<VM extends FormVmGroup>
     required this.onSubmit,
     required this.onPreSubmit,
     required this.vm,
+    required this.imgPosition,
   });
 
   @override
@@ -93,6 +99,7 @@ class _FormVmGroupObserverState<VM extends FormVmGroup>
                       vm: vm,
                       groupData: formGroupData,
                       groupPosition: i,
+                      imgPosition: imgPosition,
                     ): defaultLoading(),
               ),
             );

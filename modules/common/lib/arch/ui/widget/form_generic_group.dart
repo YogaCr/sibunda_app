@@ -3,6 +3,7 @@ import 'package:common/arch/ui/model/form_data.dart';
 import 'package:common/arch/ui/vm/form_vm.dart';
 import 'package:common/arch/ui/vm/form_vm_group.dart';
 import 'package:common/res/theme/_theme.dart';
+import 'package:common/value/enums.dart';
 import 'package:core/ui/base/live_data.dart';
 import 'package:flutter/material.dart';
 
@@ -14,11 +15,13 @@ class FormGenericGroup extends StatefulWidget {
   /// We assume that this [vm] is already ready when programmer build this [FormGenericGroup] widget.
   final FormVmGroupMixin vm;
   final int groupPosition;
+  final RelativePosition imgPosition;
 
   FormGenericGroup({
     required this.groupData,
     required this.vm,
     required this.groupPosition,
+    this.imgPosition = RelativePosition.below,
   });
 
   @override
@@ -26,6 +29,7 @@ class FormGenericGroup extends StatefulWidget {
     groupData: groupData,
     vm: vm,
     groupPosition: groupPosition,
+    imgPosition: imgPosition,
   );
 }
 
@@ -34,6 +38,7 @@ class _FormGenericGroupState extends State<FormGenericGroup> {
   final FormUiGroupData groupData;
   final FormVmGroupMixin vm;
   final int groupPosition;
+  final RelativePosition imgPosition;
 
   /// Its keys are keys of [FormGenericVm.keyLabelList].
   final Map<String, MutableLiveData> itemLiveData = {};
@@ -42,6 +47,7 @@ class _FormGenericGroupState extends State<FormGenericGroup> {
     required this.groupData,
     required this.vm,
     required this.groupPosition,
+    required this.imgPosition,
   });
 
   @override
@@ -65,6 +71,7 @@ class _FormGenericGroupState extends State<FormGenericGroup> {
               isValid: groupRespMap[key]!.isValid,
               invalidMsgGenerator: (response) => vm.getInvalidMsg(key, txtLiveData.value),
               responseLiveData: txtLiveData,
+              imgPosition: imgPosition,
             );
 
             final txtControl = (field as TxtField).textController;
@@ -90,6 +97,7 @@ class _FormGenericGroupState extends State<FormGenericGroup> {
               isValid: groupRespMap[key]!.isValid,
               invalidMsgGenerator: (response) => vm.getInvalidMsg(key, groupValue.value),
               groupValueLiveData: groupValue,
+              imgPosition: imgPosition,
             );
 
             vm.registerField(
@@ -112,6 +120,7 @@ class _FormGenericGroupState extends State<FormGenericGroup> {
               isValid: groupRespMap[key]!.isValid,
               invalidMsgGenerator: (response) => vm.getInvalidMsg(key, selectedAnswerIndices.value),
               selectedIndicesLiveData: selectedAnswerIndices,
+              imgPosition: imgPosition,
             );
 
             vm.registerField(

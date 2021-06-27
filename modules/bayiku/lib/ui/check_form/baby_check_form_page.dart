@@ -2,6 +2,7 @@ import 'package:common/arch/ui/page/secondary_frames.dart';
 import 'package:common/arch/ui/widget/form_generic_vm_group_observer.dart';
 import 'package:common/config/_config.dart';
 import 'package:common/util/ui.dart';
+import 'package:common/value/enums.dart';
 import 'package:core/ui/base/view_model.dart';
 import 'package:flutter/material.dart';
 
@@ -23,6 +24,7 @@ class BabyCheckFormPage extends StatelessWidget {
           SliverList(delegate: SliverChildListDelegate.fixed([
             FormVmGroupObserver<BabyCheckFormVm>(
               vm: vm,
+              imgPosition: RelativePosition.above,
               onPreSubmit: (ctx, valid) => valid == true
                   ? showSnackBar(ctx, "Submitting",backgroundColor: Colors.green)
                   : showSnackBar(ctx, "There still invalid fields"),

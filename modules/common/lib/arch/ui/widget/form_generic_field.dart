@@ -4,6 +4,7 @@ import 'package:common/arch/ui/widget/txt_input.dart';
 import 'package:common/res/string/_string.dart';
 import 'package:common/res/theme/_theme.dart';
 import 'package:common/util/assets.dart';
+import 'package:common/value/enums.dart';
 import 'package:core/ui/base/live_data.dart';
 import 'package:core/ui/base/live_data_observer.dart';
 import 'package:flutter/cupertino.dart';
@@ -27,6 +28,7 @@ class TxtField extends SibFormField {
   @override
   LiveData<String> get responseLiveData => _response;
   final bool isLiveDataOwner;
+  final RelativePosition imgPosition;
 
   /// This will become default invalid message.
   final String invalidMsg;
@@ -37,6 +39,7 @@ class TxtField extends SibFormField {
     this.isValid,
     this.invalidMsgGenerator,
     this.invalidMsg = Strings.field_can_not_be_empty,
+    this.imgPosition = RelativePosition.below,
     bool? isLiveDataOwner,
     //TextEditingController? textController,
     MutableLiveData<String>? responseLiveData
@@ -87,10 +90,18 @@ class TxtField extends SibFormField {
     }
     final colChildren = <Widget>[widget,];
     if(itemData.img?.isNotEmpty == true) {
-      for(final img in itemData.img!) {
-        colChildren.add(
-          SibImages.resolve(img),
-        );
+      if(imgPosition == RelativePosition.above) {
+        for(final img in itemData.img!) {
+          colChildren.insert(colChildren.length -1,
+            SibImages.resolve(img),
+          );
+        }
+      } else {
+        for(final img in itemData.img!) {
+          colChildren.add(
+            SibImages.resolve(img),
+          );
+        }
       }
     }
     return Column(
@@ -107,6 +118,7 @@ class RadioGroup extends SibFormField {
   @override
   LiveData<String> get responseLiveData => groupValueLiveData;
   final bool isLiveDataOwner;
+  final RelativePosition imgPosition;
 
   /// This will become default invalid message.
   final String invalidMsg;
@@ -116,6 +128,7 @@ class RadioGroup extends SibFormField {
     required this.itemData,
     this.isValid,
     this.invalidMsg = Strings.field_can_not_be_empty,
+    this.imgPosition = RelativePosition.below,
     this.invalidMsgGenerator,
     MutableLiveData<String>? groupValueLiveData,
     bool? isLiveDataOwner,
@@ -166,10 +179,18 @@ class RadioGroup extends SibFormField {
     ];
 
     if(itemData.img?.isNotEmpty == true) {
-      for(final img in itemData.img!) {
-        outerColumChildren.insert(outerColumChildren.length -1,
-          SibImages.resolve(img),
-        );
+      if(imgPosition == RelativePosition.above) {
+        for(final img in itemData.img!) {
+          outerColumChildren.insert(outerColumChildren.length -2,
+            SibImages.resolve(img),
+          );
+        }
+      } else {
+        for(final img in itemData.img!) {
+          outerColumChildren.insert(outerColumChildren.length -1,
+            SibImages.resolve(img),
+          );
+        }
       }
     }
 
@@ -202,6 +223,7 @@ class CheckGroup extends SibFormField {
   @override
   LiveData<Set<int>> get responseLiveData => selectedIndicesLiveData;
   final bool isLiveDataOwner;
+  final RelativePosition imgPosition;
 
   /// This will become default invalid message.
   final String invalidMsg;
@@ -211,6 +233,7 @@ class CheckGroup extends SibFormField {
     required this.itemData,
     this.isValid,
     this.invalidMsg = Strings.field_can_not_be_empty,
+    this.imgPosition = RelativePosition.below,
     this.invalidMsgGenerator,
     MutableLiveData<Set<int>>? selectedIndicesLiveData,
     bool? isLiveDataOwner,
@@ -272,10 +295,18 @@ class CheckGroup extends SibFormField {
  */
 
     if(itemData.img?.isNotEmpty == true) {
-      for(final img in itemData.img!) {
-        outerColumChildren.insert(outerColumChildren.length -1,
-          SibImages.resolve(img),
-        );
+      if(imgPosition == RelativePosition.above) {
+        for(final img in itemData.img!) {
+          outerColumChildren.insert(outerColumChildren.length -2,
+            SibImages.resolve(img),
+          );
+        }
+      } else {
+        for(final img in itemData.img!) {
+          outerColumChildren.insert(outerColumChildren.length -1,
+            SibImages.resolve(img),
+          );
+        }
       }
     }
 
