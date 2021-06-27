@@ -12,7 +12,7 @@ mixin GetMotherFoodRecomList {
 }
 
 mixin GetPregnancyAgeOverview {
-  Future<Result<MotherPregnancyAgeOverview>> call();
+  Future<Result<MotherPregnancyAgeOverview>> call(String motherNik);
 }
 
 
@@ -31,5 +31,5 @@ class GetMotherFoodRecomListImpl with GetMotherFoodRecomList {
 class GetPregnancyAgeOverviewImpl with GetPregnancyAgeOverview {
   GetPregnancyAgeOverviewImpl(this._repo);
   final MotherPregnancyRepo _repo;
-  Future<Result<MotherPregnancyAgeOverview>> call() => _repo.getMotherPregnancyAgeOverview();
+  Future<Result<MotherPregnancyAgeOverview>> call(String motherNik) => _repo.getMotherPregnancyAgeOverview(motherNik);
 }

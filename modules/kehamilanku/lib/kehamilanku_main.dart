@@ -1,20 +1,20 @@
-import 'package:bayiku/config/baby_routes.dart';
 import 'package:common/config/manifest.dart';
 import 'package:flutter/material.dart';
+import 'package:kehamilanku/config/kehamilanku_routes.dart';
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: KehamilankuRoutes.obj.name,
       theme: Manifest.theme.materialData,
-      home: BabyRoutes.babyHomePage.build(context),
+      home: KehamilankuRoutes.kehamilankuHomePage.build(context),
     );
   }
 }
+
 
 /*
 class MyHomePage extends StatefulWidget {
@@ -101,6 +101,4 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
-
-
  */

@@ -10,21 +10,17 @@ import 'package:tuple/tuple.dart';
 class PregnancyImmunizationVm extends AsyncVm {
   static const getImmunizationGroupsKey = "getImmunizationGroups";
   static const getImmunizationOverviewKey = "getImmunizationOverview";
-  static const confirmImmunizationKey = "confirmImmunization";
 
   PregnancyImmunizationVm({
     required GetMotherImmunizationGroupList getMotherImmunizationGroupList,
     required GetMotherImmunizationOverview getMotherImmunizationOverview,
-    required ConfirmMotherImmunization confirmMotherImmunization,
   }):
     _getMotherImmunizationGroupList = getMotherImmunizationGroupList,
-    _getMotherImmunizationOverview = getMotherImmunizationOverview,
-    _confirmMotherImmunization = confirmMotherImmunization
+    _getMotherImmunizationOverview = getMotherImmunizationOverview
   ;
 
   final GetMotherImmunizationGroupList _getMotherImmunizationGroupList;
   final GetMotherImmunizationOverview _getMotherImmunizationOverview;
-  final ConfirmMotherImmunization _confirmMotherImmunization;
 
   final MutableLiveData<List<UiImmunizationListGroup>> _immunizationGroups = MutableLiveData();
   final MutableLiveData<ImmunizationOverview> _overview = MutableLiveData();
@@ -60,24 +56,6 @@ class PregnancyImmunizationVm extends AsyncVm {
         if(value is Success<ImmunizationOverview>) {
           final data = value.data;
           _overview.value = data;
-        }
-      });
-    });
-  }
-  void confirmImmunization({
-    required Expirable observer,
-    required String motherNik,
-    required ImmunizationDetail data,
-    bool forceLoad = false,
-  }) {
-    if(!forceLoad && _overview.value != null) return;
-    startJob(confirmImmunizationKey, (isActive) async {
-      _confirmMotherImmunization(motherNik, data).then((value) {
-        if(value is Success<bool>) {
-          final data = value.data;
-          _onConfirm.value = Tuple2(observer, data);
-        } else {
-          _onConfirm.value = Tuple2(observer, false);
         }
       });
     });

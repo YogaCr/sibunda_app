@@ -24,7 +24,7 @@ class KehamilankuHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ViewModelProvider.of<KehamilankuHomeVm>(context)
-      ..getAgeOverview()
+      ..getAgeOverview("")
       ..getTrimesterList()
       ..getFoodRecomList();
 

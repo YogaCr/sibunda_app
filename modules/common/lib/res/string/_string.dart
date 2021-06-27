@@ -82,6 +82,11 @@ class Strings {
   static const disease_history =  "Riwayat Penyakit";
   static const special_note =  "Catatan Khusus";
 
+  static const immunization_date = "Tanggal Imunisasi";
+  static const immunization_place = "Tempat Imunisasi";
+  static const responsible_name = "Nama Penanggungjawab";
+  static const no_batch = "No Batch";
+
   static const year =  "Tahun";
   static const month =  "Bulan";
   static const day =  "Hari";

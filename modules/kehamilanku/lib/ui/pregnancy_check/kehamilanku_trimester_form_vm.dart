@@ -1,13 +1,150 @@
+import 'package:common/arch/domain/model/form_data.dart';
 import 'package:common/arch/domain/model/form_warning_status.dart';
 import 'package:common/arch/domain/model/kehamilanku_data.dart';
+import 'package:common/arch/ui/model/form_data.dart';
 import 'package:common/arch/ui/vm/form_vm.dart';
+import 'package:common/arch/ui/vm/form_vm_group.dart';
 import 'package:common/res/string/_string.dart';
 import 'package:common/value/const_values.dart';
 import 'package:core/domain/model/result.dart';
 import 'package:core/ui/base/live_data.dart';
 import 'package:kehamilanku/core/domain/usecase/pregnancy_check_use_case.dart';
-import 'package:tuple/tuple.dart';
 
+
+class KehamilankuCheckFormVm extends FormVmGroup {
+  static const getPregnancyCheckKey = "getPregnancyCheck";
+  static const getMotherFormWarningStatusKey = "getMotherFormWarningStatus";
+  static const getPregnancyBabySizeKey = "getPregnancyBabySize";
+
+  KehamilankuCheckFormVm({
+    required SavePregnancyCheck savePregnancyCheck,
+    required GetPregnancyCheck getPregnancyCheck,
+    required GetMotherFormWarningStatus getMotherFormWarningStatus,
+    required GetPregnancyBabySize getPregnancyBabySize,
+    required GetPregnancyCheckForm getPregnancyCheckForm,
+  }):
+    _savePregnancyCheck = savePregnancyCheck,
+    _getPregnancyCheck = getPregnancyCheck,
+    _getMotherFormWarningStatus = getMotherFormWarningStatus,
+    _getPregnancyBabySize = getPregnancyBabySize,
+    _getPregnancyCheckForm = getPregnancyCheckForm;
+
+  final SavePregnancyCheck _savePregnancyCheck;
+  final GetPregnancyCheck _getPregnancyCheck;
+  final GetMotherFormWarningStatus _getMotherFormWarningStatus;
+  final GetPregnancyBabySize _getPregnancyBabySize;
+  final GetPregnancyCheckForm _getPregnancyCheckForm;
+
+  final MutableLiveData<PregnancyCheck> _pregnancyCheck = MutableLiveData();
+  final MutableLiveData<List<FormWarningStatus>> _formWarningStatusList = MutableLiveData();
+  final MutableLiveData<PregnancyBabySize> _pregnancyBabySize = MutableLiveData();
+
+  LiveData<PregnancyCheck> get pregnancyCheck => _pregnancyCheck;
+  LiveData<List<FormWarningStatus>> get formWarningStatusList => _formWarningStatusList;
+  LiveData<PregnancyBabySize> get pregnancyBabySize => _pregnancyBabySize;
+
+  @override
+  Future<Result<String>> doSubmitJob() async {
+    final responseMap = getResponse(
+      mappedKey: {
+        Const.KEY_PREGNANCY_AGE,
+        Const.KEY_MOTHER_WEIGHT,
+        Const.KEY_MOTHER_WEIGHT_DIFF,
+        Const.KEY_MOTHER_HEIGHT,
+        Const.KEY_TFU,
+        Const.KEY_DJJ,
+        Const.KEY_SYSTOLIC_PRESSURE,
+        Const.KEY_DIASTOLIC_PRESSURE,
+        Const.KEY_MAP,
+      },
+      mapper: (group, key, response) => int.parse(response),
+    );
+    final data = PregnancyCheck.fromJson(responseMap.responseGroups.values.first);
+    return _savePregnancyCheck(data).then((value) => value is Success<bool> ? Success("") : value as Fail<String>);
+  }
+
+
+  @override
+  Future<bool> validateField(int groupPosition, String inputKey, response) async {
+    switch(inputKey) {
+      case Const.KEY_PREGNANCY_AGE:
+      case Const.KEY_MOTHER_WEIGHT:
+      case Const.KEY_MOTHER_WEIGHT_DIFF:
+      case Const.KEY_MOTHER_HEIGHT:
+      case Const.KEY_TFU:
+      case Const.KEY_DJJ:
+      case Const.KEY_SYSTOLIC_PRESSURE:
+      case Const.KEY_DIASTOLIC_PRESSURE:
+      case Const.KEY_MAP: return int.tryParse(response) != null;
+    }
+    return (response as String).isNotEmpty;
+  }
+
+  @override
+  Future<List<FormUiGroupData>> getFieldGroupList() async {
+    final res = await _getPregnancyCheckForm();
+    if(res is Success<List<FormGroupData>>) {
+      final data = res.data;
+      return data.map((e) => FormUiGroupData.fromModel(e)).toList(growable: false);
+    } else {
+      return List.empty();
+    }
+  }
+
+  @override
+  List<LiveData> get liveDatas => [
+    _pregnancyCheck, _formWarningStatusList, _pregnancyBabySize,
+  ];
+
+
+  void getPregnancyCheck({
+    required String motherNik,
+    required int week,
+    bool forceLoad = false,
+  }) {
+    if(!forceLoad && _pregnancyCheck.value != null) return;
+    startJob(getPregnancyCheckKey, (isActive) async {
+      _getPregnancyCheck(motherNik, week).then((value) {
+        if(value is Success<PregnancyCheck>) {
+          final data = value.data;
+          _pregnancyCheck.value = data;
+        }
+      });
+    });
+  }
+  void getMotherFormWarningStatus({
+    required String motherNik,
+    required int week,
+    bool forceLoad = false,
+  }) {
+    if(!forceLoad && _formWarningStatusList.value != null) return;
+    startJob(getMotherFormWarningStatusKey, (isActive) async {
+      _getMotherFormWarningStatus(motherNik, week).then((value) {
+        if(value is Success<List<FormWarningStatus>>) {
+          final data = value.data;
+          _formWarningStatusList.value = data;
+        }
+      });
+    });
+  }
+  void getPregnancyBabySize({
+    required int pregnancyWeekAge,
+    bool forceLoad = false,
+  }) {
+    if(!forceLoad && _pregnancyBabySize.value != null) return;
+    startJob(getPregnancyBabySizeKey, (isActive) async {
+      _getPregnancyBabySize(pregnancyWeekAge).then((value) {
+        if(value is Success<PregnancyBabySize>) {
+          final data = value.data;
+          _pregnancyBabySize.value = data;
+        }
+      });
+    });
+  }
+}
+
+
+/*
 class KehamilankuCheckFormVm extends FormVm {
   static const getPregnancyCheckKey = "getPregnancyCheck";
   static const getMotherFormWarningStatusKey = "getMotherFormWarningStatus";
@@ -142,3 +279,5 @@ class KehamilankuCheckFormVm extends FormVm {
     });
   }
 }
+
+ */

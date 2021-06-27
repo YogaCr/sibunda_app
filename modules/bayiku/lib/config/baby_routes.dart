@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 
 class BabyRoutes extends ModuleRoute {
   BabyRoutes._() : super(GlobalRoutes.manager);
+  static final obj = BabyRoutes._();
 
   @override
   SibRoute get entryPoint => babyHomePage;

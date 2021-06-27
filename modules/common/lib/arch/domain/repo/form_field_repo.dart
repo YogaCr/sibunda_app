@@ -4,6 +4,9 @@ import 'package:core/domain/model/result.dart';
 
 mixin FormFieldRepo {
   Future<Result<List<FormGroupData>>> getBabyFormGroupData();
+  Future<Result<List<FormGroupData>>> getPregnancyFormGroupData();
+  Future<Result<List<FormGroupData>>> getPregnancyImmunizationFormGroupData();
+  Future<Result<List<FormGroupData>>> getBabyImmunizationFormGroupData();
 }
 
 class FormFieldRepoDummy with FormFieldRepo {
@@ -11,4 +14,10 @@ class FormFieldRepoDummy with FormFieldRepo {
   static final obj = FormFieldRepoDummy._();
   @override
   Future<Result<List<FormGroupData>>> getBabyFormGroupData() async => Success(babyFormGroupData);
+  @override
+  Future<Result<List<FormGroupData>>> getPregnancyFormGroupData() async => Success(motherFormGroupData);
+  @override
+  Future<Result<List<FormGroupData>>> getPregnancyImmunizationFormGroupData() async => Success(pregnancyImmunizationFormGroupData);
+  @override
+  Future<Result<List<FormGroupData>>> getBabyImmunizationFormGroupData() async => Success(babyImmunizationFormGroupData);
 }

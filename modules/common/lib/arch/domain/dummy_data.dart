@@ -119,7 +119,14 @@ List<MotherFoodRecom> dummyFoodRecomList(int week) => [
   MotherFoodRecom(food: "Susu", desc: "Biar pola makan sempurna, minum susu.", imgLink: "https://www2.biomin.net/fileadmin/user_upload/Articles/2019/Boosting_milk_yield/Milk-production-in-heifers-fed-Digestarom-Dairy-increased-by-0.7-kg-per-day.jpg"),
 ];
 
-final dummyPregnancyBabySize = PregnancyBabySize(sizeString: "Selada Kampung", babyWeight: 18.3, babyLen: 5.1,);
+final dummyPregnancyBabySizes = <PregnancyBabySize>[
+  PregnancyBabySize(sizeString: "Selada Kampung", babyWeight: 18.3, babyLen: 5.1,),
+  PregnancyBabySize(sizeString: "Selada Hijau", babyWeight: 28.3, babyLen: 6.1,),
+  PregnancyBabySize(sizeString: "Selada Kuning", babyWeight: 58.3, babyLen: 9.1,),
+  PregnancyBabySize(sizeString: "Selada Merah", babyWeight: 98.3, babyLen: 19.1,),
+];
+
+PregnancyBabySize dummyPregnancyBabySize(int week) => dummyPregnancyBabySizes[week % dummyPregnancyBabySizes.length];
 
 final dummyProfile = Profile(
   name: "Ayu",

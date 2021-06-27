@@ -17,7 +17,7 @@ class LiveData<T> implements Expirable {
   bool _assertNotDisposed() {
     assert((){
       if(!isActive) {
-        throw "LiveData has been disposed but still in use.";
+        throw "LiveData '$this' has been disposed but still in use.";
       }
       return true;
     }());
@@ -44,7 +44,7 @@ class LiveData<T> implements Expirable {
 
   @mustCallSuper
   void dispose() {
-    _assertNotDisposed();
+    //_assertNotDisposed();
     _observers!.clear();
     _observers = null;
   }

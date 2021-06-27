@@ -57,7 +57,6 @@ class _FormGenericGroupState extends State<FormGenericGroup> {
         final itemData = groupData.data[i];
         switch(itemData.type) {
           case FormType.text:
-            final txtControl = TextEditingController();
             final txtLiveData = MutableLiveData<String>();
             itemLiveData[key] = txtLiveData;
 
@@ -68,10 +67,12 @@ class _FormGenericGroupState extends State<FormGenericGroup> {
               responseLiveData: txtLiveData,
             );
 
+            final txtControl = (field as TxtField).textController;
+
             vm.registerField(
               groupPosition: groupPosition,
               inputKey: key,
-              field: field as SibFormField,
+              field: field,
             );
 
             final answer = itemData.answer;

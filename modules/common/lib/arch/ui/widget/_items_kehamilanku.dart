@@ -42,6 +42,7 @@ class ItemMotherOverview extends StatelessWidget {
     return ItemMenuHomeOverview(
       image: image,
       upperText: RichText(
+        textAlign: TextAlign.start,
         text: TextSpan(
           style: SibTextStyles.size_0_bold_black,
           children: [
@@ -52,6 +53,7 @@ class ItemMotherOverview extends StatelessWidget {
         ),
       ),
       lowerText: RichText(
+        textAlign: TextAlign.start,
         text: TextSpan(
           style: SibTextStyles.size_0_bold_black,
           children: [

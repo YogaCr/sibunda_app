@@ -1,3 +1,7 @@
+import 'package:common/arch/ui/widget/popup_widget.dart';
+import 'package:common/config/_config.dart';
+import 'package:common/util/navigations.dart';
+import 'package:common/util/ui.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
@@ -8,39 +12,33 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Cob',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or press Run > Flutter Hot Reload in a Flutter IDE). Notice that the
-        // counter didn't reset back to zero; the application is not restarted.
-        primarySwatch: Colors.blue,
-      ),
+      theme: Manifest.theme.materialData,
       home: Scaffold(
-        body: Column(
-          children: [
-            ListTile(
-              leading: Radio<String>(
-                value: "A",
-                groupValue: "A",
-                onChanged: (value) => print("Kepilih = A value= $value"),
-              ),
-              title: Text("A ok"),
-            ),
-            ListTile(
-              leading: Radio<String>(
-                value: "B",
-                groupValue: "A",
-                onChanged: (value) => print("Kepilih = B value= $value"),
-              ),
-              title: Text("B aja"),
-            ),
-          ],
+        body: MatPage(),
+      ),
+    );
+  }
+}
+
+class MatPage extends StatelessWidget {
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: () => showDialog(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          content: PopupSuccess(
+            msg: "Data Pemeriksaan Bunda berhasil disimpan",
+            actionMsg: "Lihat hasil pemeriksaan",
+            onActionClick: () {
+              showSnackBar(context, "Dipencet");
+              backPage(context);
+            },
+          ),
         ),
       ),
+      child: Text("Click me"),
     );
   }
 }

@@ -40,7 +40,7 @@ class TxtField extends SibFormField {
     bool? isLiveDataOwner,
     //TextEditingController? textController,
     MutableLiveData<String>? responseLiveData
-  }): this.isLiveDataOwner = isLiveDataOwner ?? responseLiveData != null
+  }): this.isLiveDataOwner = isLiveDataOwner ?? responseLiveData == null
   //  this.textController = textController ?? TextEditingController()
   {
     _response = responseLiveData ?? ChangeNotifLiveData(

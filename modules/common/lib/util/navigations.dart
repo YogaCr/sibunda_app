@@ -22,7 +22,15 @@ Future<Object?> goToPage(
   );
 }
 
-void backPage(BuildContext context) => Navigator.pop(context);
+void backPage(BuildContext context, { int backStep = 1, }) {
+  if(backStep <= 1) {
+    Navigator.pop(context);
+  } else {
+    for(int i = 0; i < backStep; i++) {
+      Navigator.pop(context);
+    }
+  }
+}
 
 bool isInitialPage(BuildContext context) => !Navigator.canPop(context);
 

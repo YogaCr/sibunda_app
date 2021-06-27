@@ -1,5 +1,8 @@
 
+import 'package:common/value/const_values.dart';
 import 'package:core/domain/model/range.dart';
+import 'package:json_annotation/json_annotation.dart';
+
 
 class ImmunizationData {
   final String name;
@@ -64,5 +67,22 @@ class ImmunizationOverview {
   ImmunizationOverview({
     required this.imgLink,
     required this.text,
+  });
+}
+
+
+class ImmunizationConfirmData {
+  final ImmunizationData immunization;
+  final String responsibleName;
+  final String date;
+  final String place;
+  final int noBatch;
+
+  ImmunizationConfirmData({
+    required this.immunization,
+    required this.responsibleName,
+    required this.date,
+    required this.place,
+    required this.noBatch,
   });
 }

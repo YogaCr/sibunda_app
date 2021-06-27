@@ -68,4 +68,9 @@ class Const {
   static const KEY_DRUG_ALLERGY = "alergi_obat";
   static const KEY_DISEASE_HISTORY = "riwayat_penyakit";
   static const KEY_SPECIAL_NOTE = "catatan_khusus";
+
+  static const KEY_IMMUNIZATION_DATE = "tanggal_imunisasi";
+  static const KEY_IMMUNIZATION_PLACE = "tempat_imunisasi";
+  static const KEY_RESPONSIBLE_NAME = "nama_penanggungjawab";
+  static const KEY_NO_BATCH = "no_batch";
 }

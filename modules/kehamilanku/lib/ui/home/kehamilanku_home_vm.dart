@@ -34,10 +34,10 @@ class KehamilankuHomeVm extends AsyncVm {
   @override
   List<LiveData> get liveDatas => [_ageOverview, _trimesterList, _foodRecomList,];
 
-  void getAgeOverview([bool forceLoad = false]) {
+  void getAgeOverview(String motherNik, [bool forceLoad = false]) {
     if(!forceLoad && _ageOverview.value != null) return;
     startJob(getAgeOverviewKey, (isActive) async {
-      _getPregnancyAgeOverview().then((value){
+      _getPregnancyAgeOverview(motherNik).then((value){
         if(value is Success<MotherPregnancyAgeOverview>) {
           final data = value.data;
           _ageOverview.value = data;
