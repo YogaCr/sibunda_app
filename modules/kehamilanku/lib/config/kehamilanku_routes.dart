@@ -28,6 +28,7 @@ class KehamilankuRoutes extends ModuleRoute {
   Set<SibRoute> get routes => {
     kehamilankuHomePage,
     pregnancyCheckPage._route,
+    immunizationPage,
   };
 
 

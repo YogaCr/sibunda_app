@@ -1,5 +1,3 @@
-
-
 import 'package:common/arch/domain/model/img_data.dart';
 import 'package:common/arch/ui/widget/img_widget.dart';
 import 'package:core/util/_consoles.dart';
@@ -17,16 +15,16 @@ class SibImages {
   }){
     final dir = getDir(fileName);
     if(package != null) {
-      prind("SibImges.get() package != null");
       if(fileName.endsWith(".svg"))
         return SvgPicture.asset(dir, width: width, height: height, fit: fit, package: package,);
       return Image.asset(dir, width: width, height: height, fit: fit, package: package,
-        errorBuilder: (ctx, error, stackTrace,) =>
-            get(fileName, width: width, height: height, fit: fit,),
+        errorBuilder: (ctx, error, stackTrace,) {
+          prind("SibImages.get() image with file name '$fileName' doesn't exist in package '$package'. Trying to look in default package.");
+          return get(fileName, width: width, height: height, fit: fit,);
+        }
         //The image may be in caller's own package, so call this method again with null package.
       );
     } else {
-      prind("SibImges.get() package == null");
       if(fileName.endsWith(".svg"))
         return SvgPicture.asset(dir, width: width, height: height, fit: fit,);
       return Image.asset(dir, width: width, height: height, fit: fit,

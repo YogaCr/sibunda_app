@@ -52,6 +52,7 @@ class ItemMenuHomeOverview extends StatelessWidget {
         child: Container(
           height: parentHeight,
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: txtChildrenList,
           ),

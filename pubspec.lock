@@ -78,6 +78,13 @@ packages:
       relative: true
     source: path
     version: "1.0.0+1"
+  covid19:
+    dependency: "direct main"
+    description:
+      path: "modules/covid19"
+      relative: true
+    source: path
+    version: "1.0.0+1"
   cupertino_icons:
     dependency: "direct main"
     description:

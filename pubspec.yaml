@@ -50,6 +50,8 @@ dependencies:
     path: modules/auth
   bayiku:
     path: modules/bayiku
+  covid19:
+    path: modules/covid19
   education:
     path: modules/education
   home:

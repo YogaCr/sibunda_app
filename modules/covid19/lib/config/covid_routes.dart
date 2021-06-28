@@ -6,7 +6,7 @@ import 'package:covid19/ui/home/covid_home_page.dart';
 
 class CovidRoutes extends ModuleRoute {
   CovidRoutes._() : super(GlobalRoutes.manager);
-
+  static final obj = CovidRoutes._();
 
   @override
   SibRoute get entryPoint => covidHomePage;

@@ -27,6 +27,7 @@ class BabyRoutes extends ModuleRoute {
   Set<SibRoute> get routes => {
     babyHomePage,
     babyCheckPage._route,
+    babyImmunizationPage,
   };
 
   static final babyHomePage = SibRoute("BabyHomePage", BabyHomePage, (ctx) => MainFrame(

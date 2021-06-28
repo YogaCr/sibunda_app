@@ -1,5 +1,6 @@
 import 'package:bayiku/config/baby_routes.dart';
 import 'package:common/config/_config.dart';
+import 'package:covid19/config/covid_routes.dart';
 import 'package:home/config/home_routes.dart';
 import 'package:kehamilanku/config/kehamilanku_routes.dart';
 
@@ -11,6 +12,7 @@ class AppRoutes extends ModuleRoute {
 
   void _init() {
     HomeRoutes.obj;
+    CovidRoutes.obj;
     KehamilankuRoutes.obj;
     BabyRoutes.obj;
   }
