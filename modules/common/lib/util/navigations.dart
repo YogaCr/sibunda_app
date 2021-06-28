@@ -1,9 +1,10 @@
 
+import 'package:core/util/_consoles.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-Future<Object?> goToPage(
+Future<T?> goToPage<T>(
   BuildContext context,
   Widget Function(BuildContext) builder, {
   String? name,
@@ -12,22 +13,56 @@ Future<Object?> goToPage(
 }) {
   RouteSettings settings = RouteSettings(name: name, arguments: args);
   return !clearPrevs
-      ? Navigator.push(
+      ? Navigator.push<T>(
       context,
       MaterialPageRoute(builder: builder, settings: settings)
-  ) : Navigator.pushAndRemoveUntil(
+  ) : Navigator.pushAndRemoveUntil<T>(
       context,
       MaterialPageRoute(builder: builder, settings: settings),
       ModalRoute.withName("/Home")
   );
 }
 
-void backPage(BuildContext context, { int backStep = 1, }) {
+Future<T?> showPopup<T>(
+  BuildContext context,
+  Widget Function(BuildContext) builder, {
+  String? name,
+  Map<String, dynamic>? args,
+  //bool clearPrevs = false,
+}) {
+  RouteSettings settings = RouteSettings(name: name, arguments: args);
+  return showDialog<T>(context: context, builder: builder, routeSettings: settings);
+}
+
+void backPage<T>(BuildContext context, {
+  T? result,
+  int backStep = 1,
+  bool dontPopInitialPage = true,
+}) {
   if(backStep <= 1) {
-    Navigator.pop(context);
+    if(!dontPopInitialPage || !isInitialPage(context)) {
+      Navigator.pop<T>(context, result);
+    }
   } else {
-    for(int i = 0; i < backStep; i++) {
-      Navigator.pop(context);
+    if(result != null) {
+      prine("backPage() with `result` != null and `backStep` > 1. `result` will only be received by the last destination page in stack.");
+    }
+    final lastPop = backStep -1;
+    if(dontPopInitialPage) {
+      for(int i = 0; i < lastPop; i++) {
+        if(isInitialPage(context)) {
+          prine("backPage() has reached initial page at back step '$i' (max = $backStep), thus stop the pop");
+          break;
+        }
+        Navigator.pop<T>(context);
+      }
+    } else {
+      for(int i = 0; i < lastPop; i++) {
+        Navigator.pop<T>(context);
+      }
+    }
+    if(!dontPopInitialPage || !isInitialPage(context)) {
+      Navigator.pop<T>(context, result);
     }
   }
 }

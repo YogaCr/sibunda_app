@@ -82,7 +82,7 @@ class BabyHomePage extends StatelessWidget {
                 margin: EdgeInsets.only(top: 5),
                 child: ItemHomeImmunization.fromData(
                   babyHomeImmunization_ui,
-                  onBtnClick: () => showSnackBar(context, "Ke halaman imunisasi"),
+                  onBtnClick: () => BabyRoutes.babyImmunizationPage.goToPage(context),
                 ),
               ),
             ]),

@@ -1,13 +1,12 @@
 import 'package:common/arch/domain/model/form_data.dart';
 import 'package:common/arch/domain/model/immunization.dart';
+import 'package:common/arch/domain/usecase/mother_usecase.dart';
 import 'package:common/arch/ui/model/form_data.dart';
 import 'package:common/arch/ui/vm/form_vm_group.dart';
 import 'package:common/value/const_values.dart';
 import 'package:core/domain/model/result.dart';
-import 'package:core/ui/base/expirable.dart';
 import 'package:core/ui/base/live_data.dart';
 import 'package:kehamilanku/core/domain/usecase/mother_immunization_use_case.dart';
-import 'package:kehamilanku/core/domain/usecase/mother_overall_usecase.dart';
 
 class PregnancyImmunizationPopupVm extends FormVmGroup {
   //static const confirmImmunizationKey = "confirmImmunization";
@@ -43,7 +42,7 @@ class PregnancyImmunizationPopupVm extends FormVmGroup {
         responsibleName: respMap[Const.KEY_RESPONSIBLE_NAME],
         date: respMap[Const.KEY_IMMUNIZATION_DATE],
         place: respMap[Const.KEY_IMMUNIZATION_PLACE],
-        noBatch: respMap[Const.KEY_NO_BATCH],
+        noBatch: respMap[Const.KEY_NO_BATCH] ?? -1,
       );
 
       final res = await _confirmMotherImmunization(nik, data);

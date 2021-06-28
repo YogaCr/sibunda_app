@@ -1,5 +1,6 @@
 import 'package:common/arch/domain/repo/_repos.dart';
 import 'package:common/arch/domain/repo/bayiku_repo.dart';
+import 'package:common/arch/domain/repo/covid_repo.dart';
 import 'package:common/arch/domain/repo/form_field_repo.dart';
 import 'package:common/arch/domain/repo/form_warning_status_repo.dart';
 import 'package:common/arch/domain/repo/immunization_repo.dart';
@@ -29,4 +30,5 @@ class RepoDi {
 
   static MyBabyRepo get myBabyRepo => MyBabyRepoDummy.obj;
 
+  static CovidRepo get covidRepo => CovidRepoDummy.obj;
 }

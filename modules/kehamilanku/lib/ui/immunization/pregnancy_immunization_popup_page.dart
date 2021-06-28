@@ -6,9 +6,9 @@ import 'package:common/util/navigations.dart';
 import 'package:common/util/ui.dart';
 import 'package:core/ui/base/view_model.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:kehamilanku/config/kehamilanku_routes.dart';
 import 'package:kehamilanku/ui/immunization/pregnancy_immunization_popup_vm.dart';
 
-//TODO: PregnancyImmunizationPopupPage: taruh ke route.
 class PregnancyImmunizationPopupPage extends StatelessWidget {
 
   @override
@@ -23,9 +23,14 @@ class PregnancyImmunizationPopupPage extends StatelessWidget {
           showSnackBar(ctx, "Terdapat beberapa isian yang belum valid");
         }
       },
-      onSubmit: (ctx, success) => success
-          ? backPage(ctx)
-          : showSnackBar(ctx, "Terjadi kesalahan saat mengonfirmasi"),
+      onSubmit: (ctx, success) {
+        if(success) {
+          KehamilankuRoutes.immunizationPopup.backPage(ctx, "Now");
+          //showSnackBar(ctx, "Berhasil mengonfirmasi");
+        } else {
+          showSnackBar(ctx, "Terjadi kesalahan saat mengonfirmasi");
+        }
+      },
       submitBtnBuilder: (ctx, canProceed) => TxtBtn(
         "Konfirmasi Imunisasi",
         color: canProceed == true ? Manifest.theme.colorPrimary : grey,

@@ -1,13 +1,13 @@
 import 'package:common/arch/di/repo_di.dart';
 import 'package:kehamilanku/core/domain/usecase/home_usecase.dart';
 import 'package:kehamilanku/core/domain/usecase/mother_immunization_use_case.dart';
-import 'package:kehamilanku/core/domain/usecase/mother_overall_usecase.dart';
+//import 'package:kehamilanku/core/domain/usecase/mother_overall_usecase.dart';
 import 'package:kehamilanku/core/domain/usecase/pregnancy_check_use_case.dart';
 
 class KehamilankuUseCaseDi {
   KehamilankuUseCaseDi._();
 
-  static GetMotherNik get getMotherNik => GetMotherNikImpl(RepoDi.motherRepo);
+  //static GetMotherNik get getMotherNik => GetMotherNikImpl(RepoDi.motherRepo);
 
   static GetPregnancyAgeOverview get getPregnancyAgeOverview => GetPregnancyAgeOverviewImpl(RepoDi.pregnancyRepo);
   static GetTrimesterList get getTrimesterList => GetTrimesterListImpl(RepoDi.pregnancyRepo);

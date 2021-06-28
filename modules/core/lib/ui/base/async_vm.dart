@@ -1,4 +1,5 @@
 import 'package:async/async.dart';
+import 'package:core/domain/model/result.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:tuple/tuple.dart';
@@ -39,6 +40,12 @@ abstract class AsyncVm extends ViewModel {
   /// If null, the old [Widget] will stay.
   Map<Expirable, void Function(String key)> _preAsyncTaskMap = {};
 
+  /// For its values, the lambda returns [Widget].
+  /// If not null, it means the widget will be rebuilt using the returned [Widget].
+  /// If null, the old [Widget] will stay.
+  Map<Expirable, void Function(String key, Fail failure)> _onFailTaskMap = {};
+
+
   @nonVirtual
   void addOnPreAsyncTask(Expirable observer, void Function(String key)? block) {
     if(block != null) {
@@ -49,12 +56,32 @@ abstract class AsyncVm extends ViewModel {
   }
 
   @nonVirtual
-  void doPreAsyncTask(String key){
+  void doPreAsyncTask(String key) {
     for(final observer in _preAsyncTaskMap.keys) {
       if(observer.isActive) {
         _preAsyncTaskMap[observer]!(key);
       } else {
         _preAsyncTaskMap.remove(observer);
+      }
+    }
+  }
+
+  @nonVirtual
+  void addOnFailTask(Expirable observer, void Function(String key, Fail failure)? block) {
+    if(block != null) {
+      _onFailTaskMap[observer] = block;
+    } else {
+      _onFailTaskMap.remove(observer);
+    }
+  }
+
+  @nonVirtual
+  void doOnFailTask(String key, Fail failure) {
+    for(final observer in _onFailTaskMap.keys) {
+      if(observer.isActive) {
+        _onFailTaskMap[observer]!(key, failure);
+      } else {
+        _onFailTaskMap.remove(observer);
       }
     }
   }
@@ -72,11 +99,17 @@ abstract class AsyncVm extends ViewModel {
   /// Use this method to [cancelJob] the previous async process with the same [key].
   /// then [doPreAsyncTask] before finally do the [block] process async.
   @nonVirtual
-  void startJob(String key, Future<void> Function(Val<bool> isActive) block) {
+  void startJob(String key, Future<Fail?> Function(Val<bool> isActive) block) {
     cancelJob(key);
     doPreAsyncTask(key);
     final isActive = Var(true);
-    final pair = Tuple2(CancelableOperation.fromFuture(block(isActive)), isActive);
+    final pair = Tuple2(CancelableOperation.fromFuture(
+        block(isActive).then((fail) {
+          if(fail != null) {
+            doOnFailTask(key, fail);
+          }
+        })
+    ), isActive);
     _jobMap[key] = pair;
   }
 

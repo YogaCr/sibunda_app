@@ -9,14 +9,18 @@ Widget buildImgNetwork(
       BoxFit? fit,
 }) => Image.network(
   src,
-  loadingBuilder: loadingBuilder ?? buildDefaultImgNetworkLoading(),
-  errorBuilder: errorBuilder ?? buildDefaultImgNetworkError(),
+  loadingBuilder: loadingBuilder ?? defImgLoadingBuilder(),
+  errorBuilder: errorBuilder ?? defImgErrorBuilder(),
   fit: fit,
 );
 
-Widget Function(BuildContext context,Widget child, ImageChunkEvent? loadingProgress,) buildDefaultImgNetworkLoading() =>
+
+Widget Function(BuildContext context,Widget child, ImageChunkEvent? loadingProgress,) defImgLoadingBuilder() =>
         (context, child, loadingProgress) => defaultLoading();
 
-Widget Function(BuildContext context, Object error, StackTrace? stackTrace,) buildDefaultImgNetworkError() =>
+Widget Function(BuildContext context, Object error, StackTrace? stackTrace,) defImgBuilder() =>
+        (context, child, loadingProgress) => defaultImg();
+
+Widget Function(BuildContext context, Object error, StackTrace? stackTrace,) defImgErrorBuilder() =>
         (context, error, stackTrace,) => defaultError(text: "Img Load Error");
 

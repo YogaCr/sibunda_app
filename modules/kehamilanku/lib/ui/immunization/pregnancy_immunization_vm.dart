@@ -4,6 +4,7 @@ import 'package:core/domain/model/result.dart';
 import 'package:core/ui/base/async_vm.dart';
 import 'package:core/ui/base/expirable.dart';
 import 'package:core/ui/base/live_data.dart';
+import 'package:core/util/_consoles.dart';
 import 'package:kehamilanku/core/domain/usecase/mother_immunization_use_case.dart';
 import 'package:tuple/tuple.dart';
 
@@ -24,11 +25,11 @@ class PregnancyImmunizationVm extends AsyncVm {
 
   final MutableLiveData<List<UiImmunizationListGroup>> _immunizationGroups = MutableLiveData();
   final MutableLiveData<ImmunizationOverview> _overview = MutableLiveData();
-  final MutableLiveData<Tuple2<Expirable, bool>> _onConfirm = MutableLiveData();
+  //final MutableLiveData<Tuple2<Expirable, bool>> _onConfirm = MutableLiveData();
 
   LiveData<List<UiImmunizationListGroup>> get immunizationGroups => _immunizationGroups;
   LiveData<ImmunizationOverview> get overview => _overview;
-  LiveData<Tuple2<Expirable, bool>> get onConfirm => _onConfirm;
+  //LiveData<Tuple2<Expirable, bool>> get onConfirm => _onConfirm;
 
   @override
   List<LiveData> get liveDatas => [_immunizationGroups, _overview];
@@ -59,5 +60,24 @@ class PregnancyImmunizationVm extends AsyncVm {
         }
       });
     });
+  }
+
+  void onConfirmSuccess({
+    required int group,
+    required int child,
+    required String date,
+  }) {
+    final oldUiData = _immunizationGroups.value![group].immunizationList[child];
+    final oldImmData = oldUiData.core;
+
+    if(oldImmData.date != null) {
+      prine("ImmunizationData at group '$group', child '$child' has already been confirmed.");
+      return;
+    }
+
+    _immunizationGroups.value![group].immunizationList[child] = oldUiData.copy(
+      core: oldImmData.copy(date: date),
+    );
+    _immunizationGroups.notifyObservers();
   }
 }

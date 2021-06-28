@@ -52,6 +52,8 @@ dependencies:
     path: modules/bayiku
   education:
     path: modules/education
+  home:
+    path: modules/home
   kehamilanku:
     path: modules/kehamilanku
   keluargaku:

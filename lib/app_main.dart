@@ -1,20 +1,12 @@
 import 'package:common/res/string/_string.dart';
 import 'package:common/res/theme/_theme.dart';
-import 'package:common/util/functions/ui_ext.dart';
 import 'package:flutter/material.dart';
 
 import 'package:common/config/manifest.dart';
-import 'package:common/ui/page/frames.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sibunda_app/bloc/kehamilanku_bloc.dart';
-import 'package:sibunda_app/cob.dart';
-import 'package:sibunda_app/config/routes.dart';
-import 'package:sibunda_app/di/bloc_di.dart';
-import 'package:sibunda_app/ui/page/form_get_started/do_mother_have_pregnancy_page.dart';
-import 'package:sibunda_app/ui/page/form_get_started/mother_hpl_page.dart';
-import 'package:sibunda_app/ui/page/home/home_page.dart';
-import 'package:sibunda_app/ui/page/mother/kehamilanku_home_page.dart';
-import 'package:sibunda_app/ui/page/splash_page.dart';
+import 'package:home/config/home_routes.dart';
+
+import 'config/app_routes.dart';
 
 void main() => runApp(MyApp());
 
@@ -25,21 +17,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: Strings.app_name,
       theme: Manifest.theme.materialData,
-/*
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or press Run > Flutter Hot Reload in a Flutter IDE). Notice that the
-        // counter didn't reset back to zero; the application is not restarted.
-        primarySwatch: pink_swatch,
-      ),
-
-// */
-      home: CobPage(), //SibRoutes.motherDataPage.build(context),
+      home: AppRoutes.obj.entryPoint.build(context), //SibRoutes.motherDataPage.build(context),
 /*
       home: TopBarProfileFrame( //NoAppB
 /// *

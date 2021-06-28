@@ -10,6 +10,7 @@ class GlobalRoutes {
 
   static final manager = RouteManager();
 
+  static const app = "app";
   static const home = "home";
   static const kehamilanku = "kehamilanku";
   static const bayiku = "bayiku";
@@ -23,13 +24,38 @@ class SibRoute {
   final Widget Function(BuildContext) builder;
   const SibRoute(this.name, this.klass, this.builder);
 
-  Future<Object?>? goToPage(BuildContext context, {Map<String, dynamic>? args, bool clearPrevs = false, bool post = true}) {
+
+  Future<T?> goToPage<T>(BuildContext context, {Map<String, dynamic>? args, bool clearPrevs = false, bool post = true})  {
     if(post) {
-      WidgetsBinding.instance?.addPostFrameCallback((timeStamp) =>
-          NavExt.goToPage(context, builder, name: name, clearPrevs: clearPrevs, args: args));
-      //return null
+      return Future(() {
+        final future = Future(() => NavExt.goToPage<T>(context, builder, name: name, clearPrevs: clearPrevs, args: args));
+        WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async => await future);
+        return future;
+      });
     } else {
-      return NavExt.goToPage(context, builder, name: name, clearPrevs: clearPrevs, args: args);
+      return NavExt.goToPage<T>(context, builder, name: name, clearPrevs: clearPrevs, args: args);
+    }
+  }
+
+  Future<T?> showAsDialog<T>(BuildContext context, {Map<String, dynamic>? args, bool post = true}) {
+    if(post) {
+      return Future(() {
+        final future = Future(() => NavExt.showPopup<T>(context, (ctx) => AlertDialog(
+          content: builder(ctx),
+        ),
+          name: name,
+          args: args,
+        ));
+        WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async => await future);
+        return future;
+      });
+    } else {
+      return NavExt.showPopup<T>(context, (ctx) => AlertDialog(
+        content: builder(ctx),
+      ),
+        name: name,
+        args: args,
+      );
     }
   }
 

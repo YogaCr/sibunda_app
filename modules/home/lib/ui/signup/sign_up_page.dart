@@ -1,5 +1,5 @@
 
-import 'package:common/arch/ui/widget/form_txt_vm_observer.dart';
+import 'package:common/arch/ui/widget/form_vm_observer.dart';
 import 'package:common/res/theme/_theme.dart';
 import 'package:common/res/string/_string.dart';
 import 'package:common/util/ui.dart';
@@ -24,7 +24,7 @@ class SignUpPage extends StatelessWidget {
         ).withMargin(EdgeInsets.only(top: 60)),
         ImgPick(imgUrl: "ic_profile.png", package: "common",)
             .withMargin(EdgeInsets.only(top: 10, bottom: 20,)),
-        FormVmObserver<SignUpFormVm>(
+        FormTxtVmObserver<SignUpFormVm>(
           onSubmit: (canProceed) => canProceed
               ? HomeRoutes.motherFormPage.goToPage(context)
               : showSnackBar(context, "Gagal", backgroundColor: Colors.red),

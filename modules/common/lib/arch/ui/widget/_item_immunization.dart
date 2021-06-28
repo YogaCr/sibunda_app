@@ -1,4 +1,5 @@
 
+import 'package:common/arch/domain/model/immunization.dart';
 import 'package:common/arch/ui/model/immunization.dart';
 import 'package:common/config/_config.dart';
 import 'package:common/res/theme/_theme.dart';
@@ -110,17 +111,18 @@ class ItemImmunizationFill extends StatelessWidget {
       }
       if(descRight != null) {
         belowChildren.add(
-          Align(
-            alignment: Alignment.topRight,
-            child: Text(
-              descRight!,
-              style: SibTextStyles.size_min_2.copyWith(color: txtColor),
-            ),
+          Text(
+            descRight!,
+            style: SibTextStyles.size_min_2.copyWith(color: txtColor),
           ),
         );
       }
-      final belowWidget = Row(
-        children: belowChildren,
+      final belowWidget = Container(
+        margin: EdgeInsets.only(top: 10),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: belowChildren,
+        ),
       );
       columnChildren.add(belowWidget);
     }
@@ -150,7 +152,7 @@ class ImmunizationOverviewView extends StatelessWidget {
     required this.text,
   });
 
-  ImmunizationOverviewView.fromData(UiImmunizationOverview data):
+  ImmunizationOverviewView.fromData(ImmunizationOverview data):
      text = data.text,
      image = Container(color: Manifest.theme.colorPrimary,)
   ;

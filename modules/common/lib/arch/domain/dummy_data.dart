@@ -1,5 +1,7 @@
 
 import 'package:common/arch/domain/model/baby_data.dart';
+import 'package:common/arch/domain/model/img_data.dart';
+import 'package:common/arch/ui/model/home_graph_menu.dart';
 import 'package:common/config/routes.dart';
 import 'package:common/res/string/_string.dart';
 import 'package:core/domain/model/range.dart';
@@ -7,6 +9,7 @@ import 'package:flutter/material.dart';
 
 import 'model/auth.dart';
 import 'model/child.dart';
+import 'model/covid_data.dart';
 import 'model/father.dart';
 import 'model/form_warning_status.dart';
 import 'model/immunization.dart';
@@ -15,6 +18,8 @@ import 'model/home_data.dart';
 import 'model/mother.dart';
 import 'model/notif_data.dart';
 import 'model/profile.dart';
+
+final dummyImg = ImgData(link: "", isLocal: true);
 
 final dummyAccessToken = "aagajki1831huhf1i38y13";
 final dummySignUpData1 = SignUpData(name: "ayu", email: "a@a.a", password: "ayu123");
@@ -235,7 +240,7 @@ final motherImmunizationDetailList = motherImmunizationList.map((e) => Immunizat
 final babyImmunizationDetailList = babyImmunizationList.map((e) => ImmunizationDetail(
   immunization: e,
   monthRange: IntRange(0, 4),
-  batchNo: "001",
+  batchNo: e.date != null ? "001" : null,
 )).toList(growable: false);
 
 
@@ -269,5 +274,37 @@ final babyImmunizationGroupList = <ImmunizationDetailGroup>[
   ImmunizationDetailGroup(
     immunizationList: babyImmunizationDetailList.sublist(4, 6),
     header: "Bulan ke 5 - 20++",
+  ),
+];
+
+
+final covidHomeOverview = CovidHomeOverview(
+  title: "Bunda, jangan lupa tetap jaga kesehatan Bunda dan si Kecil ya",
+  img: dummyImg,
+);
+
+final covidHomeMenu = <HomeGraphMenu>[
+  HomeGraphMenu(
+    name: "Cek Covid-19 untuk Bayi",
+    img: dummyImg,
+  ),
+  HomeGraphMenu(
+    name: "Cek Covid-19 untuk Bunda",
+    img: dummyImg,
+  ),
+];
+
+final covidHomeCheckHistory = <CovidCheckHistory>[
+  CovidCheckHistory(
+    date: "12 Januari 2020",
+    person: "Bayi",
+    img: dummyImg,
+    category: CovidCategory.normal,
+  ),
+  CovidCheckHistory(
+    date: "12 Januari 2020",
+    person: "Bunda",
+    img: dummyImg,
+    category: CovidCategory.pdp,
   ),
 ];

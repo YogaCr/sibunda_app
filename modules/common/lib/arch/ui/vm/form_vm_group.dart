@@ -30,10 +30,7 @@ mixin FormVmGroupMixin implements AsyncVm {
   String defaultInvalidMsg = "not valid";
 
   bool isResponseInit(int groupPosition, String fieldKey) => _responseGroupList[groupPosition][fieldKey]!.isValid.value != null;
-  FormGroupResponse getResponse({
-    Set<String>? mappedKey, //TODO: Di sini, key dari field dianggap unik semua, bahkan untuk group lain.
-    dynamic Function(int groupPosition, String key, dynamic response)? mapper
-  }) {
+  FormGroupResponse getResponse() {
     final respGroupList = <FormResponse>[];
     for(int i = 0; i < _responseGroupList.length; i++) {
       final respGroup = _responseGroupList[i];
@@ -41,11 +38,11 @@ mixin FormVmGroupMixin implements AsyncVm {
       final respMap = <String, dynamic>{};
       respGroupList.add(FormResponse(header: header, responses: respMap));
 
-      if(mapper != null && mappedKey?.isNotEmpty == true) {
+      if(mappedKey?.isNotEmpty == true) {
         for(final entry in respGroup.entries) {
           if(mappedKey!.contains(entry.key)) {
-            respMap[entry.key] = mapper(i, entry.key, entry.value.response.value);
-            mappedKey.remove(entry.key);
+            respMap[entry.key] = mapResponse(i, entry.key, entry.value.response.value);
+            //mappedKey.remove(entry.key);
           } else {
             respMap[entry.key] = entry.value.response.value;
           }
@@ -59,10 +56,10 @@ mixin FormVmGroupMixin implements AsyncVm {
     return FormGroupResponse(respGroupList);
   }
 
-  Map<String, dynamic> getResponseMap({
-    Set<String>? mappedKey, //TODO: Di sini, key dari field dianggap unik semua, bahkan untuk group lain.
-    dynamic Function(int groupPosition, String key, dynamic response)? mapper
-  }) => getResponse(mappedKey: mappedKey, mapper: mapper).toLinear();
+  Map<String, dynamic> getResponseMap() => getResponse().toLinear();
+
+  Set<String>? get mappedKey => null; //TODO: Di sini, key dari field dianggap unik semua, bahkan untuk group lain.
+  dynamic mapResponse(int groupPosition, String key, dynamic response) => response;
 
   void registerField({
     required int groupPosition,

@@ -8,6 +8,7 @@ import 'package:core/ui/base/async_vm.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:tuple/tuple.dart';
+import 'package:collection/collection.dart';
 
 part 'form_vm_late.dart';
 /*
@@ -317,6 +318,13 @@ abstract class FormVm
 
 mixin FormTxtVmMixin implements FormVmMixin {
   List<TextEditingController> get txtControllerList;
+  TextEditingController getTxtController(String key) {
+    final index = keyLabelList.indexWhere((element) => element.item1 == key);
+    if(index < 0) {
+      throw "No such key '$key' in this `$runtimeType`";
+    }
+    return txtControllerList[index];
+  }
 }
 
 abstract class FormTxtVm extends FormVm with FormTxtVmMixin {

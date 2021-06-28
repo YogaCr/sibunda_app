@@ -1,3 +1,4 @@
+import 'package:common/arch/di/usecase_di.dart';
 import 'package:common/arch/domain/model/immunization.dart';
 import 'package:kehamilanku/core/di/kehamilanku_usecase_di.dart';
 import 'package:kehamilanku/ui/home/kehamilanku_home_vm.dart';
@@ -26,7 +27,7 @@ class KehamilankuVmDi {
   );
   static PregnancyImmunizationPopupVm immunizationPopupVm(ImmunizationData immunization) => PregnancyImmunizationPopupVm(
     immunization: immunization,
-    getMotherNik: KehamilankuUseCaseDi.getMotherNik,
+    getMotherNik: UseCaseDi.getMotherNik,
     getPregnancyImmunizationConfirmForm: KehamilankuUseCaseDi.getPregnancyImmunizationConfirmForm,
     confirmMotherImmunization: KehamilankuUseCaseDi.confirmMotherImmunization,
   );

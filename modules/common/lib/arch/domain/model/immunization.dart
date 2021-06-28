@@ -12,6 +12,14 @@ class ImmunizationData {
     required this.name,
     this.date,
   });
+
+  ImmunizationData copy({
+    String? name,
+    String? date, //null if the person hasn't taken it.
+  }) => ImmunizationData(
+    name: name ?? this.name,
+    date: date ?? this.date,
+  );
 }
 
 

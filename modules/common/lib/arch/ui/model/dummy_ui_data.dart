@@ -5,13 +5,13 @@ import 'package:common/arch/ui/model/immunization.dart';
 import 'home_graph_menu.dart';
 
 final motherHomeGraph_ui = <HomeGraphMenu>[
-  HomeGraphMenu(name: 'Grafik Evaluasi Kehamilan', imgLink: '',),
-  HomeGraphMenu(name: 'Grafik Berat Badan', imgLink: '',),
+  HomeGraphMenu(name: 'Grafik Evaluasi Kehamilan', img: dummyImg,),
+  HomeGraphMenu(name: 'Grafik Berat Badan', img: dummyImg,),
 ];
 
 final babyHomeGraph_ui = <HomeGraphMenu>[
-  HomeGraphMenu(name: 'Pertumbuhan Bayi', imgLink: '',),
-  HomeGraphMenu(name: 'Perkembangan Bayi', imgLink: '',),
+  HomeGraphMenu(name: 'Pertumbuhan Bayi', img: dummyImg,),
+  HomeGraphMenu(name: 'Perkembangan Bayi', img: dummyImg,),
 ];
 
 
@@ -33,9 +33,10 @@ final babyFormMenuList_ui = List<BabyFormMenuData>.generate(5, (i) => BabyFormMe
   monthEnd: (i+1)*12,
 ));
 
-
+/*
 final motherImmunizationOverview_ui = UiImmunizationOverview(text: "Yuk cek apakah Bunda sudah mendapatkan semua imunisasi ya Bun", imgLink: "");
 final babyImmunizationOverview_ui = UiImmunizationOverview(text: "Yuk cek apakah Bayi sudah mendapatkan semua imunisasi ya Bun", imgLink: "");
+ */
 
 final motherImmunizationDetailList_ui = List<UiImmunizationListItem>.generate(
     motherImmunizationDetailList.length,

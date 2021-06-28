@@ -87,6 +87,8 @@ class Strings {
   static const responsible_name = "Nama Penanggungjawab";
   static const no_batch = "No Batch";
 
+  static const check_covid_menu = "Menu Cek Covid-19 Bunda dan Bayi";
+
   static const year =  "Tahun";
   static const month =  "Bulan";
   static const day =  "Hari";

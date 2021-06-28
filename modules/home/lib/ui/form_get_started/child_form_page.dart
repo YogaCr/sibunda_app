@@ -1,6 +1,6 @@
 
 import 'package:common/arch/ui/widget/_basic_widget.dart';
-import 'package:common/arch/ui/widget/form_txt_vm_observer.dart';
+import 'package:common/arch/ui/widget/form_vm_observer.dart';
 import 'package:common/res/string/_string.dart';
 import 'package:common/res/theme/_theme.dart';
 import 'package:common/util/ui.dart';
@@ -23,7 +23,7 @@ class ChildFormPage extends StatelessWidget {
           Strings.skip,
           onTap: () => showSnackBar(context, "dipencet"),
         ),
-        FormVmObserver<ChildFormVm>(
+        FormTxtVmObserver<ChildFormVm>(
           onSubmit: (success) => success
               ? showSnackBar(context, "Berhasil", backgroundColor: Colors.green)
               : showSnackBar(context, "Gagal",),

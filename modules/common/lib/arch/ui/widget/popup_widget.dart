@@ -21,39 +21,41 @@ class PopupSuccess extends StatelessWidget {
     final height = screenSize.height * 40 / 100;
     final iconSize = screenSize.width * 30 / 100;
 
-    return Container(
-      width: width,
-      height: height,
-      //constraints: BoxConstraints(minHeight: 400, minWidth: 200,),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.all(Radius.circular(10)),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Container(
-            margin: EdgeInsets.only(bottom: 20),
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: green_calm,
+    return SingleChildScrollView(
+      child: Container(
+        width: width,
+        height: height,
+        //constraints: BoxConstraints(minHeight: 400, minWidth: 200,),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.all(Radius.circular(10)),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Container(
+              margin: EdgeInsets.only(bottom: 20),
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: green_calm,
+              ),
+              child: Icon(
+                Icons.check,
+                size: iconSize,
+                color: Colors.white,
+              ),
             ),
-            child: Icon(
-              Icons.check,
-              size: iconSize,
-              color: Colors.white,
+            Text(
+              msg,
+              style: SibTextStyles.size_0,
+              textAlign: TextAlign.center,
             ),
-          ),
-          Text(
-            msg,
-            style: SibTextStyles.size_0,
-            textAlign: TextAlign.center,
-          ),
-          TxtBtn(
-            actionMsg,
-            onTap: onActionClick,
-          ),
-        ],
+            TxtBtn(
+              actionMsg,
+              onTap: onActionClick,
+            ),
+          ],
+        ),
       ),
     );
   }

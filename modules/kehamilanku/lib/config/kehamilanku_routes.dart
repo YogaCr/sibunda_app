@@ -1,12 +1,16 @@
+import 'package:common/arch/domain/model/immunization.dart';
 import 'package:common/arch/domain/model/kehamilanku_data.dart';
 import 'package:common/arch/ui/page/_page.dart';
 import 'package:common/config/_config.dart';
 import 'package:common/util/providers.dart';
+import 'package:common/util/navigations.dart' as nav_ext;
 import 'package:common/value/const_values.dart';
+import 'package:core/util/_consoles.dart';
 import 'package:flutter/material.dart';
 import 'package:kehamilanku/di/kehamilanku_vm_di.dart';
 import 'package:kehamilanku/ui/home/kehamilanku_home_page.dart';
 import 'package:kehamilanku/ui/immunization/pregnancy_immunization_page.dart';
+import 'package:kehamilanku/ui/immunization/pregnancy_immunization_popup_page.dart';
 import 'package:kehamilanku/ui/pregnancy_check/kehamilanku_trimester_form_page.dart';
 
 
@@ -38,6 +42,9 @@ class KehamilankuRoutes extends ModuleRoute {
       (ctx) => KehamilankuVmDi.immunizationVm,
     ]),
   ));
+
+  // ================= POPUP ================
+  static final immunizationPopup = _PregnancyImmunizationPopupRoute.obj;
 }
 
 
@@ -53,5 +60,31 @@ class _PregnancyCheckPageRoute {
 
   void go(BuildContext context, MotherTrimester data) {
     _route.goToPage(context, args: {Const.KEY_TRIMESTER : data});
+  }
+}
+
+class _PregnancyImmunizationPopupRoute {
+  _PregnancyImmunizationPopupRoute._();
+  static final obj = _PregnancyImmunizationPopupRoute._();
+/*
+  final SibRoute _route = SibRoute("PregnancyImmunizationPopup", PregnancyImmunizationPopupPage, (ctx) => MainFrame(
+    body: PregnancyImmunizationPopupPage().inVmProvider([
+          (ctx) => KehamilankuVmDi.immunizationVm,
+    ]),
+  ));
+ */
+  /// Returns future String. String is for date confirmation. If null, then
+  /// it means the confirmation is not successful.
+  Future<String?> popup(BuildContext context, ImmunizationData immunization) {
+    //_route.goToPage(context, args: {Const.KEY_TRIMESTER : data});
+    final _route = SibRoute("PregnancyImmunizationPopup", PregnancyImmunizationPopupPage, (ctx) => MainFrame(
+      body: PregnancyImmunizationPopupPage().inVmProvider([
+            (ctx) => KehamilankuVmDi.immunizationPopupVm(immunization),
+      ]),
+    ));
+    return _route.showAsDialog<String>(context);
+  }
+  void backPage(BuildContext context, String? date) {
+    nav_ext.backPage(context, result: date);
   }
 }

@@ -1,10 +1,12 @@
 
+import 'package:common/arch/domain/model/img_data.dart';
+
 class HomeGraphMenu {
   final String name;
-  final String imgLink;
+  final ImgData img;
 
   HomeGraphMenu({
     required this.name,
-    required this.imgLink,
+    required this.img,
   });
 }

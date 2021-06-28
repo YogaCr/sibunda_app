@@ -41,6 +41,16 @@ class UiImmunizationListItemDetail {
     monthExact = detailData.monthExact,
     batchNo = detailData.batchNo
   ;
+
+  UiImmunizationListItemDetail copy({
+    IntRange? monthRange,
+    int? monthExact,
+    String? batchNo,
+  }) => UiImmunizationListItemDetail(
+    monthRange: monthRange ?? this.monthRange,
+    monthExact: monthExact ?? this.monthExact,
+    batchNo: batchNo ?? this.batchNo,
+  );
 }
 
 
@@ -71,6 +81,14 @@ class UiImmunizationListItem {
   ;
 
   UiImmunizationListItem.fromModel(ImmunizationData data): core = data, detail = null;
+
+  UiImmunizationListItem copy({
+    ImmunizationData? core,
+    UiImmunizationListItemDetail? detail,
+  }) => UiImmunizationListItem(
+    core: core ?? this.core,
+    detail: detail ?? this.detail,
+  );
 }
 
 class UiImmunizationListGroup {
@@ -86,7 +104,7 @@ class UiImmunizationListGroup {
     header = data.header
   ;
 }
-
+/*
 class UiImmunizationOverview {
   final String text;
   final String imgLink;
@@ -95,7 +113,14 @@ class UiImmunizationOverview {
     required this.imgLink,
     required this.text,
   });
+
+  factory UiImmunizationOverview.fromModel(ImmunizationOverview data) => UiImmunizationOverview(
+    imgLink: data.imgLink,
+    text: data.text,
+  );
 }
+
+ */
 /*
 class UiImmunizationOnConfirm {
   final

@@ -31,7 +31,7 @@ class HomeStatusRepoDummy with HomeStatusRepo {
 
 
 mixin HomeMenuRepo {
-  Future<Result<List<HomeMenu>>> getHomeMenuList(); //TODO params
+  Future<Result<List<HomeMenu>>> getHomeMenuList();
 }
 ///This should be not dummy.
 class HomeMenuRepoDummy with HomeMenuRepo {

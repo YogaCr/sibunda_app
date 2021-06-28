@@ -17,7 +17,7 @@ mixin ImmunizationRepo {
   Future<Result<List<ImmunizationDetailGroup>>> getBabyImmunizationGroupList(String babyNik);
 
   Future<Result<bool>> confirmMotherImmunization(String motherNik, ImmunizationConfirmData data);
-  Future<Result<bool>> confirmBabyImmunization(String babyNik, ImmunizationDetail data);
+  Future<Result<bool>> confirmBabyImmunization(String babyNik, ImmunizationConfirmData data);
 }
 
 class ImmunizationRepoDummy with ImmunizationRepo {
@@ -49,5 +49,5 @@ class ImmunizationRepoDummy with ImmunizationRepo {
   @override
   Future<Result<bool>> confirmMotherImmunization(String motherNik, ImmunizationConfirmData data) async => Success(true);
   @override
-  Future<Result<bool>> confirmBabyImmunization(String babyNik, ImmunizationDetail data) async => Success(true);
+  Future<Result<bool>> confirmBabyImmunization(String babyNik, ImmunizationConfirmData data) async => Success(true);
 }

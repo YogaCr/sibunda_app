@@ -43,3 +43,14 @@ String formatAgeString({
   }
   return res;
 }
+
+String capitalizeFirst(String str) => "${str[0].toUpperCase()}${str.substring(1).toLowerCase()}";
+String capitalizeEach(String str) {
+  final list = str.split(" ");
+  final buffer = StringBuffer();
+  for(int i = 0; i < list.length; i++) {
+    buffer.write("${capitalizeFirst(list[i])} ");
+  }
+  buffer.write("${capitalizeFirst(list.last)}");
+  return buffer.toString();
+}

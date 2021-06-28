@@ -45,24 +45,25 @@ class KehamilankuCheckFormVm extends FormVmGroup {
 
   @override
   Future<Result<String>> doSubmitJob() async {
-    final responseMap = getResponse(
-      mappedKey: {
-        Const.KEY_PREGNANCY_AGE,
-        Const.KEY_MOTHER_WEIGHT,
-        Const.KEY_MOTHER_WEIGHT_DIFF,
-        Const.KEY_MOTHER_HEIGHT,
-        Const.KEY_TFU,
-        Const.KEY_DJJ,
-        Const.KEY_SYSTOLIC_PRESSURE,
-        Const.KEY_DIASTOLIC_PRESSURE,
-        Const.KEY_MAP,
-      },
-      mapper: (group, key, response) => int.parse(response),
-    );
+    final responseMap = getResponse();
     final data = PregnancyCheck.fromJson(responseMap.responseGroups.values.first);
     return _savePregnancyCheck(data).then((value) => value is Success<bool> ? Success("") : value as Fail<String>);
   }
 
+  @override
+  Set<String>? get mappedKey => {
+    Const.KEY_PREGNANCY_AGE,
+    Const.KEY_MOTHER_WEIGHT,
+    Const.KEY_MOTHER_WEIGHT_DIFF,
+    Const.KEY_MOTHER_HEIGHT,
+    Const.KEY_TFU,
+    Const.KEY_DJJ,
+    Const.KEY_SYSTOLIC_PRESSURE,
+    Const.KEY_DIASTOLIC_PRESSURE,
+    Const.KEY_MAP,
+  };
+  @override
+  mapResponse(int groupPosition, String key, response) => int.parse(response);
 
   @override
   Future<bool> validateField(int groupPosition, String inputKey, response) async {

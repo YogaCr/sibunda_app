@@ -1,5 +1,5 @@
 
-import 'package:common/arch/ui/widget/form_txt_vm_observer.dart';
+import 'package:common/arch/ui/widget/form_vm_observer.dart';
 import 'package:common/arch/ui/widget/txt_link.dart';
 import 'package:common/util/assets.dart';
 import 'package:common/util/ui.dart';
@@ -33,7 +33,7 @@ class LoginPage extends StatelessWidget {
               ],
             )
         ),
-        FormVmObserver<LoginFormVm>(
+        FormTxtVmObserver<LoginFormVm>(
           submitBtnBuilder: (ctx, canProceed) => FloatingActionButton(
             backgroundColor: canProceed == true ? pink_300 : grey,
             child: Icon(
