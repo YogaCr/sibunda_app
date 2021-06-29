@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: Strings.app_name,
       theme: Manifest.theme.materialData,
-      home: AppRoutes.obj.entryPoint.build(context), //SibRoutes.motherDataPage.build(context),
+      home: HomeRoutes.doMotherHavePregnancyPage.build(context), //SibRoutes.motherDataPage.build(context),
 /*
       home: TopBarProfileFrame( //NoAppB
 /// *

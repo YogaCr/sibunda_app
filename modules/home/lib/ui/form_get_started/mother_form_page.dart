@@ -1,4 +1,5 @@
 
+import 'package:common/arch/ui/widget/form_generic_vm_group_observer.dart';
 import 'package:common/arch/ui/widget/form_vm_observer.dart';
 import 'package:common/res/string/_string.dart';
 import 'package:common/res/theme/_theme.dart';
@@ -18,8 +19,9 @@ class MotherFormPage extends StatelessWidget {
           Strings.fill_mother_data,
           style: SibTextStyles.header1,
         ).withMargin(EdgeInsets.only(top: 60)),
-        FormTxtVmObserver<MotherFormVm>(
-          onSubmit: (success) => success
+        FormVmGroupObserver<MotherFormVm>(
+          showHeader: false,
+          onSubmit: (ctx, success) => success
               ? HomeRoutes.fatherFormPage.goToPage(context)
               : showSnackBar(context, "Gagal",),
           submitBtnBuilder: (ctx, canProceed) => FloatingActionButton(

@@ -1,10 +1,12 @@
 
 import 'package:common/arch/ui/widget/_basic_widget.dart';
+import 'package:common/arch/ui/widget/form_generic_vm_group_observer.dart';
 import 'package:common/arch/ui/widget/form_vm_observer.dart';
 import 'package:common/res/string/_string.dart';
 import 'package:common/res/theme/_theme.dart';
 import 'package:common/util/ui.dart';
 import 'package:flutter/material.dart';
+import 'package:home/config/home_routes.dart';
 import 'package:home/ui/form_get_started/child_form_vm.dart';
 
 class ChildFormPage extends StatelessWidget {
@@ -23,14 +25,25 @@ class ChildFormPage extends StatelessWidget {
           Strings.skip,
           onTap: () => showSnackBar(context, "dipencet"),
         ),
-        FormTxtVmObserver<ChildFormVm>(
-          onSubmit: (success) => success
-              ? showSnackBar(context, "Berhasil", backgroundColor: Colors.green)
-              : showSnackBar(context, "Gagal",),
+        FormVmGroupObserver<ChildFormVm>(
+          showHeader: false,
+          onPreSubmit: (ctx, canProceed) {
+            if(canProceed != true) {
+              showSnackBar(ctx, Strings.there_still_invalid_fields);
+            }
+          },
+          onSubmit: (ctx, success) {
+            if(success) {
+              showSnackBar(context, "Berhasil", backgroundColor: Colors.green);
+              HomeRoutes.homePage.goToPage(ctx, clearPrevs: true);
+            } else {
+              showSnackBar(context, "Terjadi kesalahan",);
+            }
+          },
           submitBtnBuilder: (ctx, canProceed) => FloatingActionButton(
             child: Icon(Icons.arrow_forward_rounded,),
             backgroundColor: canProceed == true ? pink_300 : grey,
-            onPressed: canProceed == true ? null : () => showSnackBar(context, "Masih ada yg blum valid",),
+            onPressed: null, //canProceed == true ? null : () => showSnackBar(context, "Masih ada yg blum valid",),
           ),
         ),
         //BlocMultiFieldFormBuilder<ChildFormBloc>.defaultInputField(),

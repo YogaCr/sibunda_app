@@ -11,34 +11,47 @@ class DoMotherHavePregnancyPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenSize = MediaQuery.of(context).size;
+    final picHeight = screenSize.height *40 /100;
     return Column(
       children: [
         Text(
           Strings.mother_children_data,
           style: SibTextStyles.header1,
-        ), //TODO hardcode string
-        SibImages.get("ilstr_mother_pregnant.png", package: "common",)
-            .withMargin(EdgeInsets.symmetric(horizontal: 50).copyWith(top: 70)),
-        Text(
-          "Apakah Bunda sedang hamil?",
-          style: SibTextStyles.size_0_bold,
-          textAlign: TextAlign.center,
         ),
-        Row(
-          children: [
-            TxtBtn(
-              Strings.yes,
-              minWidth: 80,
-              onTap: () => HomeRoutes.motherHplPage.goToPage(context),
-            ),
-            Spacer(flex: 3,),
-            TxtBtn(
-              Strings.no,
-              isHollow: true,
-              minWidth: 80,
-              onTap: () => HomeRoutes.childrenCountPage.goToPage(context),
-            ),
-          ],
+        Container(
+          height: picHeight,
+          child: SibImages.get("ilstr_mother_pregnant.png", package: "common",)
+              .withMargin(EdgeInsets.symmetric(horizontal: 50).copyWith(top: 70)),
+        ),
+        Container(
+          margin: EdgeInsets.symmetric(vertical: 30),
+          child: Text(
+            "Apakah Bunda sedang hamil?",
+            style: SibTextStyles.size_0_bold,
+            textAlign: TextAlign.center,
+          ),
+        ),
+        Container(
+          margin: EdgeInsets.only(top: 20),
+          child: Row(
+            children: [
+              Spacer(flex: 3,),
+              TxtBtn(
+                Strings.yes,
+                minWidth: 80,
+                onTap: () => HomeRoutes.motherHplPage.goToPage(context),
+              ),
+              Spacer(flex: 3,),
+              TxtBtn(
+                Strings.no,
+                isHollow: true,
+                minWidth: 80,
+                onTap: () => HomeRoutes.childrenCountPage.goToPage(context),
+              ),
+              Spacer(flex: 3,),
+            ],
+          ),
         ),
       ],
     );

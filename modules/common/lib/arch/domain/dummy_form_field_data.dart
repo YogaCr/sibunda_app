@@ -1,7 +1,83 @@
 import 'package:common/arch/domain/model/form_data.dart';
 import 'package:common/arch/domain/model/img_data.dart';
+import 'package:common/arch/ui/model/form_data.dart';
 import 'package:common/res/string/_string.dart';
 import 'package:common/value/const_values.dart';
+
+
+final loginFormData = <FormGroupData>[
+  FormGroupData(header: "header", data: [
+    FormData(key: Const.KEY_EMAIL, question: Strings.email, type: FormType.text,),
+    FormData(key: Const.KEY_PSWD, question: Strings.password, type: FormType.text,),
+  ]),
+];
+
+final signupFormData = <FormGroupData>[
+  FormGroupData(header: "header", data: [
+    FormData(key: Const.KEY_NAME, question: Strings.name, type: FormType.text,),
+    FormData(key: Const.KEY_EMAIL, question: Strings.email, type: FormType.text,),
+    FormData(key: Const.KEY_PSWD, question: Strings.password, type: FormType.text,),
+    FormData(key: Const.KEY_RE_PSWD, question: Strings.password_re, type: FormType.text,),
+  ]),
+];
+
+final motherFormData = <FormGroupData>[
+  FormGroupData(header: "header", data: [
+    FormData(key: Const.KEY_NAME, question: Strings.name, type: FormType.text,),
+    FormData(key: Const.KEY_NIK, question: Strings.nik, type: FormType.text,),
+    FormData(key: Const.KEY_SALARY, question: Strings.salary, type: FormType.text,),
+    FormData(key: Const.KEY_JKN, question: Strings.jkn, type: FormType.text,),
+    FormData(key: Const.KEY_FASKES1, question: Strings.faskes1, type: FormType.text,),
+    FormData(key: Const.KEY_FASKES_RUJUKAN, question: Strings.faskes_rujukan, type: FormType.text,),
+    FormData(key: Const.KEY_BLOOD_TYPE, question: Strings.blood_type, type: FormType.text,),
+    FormData(key: Const.KEY_BIRTH_PLACE, question: Strings.birth_place, type: FormType.text,),
+    FormData(key: Const.KEY_BIRTH_DATE, question: Strings.birth_date, type: FormType.text,),
+    FormData(key: Const.KEY_EDUCATION, question: Strings.education, type: FormType.text,),
+    FormData(key: Const.KEY_OCCUPANCY, question: Strings.occupancy, type: FormType.text,),
+    FormData(key: Const.KEY_ADDRESS, question: Strings.address, type: FormType.text,),
+    FormData(key: Const.KEY_PHONE, question: Strings.phone, type: FormType.text,),
+    FormData(key: Const.KEY_PUSKESMAS_DOMISILI, question: Strings.puskesmas_domisili, type: FormType.text,),
+    FormData(key: Const.KEY_COHORT_REG, question: Strings.cohort_no, type: FormType.text,),
+  ]),
+];
+
+final fatherFormData = <FormGroupData>[
+  FormGroupData(header: "header", data: [
+    FormData(key: Const.KEY_NAME, question: Strings.name, type: FormType.text,),
+    FormData(key: Const.KEY_NIK, question: Strings.nik, type: FormType.text,),
+    FormData(key: Const.KEY_SALARY, question: Strings.salary, type: FormType.text,),
+    FormData(key: Const.KEY_JKN, question: Strings.jkn, type: FormType.text,),
+    FormData(key: Const.KEY_FASKES1, question: Strings.faskes1, type: FormType.text,),
+    FormData(key: Const.KEY_FASKES_RUJUKAN, question: Strings.faskes_rujukan, type: FormType.text,),
+    FormData(key: Const.KEY_BLOOD_TYPE, question: Strings.blood_type, type: FormType.text,),
+    FormData(key: Const.KEY_BIRTH_PLACE, question: Strings.birth_place, type: FormType.text,),
+    FormData(key: Const.KEY_BIRTH_DATE, question: Strings.birth_date, type: FormType.text,),
+    FormData(key: Const.KEY_EDUCATION, question: Strings.education, type: FormType.text,),
+    FormData(key: Const.KEY_OCCUPANCY, question: Strings.occupancy, type: FormType.text,),
+    FormData(key: Const.KEY_ADDRESS, question: Strings.address, type: FormType.text,),
+    FormData(key: Const.KEY_PHONE, question: Strings.phone, type: FormType.text,),
+  ]),
+];
+
+final childFormData = <FormGroupData>[
+  FormGroupData(header: "header", data: [
+    FormData(key: Const.KEY_NAME, question: Strings.name, type: FormType.text,),
+    FormData(key: Const.KEY_NIK, question: Strings.nik, type: FormType.text,),
+    FormData(key: Const.KEY_JKN, question: Strings.jkn, type: FormType.text,),
+    FormData(key: Const.KEY_BLOOD_TYPE, question: Strings.blood_type, type: FormType.text,),
+    FormData(key: Const.KEY_BIRTH_PLACE, question: Strings.birth_place, type: FormType.text,),
+    FormData(key: Const.KEY_BIRTH_DATE, question: Strings.birth_date, type: FormType.text,),
+    FormData(key: Const.KEY_CHILD_ORDER, question: Strings.child_order, type: FormType.text,),
+    FormData(key: Const.KEY_GENDER, question: Strings.gender, type: FormType.text,),
+    FormData(key: Const.KEY_BIRTH_CERT_NO, question: Strings.birth_cert_no, type: FormType.text,),
+    FormData(key: Const.KEY_JKN_START_DATE, question: Strings.jkn_start_date, type: FormType.text,),
+    FormData(key: Const.KEY_BABY_COHORT_REG, question: Strings.baby_cohort_no, type: FormType.text,),
+    FormData(key: Const.KEY_TODDLER_COHORT_REG, question: Strings.toddler_cohort_no, type: FormType.text,),
+    FormData(key: Const.KEY_HOSPITAL_MEDIC_NO, question: Strings.hospital_medic_no, type: FormType.text,),
+  ]),
+];
+
+
 
 final babyFormGroupData = <FormGroupData>[
   FormGroupData(

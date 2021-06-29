@@ -33,6 +33,8 @@ class FormVmGroupObserver<VM extends FormVmGroup> extends StatefulWidget {
   /// This returns true, then new form will be displayed.
   final bool Function()? predicate;
 
+  final bool showHeader;
+
   final VM? vm;
   final RelativePosition imgPosition;
 
@@ -44,6 +46,7 @@ class FormVmGroupObserver<VM extends FormVmGroup> extends StatefulWidget {
     this.predicate,
     this.vm,
     this.imgPosition = RelativePosition.below,
+    this.showHeader = true,
   });
 
   @override
@@ -55,6 +58,7 @@ class FormVmGroupObserver<VM extends FormVmGroup> extends StatefulWidget {
     predicate: predicate,
     vm: vm,
     imgPosition: imgPosition,
+    showHeader: showHeader,
   );
 }
 
@@ -82,6 +86,8 @@ class _FormVmGroupObserverState<VM extends FormVmGroup>
   /// This returns true, then new form will be displayed.
   final bool Function()? predicate;
 
+  final bool showHeader;
+
   VM? vm;
   final RelativePosition imgPosition;
 
@@ -93,6 +99,7 @@ class _FormVmGroupObserverState<VM extends FormVmGroup>
     required this.predicate,
     required this.vm,
     required this.imgPosition,
+    required this.showHeader,
   });
 
   @override
@@ -113,6 +120,7 @@ class _FormVmGroupObserverState<VM extends FormVmGroup>
                 groupData: formGroupData,
                 groupPosition: i,
                 imgPosition: imgPosition,
+                showHeader: showHeader,
               ): defaultLoading(),
             ),
           );

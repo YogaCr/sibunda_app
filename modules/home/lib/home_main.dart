@@ -11,7 +11,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: "Home Module",
       theme: Manifest.theme.materialData,
-      home: HomeRoutes.homePage.build(context),
+      home: HomeRoutes.doMotherHavePregnancyPage.build(context),
     );
   }
 }

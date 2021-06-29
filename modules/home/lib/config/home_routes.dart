@@ -64,7 +64,9 @@ class HomeRoutes extends ModuleRoute {
     padding: EdgeInsets.all(20),
   ));
   static final motherHplPage = SibRoute("MotherHplPage", MotherHplPage, (ctx) =>  PlainBackFrame(
-    body: MotherHplPage(), //.inVmProvider([(ctx) => HomeVmDi.childFormVm,]),
+    body: MotherHplPage().inVmProvider([
+      (ctx) => HomeVmDi.motherHplVm,
+    ]), //.inVmProvider([(ctx) => HomeVmDi.childFormVm,]),
     padding: EdgeInsets.all(20),
   ));
   static final childFormPage = SibRoute("ChildFormPage", ChildFormPage, (ctx) =>  PlainBackFrame(
@@ -74,7 +76,9 @@ class HomeRoutes extends ModuleRoute {
     padding: EdgeInsets.all(20),
   ));
   static final childrenCountPage = SibRoute("ChildrenCountPage", ChildrenCountPage, (ctx) =>  PlainBackFrame(
-    body: ChildrenCountPage(), //.inVmProvider([(ctx) => HomeVmDi.childFormVm,]),
+    body: ChildrenCountPage().inVmProvider([
+      (ctx) => HomeVmDi.childrenCountVm,
+    ]), //.inVmProvider([(ctx) => HomeVmDi.childFormVm,]),
     padding: EdgeInsets.all(20),
   ));
 

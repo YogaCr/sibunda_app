@@ -31,6 +31,17 @@ mixin FormVmGroupMixin implements AsyncVm {
   String defaultInvalidMsg = "not valid";
 
   bool isResponseInit(int groupPosition, String fieldKey) => _responseGroupList[groupPosition][fieldKey]!.isValid.value != null;
+  dynamic getResponseWithKey(String key) => getResponseLiveDataWithKey(key).value;
+  LiveData getResponseLiveDataWithKey(String key) {
+    for(final respGroup in _responseGroupList) {
+      for(final entry in respGroup.entries) {
+        if(entry.key == key) {
+          return entry.value.response;
+        }
+      }
+    }
+    throw "No such key '$key' in $runtimeType";
+  }
   FormGroupResponse getResponse() {
     final respGroupList = <FormResponse>[];
     for(int i = 0; i < _responseGroupList.length; i++) {

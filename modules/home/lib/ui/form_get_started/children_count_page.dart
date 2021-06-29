@@ -4,13 +4,19 @@ import 'package:common/res/string/_string.dart';
 import 'package:common/res/theme/_theme.dart';
 import 'package:common/util/assets.dart';
 import 'package:common/util/ui.dart';
+import 'package:core/ui/base/view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:home/config/home_routes.dart';
+import 'package:home/ui/form_get_started/children_count_vm.dart';
 
 class ChildrenCountPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final vm = ViewModelProvider.of<ChildrenCountVm>(context);
+
+    final now = DateTime.now();
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -28,11 +34,20 @@ class ChildrenCountPage extends StatelessWidget {
         ),
         TxtInputUnderline(
           overText: "Tanggal lahir anak terakhir",
-          onSuffixIconClick: () => showSnackBar(context, "Dipencet"),
+          textController: vm.lastChildBirthDateTxtControl,
+          onSuffixIconClick: () async {
+            final date = await showDatePicker(
+              context: context,
+              initialDate: now,
+              firstDate: DateTime(now.year -1),
+              lastDate: DateTime(now.year +1),
+            );
+            vm.lastChildBirthDate.value = date;
+          },
         ),
         FloatingActionButton(
           child: Icon(Icons.arrow_forward_rounded),
-          onPressed: () => HomeRoutes.childrenCountPage.goToPage(context),
+          onPressed: () => HomeRoutes.childFormPage.goToPage(context),
         ),
       ],
     );

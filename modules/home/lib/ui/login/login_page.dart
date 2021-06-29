@@ -1,4 +1,5 @@
 
+import 'package:common/arch/ui/widget/form_generic_vm_group_observer.dart';
 import 'package:common/arch/ui/widget/form_vm_observer.dart';
 import 'package:common/arch/ui/widget/txt_link.dart';
 import 'package:common/util/assets.dart';
@@ -14,17 +15,21 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         Container(
             alignment: Alignment.centerLeft,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SibImages.get(
-                  "logo_app_color.png",
-                  package: "common",
-                  width: 100,
-                  height: 100,
+                Container(
+                  margin: EdgeInsets.only(top: 60,),
+                  child: SibImages.get(
+                    "logo_app_color.png",
+                    package: "common",
+                    width: 100,
+                    height: 100,
+                  ),
                 ),
                 Text(
                   Strings.welcome_mother,
@@ -33,13 +38,20 @@ class LoginPage extends StatelessWidget {
               ],
             )
         ),
-        FormTxtVmObserver<LoginFormVm>(
-          submitBtnBuilder: (ctx, canProceed) => FloatingActionButton(
-            backgroundColor: canProceed == true ? pink_300 : grey,
-            child: Icon(
-              Icons.arrow_forward_rounded,
+        FormVmGroupObserver<LoginFormVm>(
+          showHeader: false,
+          onSubmit: (ctx, success) => success
+              ? HomeRoutes.homePage.goToPage(context)
+              : showSnackBar(ctx, "Terjadi kesalahan"),
+          submitBtnBuilder: (ctx, canProceed) => Container(
+            margin: EdgeInsets.symmetric(vertical: 10,),
+            child: FloatingActionButton(
+              backgroundColor: canProceed == true ? pink_300 : grey,
+              child: Icon(
+                Icons.arrow_forward_rounded,
+              ),
+              onPressed: canProceed == true ? null : () => showSnackBar(context, "Ada yg blum valid"),
             ),
-            onPressed: canProceed == true ? null : () => showSnackBar(context, "Ada yg blum valid"),
           ),
         ),
         Text(

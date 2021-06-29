@@ -16,12 +16,14 @@ class FormGenericGroup extends StatefulWidget {
   final FormVmGroupMixin vm;
   final int groupPosition;
   final RelativePosition imgPosition;
+  final bool showHeader;
 
   FormGenericGroup({
     required this.groupData,
     required this.vm,
     required this.groupPosition,
     this.imgPosition = RelativePosition.below,
+    this.showHeader = true,
   });
 
   @override
@@ -30,6 +32,7 @@ class FormGenericGroup extends StatefulWidget {
     vm: vm,
     groupPosition: groupPosition,
     imgPosition: imgPosition,
+    showHeader: showHeader,
   );
 }
 
@@ -39,6 +42,7 @@ class _FormGenericGroupState extends State<FormGenericGroup> {
   final FormVmGroupMixin vm;
   final int groupPosition;
   final RelativePosition imgPosition;
+  final bool showHeader;
 
   /// Its keys are keys of [FormGenericVm.keyLabelList].
   final Map<String, MutableLiveData> itemLiveData = {};
@@ -48,6 +52,7 @@ class _FormGenericGroupState extends State<FormGenericGroup> {
     required this.vm,
     required this.groupPosition,
     required this.imgPosition,
+    required this.showHeader,
   });
 
   @override
@@ -143,14 +148,17 @@ class _FormGenericGroupState extends State<FormGenericGroup> {
       },
     );
 
-    formWidgets.insert(0,
-      Container(
-        margin: EdgeInsets.only(top: 20, bottom: 5),
-        child: Text(
-          groupData.header,
-          style: SibTextStyles.size_0_bold,
+    if(showHeader) {
+      formWidgets.insert(0,
+        Container(
+          margin: EdgeInsets.only(top: 20, bottom: 5),
+          child: Text(
+            groupData.header,
+            style: SibTextStyles.size_0_bold,
+          ),
         ),
-      ),);
+      );
+    }
 
     return Column(
       children: formWidgets,

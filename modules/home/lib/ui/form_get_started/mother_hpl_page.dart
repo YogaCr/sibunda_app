@@ -3,19 +3,22 @@ import 'package:common/config/_config.dart';
 import 'package:common/res/string/_string.dart';
 import 'package:common/res/theme/_theme.dart';
 import 'package:common/util/ui.dart';
+import 'package:core/ui/base/live_data_observer.dart';
+import 'package:core/ui/base/view_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:home/config/home_routes.dart';
+import 'package:home/ui/form_get_started/mother_hpl_vm.dart';
 
 class MotherHplPage extends StatelessWidget {
-  final TextEditingController hplTxtController = TextEditingController();
-  final TextEditingController hphtTxtController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    final vm = ViewModelProvider.of<MotherHplVm>(context);
+
     final now = DateTime.now();
-    DateTime? hplDate;
-    DateTime? hphtDate;
+    //DateTime? hplDate;
+    //DateTime? hphtDate;
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -23,38 +26,38 @@ class MotherHplPage extends StatelessWidget {
         Text(
           Strings.mother_children_data,
           style: SibTextStyles.header1,
-        ), //TODO hardcode string
+        ),
         Text("Sudah tahu kapan HPL Bunda?"),
         TxtInputUnderline(
-          textController: hphtTxtController,
+          textController: vm.hplTxtControl,
           overText: "Masukkan hari perkiraan menurut dokter Bunda",
           onSuffixIconClick: () async {
-            hphtDate = await showDatePicker(
+            final hplDate = await showDatePicker(
               context: context,
-              initialDate: hphtDate ?? now,
+              initialDate: vm.hpl.value ?? now,
               firstDate: DateTime(now.year -1),
               lastDate: DateTime(now.year +1),
             );
-            hphtTxtController.text = hphtDate?.toString() ?? "";
+            if(hplDate != null) {
+              vm.setHpl(hplDate);
+            }
           },
         ),
         Text("Atau"),
         //Spacer(flex: 1,),
         Text("Yuk hitung HPL Bunda"),
         TxtInputUnderline(
-          textController: hplTxtController,
+          textController: vm.hphtTxtControl,
           overText: "Masukkan HPHT Bunda",
           onSuffixIconClick: () async {
-            hplDate = await showDatePicker(
+            final hphtDate = await showDatePicker(
               context: context,
-              initialDate: hplDate ?? now,
+              initialDate: vm.hpht.value ?? now,
               firstDate: DateTime(now.year -1),
               lastDate: DateTime(now.year +1),
             );
-            hplTxtController.text = hplDate?.toString() ?? "";
-            if(hplDate != null) {
-              hplTxtController.text = "";
-              hphtDate = null;
+            if(hphtDate != null) {
+              vm.setHpht(hphtDate);
             }
           },
         ),
@@ -69,9 +72,12 @@ class MotherHplPage extends StatelessWidget {
                 "Hari perkiraan lahir bayi Bunda adalah:",
                 style: SibTextStyles.size_min_1_grey,
               ),
-              Text(
-                "04 Desember 2021",
-                style: SibTextStyles.size_0_colorPrimary,
+              LiveDataObserver<String>(
+                liveData: vm.hplResTxt,
+                builder: (ctx, data) => Text(
+                  data ?? "-",
+                  style: SibTextStyles.size_0_colorPrimary,
+                ),
               ),
             ],
           ).withMargin(EdgeInsets.all(SibDimens.std_padding)),
