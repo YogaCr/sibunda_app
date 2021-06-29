@@ -5,6 +5,7 @@ import 'package:common/res/string/_string.dart';
 import 'package:core/domain/model/result.dart';
 import 'package:core/ui/base/async_vm.dart';
 import 'package:core/ui/base/live_data.dart';
+import 'package:core/util/_consoles.dart';
 
 /// This approach uses generic type of form (form that consists of text, check box, and radio)
 /// and late approach (data about field is defined in runtime, not directly in this ViewModel).
@@ -88,6 +89,20 @@ mixin FormVmGroupMixin implements AsyncVm {
       }
     }
     _canProceed.value = true;
+  }
+
+  void displayInvalidFields() {
+    for(int i = 0; i < _responseGroupList.length ; i++) {
+      final isResponseValidMap = _responseGroupList[i];
+      for(final entry in isResponseValidMap.entries) {
+        final isResponseValid = entry.value;
+        if(isResponseValid.isValid.value == null) {
+          // So even the field that still in init will be notified as invalid.
+          isResponseValid.isValid.value = false;
+          Future.delayed(Duration(milliseconds: 200), () => isResponseValid.isValid.value = false);
+        }
+      }
+    }
   }
 
   void submit() {

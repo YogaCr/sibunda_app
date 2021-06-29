@@ -14,13 +14,13 @@ import 'package:common/util/ui.dart';
 import 'package:common/value/const_values.dart';
 import 'package:core/ui/base/async_view_model_observer.dart';
 import 'package:core/ui/base/view_model.dart';
+import 'package:core/util/_consoles.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:kehamilanku/ui/pregnancy_check/kehamilanku_trimester_form_vm.dart';
 
 class KehamilankuTrimesterFormPage extends StatelessWidget {
-  
-  final scrollCtrl = ScrollController();
+  //final scrollCtrl = ScrollController();
   final pageController = PageController();
 
   @override
@@ -31,12 +31,17 @@ class KehamilankuTrimesterFormPage extends StatelessWidget {
     final vm = ViewModelProvider.of<KehamilankuCheckFormVm>(context)
       ..init();
 
+    vm.currentWeek = startWeek;
+
+    pageController.addListener(() {
+      final page = pageController.page?.toInt();
+      //prind("pageController page= $page double = ${pageController.page}");
+      if(page != null) {
+        vm.currentWeek = page+startWeek;
+      }
+    });
+
     final weekList = List.generate(weekCount, (index) => "Minggu ${index + startWeek}");
-/*
-    final weekList = List.generate(20, (index) => "Minggu $index");
-    final screenSize = MediaQuery.of(context).size;
-    final screenWidth = screenSize.width;
- */
 
     return TopBarTitleAndBackFrame(
       isScroll: true,
@@ -56,7 +61,7 @@ class KehamilankuTrimesterFormPage extends StatelessWidget {
           controller: pageController,
           children: List.generate(weekCount, (index) => _WeeklyFormPage(
             vm: vm,
-            week: index +trimester.startWeek,
+            week: index+startWeek,
           )),
         ),
       ),
@@ -120,6 +125,7 @@ class _WeeklyFormPage extends StatelessWidget {
  */
             FormVmGroupObserver<KehamilankuCheckFormVm>(
               vm: vm,
+              predicate: () => vm.currentWeek == week || vm.currentWeek == week -1,
               onPreSubmit: (ctx, canProceed) => canProceed == true
                   ? showSnackBar(ctx, "Submitting", backgroundColor: Colors.green)
                   : showSnackBar(ctx, "There still invalid fields"),

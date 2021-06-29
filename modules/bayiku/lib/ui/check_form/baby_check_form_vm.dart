@@ -13,6 +13,8 @@ class BabyCheckFormVm extends FormVmGroup {
 
   final GetBabyCheckForm _getBabyCheckForm;
 
+  int currentMonth = 0;
+
   @override
   Future<Result<String>> doSubmitJob() async => Success("ok");
 

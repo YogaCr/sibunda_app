@@ -3,6 +3,7 @@ import 'package:bayiku/ui/home/baby_home_vm.dart';
 import 'package:common/arch/domain/model/baby_data.dart';
 import 'package:common/arch/ui/model/dummy_ui_data.dart';
 import 'package:common/arch/ui/page/secondary_frames.dart';
+import 'package:common/arch/ui/widget/_item_immunization.dart';
 import 'package:common/arch/ui/widget/_item_template.dart';
 import 'package:common/arch/ui/widget/_items_bayiku.dart';
 import 'package:common/config/manifest.dart';

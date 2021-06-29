@@ -1,4 +1,5 @@
 
+import 'package:common/arch/domain/model/img_data.dart';
 import 'package:common/arch/domain/model/immunization.dart';
 import 'package:common/res/theme/_theme.dart';
 import 'package:core/domain/model/range.dart';
@@ -7,14 +8,14 @@ import 'package:flutter/material.dart';
 
 
 class HomeImmunizationData {
-  final String imgLink;
+  final ImgData img;
   final String title;
   final String action;
 
   HomeImmunizationData({
     required this.action,
     required this.title,
-    required this.imgLink,
+    required this.img,
   });
 }
 

@@ -73,7 +73,7 @@ class _LiveDataObserverState<T>
     }
     final widget = builder(context, liveData.value);
     if(widget == null) {
-      throw "`builder` can return null widget.";
+      throw "`builder` can't return null widget.";
     }
     return widget;
   }

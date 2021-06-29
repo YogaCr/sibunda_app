@@ -168,32 +168,24 @@ class ItemHomeBigTitle extends StatelessWidget {
   }
 }
 
-
-class ItemHomeImmunization extends StatelessWidget {
-  final Widget image;
+class ItemPanelWithButton extends StatelessWidget {
+  final ImgData img;
   final String title;
   final String action;
   final void Function()? onBtnClick;
 
-  ItemHomeImmunization({
-    required this.image,
+  ItemPanelWithButton({
+    required this.img,
     required this.title, // = "Jangan lupa ikut imunisasi ya Bunda",
     required this.action, // = "Lihat imunisasi Bunda",
     this.onBtnClick,
   });
 
-  ItemHomeImmunization.fromData(
-      HomeImmunizationData data, {
-      this.onBtnClick,
-  }):
-    title = data.title,
-    action = data.action,
-    image = Container(color: Manifest.theme.colorPrimary,) //TODO: img
-  ;
-
   @override
   Widget build(BuildContext context) {
     final parentHeight = 120.0;
+
+    final image = SibImages.resolve(img);
 
     final imgChild = Container(
       margin: EdgeInsets.only(right: 10),

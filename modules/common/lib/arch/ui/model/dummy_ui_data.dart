@@ -18,13 +18,13 @@ final babyHomeGraph_ui = <HomeGraphMenu>[
 final motherHomeImmunization_ui = HomeImmunizationData(
   action: "Lihat imunisasi Bunda",
   title: "Jangan lupa ikut imunisasi ya Bunda",
-  imgLink: "",
+  img: dummyImg,
 );
 
 final babyHomeImmunization_ui = HomeImmunizationData(
   action: "Lihat imunisasi Bayi",
   title: "Jangan lupa ikut imunisasi Bayi ya Bun",
-  imgLink: "",
+  img: dummyImg,
 );
 
 final babyFormMenuList_ui = List<BabyFormMenuData>.generate(5, (i) => BabyFormMenuData(

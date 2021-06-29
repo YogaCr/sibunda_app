@@ -1,10 +1,42 @@
 
+import 'package:common/arch/domain/model/img_data.dart';
 import 'package:common/arch/domain/model/immunization.dart';
 import 'package:common/arch/ui/model/immunization.dart';
+import 'package:common/arch/ui/widget/_item_template.dart';
 import 'package:common/config/_config.dart';
 import 'package:common/res/theme/_theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+
+class ItemHomeImmunization extends StatelessWidget {
+  final ImgData img;
+  final String title;
+  final String action;
+  final void Function()? onBtnClick;
+/*
+  ItemHomeImmunization({
+    required this.img,
+    required this.title, // = "Jangan lupa ikut imunisasi ya Bunda",
+    required this.action, // = "Lihat imunisasi Bunda",
+    this.onBtnClick,
+  });
+ */
+
+  ItemHomeImmunization.fromData(
+      HomeImmunizationData data, {
+        this.onBtnClick,
+      }):
+        title = data.title,
+        action = data.action,
+        img = data.img
+  ;
+
+  @override
+  Widget build(BuildContext context) {
+    return ItemPanelWithButton(img: img, title: title, action: action, onBtnClick: onBtnClick,);
+  }
+}
 
 class ItemImmunizationFill extends StatelessWidget {
   final String immunizationName;

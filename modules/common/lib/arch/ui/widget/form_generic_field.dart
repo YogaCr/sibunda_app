@@ -7,6 +7,7 @@ import 'package:common/util/assets.dart';
 import 'package:common/value/enums.dart';
 import 'package:core/ui/base/live_data.dart';
 import 'package:core/ui/base/live_data_observer.dart';
+import 'package:core/util/_consoles.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -70,7 +71,6 @@ class TxtField extends SibFormField {
           isLiveDataOwner: isLiveDataOwner,
           liveData: isValid!,
           builder: (ctx, isValid) {
-            //print("TxtField.builder isValid= $isValid isInit= $isInit");
             final txtWidget = TxtInput(
               textController: textController,
               label: itemData.question,

@@ -8,6 +8,7 @@ import 'package:core/ui/base/async_view_model_observer.dart';
 import 'package:core/ui/base/expirable.dart';
 import 'package:core/ui/base/live_data_observer.dart';
 import 'package:core/ui/base/view_model.dart';
+import 'package:core/util/_consoles.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -27,6 +28,11 @@ class FormVmGroupObserver<VM extends FormVmGroup> extends StatefulWidget {
   ///   `false` means there still some invalid form fields.
   ///   `null` means the form is still in initial state.
   final void Function(BuildContext, bool? canProceed)? onPreSubmit;
+
+  /// This will be called when [VM] is ready.
+  /// This returns true, then new form will be displayed.
+  final bool Function()? predicate;
+
   final VM? vm;
   final RelativePosition imgPosition;
 
@@ -35,6 +41,7 @@ class FormVmGroupObserver<VM extends FormVmGroup> extends StatefulWidget {
     this.preSubmitBtnBuilder,
     this.onSubmit,
     this.onPreSubmit,
+    this.predicate,
     this.vm,
     this.imgPosition = RelativePosition.below,
   });
@@ -45,6 +52,7 @@ class FormVmGroupObserver<VM extends FormVmGroup> extends StatefulWidget {
     preSubmitBtnBuilder: preSubmitBtnBuilder,
     onSubmit: onSubmit,
     onPreSubmit: onPreSubmit,
+    predicate: predicate,
     vm: vm,
     imgPosition: imgPosition,
   );
@@ -69,6 +77,11 @@ class _FormVmGroupObserverState<VM extends FormVmGroup>
   ///   `false` means there still some invalid form fields.
   ///   `null` means the form is still in initial state.
   final void Function(BuildContext, bool? canProceed)? onPreSubmit;
+
+  /// This will be called when [VM] is ready.
+  /// This returns true, then new form will be displayed.
+  final bool Function()? predicate;
+
   VM? vm;
   final RelativePosition imgPosition;
 
@@ -77,6 +90,7 @@ class _FormVmGroupObserverState<VM extends FormVmGroup>
     required this.preSubmitBtnBuilder,
     required this.onSubmit,
     required this.onPreSubmit,
+    required this.predicate,
     required this.vm,
     required this.imgPosition,
   });
@@ -85,34 +99,50 @@ class _FormVmGroupObserverState<VM extends FormVmGroup>
   Widget build(BuildContext context) {
     final vm = this.vm ??= ViewModelProvider.of<VM>(context);
 
+    final Widget? Function(BuildContext, bool?) builder = (ctx, isReady) {
+      //prind("$runtimeType builder  vm.isFormReady = ${vm.isFormReady.value}");
+      if(isReady == true) {
+        final fieldGroupDataList = vm.fieldGroupList;
+        final formGroupList = List<Widget>.generate(fieldGroupDataList.length, (i) {
+          return Container(
+            child: LiveDataObserver<FormUiGroupData>(
+              liveData: fieldGroupDataList[i],
+              builder: (ctx, formGroupData) => formGroupData != null
+                  ? FormGenericGroup(
+                vm: vm,
+                groupData: formGroupData,
+                groupPosition: i,
+                imgPosition: imgPosition,
+              ): defaultLoading(),
+            ),
+          );
+        });
+
+        return Column(
+          children: formGroupList,
+        );
+      } else {
+        //If for form is not ready yet.
+        return defaultLoading();
+      }
+    };
+
     final formAreaWidget = LiveDataObserver<bool>(
       liveData: vm.isFormReady,
-      builder: (ctx, isReady) {
-        if(isReady == true) {
-          final fieldGroupDataList = vm.fieldGroupList;
-          final formGroupList = List<Widget>.generate(fieldGroupDataList.length, (i) {
-            return Container(
-              child: LiveDataObserver<FormUiGroupData>(
-                liveData: fieldGroupDataList[i],
-                builder: (ctx, formGroupData) => formGroupData != null
-                    ? FormGenericGroup(
-                      vm: vm,
-                      groupData: formGroupData,
-                      groupPosition: i,
-                      imgPosition: imgPosition,
-                    ): defaultLoading(),
-              ),
-            );
-          });
+      predicate: (isReady) =>
+          isReady != true // This will make this LiveDataObserver display loading widget when the form is not ready.
+            || predicate?.call() != false, // This will make this LiveDataObserver display form when form is ready or predicate is null.
+      initBuilder: (ctx) {
+        //prind("$runtimeType initBuilder vm.isFormReady = ${vm.isFormReady.value}");
 
-          return Column(
-            children: formGroupList,
-          );
-        } else {
-          //If for form is not ready yet.
-          return defaultLoading();
+        Widget? widget;
+        if(vm.isFormReady.value == true && predicate?.call() != false) {
+          widget = builder(ctx, true);
         }
-      },
+
+        return widget ?? defaultLoading();
+      }, // So this LiveDataObserver is not forced to build widget via `builder` although the `predicate` says no.
+      builder: builder,
     );
 
 
@@ -127,6 +157,8 @@ class _FormVmGroupObserverState<VM extends FormVmGroup>
           onPreSubmit?.call(ctx, canProceed);
           if(canProceed == true) {
             vm.submit();
+          } else {
+            vm.displayInvalidFields();
           }
         },
       ),

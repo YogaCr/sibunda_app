@@ -1,11 +1,12 @@
+
 import 'package:common/config/manifest.dart';
-import 'package:common/data/model/kehamilanku_data.dart';
 import 'package:common/res/theme/_theme.dart';
-import 'package:common/ui/widget/_basic_widget.dart';
-import 'package:common/ui/widget/_item_template.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+
+import '../../data/model/kehamilanku_data.dart';
+import '_item_template.dart';
 
 final _cornerRadius = 10.0;
 final _paddingSmall = 10.0;
@@ -151,31 +152,6 @@ class ItemMotherTrimester extends StatelessWidget {
 }
 
 // */
-
-
-class ItemMotherImmunizationHome extends StatelessWidget {
-  final Widget image;
-  final String title;
-  final String action;
-  final void Function()? onBtnClick;
-
-  ItemMotherImmunizationHome({
-    required this.image,
-    this.title = "Jangan lupa ikut imunisasi ya Bunda",
-    this.action = "Lihat imunisasi Bunda",
-    this.onBtnClick,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return ItemHomeImmunization(
-      image: image,
-      title: title,
-      action: action,
-      onBtnClick: onBtnClick,
-    );
-  }
-}
 
 /*
 class ItemMotherGraphMenu extends StatelessWidget {
