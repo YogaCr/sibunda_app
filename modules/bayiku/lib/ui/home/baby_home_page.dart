@@ -53,7 +53,8 @@ class BabyHomePage extends StatelessWidget {
                     flex: 10,
                     child: ItemHomeGraphMenu(
                       image: Container(color: Manifest.theme.colorPrimary,),
-                      text: "Grafik Evaluasi Kehamilan",
+                      text: "Pertumbuhan Bayi",
+                      onClick: () => BabyRoutes.babyGrowthGraphMenuPage.goToPage(context),
                     ),
                   ),
                   Spacer(flex: 1,),
@@ -61,7 +62,7 @@ class BabyHomePage extends StatelessWidget {
                     flex: 10,
                     child: ItemHomeGraphMenu(
                       image: Container(color: Manifest.theme.colorPrimary,),
-                      text: "Grafik Berat Badan",
+                      text: "Perkembangan Bayi",
                     ),
                   ),
                 ],

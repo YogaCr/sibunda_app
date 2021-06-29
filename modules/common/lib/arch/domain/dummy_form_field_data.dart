@@ -34,8 +34,8 @@ final babyFormGroupData = <FormGroupData>[
         question: "Pada waktu bayi telentang, apakah ia dapat mengikuti gerakan anda dengan menggerakkan kepalanya dari kanan/kiri ke tengah?",
         type: FormType.radio,
         options: [
-          FormOption(label: "opsi 1", isSelected: true),
-          FormOption(label: "opsi 2", isSelected: true),
+          FormOption(label: "opsi 1", isSelected: false),
+          FormOption(label: "opsi 2", isSelected: false),
         ],
         img: [
           ImgData(link: "pic_baby_head_side_to_middle.png", package: "bayiku", isLocal: true),

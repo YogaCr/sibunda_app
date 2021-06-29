@@ -1,4 +1,5 @@
 import 'package:bayiku/core/domain/usecase/baby_check_usecase.dart';
+import 'package:bayiku/core/domain/usecase/baby_graph_menu_usecase.dart';
 import 'package:bayiku/core/domain/usecase/baby_home_usecase.dart';
 import 'package:bayiku/core/domain/usecase/baby_immunization_use_case.dart';
 import 'package:bayiku/core/domain/usecase/baby_overall_usecase.dart';
@@ -18,4 +19,6 @@ class BabyUseCaseDi {
   static GetBabyImmunizationOverview get getBabyImmunizationOverview => GetBabyImmunizationOverviewImpl(RepoDi.immunizationRepo);
   static GetBabyImmunizationGroupList get getBabyImmunizationGroupList => GetBabyImmunizationGroupListImpl(RepoDi.immunizationRepo);
   static ConfirmBabyImmunization get confirmBabyImmunization => ConfirmBabyImmunizationImpl(RepoDi.immunizationRepo);
+
+  static GetBabyGrowthGraphMenu get getBabyGrowthGraphMenu => GetBabyGrowthGraphMenuImpl(RepoDi.myBabyRepo);
 }

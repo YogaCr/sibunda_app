@@ -30,6 +30,8 @@ class BabyCheckFormPage extends StatelessWidget {
     final vm = ViewModelProvider.of<BabyCheckFormVm>(context)
       ..init();
 
+    vm.currentMonth = monthStart;
+
     pageController.addListener(() {
       final page = pageController.page?.toInt();
       if(page != null) {
@@ -79,11 +81,8 @@ class _MonthlyCheckFormPage extends StatelessWidget {
         month == 1 ? _NeonatalServicePanel() : SizedBox(),
         FormVmGroupObserver<BabyCheckFormVm>(
           vm: vm,
-          imgPosition: RelativePosition.above,
-          predicate: () {
-            prind("vm.currentMonth = ${vm.currentMonth} month= $month");
-            return vm.currentMonth == month;
-          },
+          imgPosition: RelativePosition.below,
+          predicate: () => vm.currentMonth == month || vm.currentMonth == month-1,
           onPreSubmit: (ctx, valid) => valid == true
               ? showSnackBar(ctx, "Submitting",backgroundColor: Colors.green)
               : showSnackBar(ctx, "There still invalid fields"),

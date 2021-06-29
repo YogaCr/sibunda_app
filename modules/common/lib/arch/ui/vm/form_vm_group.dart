@@ -91,6 +91,7 @@ mixin FormVmGroupMixin implements AsyncVm {
     _canProceed.value = true;
   }
 
+  //TODO: FormVmGroup: Cari cara biar isValid LiveData ke reset jika pindah halaman, namun dalam 1 VM.
   void displayInvalidFields() {
     for(int i = 0; i < _responseGroupList.length ; i++) {
       final isResponseValidMap = _responseGroupList[i];

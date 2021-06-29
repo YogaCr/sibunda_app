@@ -1,5 +1,6 @@
 import 'package:bayiku/di/baby_vm_di.dart';
 import 'package:bayiku/ui/check_form/baby_check_form_page.dart';
+import 'package:bayiku/ui/growth_graph_menu/baby_growth_graph_menu_page.dart';
 import 'package:bayiku/ui/home/baby_home_page.dart';
 import 'package:bayiku/ui/immunization/baby_immunization_page.dart';
 import 'package:bayiku/ui/immunization/baby_immunization_popup_page.dart';
@@ -40,6 +41,12 @@ class BabyRoutes extends ModuleRoute {
   static final babyImmunizationPage = SibRoute("BabyImmunizationPage", BabyImmunizationPage, (ctx) => MainFrame(
     body: BabyImmunizationPage().inVmProvider([
           (ctx) => BabyVmDi.babyImmunizationVm,
+    ]),
+  ));
+
+  static final babyGrowthGraphMenuPage = SibRoute("BabyGrowthGraphMenuPage", BabyGrowthGraphMenuPage, (ctx) => MainFrame(
+    body: BabyGrowthGraphMenuPage().inVmProvider([
+          (ctx) => BabyVmDi.babyGrowthGraphMenuVm,
     ]),
   ));
 

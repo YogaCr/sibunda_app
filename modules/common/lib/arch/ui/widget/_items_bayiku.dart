@@ -99,6 +99,11 @@ class ItemBabyGraphMenu extends StatelessWidget {
     this.onClick,
   });
 
+  ItemBabyGraphMenu.fromData(BabyGraphMenuData data, {this.onClick}):
+    title = data.title,
+    img = data.img
+  ;
+
   @override
   Widget build(BuildContext context) {
     final parentHeight = 80.0;

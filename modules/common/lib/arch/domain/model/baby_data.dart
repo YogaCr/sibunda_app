@@ -1,3 +1,5 @@
+import 'package:common/arch/domain/model/img_data.dart';
+
 class BabyAgeOverview {
   final int year; //If 0, it won't be displayed on screen. This applies to other fields.
   final int month;
@@ -19,5 +21,15 @@ class BabyFormMenuData {
     required this.year,
     required this.monthStart,
     required this.monthEnd,
+  });
+}
+
+class BabyGraphMenuData {
+  final String title;
+  final ImgData img;
+
+  BabyGraphMenuData({
+    required this.title,
+    required this.img,
   });
 }

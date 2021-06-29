@@ -1,5 +1,6 @@
 import 'package:bayiku/core/di/baby_usecase_di.dart';
 import 'package:bayiku/ui/check_form/baby_check_form_vm.dart';
+import 'package:bayiku/ui/growth_graph_menu/baby_growth_graph_menu_vm.dart';
 import 'package:bayiku/ui/home/baby_home_vm.dart';
 import 'package:bayiku/ui/immunization/baby_immunization_popup_vm.dart';
 import 'package:bayiku/ui/immunization/baby_immunization_vm.dart';
@@ -25,5 +26,8 @@ class BabyVmDi {
     getBabyNik: BabyUseCaseDi.getBabyNik,
     getBabyImmunizationConfirmForm: BabyUseCaseDi.getBabyImmunizationConfirmForm,
     confirmBabyImmunization: BabyUseCaseDi.confirmBabyImmunization,
+  );
+  static BabyGrowthGraphMenuVm get babyGrowthGraphMenuVm => BabyGrowthGraphMenuVm(
+      getBabyGrowthGraphMenu: BabyUseCaseDi.getBabyGrowthGraphMenu,
   );
 }

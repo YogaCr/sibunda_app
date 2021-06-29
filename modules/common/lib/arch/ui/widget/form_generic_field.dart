@@ -179,24 +179,21 @@ class RadioGroup extends SibFormField {
     ];
 
     if(itemData.img?.isNotEmpty == true) {
-      if(imgPosition == RelativePosition.above) {
-        for(final img in itemData.img!) {
-          outerColumChildren.insert(outerColumChildren.length -2,
-            SibImages.resolve(img),
-          );
-        }
-      } else {
-        for(final img in itemData.img!) {
-          outerColumChildren.insert(outerColumChildren.length -1,
-            SibImages.resolve(img),
-          );
-        }
+      final diff = imgPosition == RelativePosition.above ? 2 : 1;
+      for(final img in itemData.img!) {
+        outerColumChildren.insert(outerColumChildren.length - diff,
+          SibImages.resolve(img),
+        );
       }
     }
 
     //bool _isInit = true;
     if(isValid != null) {
-      outerColumChildren.insert(1, Container(
+      final index = imgPosition == RelativePosition.above
+          ? outerColumChildren.length -1
+          : 1;
+
+      outerColumChildren.insert(index, Container(
         margin: EdgeInsets.symmetric(vertical: 5,),
         child: LiveDataObserver<bool>(
           liveData: isValid!,
@@ -295,23 +292,19 @@ class CheckGroup extends SibFormField {
  */
 
     if(itemData.img?.isNotEmpty == true) {
-      if(imgPosition == RelativePosition.above) {
-        for(final img in itemData.img!) {
-          outerColumChildren.insert(outerColumChildren.length -2,
-            SibImages.resolve(img),
-          );
-        }
-      } else {
-        for(final img in itemData.img!) {
-          outerColumChildren.insert(outerColumChildren.length -1,
-            SibImages.resolve(img),
-          );
-        }
+      final diff = imgPosition == RelativePosition.above ? 2 : 1;
+      for(final img in itemData.img!) {
+        outerColumChildren.insert(outerColumChildren.length - diff,
+          SibImages.resolve(img),
+        );
       }
     }
 
     if(isValid != null) {
-      outerColumChildren.insert(1, Container(
+      final index = imgPosition == RelativePosition.above
+          ? outerColumChildren.length -1
+          : 1;
+      outerColumChildren.insert(index, Container(
         margin: EdgeInsets.symmetric(vertical: 5),
         child: LiveDataObserver<bool>(
           liveData: isValid!,
