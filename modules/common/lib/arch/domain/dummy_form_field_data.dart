@@ -111,3 +111,31 @@ final babyImmunizationFormGroupData = <FormGroupData>[
     ],
   ),
 ];
+
+
+
+final covidMotherCheckFormGroupData = <FormGroupData>[
+  FormGroupData(
+    header: "Form Pemeriksaan Gejala Covid-19",
+    data: [
+      FormData(key: "key1", question: "Apakah bayi mengalami demam atau ada riwayat demam?", type: FormType.radio,
+        options: [
+          FormOption(label: "Ya", isSelected: false),
+          FormOption(label: "Tidak", isSelected: false),
+        ],
+      ),
+      FormData(key: "key2", question: "Apakah bayi mengalami Gejala Gangguan pernapasan: Batuk/Pilek/Nyeri Tenggorokan, dll?", type: FormType.radio,
+        options: [
+          FormOption(label: "Ya", isSelected: false),
+          FormOption(label: "Tidak", isSelected: false),
+        ],
+      ),
+      FormData(key: "key3", question: "Apakah bayi mengidap penyakit Pneumonia Berat/ ISPA Berat?", type: FormType.radio,
+        options: [
+          FormOption(label: "Ya", isSelected: false),
+          FormOption(label: "Tidak", isSelected: false),
+        ],
+      ),
+    ],
+  ),
+];

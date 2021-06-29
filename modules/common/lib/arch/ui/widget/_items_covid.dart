@@ -25,7 +25,7 @@ class ItemCovidHomeOverview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final image = SibImages.resolve(img);
-    return ItemMenuHomeOverview(
+    return ItemModuleHomeOverview(
       image: image,
       upperText: Text(
         desc,

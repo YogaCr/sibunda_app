@@ -2,6 +2,7 @@ import 'package:common/arch/ui/page/_page.dart';
 import 'package:common/config/_config.dart';
 import 'package:common/util/providers.dart';
 import 'package:covid19/di/covid_vm_di.dart';
+import 'package:covid19/ui/check_baby/covid_check_baby_page.dart';
 import 'package:covid19/ui/home/covid_home_page.dart';
 
 class CovidRoutes extends ModuleRoute {
@@ -22,6 +23,11 @@ class CovidRoutes extends ModuleRoute {
   static final covidHomePage = SibRoute("CovidHomePage", CovidHomePage, (ctx) => MainFrame(
     body: CovidHomePage().inVmProvider([
       (ctx) => CovidVmDi.covidHomeVm,
+    ]),
+  ));
+  static final covidCheckBabyPage = SibRoute("CovidCheckBabyPage", CovidCheckBabyPage, (ctx) => MainFrame(
+    body: CovidCheckBabyPage().inVmProvider([
+      (ctx) => CovidVmDi.checkBabyVm,
     ]),
   ));
 }

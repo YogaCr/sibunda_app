@@ -38,3 +38,8 @@ class CovidFormOverview {
     required this.img,
   });
 }
+
+
+class CovidMotherCheckForm {
+  //TODO: kelas kosong,
+}

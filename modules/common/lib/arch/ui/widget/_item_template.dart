@@ -13,12 +13,12 @@ final _cornerRadius = 10.0;
 
 
 /// Home overview for each module.
-class ItemMenuHomeOverview extends StatelessWidget {
+class ItemModuleHomeOverview extends StatelessWidget {
   final Widget image;
   final Widget upperText;
   final Widget? lowerText;
 
-  ItemMenuHomeOverview({
+  ItemModuleHomeOverview({
     required this.image,
     required this.upperText,
     this.lowerText,
@@ -75,14 +75,14 @@ class ItemMenuHomeOverview extends StatelessWidget {
   }
 }
 
-class ItemHomeBigTitle extends StatelessWidget {
+class ItemHomeFormMenu extends StatelessWidget {
   final Widget image;
   final String title;
   final String desc;
   final String? category;
   final void Function()? onClick; //in weeks
 
-  ItemHomeBigTitle({
+  ItemHomeFormMenu({
     required this.image,
     required this.title,
     required this.desc,
@@ -168,10 +168,12 @@ class ItemHomeBigTitle extends StatelessWidget {
   }
 }
 
+
 class ItemPanelWithButton extends StatelessWidget {
   final ImgData img;
   final String title;
   final String action;
+  /// If null, the button will automatically disappear.
   final void Function()? onBtnClick;
 
   ItemPanelWithButton({
@@ -199,20 +201,26 @@ class ItemPanelWithButton extends StatelessWidget {
       ),
     );
 
+    final txtChildren = <Widget>[
+      Text(
+        title,
+        style: SibTextStyles.size_0_bold,
+      ),
+    ];
+    if(onBtnClick != null) {
+      txtChildren.add(
+        TxtBtn(
+          action,
+          onTap: onBtnClick,
+        ),
+      );
+    }
+
     final txtChild = Expanded(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            title,
-            style: SibTextStyles.size_0_bold,
-          ),
-          TxtBtn(
-            action,
-            onTap: onBtnClick,
-          ),
-        ],
+        children: txtChildren,
       ),
     );
 

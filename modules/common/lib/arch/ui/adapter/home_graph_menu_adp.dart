@@ -4,16 +4,22 @@ import 'package:flutter/cupertino.dart';
 
 class HomeGraphMenuList extends StatelessWidget {
   final List<HomeGraphMenu> dataList;
-  HomeGraphMenuList(this.dataList);
+  final void Function(int)? onItemClick;
+  HomeGraphMenuList(this.dataList, {this.onItemClick});
 
   @override
   Widget build(BuildContext context) {
     final itemList = <Widget>[]; //dataList.map((e) => ItemHomeGraphMenu.fromData(e)).toList(growable: false);
-    for(final data in dataList) {
+    for(int i = 0; i < dataList.length; i++) {
+      final i2 = i;
+      final data = dataList[i2];
       itemList.add(
         Flexible(
           flex: 10,
-          child: ItemHomeGraphMenu.fromData(data),
+          child: ItemHomeGraphMenu.fromData(
+            data,
+            onClick: onItemClick != null ? () => onItemClick!(i2) : null,
+          ),
         ),
       );
       itemList.add(

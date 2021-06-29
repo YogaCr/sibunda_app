@@ -1,5 +1,7 @@
 
 class Strings {
+  Strings._();
+
   static const app_name = "SiBunda";
   static const password = "Password";
   static const name = "Nama";
@@ -14,9 +16,12 @@ class Strings {
   static const please_check_the_wrong_field = "Mohon cek isian yang salah";
   static const please_type_correct_email = "Mohon masukan email yang benar";
   static const please_enter_your_name = "Mohon masukan nama Anda";
+  static const there_still_invalid_fields = "Ada beberapa isian yang belum valid";
   static const password_at_least_8 = "Panjang password minimal 8 karakter";
   static const password_re_does_not_match = "Konfirmasi password tidak sama";
   static const wrong_email_or_password = "Email atau password salah";
+  static const form_submission_success = "Form berhasil dikirim";
+  static const form_submission_fail = "Terjadi kesalahan saat mengirim form";
 
   static const ready_to_be_mother_assistant = "Siap Jadi Asisten Bunda";
   static const splash_motto_desc = "Dengan aplikasi kami, Bunda akan serasa memiliki asisten untuk merawat buah hati";

@@ -39,7 +39,7 @@ class ItemMotherOverview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ItemMenuHomeOverview(
+    return ItemModuleHomeOverview(
       image: image,
       upperText: RichText(
         textAlign: TextAlign.start,
@@ -107,7 +107,7 @@ class ItemMotherTrimester extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ItemHomeBigTitle(
+    return ItemHomeFormMenu(
       image: image,
       title: "Trimester $trimester",
       desc: "Usia kehamilan $pregnancyAgeStart hingga $pregnancyAgeEnd Minggu",

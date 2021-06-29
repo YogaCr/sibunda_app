@@ -9,6 +9,7 @@ mixin CovidRepo {
   /// It's cuz the view is the same as [ItemBabyGraphMenu].
   Future<Result<List<HomeGraphMenu>>> getCovidFormMenu();
   Future<Result<List<CovidCheckHistory>>> getCovidHomeHistory(String motherNik);
+  Future<Result<bool>> submitCovidMotherCheck(String motherNik, CovidMotherCheckForm data);
 }
 
 
@@ -26,5 +27,8 @@ class CovidRepoDummy with CovidRepo {
 
   @override
   Future<Result<List<CovidCheckHistory>>> getCovidHomeHistory(String motherNik) async => Success(covidHomeCheckHistory);
+
+  @override
+  Future<Result<bool>> submitCovidMotherCheck(String motherNik, CovidMotherCheckForm data) async => Success(true);
 }
 

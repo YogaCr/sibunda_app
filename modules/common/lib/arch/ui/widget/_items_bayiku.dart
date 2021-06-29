@@ -35,7 +35,7 @@ class ItemBabyOverview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ItemMenuHomeOverview(
+    return ItemModuleHomeOverview(
       image: image,
       upperText: RichText(
         text: TextSpan(
@@ -77,7 +77,7 @@ class ItemBabyFormMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ItemHomeBigTitle(
+    return ItemHomeFormMenu(
       image: image,
       title: "Tahun ${toPeriodString(year)}",
       desc: "Usia bayi $ageStart hingga $ageEnd bulan",
