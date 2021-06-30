@@ -1,22 +1,10 @@
 
 
-import 'package:common/arch/domain/model/education_data.dart';
 import 'package:common/arch/domain/model/home_data.dart';
-import 'package:common/arch/domain/model/profile.dart';
+import 'package:common/arch/domain/model/profile_data.dart';
 import 'package:core/domain/model/result.dart';
 
 import '../dummy_data.dart';
-
-mixin ProfileRepo {
-  Future<Result<Profile>> getProfile(String email);
-}
-
-class ProfileRepoDummy with ProfileRepo {
-  ProfileRepoDummy._();
-  static final obj = ProfileRepoDummy._();
-  @override
-  Future<Result<Profile>> getProfile(String email) async => Success(dummyProfile);
-}
 
 
 mixin HomeStatusRepo {

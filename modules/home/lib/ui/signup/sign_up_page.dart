@@ -1,4 +1,5 @@
 
+import 'package:common/arch/domain/dummy_data.dart';
 import 'package:common/arch/ui/widget/form_generic_vm_group_observer.dart';
 import 'package:common/arch/ui/widget/form_vm_observer.dart';
 import 'package:common/res/theme/_theme.dart';
@@ -23,7 +24,7 @@ class SignUpPage extends StatelessWidget {
           Strings.make_new_mother_account,
           style: SibTextStyles.header1,
         ).withMargin(EdgeInsets.only(top: 60)),
-        ImgPick(imgUrl: "ic_profile.png", package: "common",)
+        ImgPick(placeholderImg: dummyImg_profile,)
             .withMargin(EdgeInsets.only(top: 10, bottom: 20,)),
         FormVmGroupObserver<SignUpFormVm>(
           onSubmit: (ctx, canProceed) => canProceed

@@ -24,10 +24,16 @@ Widget defaultLoading({
   padding: EdgeInsets.all(10),
   width: width,
   height: height,
-  color: Manifest.theme.colorPrimary,
-  child: Text(
-    text ?? "Error",
-    textAlign: TextAlign.center,
+  //color: Manifest.theme.colorPrimary,
+  child: Column(
+    children: [
+      CircularProgressIndicator(),
+      SizedBox(height: 10,),
+      Text(
+        text ?? "Error",
+        textAlign: TextAlign.center,
+      ),
+    ],
   ),
 );
 

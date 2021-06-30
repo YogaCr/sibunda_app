@@ -32,6 +32,7 @@ dependencies:
   json_annotation: ^4.0.1
   retrofit: ^2.0.0
   jiffy: ^4.1.0
+  faker: ^2.0.0
 
   core:
     path: ../core

@@ -25,6 +25,8 @@ class HomeVmDi {
     getHomeStatusList: HomeUseCaseDi.getHomeStatusList,
     getHomeTipsList: HomeUseCaseDi.getHomeTipsList,
     getMotherNik: UseCaseDi.getMotherNik,
+    getCurrentEmail: UseCaseDi.getCurrentEmail,
+    getProfile: UseCaseDi.getProfile,
   );
   static NotifAndMessageVm get notifAndMessageVm => NotifAndMessageVm(
     getMessageList: HomeUseCaseDi.getMessageList,

@@ -2,8 +2,10 @@
 import 'package:common/arch/domain/dummy_data.dart';
 import 'package:common/arch/domain/model/education_data.dart';
 import 'package:common/arch/domain/model/home_data.dart';
+import 'package:common/arch/domain/model/profile_data.dart';
 import 'package:common/arch/ui/adapter/education_adp.dart';
 import 'package:common/arch/ui/page/secondary_frames.dart';
+import 'package:common/arch/ui/widget/_basic_widget.dart';
 import 'package:common/arch/ui/widget/_item_template.dart';
 import 'package:common/arch/ui/widget/_items_home.dart';
 import 'package:common/arch/ui/widget/custom_bottom_nav_bar.dart';
@@ -11,6 +13,7 @@ import 'package:common/config/_config.dart';
 import 'package:common/res/theme/_theme.dart';
 import 'package:common/util/assets.dart';
 import 'package:core/ui/base/async_view_model_observer.dart';
+import 'package:core/ui/base/live_data_observer.dart';
 import 'package:core/ui/base/view_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -21,25 +24,47 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ViewModelProvider.of<HomeVm>(context)
-    ..getStatusList()
-    ..getMenuList()
-    ..getTipsList();
+    final vm = ViewModelProvider.of<HomeVm>(context)
+      ..getProfile()
+      ..getStatusList()
+      ..getMenuList()
+      ..getTipsList();
 
-/*
-    TopBarProfileFrame(
-      name: ,
-    );
- */
-    return TopBarProfileFrame.fromData(
-      isScroll: true,
-      data: dummyProfile,
-      bgColor: grey_calmer,
-      actionBtn: Icon(
+    final actionBtnChild = InkWell(
+      onTap: () => HomeRoutes.homeNotifAndMessagePage.goToPage(context),
+      child: Icon(
         Icons.notifications_none_rounded,
         color: Colors.white,
       ),
-      onActionBtnClick: (ctx) => HomeRoutes.homeNotifAndMessagePage.goToPage(context),
+    );
+
+    final profileWidget = Align(
+      alignment: Alignment.centerLeft,
+      child: LiveDataObserver<Profile>(
+        liveData: vm.profile,
+        builder: (ctx, data) => data != null
+            ? ItemProfile.fromData(data)
+            : defaultLoading(),
+      ),
+    );
+
+    return TopBarPlainFrame(
+      isScroll: true,
+      bgColor: grey_calmer,
+      topBarChildren: [
+        profileWidget,
+        Align(
+          alignment: Alignment.centerRight,
+          child: Container(
+            margin: EdgeInsets.only(top: 15, right: 15),
+            child: SizedBox(
+              width: 50,
+              height: 50,
+              child: actionBtnChild,
+            ),
+          ),
+        ),
+      ],
       body: BelowTopBarScrollContentArea([
         SliverList(
           delegate: SliverChildListDelegate.fixed([

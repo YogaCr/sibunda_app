@@ -1,5 +1,5 @@
 
-import 'package:common/arch/domain/model/profile.dart';
+import 'package:common/arch/domain/model/profile_data.dart';
 import 'package:common/config/_config.dart';
 import 'package:common/res/theme/_theme.dart';
 import 'package:common/arch/ui/widget/custom_top_nav_bar.dart';
@@ -23,6 +23,55 @@ class BelowTopBarScrollContentArea extends StatelessWidget {
     usedSlivers.addAll(slivers);
     return CustomScrollView(
       slivers: usedSlivers,
+    );
+  }
+}
+
+class TopBarPlainFrame extends StatelessWidget {
+  final Widget body;
+  final EdgeInsets? padding;
+  final bool isScroll;
+  final Color? bgColor;
+  /// These are in [Stack] widget.
+  final List<Widget> topBarChildren;
+  final Widget? bottomBar;
+
+  TopBarPlainFrame({
+    required this.body,
+    this.topBarChildren = const [],
+    this.padding,
+    this.isScroll = false,
+    this.bgColor,
+    this.bottomBar,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+
+    final children = <Widget>[
+      Container(
+        margin: !isScroll ? EdgeInsets.only(top: _stdTopMargin) : null,
+        child: body,
+      ),
+      RoundedTopNavBarBg(
+        children: topBarChildren,
+      ),
+    ];
+
+    if(bottomBar != null) {
+      children.add(
+        Align(
+          alignment: Alignment.bottomCenter,
+          child: bottomBar,
+        ),
+      );
+    }
+
+    return Container(
+      color: bgColor,
+      child: Stack(
+        children: children,
+      ),
     );
   }
 }
@@ -101,7 +150,7 @@ class TopBarProfileFrame extends StatelessWidget {
     this.bgColor,
   }):
     name = data.name,
-    desc = "${data.age} tahun",
+    desc = data.email,
     image = Container(color: Manifest.theme.colorPrimary,) //TODO 13 Juni 2021: img
   ;
 

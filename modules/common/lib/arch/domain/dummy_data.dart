@@ -19,15 +19,22 @@ import 'model/kehamilanku_data.dart';
 import 'model/home_data.dart';
 import 'model/mother.dart';
 import 'model/notif_data.dart';
-import 'model/profile.dart';
+import 'model/profile_data.dart';
 
 final faker = Faker();
 
 final dummyImg = ImgData(link: "", isLocal: true);
 final dummyImg_smillingCat = ImgData(link: "_smiling_cat.jpg", package: GlobalRoutes.common, isLocal: true);
+final dummyImg_profile_sm = ImgData(link: "pic_profile_example.png", package: GlobalRoutes.common, isLocal: true);
+final dummyImg_pick = ImgData(link: "ic_plus_color.png", package: GlobalRoutes.common, isLocal: true);
+final dummyImg_profile = ImgData(link: "ic_profile.png", package: GlobalRoutes.common, isLocal: true);
+
+final dummyEmail = "a@a.a";
+final dummyName = "ayu";
+final dummyPswd = "ayu123";
 
 final dummyAccessToken = "aagajki1831huhf1i38y13";
-final dummySignUpData1 = SignUpData(name: "ayu", email: "a@a.a", password: "ayu123");
+final dummySignUpData1 = SignUpData(name: dummyName, email: dummyEmail, password: dummyPswd);
 final dummyLoginData1 = LoginData(email: dummySignUpData1.email, password: dummySignUpData1.password);
 final dummySessionData1 = SessionData(dummyAccessToken);
 
@@ -139,9 +146,9 @@ final dummyPregnancyBabySizes = <PregnancyBabySize>[
 PregnancyBabySize dummyPregnancyBabySize(int week) => dummyPregnancyBabySizes[week % dummyPregnancyBabySizes.length];
 
 final dummyProfile = Profile(
-  name: "Ayu",
-  age: 21,
-  imgLink: "",
+  name: dummyName,
+  email: dummyEmail,
+  img: dummyImg_profile_sm,
 );
 
 final dummyStatusList = <HomeStatus>[

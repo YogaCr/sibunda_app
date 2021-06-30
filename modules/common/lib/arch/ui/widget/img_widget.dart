@@ -7,11 +7,15 @@ Widget buildImgNetwork(
       Widget Function(BuildContext context,Widget child, ImageChunkEvent? loadingProgress,)? loadingBuilder,
       Widget Function(BuildContext context, Object error, StackTrace? stackTrace,)? errorBuilder,
       BoxFit? fit,
+      double? width,
+      double? height,
 }) => Image.network(
   src,
   loadingBuilder: loadingBuilder ?? defImgLoadingBuilder(),
   errorBuilder: errorBuilder ?? defImgErrorBuilder(),
   fit: fit,
+  width: width,
+  height: height,
 );
 
 

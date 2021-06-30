@@ -21,6 +21,18 @@ final signupFormData = <FormGroupData>[
   ]),
 ];
 
+
+final editFormData = <FormGroupData>[
+  FormGroupData(header: "header", data: [
+    FormData(key: Const.KEY_NAME, question: Strings.name, type: FormType.text,),
+    FormData(key: Const.KEY_EMAIL, question: Strings.email, type: FormType.text,),
+    FormData(key: Const.KEY_OLD_PSWD, question: Strings.old_password, type: FormType.text,),
+    FormData(key: Const.KEY_PSWD, question: Strings.password, type: FormType.text,),
+    FormData(key: Const.KEY_RE_PSWD, question: Strings.password_re, type: FormType.text,),
+  ]),
+];
+
+
 final motherFormData = <FormGroupData>[
   FormGroupData(header: "header", data: [
     FormData(key: Const.KEY_NAME, question: Strings.name, type: FormType.text,),

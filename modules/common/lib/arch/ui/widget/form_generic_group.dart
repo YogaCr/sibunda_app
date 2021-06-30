@@ -4,7 +4,9 @@ import 'package:common/arch/ui/vm/form_vm.dart';
 import 'package:common/arch/ui/vm/form_vm_group.dart';
 import 'package:common/res/theme/_theme.dart';
 import 'package:common/value/enums.dart';
+import 'package:core/ui/base/expirable.dart';
 import 'package:core/ui/base/live_data.dart';
+import 'package:core/util/_consoles.dart';
 import 'package:flutter/material.dart';
 
 import 'form_generic_field.dart';
@@ -37,7 +39,10 @@ class FormGenericGroup extends StatefulWidget {
 }
 
 
-class _FormGenericGroupState extends State<FormGenericGroup> {
+class _FormGenericGroupState
+    extends State<FormGenericGroup>
+    implements Expirable
+{
   final FormUiGroupData groupData;
   final FormVmGroupMixin vm;
   final int groupPosition;
@@ -66,6 +71,8 @@ class _FormGenericGroupState extends State<FormGenericGroup> {
         Widget field;
         //Widget Function(BuildContext, bool?)? fieldBuilder_old;
         final itemData = groupData.data[i];
+        final vmLiveData = vm.responseGroupList[groupPosition][key]!.response as MutableLiveData;
+
         switch(itemData.type) {
           case FormType.text:
             final txtLiveData = MutableLiveData<String>();
@@ -80,6 +87,16 @@ class _FormGenericGroupState extends State<FormGenericGroup> {
             );
 
             final txtControl = (field as TxtField).textController;
+            final txtIsChanging = field.isChanging;
+            vmLiveData.observe(this, (data) {
+              //prind("_FormGenericGroupState txtLiveData.observe data = $data LUAR");
+              if(!txtIsChanging.value) {
+                txtIsChanging.value = true;
+                //prind("_FormGenericGroupState txtLiveData.observe data = $data");
+                txtControl.text = data ?? "";
+                txtIsChanging.value = false;
+              }
+            });
 
             vm.registerField(
               groupPosition: groupPosition,
@@ -90,6 +107,9 @@ class _FormGenericGroupState extends State<FormGenericGroup> {
             final answer = itemData.answer;
             if(answer != null) {
               txtControl.text = answer;
+            }
+            if(vmLiveData.value?.isNotEmpty == true) {
+              txtControl.text = vmLiveData.value;
             }
             break;
           case FormType.radio:
@@ -105,6 +125,10 @@ class _FormGenericGroupState extends State<FormGenericGroup> {
               imgPosition: imgPosition,
             );
 
+            vmLiveData.observe(this, (data) {
+              groupValue.value = data;
+            });
+
             vm.registerField(
               groupPosition: groupPosition,
               inputKey: key,
@@ -114,6 +138,9 @@ class _FormGenericGroupState extends State<FormGenericGroup> {
             final selectedAnswerIndex = itemData.selectedAnswer;
             if(selectedAnswerIndex != null) {
               groupValue.value = itemData.answerItems[selectedAnswerIndex];
+            }
+            if(vmLiveData.value?.isNotEmpty == true) {
+              groupValue.value = vmLiveData.value;
             }
             break;
           case FormType.check:
@@ -128,6 +155,10 @@ class _FormGenericGroupState extends State<FormGenericGroup> {
               imgPosition: imgPosition,
             );
 
+            vmLiveData.observe(this, (data) {
+              selectedAnswerIndices.value = data;
+            });
+
             vm.registerField(
               groupPosition: groupPosition,
               inputKey: key,
@@ -137,6 +168,9 @@ class _FormGenericGroupState extends State<FormGenericGroup> {
 
             if(selectedAnswers.isNotEmpty) {
               selectedAnswerIndices.value = selectedAnswers;
+            }
+            if(vmLiveData.value?.isNotEmpty == true) {
+              selectedAnswerIndices.value = vmLiveData.value;
             }
             break;
         }
@@ -165,8 +199,13 @@ class _FormGenericGroupState extends State<FormGenericGroup> {
     );
   }
 
+  bool _isActive = true;
+  @override
+  bool get isActive => _isActive;
+
   @override
   void dispose() {
+    _isActive = false;
     for(final ld in itemLiveData.values) {
       ld.dispose();
     }

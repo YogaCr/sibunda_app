@@ -6,6 +6,7 @@ import 'package:core/domain/model/result.dart';
 import 'package:core/ui/base/async_vm.dart';
 import 'package:core/ui/base/live_data.dart';
 import 'package:core/util/_consoles.dart';
+import 'package:flutter/material.dart';
 
 /// This approach uses generic type of form (form that consists of text, check box, and radio)
 /// and late approach (data about field is defined in runtime, not directly in this ViewModel).
@@ -125,6 +126,9 @@ mixin FormVmGroupMixin implements AsyncVm {
     });
   }
   Future<List<FormUiGroupData>> getFieldGroupList();
+  /// Called right after this [FormVmGroupMixin] form is ready.
+  @protected
+  void onReady(){}
   Future<Result<String>> doSubmitJob();
   Future<bool> validateField(int groupPosition, String inputKey, dynamic response);
   String getInvalidMsg(String inputKey, dynamic response) => defaultInvalidMsg;
@@ -205,6 +209,7 @@ abstract class FormVmGroup extends AsyncVm with FormVmGroupMixin {
         return map;
       }).toList(growable: false);
       _isFormReady.value = true;
+      onReady();
     });
   }
 

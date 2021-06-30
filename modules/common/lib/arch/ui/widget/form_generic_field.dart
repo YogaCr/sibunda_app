@@ -5,6 +5,7 @@ import 'package:common/res/string/_string.dart';
 import 'package:common/res/theme/_theme.dart';
 import 'package:common/util/assets.dart';
 import 'package:common/value/enums.dart';
+import 'package:core/domain/model/wrapper.dart';
 import 'package:core/ui/base/live_data.dart';
 import 'package:core/ui/base/live_data_observer.dart';
 import 'package:core/util/_consoles.dart';
@@ -24,7 +25,7 @@ class TxtField extends SibFormField {
   final FormUiTxt itemData;
   @override
   final LiveData<bool>? isValid;
-  late final LiveData<String> _response;
+  late final LiveData<String> _response; //TODO: msh blum di dispose.
   final TextEditingController textController = TextEditingController();
   @override
   LiveData<String> get responseLiveData => _response;
@@ -34,6 +35,7 @@ class TxtField extends SibFormField {
   /// This will become default invalid message.
   final String invalidMsg;
   final String? Function(String? response)? invalidMsgGenerator;
+  final Var<bool> isChanging = Var(false);
 
   TxtField({
     required this.itemData,
@@ -47,14 +49,21 @@ class TxtField extends SibFormField {
   }): this.isLiveDataOwner = isLiveDataOwner ?? responseLiveData == null
   //  this.textController = textController ?? TextEditingController()
   {
-    _response = responseLiveData ?? ChangeNotifLiveData(
+    _response = responseLiveData ?? MutableChangeNotifLiveData(
       this.textController,
-      (notif) => this.textController.text,
+      getNotif: (notif) => this.textController.text,
+      setNotif: (notif, data) => this.textController.text = data ?? "",
     );
     if(responseLiveData != null) {
       this.textController.addListener(() {
         if(responseLiveData.isActive) {
-          responseLiveData.value = this.textController.text;
+          //prind("TxtField this.textController.addListener isChanging = $isChanging");
+          if(!isChanging.value) {
+            //prind("TxtField this.textController.addListener txt = ${textController.text}");
+            isChanging.value = true;
+            responseLiveData.value = this.textController.text;
+            isChanging.value = false;
+          }
         }
       });
     }

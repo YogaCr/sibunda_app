@@ -2,6 +2,7 @@ import 'package:common/arch/domain/model/education_data.dart';
 import 'package:common/arch/domain/model/form_warning_status.dart';
 import 'package:common/arch/domain/model/home_data.dart';
 import 'package:common/arch/domain/model/img_data.dart';
+import 'package:common/arch/domain/model/profile_data.dart';
 import 'package:common/arch/ui/model/home_graph_menu.dart';
 import 'package:common/arch/ui/model/immunization.dart';
 import 'package:common/config/manifest.dart';
@@ -420,7 +421,7 @@ class ItemTips extends StatelessWidget {
   Widget build(BuildContext context) {
     final parentHeight = 100.0;
 
-    final image = SibImages.resolve(img);
+    final image = SibImages.resolve(img, fit: BoxFit.cover);
 
     final imgChild = Container(
       margin: EdgeInsets.only(right: 10),
@@ -471,6 +472,68 @@ class ItemTips extends StatelessWidget {
             txtChild,
           ],
         ),
+      ),
+    );
+  }
+}
+
+
+class ItemProfile extends StatelessWidget {
+  final String name;
+  final String? desc;
+  final ImgData img;
+
+  ItemProfile({
+    required this.name,
+    required this.img,
+    this.desc,
+  });
+
+  ItemProfile.fromData(Profile data,):
+    name = data.name,
+    desc = data.email,
+    img = data.img
+  ;
+
+  @override
+  Widget build(BuildContext context) {
+
+    final image = SibImages.resolve(img, fit: BoxFit.cover);
+
+    final txtChildren = <Widget>[
+      Text(name, style: SibTextStyles.size_plus_2_colorOnPrimary,),
+    ];
+    if(desc != null){
+      txtChildren.add(
+        Container(
+          margin: EdgeInsets.only(top: 10,),
+          child: Text(
+            desc!,
+            style: SibTextStyles.size_min_1.copyWith(color: yellow),
+          ),
+        ),
+      );
+    }
+
+    return Container(
+      height: 60,
+      margin: EdgeInsets.only(left: 30,),
+      child: Row(
+        children: [
+          CircleAvatar(
+            child: Container(
+              width: 50,
+              height: 50,
+              margin: EdgeInsets.only(right: 15,),
+              child: image,
+            ),
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: txtChildren,
+          ),
+        ],
       ),
     );
   }

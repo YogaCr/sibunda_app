@@ -5,6 +5,7 @@ import 'package:common/arch/domain/repo/education_repo.dart';
 import 'package:common/arch/domain/repo/form_field_repo.dart';
 import 'package:common/arch/domain/repo/form_warning_status_repo.dart';
 import 'package:common/arch/domain/repo/immunization_repo.dart';
+import 'package:common/arch/domain/repo/profile_repo.dart';
 
 class RepoDi {
   RepoDi._();

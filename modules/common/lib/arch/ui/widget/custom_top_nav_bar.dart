@@ -122,34 +122,31 @@ class RoundedTopNavBarProfile extends StatelessWidget {
             child: actionBtn,
             onTap: () => onActionBtnClick?.call(context),
       )) : null;
-
     return RoundedTopNavBarBg(
       children: [
         Align(
           alignment: Alignment.centerLeft,
           child: Container(
+            height: 60,
             margin: EdgeInsets.only(left: 30,),
-            child: SizedBox(
-              height: 60,
-              child: Row(
-                children: [
-                  Container(
+            child: Row(
+              children: [
+                CircleAvatar(
+                  child: Container(
+                    width: 50,
+                    height: 50,
                     margin: EdgeInsets.only(right: 15,),
-                    child: SizedBox(
-                      width: 50,
-                      height: 50,
-                      child: image,
-                    ),
+                    child: image,
                   ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: txtChildren,
-                  ),
-                ],
-              ),
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: txtChildren,
+                ),
+              ],
             ),
-          ),
+          ), //TODO: kelompokan ke widget tersendiri.
         ), //Back
         Align(
           alignment: Alignment.centerRight,

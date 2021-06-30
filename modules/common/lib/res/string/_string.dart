@@ -3,6 +3,7 @@ class Strings {
   Strings._();
 
   static const app_name = "SiBunda";
+  static const old_password = "Password Lama";
   static const password = "Password";
   static const name = "Nama";
   static const email = "Email";

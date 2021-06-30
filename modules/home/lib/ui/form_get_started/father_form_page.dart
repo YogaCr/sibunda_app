@@ -19,8 +19,7 @@ class FatherFormPage extends StatelessWidget {
           Strings.fill_father_data,
           style: SibTextStyles.header1,
         ).withMargin(EdgeInsets.only(top: 60)),
-        ImgPick(imgUrl: "ic_profile.png")
-            .withMargin(EdgeInsets.only(top: 10)),
+        ImgPick().withMargin(EdgeInsets.only(top: 10)),
         FormVmGroupObserver<FatherFormVm>(
           showHeader: false,
           onSubmit: (ctx, success) => success

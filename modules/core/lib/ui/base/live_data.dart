@@ -1,6 +1,7 @@
 
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:tuple/tuple.dart';
+import 'package:collection/collection.dart';
 
 import 'expirable.dart';
 
@@ -10,6 +11,7 @@ class LiveData<T> implements Expirable {
   T? get value => _value;
 
   Map<Tuple2<Expirable, String>, Tuple2<void Function(T?), bool>>? _observers = {};
+  List<void Function(T?)>? _foreverObservers = [];
 
   @override
   bool get isActive => _observers != null;
@@ -39,14 +41,29 @@ class LiveData<T> implements Expirable {
     final key = Tuple2(observer, tag);
     _observers![key] = Tuple2(onChange, distinctUntilChanged);
   }
+  void observeForever(void Function(T?) onChange,) {
+    _assertNotDisposed();
+    _foreverObservers!.add(onChange);
+  }
+  void removeObserver(void Function(T?) onChange,) {
+    _assertNotDisposed();
+    if(!_foreverObservers!.remove(onChange)) {
+      final entry = _observers!.entries.firstWhereOrNull((element) => element.value.item1 == onChange);
+      if(entry != null) {
+        _observers!.remove(entry.key);
+      }
+    }
+  }
 
   bool get hasActiveObserver => _observers?.length.compareTo(0) == 1;
 
   @mustCallSuper
   void dispose() {
-    //_assertNotDisposed();
+    _assertNotDisposed();
     _observers!.clear();
     _observers = null;
+    _foreverObservers!.clear();
+    _foreverObservers = null;
   }
 
   void notifyObservers({T? oldValue, T? newValue}) {
@@ -66,6 +83,9 @@ class LiveData<T> implements Expirable {
         _observers!.remove(observer);
       }
     }
+    for(final onChange in _foreverObservers!) {
+      onChange(_value);
+    }
   }
 
   @override
@@ -75,10 +95,21 @@ class LiveData<T> implements Expirable {
 class MutableLiveData<T> extends LiveData<T> {
   MutableLiveData([T? value]): super(value);
   set value(v) {
-    final old = _value;
-    _value = v;
-    notifyObservers(oldValue: old, newValue: v);
+    if(!_isChanging) {
+      _isChanging = true;
+      final old = _value;
+      _value = v;
+      notifyObservers(oldValue: old, newValue: v);
+      _isChanging = false;
+    }
   }
+
+  /// A flag that marks whether this [LiveData] is changing
+  /// its [_value] so this [LiveData] can prevent infinite loop
+  /// when it comes to [MutableLiveData].
+  bool _isChanging = false;
+
+  bool get isChanging => _isChanging;
 }
 
 
@@ -93,15 +124,24 @@ class ChangeNotifLiveData<T> extends LiveData<T> {
   }): super(onChange(_notifier)) {
     notifierCallback = () {
       if(isActive) {
-        final oldValue = _value;
-        _value = onChange(_notifier);
-        notifyObservers(oldValue: oldValue, newValue: _value);
+        if(!_isChanging) {
+          _isChanging = true;
+          final oldValue = _value;
+          _value = onChange(_notifier);
+          notifyObservers(oldValue: oldValue, newValue: _value);
+          _isChanging = false;
+        }
       } else {
         _notifier.removeListener(notifierCallback);
       }
     };
     _notifier.addListener(notifierCallback);
   }
+
+  /// A flag that marks whether this [ChangeNotifLiveData] is changing
+  /// its [_value] so this [ChangeNotifLiveData] can prevent infinite loop
+  /// when it comes to [MutableChangeNotifLiveData].
+  bool _isChanging = false;
 
   final bool isNotifierOwner;
   ChangeNotifier _notifier;
@@ -115,6 +155,9 @@ class ChangeNotifLiveData<T> extends LiveData<T> {
       _notifier.dispose();
     }
   }
+
+  @override
+  String toString() => "LiveData<$T>(value=$_value)";
 }
 
 
@@ -129,19 +172,30 @@ class MutableChangeNotifLiveData<T>
     bool isNotifierOwner = false,
   }): super(notifier, getNotif, isNotifierOwner: isNotifierOwner,) {
     observe(this, (data) {
-      setNotif(_notifier, data);
+      if(!_isChanging) {
+        _isChanging = true;
+        setNotif(_notifier, data);
+        _isChanging = false;
+      }
     }, tag: "MutableChangeNotifLiveData<$T>");
   }
 
   @override
   set value(T? v) {
-    final old = _value;
-    _value = v;
-    notifyObservers(oldValue: old, newValue: v);
+    if(!_isChanging) {
+      _isChanging = true;
+      final old = _value;
+      _value = v;
+      notifyObservers(oldValue: old, newValue: v);
+      _isChanging = false;
+    }
   }
 
   final void Function(ChangeNotifier p1, T? value) setNotif;
 
   @override
-  String toString() => "MutableLiveData<$T>(value=$value)";
+  String toString() => "MutableLiveData<$T>(value=$_value)";
+
+  @override
+  bool get isChanging => _isChanging;
 }

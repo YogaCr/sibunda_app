@@ -13,7 +13,7 @@ class SibImages {
     BoxFit? fit,
     bool showError = false,
   }){
-    final usedFit = fit ?? BoxFit.fill;
+    final usedFit = fit ?? BoxFit.cover;
     final dir = getDir(fileName);
     if(package != null) {
       if(fileName.endsWith(".svg"))
@@ -36,12 +36,16 @@ class SibImages {
     }
   }
   static String getDir(String fileName) => !fileName.contains("/") ? "assets/images/$fileName" : fileName;
-  static Widget resolve(ImgData data, { BoxFit? fit }) {
-    final usedFit = fit ?? BoxFit.fill;
+  static Widget resolve(ImgData data, {
+    BoxFit? fit,
+    double? width,
+    double? height,
+  }) {
+    final usedFit = fit ?? BoxFit.cover;
     if(!data.isLocal) {
-      return buildImgNetwork(data.link, fit: usedFit);
+      return buildImgNetwork(data.link, fit: usedFit, width: width, height: height,);
     } else {
-      return get(data.link, package: data.package, fit: usedFit);
+      return get(data.link, package: data.package, fit: usedFit, width: width, height: height,);
     }
   }
 }

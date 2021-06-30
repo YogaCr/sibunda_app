@@ -19,6 +19,7 @@ class GlobalRoutes {
   static const bayiku = "bayiku";
   static const covid19 = "covid19";
   static const education = "education";
+  static const profile = "profile";
 
   static const education_detailPage = "education.detailPage";
 

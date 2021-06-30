@@ -1,0 +1,71 @@
+import 'package:common/arch/domain/model/profile_data.dart';
+import 'package:common/arch/ui/page/secondary_frames.dart';
+import 'package:common/arch/ui/widget/_basic_widget.dart';
+import 'package:common/arch/ui/widget/form_generic_vm_group_observer.dart';
+import 'package:common/config/_config.dart';
+import 'package:common/res/string/_string.dart';
+import 'package:common/res/theme/_theme.dart';
+import 'package:common/util/navigations.dart';
+import 'package:common/util/ui.dart';
+import 'package:common/value/const_values.dart';
+import 'package:core/ui/base/view_model.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:profile/ui/edit/profile_edit_vm.dart';
+
+// ignore: must_be_immutable
+class ProfileEditPage extends StatelessWidget {
+  late void Function(bool?) _onChange;
+
+  @override
+  Widget build(BuildContext context) {
+    final profile = getArgs<Profile>(context, Const.KEY_DATA);
+    if(profile == null) {
+      throw "$runtimeType needs `Profile` argument";
+    }
+
+    final vm = ViewModelProvider.of<ProfileEditVm>(context);
+    _onChange = (bool? isReady) {
+      if(isReady == true) {
+        vm.setProfile(profile);
+        vm.isFormReady.removeObserver(_onChange);
+      }
+    };
+    vm.isFormReady.observeForever(_onChange);
+    vm.init();
+
+    return TopBarTitleAndBackFrame(
+      isScroll: true,
+      title: "Edit Profil Bunda",
+      body: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 10,),
+        child: BelowTopBarScrollContentArea([
+          SliverList(
+            delegate: SliverChildListDelegate.fixed([
+              Container(
+                margin: EdgeInsets.only(bottom: 20,),
+                child: ImgPick(pic: profile.img,),
+              ),
+              FormVmGroupObserver<ProfileEditVm>(
+                vm: vm,
+                showHeader: false,
+                onPreSubmit: (ctx, canProceed) {
+                  if(canProceed != true) {
+                    showSnackBar(context, Strings.there_still_invalid_fields,);
+                  }
+                },
+                onSubmit: (ctx, success) => success
+                    ? showSnackBar(context, Strings.form_submission_success, backgroundColor: Colors.green,)
+                    :  showSnackBar(context, Strings.form_submission_fail,),
+                submitBtnBuilder: (ctx, canProceed) => TxtBtn(
+                  "Update Profil Saya",
+                  color: canProceed == true ? Manifest.theme.colorPrimary : grey,
+                ),
+              ),
+            ]),
+          ),
+        ]),
+      ),
+    );
+  }
+}

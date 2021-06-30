@@ -15,6 +15,7 @@ class Const {
   static const KEY_FCM_TOKEN = "fcm_token";
   static const KEY_NAME = "nama";
   static const KEY_EMAIL = "email";
+  static const KEY_OLD_PSWD = "old_password";
   static const KEY_PSWD = "password";
   static const KEY_RE_PSWD = "password_confirmation";
   static const KEY_NAME_CLIENT = "user_name";

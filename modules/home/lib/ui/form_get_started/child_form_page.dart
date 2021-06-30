@@ -19,8 +19,7 @@ class ChildFormPage extends StatelessWidget {
           Strings.fill_child_data,
           style: SibTextStyles.header1,
         ).withMargin(EdgeInsets.only(top: 60)),
-        ImgPick(imgUrl: "ic_profile.png")
-            .withMargin(EdgeInsets.only(top: 10)),
+        ImgPick().withMargin(EdgeInsets.only(top: 10)),
         TxtLink(
           Strings.skip,
           onTap: () => showSnackBar(context, "dipencet"),
