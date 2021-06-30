@@ -41,6 +41,7 @@ class EducationHomeVm extends AsyncVm {
         if(res2 is Success<List<Tips>>) {
           final data = res2.data;
           _mainPanelList.value = data;
+          return null;
         }
         return res2 as Fail;
       }
@@ -57,6 +58,7 @@ class EducationHomeVm extends AsyncVm {
         if(res2 is Success<List<Tips>>) {
           final data = res2.data;
           _tipsList.value = data;
+          return null;
         }
         return res2 as Fail;
       }

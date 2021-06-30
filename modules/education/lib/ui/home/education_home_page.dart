@@ -5,8 +5,10 @@ import 'package:common/arch/ui/widget/_items_education.dart';
 import 'package:common/res/theme/_theme.dart';
 import 'package:core/ui/base/live_data_observer.dart';
 import 'package:core/ui/base/view_model.dart';
+import 'package:education/config/education_routes.dart';
 import 'package:education/ui/home/education_home_vm.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 class EducationHomePage extends StatelessWidget {
   @override
@@ -60,10 +62,13 @@ class _MainPanelList extends StatelessWidget {
     return ListView.builder(
       scrollDirection: Axis.horizontal,
       itemCount: dataList.length,
-      itemBuilder: (ctx, i) => Container(
-        margin: EdgeInsets.symmetric(horizontal: 5,),
-        child: ItemTipsHeaderPanel.fromData(dataList[i]),
-      ),
+      itemBuilder: (ctx, i) => InkWell(
+        onTap: () => EducationRoutes.detailPage.go(ctx, dataList[i]),
+        child: Container(
+          margin: EdgeInsets.symmetric(horizontal: 5,),
+          child: ItemTipsHeaderPanel.fromData(dataList[i]),
+        ),
+      )
     );
   }
 }
@@ -76,12 +81,15 @@ class _TipsList extends StatelessWidget {
   Widget build(BuildContext context) {
     return SliverList(
       delegate: SliverChildBuilderDelegate(
-        (ctx, i) => Container(
-          margin: EdgeInsets.symmetric(
-            vertical: 5,
-            horizontal: 10,
+        (ctx, i) => InkWell(
+          onTap: () => EducationRoutes.detailPage.go(ctx, dataList[i]),
+          child: Container(
+            margin: EdgeInsets.symmetric(
+              vertical: 5,
+              horizontal: 10,
+            ),
+            child: ItemTips.fromData(dataList[i]),
           ),
-          child: ItemTips.fromData(dataList[i]),
         ),
         childCount: dataList.length,
       ),

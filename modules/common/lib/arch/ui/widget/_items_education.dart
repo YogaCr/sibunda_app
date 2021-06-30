@@ -6,6 +6,9 @@ import 'package:common/util/assets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+final tipsPanelHeight = 150.0;
+final tipsPanelWidth = 260.0;
+
 class ItemTipsHeaderPanel extends StatelessWidget {
   final ImgData img;
   final String headline;
@@ -25,8 +28,8 @@ class ItemTipsHeaderPanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final parentHeight = 150.0;
-    final parentWidth = 260.0;
+    final parentHeight = tipsPanelHeight;
+    final parentWidth = tipsPanelWidth;
 
     final image = SibImages.resolve(img, fit: BoxFit.cover);
 
