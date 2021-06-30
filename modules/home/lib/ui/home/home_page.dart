@@ -1,7 +1,9 @@
 
 import 'package:common/arch/domain/dummy_data.dart';
+import 'package:common/arch/domain/model/education_data.dart';
 import 'package:common/arch/domain/model/home_data.dart';
 import 'package:common/arch/ui/page/secondary_frames.dart';
+import 'package:common/arch/ui/widget/_item_template.dart';
 import 'package:common/arch/ui/widget/_items_home.dart';
 import 'package:common/arch/ui/widget/custom_bottom_nav_bar.dart';
 import 'package:common/config/_config.dart';
@@ -112,7 +114,7 @@ class HomePage extends StatelessWidget {
               ),
             ),
 
-            AsyncVmObserver<HomeVm, List<HomeTips>>(
+            AsyncVmObserver<HomeVm, List<Tips>>(
               liveDataGetter: (vm2) => vm2.homeTipsList,
               builder: (ctx, data) => _TipsList(data ?? List.empty()),
             ),
@@ -203,7 +205,7 @@ class _MenuList extends StatelessWidget {
 }
 
 class _TipsList extends StatelessWidget {
-  final List<HomeTips> dataList;
+  final List<Tips> dataList;
 
   _TipsList(this.dataList);
 
@@ -214,7 +216,7 @@ class _TipsList extends StatelessWidget {
       child: Column(
         children: List.generate(dataList.length, (index) => Container(
           margin: EdgeInsets.symmetric(vertical: 10),
-          child: ItemDashboardTips.fromData(dataList[index]),
+          child: ItemTips.fromData(dataList[index]),
         ),
         ),
       ),

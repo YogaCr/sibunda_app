@@ -5,11 +5,13 @@ import 'package:common/arch/ui/model/home_graph_menu.dart';
 import 'package:common/config/routes.dart';
 import 'package:common/res/string/_string.dart';
 import 'package:core/domain/model/range.dart';
+import 'package:faker/faker.dart';
 import 'package:flutter/material.dart';
 
 import 'model/auth.dart';
 import 'model/child.dart';
 import 'model/covid_data.dart';
+import 'model/education_data.dart';
 import 'model/father.dart';
 import 'model/form_warning_status.dart';
 import 'model/immunization.dart';
@@ -18,6 +20,8 @@ import 'model/home_data.dart';
 import 'model/mother.dart';
 import 'model/notif_data.dart';
 import 'model/profile.dart';
+
+final faker = Faker();
 
 final dummyImg = ImgData(link: "", isLocal: true);
 
@@ -150,12 +154,18 @@ final dummyMenuList = <HomeMenu>[
   HomeMenu(name: Strings.covid_19, moduleName: GlobalRoutes.covid19, imgLink: "",),
 ];
 
-final dummyTipsList = <HomeTips>[
-  HomeTips(desc: "Nih Bun 5 Makanan Rekomendasi untuk Bunda Hamil Trimester 2", kind: "Kehamilan", imgLink: "",),
-  HomeTips(desc: "Perkembangan Janin Usia 9 Minggu Kehamilan, Yuk Bun Ketahui Selengkapnya!", kind: "Kehamilan", imgLink: "",),
-  HomeTips(desc: "Yuk Bun Ketahui Pola Asuh Bayi Baru Lahir Sampai Usia 1,5 Tahun", kind: "Kehamilan", imgLink: "",),
-  HomeTips(desc: "Bagaimana Cara Memberikan ASI ke Bayi Baru Lahir 0-28 Hari (Neonatus)?", kind: "Kehamilan", imgLink: "",),
+final dummyTipsList = <Tips>[
+  Tips(title: "Nih Bun 5 Makanan Rekomendasi untuk Bunda Hamil Trimester 2", kind: "Kehamilan", img: dummyImg,),
+  Tips(title: "Perkembangan Janin Usia 9 Minggu Kehamilan, Yuk Bun Ketahui Selengkapnya!", kind: "Kehamilan", img: dummyImg,),
+  Tips(title: "Yuk Bun Ketahui Pola Asuh Bayi Baru Lahir Sampai Usia 1,5 Tahun", kind: "Kehamilan", img: dummyImg,),
+  Tips(title: "Bagaimana Cara Memberikan ASI ke Bayi Baru Lahir 0-28 Hari (Neonatus)?", kind: "Kehamilan", img: dummyImg,),
 ];
+
+final List<TipsDetail> dummyTipsDetailList = List.generate(dummyTipsList.length, (i) => TipsDetail(
+  tips: dummyTipsList[i],
+  desc: faker.lorem.words(700).join(" "),
+  date: DateTime.now().add(Duration(days: i)),
+));
 
 final dummyNotifList = <HomeNotifMsg>[
   HomeNotifMsg(title: "Selamat Datang di SiBunda", desc: "Satu aplikasi untuk semua tahap kehamilan dan kesehatan bayi bunda, mulai dari usia 0 - 6 tahun", time: "12.00 - 11/05/2021", imgLink: "",),

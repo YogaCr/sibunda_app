@@ -323,7 +323,8 @@ class ItemMessage extends StatelessWidget {
   }
 }
 
-
+//TODO hapus
+/*
 class ItemDashboardTips extends StatelessWidget {
   final Widget image;
   final String headline;
@@ -398,3 +399,5 @@ class ItemDashboardTips extends StatelessWidget {
     );
   }
 }
+
+ */

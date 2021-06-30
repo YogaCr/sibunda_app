@@ -10,24 +10,25 @@ class SibImages {
     String? package,
     double? width,
     double? height,
-    BoxFit fit = BoxFit.fill,
+    BoxFit? fit,
     bool showError = false,
   }){
+    final usedFit = fit ?? BoxFit.fill;
     final dir = getDir(fileName);
     if(package != null) {
       if(fileName.endsWith(".svg"))
-        return SvgPicture.asset(dir, width: width, height: height, fit: fit, package: package,);
-      return Image.asset(dir, width: width, height: height, fit: fit, package: package,
+        return SvgPicture.asset(dir, width: width, height: height, fit: usedFit, package: package,);
+      return Image.asset(dir, width: width, height: height, fit: usedFit, package: package,
         errorBuilder: (ctx, error, stackTrace,) {
           prind("SibImages.get() image with file name '$fileName' doesn't exist in package '$package'. Trying to look in default package.");
-          return get(fileName, width: width, height: height, fit: fit,);
+          return get(fileName, width: width, height: height, fit: usedFit,);
         }
         //The image may be in caller's own package, so call this method again with null package.
       );
     } else {
       if(fileName.endsWith(".svg"))
-        return SvgPicture.asset(dir, width: width, height: height, fit: fit,);
-      return Image.asset(dir, width: width, height: height, fit: fit,
+        return SvgPicture.asset(dir, width: width, height: height, fit: usedFit,);
+      return Image.asset(dir, width: width, height: height, fit: usedFit,
         errorBuilder: !showError
             ? defImgBuilder()
             : defImgErrorBuilder(),
@@ -35,11 +36,12 @@ class SibImages {
     }
   }
   static String getDir(String fileName) => !fileName.contains("/") ? "assets/images/$fileName" : fileName;
-  static Widget resolve(ImgData data) {
+  static Widget resolve(ImgData data, { BoxFit? fit }) {
+    final usedFit = fit ?? BoxFit.fill;
     if(!data.isLocal) {
-      return buildImgNetwork(data.link);
+      return buildImgNetwork(data.link, fit: usedFit);
     } else {
-      return get(data.link, package: data.package);
+      return get(data.link, package: data.package, fit: usedFit);
     }
   }
 }

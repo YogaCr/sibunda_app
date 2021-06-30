@@ -1,6 +1,8 @@
 import 'package:core/domain/model/range.dart';
 import 'package:flutter/material.dart';
 
+import 'img_data.dart';
+
 class HomeStatus {
   final String desc;
   final String imgLink;
@@ -24,18 +26,19 @@ class HomeMenu {
     required this.imgLink,
   });
 }
-
+/*
 class HomeTips {
   final String desc;
   final String kind;
-  final String imgLink;
+  final ImgData img;
 
   HomeTips({
     required this.desc,
     required this.kind,
-    required this.imgLink,
+    required this.img,
   });
 }
+ */
 
 class HomeFormMenu {
   final String title;

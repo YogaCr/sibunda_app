@@ -19,7 +19,7 @@ class HomeUseCaseDi {
 
   static GetHomeStatusList get getHomeStatusList => GetHomeStatusListImpl(RepoDi.homeStatusRepo);
   static GetHomeMenuList get getHomeMenuList => GetHomeMenuListImpl(RepoDi.homeMenuRepo);
-  static GetHomeTipsList get getHomeTipsList => GetHomeTipsListImpl(RepoDi.tipsRepo);
+  static GetHomeTipsList get getHomeTipsList => GetHomeTipsListImpl(RepoDi.educationRepo);
 
   static GetNotifList get getNotifList => GetNotifListImpl(RepoDi.notifRepo);
   static GetMessageList get getMessageList => GetMessageListImpl(RepoDi.notifRepo);

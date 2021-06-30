@@ -1,4 +1,6 @@
+import 'package:common/arch/domain/model/education_data.dart';
 import 'package:common/arch/domain/model/form_warning_status.dart';
+import 'package:common/arch/domain/model/home_data.dart';
 import 'package:common/arch/domain/model/img_data.dart';
 import 'package:common/arch/ui/model/home_graph_menu.dart';
 import 'package:common/arch/ui/model/immunization.dart';
@@ -389,6 +391,85 @@ class ItemFormWarningStatus extends StatelessWidget {
               txtChild,
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+
+
+class ItemTips extends StatelessWidget {
+  final ImgData img;
+  final String headline;
+  final String kind;
+
+  ItemTips({
+    required this.img,
+    required this.headline,
+    required this.kind,
+  });
+
+  ItemTips.fromData(Tips data):
+        img = data.img,
+        headline = data.title,
+        kind = data.kind
+  ;
+
+  @override
+  Widget build(BuildContext context) {
+    final parentHeight = 100.0;
+
+    final image = SibImages.resolve(img);
+
+    final imgChild = Container(
+      margin: EdgeInsets.only(right: 10),
+      child: ClipRRect(
+        borderRadius: BorderRadius.all(Radius.circular(15)),
+        child: SizedBox(
+          height: parentHeight,
+          width: parentHeight,
+          child: image,
+        ),
+      ),
+    );
+
+    final txtChild = Expanded( //Agak aneh karna expanded hanya expanded ke ukuran MainAxis dari parent.
+      child: Container(
+        height: parentHeight,
+        child: Padding(
+          padding: EdgeInsets.all(10),
+          child: Stack(
+            children: [
+              Align(
+                alignment: Alignment.topLeft,
+                child: Text(
+                  headline,
+                  style: SibTextStyles.size_min_1.copyWith(fontWeight: FontWeight.bold),
+                ),
+              ),
+              Align(
+                alignment: Alignment.bottomRight,
+                child: Text(
+                  kind,
+                  style: SibTextStyles.size_min_2_colorPrimary,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+
+    return ClipRRect(
+      borderRadius: BorderRadius.all(Radius.circular(15)),
+      child: Container(
+        color: Colors.white,
+        child: Row(
+          children: [
+            imgChild,
+            txtChild,
+          ],
         ),
       ),
     );

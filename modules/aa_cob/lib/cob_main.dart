@@ -1,3 +1,6 @@
+import 'package:common/arch/domain/dummy_data.dart';
+import 'package:common/arch/domain/model/img_data.dart';
+import 'package:common/arch/ui/widget/_items_education.dart';
 import 'package:common/arch/ui/widget/popup_widget.dart';
 import 'package:common/config/_config.dart';
 import 'package:common/util/navigations.dart';
@@ -14,12 +17,25 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Cob',
       theme: Manifest.theme.materialData,
       home: Scaffold(
-        body: MatPage(),
+        body: Column(
+          children: [
+            ItemTipsHeaderPanel(
+              img: ImgData(
+                link: "smiling_cat.jpg",
+                package: "aa_cob",
+                isLocal: true,
+              ),
+              kind: "Halo",
+              headline: "Nih Bun 5 Makanan Rekomendasi untuk Bunda Hamil Trimester 2",  //afafijaoiga agiuoigaja afjaifan gagi",
+            ),
+          ],
+        ),
       ),
     );
   }
 }
 
+/*
 class MatPage extends StatelessWidget {
 
   @override
@@ -42,6 +58,8 @@ class MatPage extends StatelessWidget {
     );
   }
 }
+
+ */
 
 /*
 class MyHomePage extends StatefulWidget {

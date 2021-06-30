@@ -1,5 +1,6 @@
 
 
+import 'package:common/arch/domain/model/education_data.dart';
 import 'package:common/arch/domain/model/home_data.dart';
 import 'package:common/arch/domain/model/profile.dart';
 import 'package:core/domain/model/result.dart';
@@ -19,14 +20,14 @@ class ProfileRepoDummy with ProfileRepo {
 
 
 mixin HomeStatusRepo {
-  Future<Result<List<HomeStatus>>> getHomeStatusList(); //TODO params
+  Future<Result<List<HomeStatus>>> getHomeStatusList(String motherNik); //TODO params
 }
 
 class HomeStatusRepoDummy with HomeStatusRepo {
   HomeStatusRepoDummy._();
   static final obj = HomeStatusRepoDummy._();
   @override
-  Future<Result<List<HomeStatus>>> getHomeStatusList() async => Success(dummyStatusList);
+  Future<Result<List<HomeStatus>>> getHomeStatusList(String motherNik) async => Success(dummyStatusList);
 }
 
 
@@ -42,14 +43,15 @@ class HomeMenuRepoDummy with HomeMenuRepo {
 }
 
 
-
+/*
 mixin TipsRepo {
-  Future<Result<List<HomeTips>>> getHomeTipsList(); //TODO params
+  Future<Result<List<Tips>>> getHomeTipsList(); //TODO params
 }
 
 class TipsRepoDummy with TipsRepo {
   TipsRepoDummy._();
   static final obj = TipsRepoDummy._();
   @override
-  Future<Result<List<HomeTips>>> getHomeTipsList() async => Success(dummyTipsList);
+  Future<Result<List<Tips>>> getHomeTipsList() async => Success(dummyTipsList);
 }
+ */
