@@ -20,7 +20,7 @@ class SibImages {
         return SvgPicture.asset(dir, width: width, height: height, fit: usedFit, package: package,);
       return Image.asset(dir, width: width, height: height, fit: usedFit, package: package,
         errorBuilder: (ctx, error, stackTrace,) {
-          prind("SibImages.get() image with file name '$fileName' doesn't exist in package '$package'. Trying to look in default package.");
+          prind("SibImages.get() image with file name '$fileName' doesn't exist in package '$package'. Trying to look in default package...");
           return get(fileName, width: width, height: height, fit: usedFit,);
         }
         //The image may be in caller's own package, so call this method again with null package.

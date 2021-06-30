@@ -24,6 +24,7 @@ import 'model/profile.dart';
 final faker = Faker();
 
 final dummyImg = ImgData(link: "", isLocal: true);
+final dummyImg_smillingCat = ImgData(link: "_smiling_cat.jpg", package: GlobalRoutes.common, isLocal: true);
 
 final dummyAccessToken = "aagajki1831huhf1i38y13";
 final dummySignUpData1 = SignUpData(name: "ayu", email: "a@a.a", password: "ayu123");
@@ -156,7 +157,7 @@ final dummyMenuList = <HomeMenu>[
 
 final dummyTipsList = <Tips>[
   Tips(title: "Nih Bun 5 Makanan Rekomendasi untuk Bunda Hamil Trimester 2", kind: "Kehamilan", img: dummyImg,),
-  Tips(title: "Perkembangan Janin Usia 9 Minggu Kehamilan, Yuk Bun Ketahui Selengkapnya!", kind: "Kehamilan", img: dummyImg,),
+  Tips(title: "Perkembangan Janin Usia 9 Minggu Kehamilan, Yuk Bun Ketahui Selengkapnya!", kind: "Kehamilan", img: dummyImg_smillingCat,),
   Tips(title: "Yuk Bun Ketahui Pola Asuh Bayi Baru Lahir Sampai Usia 1,5 Tahun", kind: "Kehamilan", img: dummyImg,),
   Tips(title: "Bagaimana Cara Memberikan ASI ke Bayi Baru Lahir 0-28 Hari (Neonatus)?", kind: "Kehamilan", img: dummyImg,),
 ];
