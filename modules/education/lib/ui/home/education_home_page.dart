@@ -1,4 +1,5 @@
 import 'package:common/arch/domain/model/education_data.dart';
+import 'package:common/arch/ui/adapter/education_adp.dart';
 import 'package:common/arch/ui/page/secondary_frames.dart';
 import 'package:common/arch/ui/widget/_item_template.dart';
 import 'package:common/arch/ui/widget/_items_education.dart';
@@ -45,7 +46,10 @@ class EducationHomePage extends StatelessWidget {
         ),
         LiveDataObserver<List<Tips>>(
           liveData: vm.tipsList,
-          builder: (ctx, data) => _TipsList(data ?? List.empty(growable: false)),
+          builder: (ctx, data) => TipsList(
+            data ?? List.empty(growable: false),
+            onItemClick: (data) => EducationRoutes.detailPage.go(context, data),
+          ),
         ),
       ]),
     );
@@ -73,6 +77,7 @@ class _MainPanelList extends StatelessWidget {
   }
 }
 
+/*
 class _TipsList extends StatelessWidget {
   final List<Tips> dataList;
   _TipsList(this.dataList);
@@ -96,3 +101,4 @@ class _TipsList extends StatelessWidget {
     );
   }
 }
+ */

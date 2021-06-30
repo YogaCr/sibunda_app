@@ -10,7 +10,10 @@ import 'package:education/ui/home/education_home_page.dart';
 import 'package:flutter/cupertino.dart';
 
 class EducationRoutes extends ModuleRoute {
-  EducationRoutes._() : super(GlobalRoutes.manager);
+  EducationRoutes._() : super(GlobalRoutes.manager) {
+    GlobalRoutes.manager.exportRoute(GlobalRoutes.education_detailPage, detailPage._route);
+  }
+
   static final obj = EducationRoutes._();
 
   @override

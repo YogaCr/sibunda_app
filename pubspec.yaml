@@ -43,6 +43,8 @@ dependencies:
   tuple: ^2.0.0
   provider: ^5.0.0
   async: ^2.5.0
+  jiffy: ^4.1.0
+  faker: ^2.0.0
 
   common:
     path: modules/common

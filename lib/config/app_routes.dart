@@ -1,6 +1,7 @@
 import 'package:bayiku/config/baby_routes.dart';
 import 'package:common/config/_config.dart';
 import 'package:covid19/config/covid_routes.dart';
+import 'package:education/config/education_routes.dart';
 import 'package:home/config/home_routes.dart';
 import 'package:kehamilanku/config/kehamilanku_routes.dart';
 
@@ -15,10 +16,11 @@ class AppRoutes extends ModuleRoute {
     CovidRoutes.obj;
     KehamilankuRoutes.obj;
     BabyRoutes.obj;
+    EducationRoutes.obj;
   }
 
   @override
-  SibRoute get entryPoint => HomeRoutes.obj.entryPoint;
+  SibRoute get entryPoint => HomeRoutes.homePage;
 
   @override
   String get name => GlobalRoutes.app;

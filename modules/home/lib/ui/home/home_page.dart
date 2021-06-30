@@ -2,12 +2,14 @@
 import 'package:common/arch/domain/dummy_data.dart';
 import 'package:common/arch/domain/model/education_data.dart';
 import 'package:common/arch/domain/model/home_data.dart';
+import 'package:common/arch/ui/adapter/education_adp.dart';
 import 'package:common/arch/ui/page/secondary_frames.dart';
 import 'package:common/arch/ui/widget/_item_template.dart';
 import 'package:common/arch/ui/widget/_items_home.dart';
 import 'package:common/arch/ui/widget/custom_bottom_nav_bar.dart';
 import 'package:common/config/_config.dart';
 import 'package:common/res/theme/_theme.dart';
+import 'package:common/util/assets.dart';
 import 'package:core/ui/base/async_view_model_observer.dart';
 import 'package:core/ui/base/view_model.dart';
 import 'package:flutter/cupertino.dart';
@@ -75,37 +77,6 @@ class HomePage extends StatelessWidget {
               liveDataGetter: (vm2) => vm2.homeMenuList,
               builder: (ctx, data) => _MenuList(data ?? List.empty()),
             ),
-/*
-            buildReactiveBlocBuilder<
-                HomeBloc, HomeState, OnHomeMenuDataChanged, List<HomeMenu>
-            >(
-              stateDataGetter: (state) {
-                print("OnHomeMenuDataChanged state= $state");
-                return state.data;
-              },
-              blocDataGetter: (bloc) => bloc.menuList,
-              builder: (data) => _MenuList(data),
-            ),
- */
-/*
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            ItemDashboardMenu(
-                              image: Container(),
-                              text: "Kehamilanku",
-                            ),
-                            ItemDashboardMenu(
-                              image: Container(),
-                              text: "Bayiku",
-                            ),
-                            ItemDashboardMenu(
-                              image: Container(),
-                              text: "Covid-19",
-                            ),
-                          ],
-                        ),
- */
             Container(
               margin: EdgeInsets.only(left: 20, bottom: 20, top: 40,),
               child: Text(
@@ -113,36 +84,54 @@ class HomePage extends StatelessWidget {
                 style: SibTextStyles.size_0_bold,
               ),
             ),
-
-            AsyncVmObserver<HomeVm, List<Tips>>(
-              liveDataGetter: (vm2) => vm2.homeTipsList,
-              builder: (ctx, data) => _TipsList(data ?? List.empty()),
+          ]),
+        ),
+        AsyncVmObserver<HomeVm, List<Tips>>(
+          liveDataGetter: (vm2) => vm2.homeTipsList,
+          builder: (ctx, data) => TipsList(
+            data ?? List.empty(),
+            onItemClick: (data) => HomeRoutes.obj.goToExternalRoute(
+              context, GlobalRoutes.education_detailPage,
+              args: GlobalRoutes.makeEducationDetailPageData(data),
             ),
-/*
-            buildReactiveBlocBuilder<
-                HomeBloc, HomeState, OnHomeTipsDataChanged, List<HomeTips>
-            >(
-              stateDataGetter: (state) => state.data,
-              blocDataGetter: (bloc) => bloc.tipsList,
-              builder: (data) => _TipsList(data),
-            ),
- */
-            Container(
-              alignment: Alignment.center,
-              margin: EdgeInsets.only(top: 15),
-              child: Text(
-                "Lihat Selengkapnya",
-                style: SibTextStyles.size_min_2_colorPrimary,
+          ),
+        ),
+        SliverList(
+          delegate: SliverChildListDelegate.fixed([
+            InkWell(
+              onTap: () => HomeRoutes.obj.goToModule(context, GlobalRoutes.education),
+              child: Container(
+                alignment: Alignment.center,
+                margin: EdgeInsets.only(top: 15),
+                child: Text(
+                  "Lihat Selengkapnya",
+                  style: SibTextStyles.size_min_2_colorPrimary,
+                ),
               ),
             ),
             SizedBox(height: 100,),
-            ///*
-// */
           ]),
         ),
       ]),
       bottomBar: MiddleBtnBottomNavBar(
-        midBtnChild: Icon(Icons.image,),
+        midBtnOnClick: () => HomeRoutes.obj.goToModule(context, GlobalRoutes.education),
+        midBtnChild: Padding(
+          padding: EdgeInsets.all(3),
+          child: Column(
+            children: [
+              Expanded(
+                child: SibImages.get("ic_home_mid_btn.png", package: GlobalRoutes.common,),
+              ),
+              Text(
+                "Info",
+                style: SibTextStyles.size_min_1.copyWith(
+                  color: white,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+        ),
         items: [
           BottomNavigationBarItem(
             label: "Beranda",
@@ -204,6 +193,8 @@ class _MenuList extends StatelessWidget {
   }
 }
 
+
+/*
 class _TipsList extends StatelessWidget {
   final List<Tips> dataList;
 
@@ -214,12 +205,19 @@ class _TipsList extends StatelessWidget {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 10),
       child: Column(
-        children: List.generate(dataList.length, (index) => Container(
-          margin: EdgeInsets.symmetric(vertical: 10),
-          child: ItemTips.fromData(dataList[index]),
+        children: List.generate(dataList.length, (index) => InkWell(
+          onTap: () => HomeRoutes.obj.goToExternalRoute(
+            context, GlobalRoutes.education_detailPage,
+            args: GlobalRoutes.makeEducationDetailPageData(dataList[index]),
+          ),
+          child: Container(
+            margin: EdgeInsets.symmetric(vertical: 10),
+            child: ItemTips.fromData(dataList[index]),
+          ),
         ),
         ),
       ),
     );
   }
 }
+ */
