@@ -24,11 +24,11 @@ class BabyFormMenuData {
   });
 }
 
-class BabyGraphMenuData {
+class ChartMenuData {
   final String title;
   final ImgData img;
 
-  BabyGraphMenuData({
+  ChartMenuData({
     required this.title,
     required this.img,
   });

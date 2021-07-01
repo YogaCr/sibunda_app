@@ -1,3 +1,4 @@
+import 'package:common/arch/domain/model/chart_data_mother.dart';
 import 'package:common/arch/domain/model/immunization.dart';
 import 'package:common/arch/domain/model/kehamilanku_data.dart';
 import 'package:common/arch/ui/page/_page.dart';
@@ -8,6 +9,7 @@ import 'package:common/value/const_values.dart';
 import 'package:core/util/_consoles.dart';
 import 'package:flutter/material.dart';
 import 'package:kehamilanku/di/kehamilanku_vm_di.dart';
+import 'package:kehamilanku/ui/chart/mother_chart_page.dart';
 import 'package:kehamilanku/ui/home/kehamilanku_home_page.dart';
 import 'package:kehamilanku/ui/immunization/pregnancy_immunization_page.dart';
 import 'package:kehamilanku/ui/immunization/pregnancy_immunization_popup_page.dart';
@@ -29,6 +31,7 @@ class KehamilankuRoutes extends ModuleRoute {
     kehamilankuHomePage,
     pregnancyCheckPage._route,
     immunizationPage,
+    chartPage._route,
   };
 
 
@@ -43,6 +46,8 @@ class KehamilankuRoutes extends ModuleRoute {
       (ctx) => KehamilankuVmDi.immunizationVm,
     ]),
   ));
+
+  static final chartPage = _MotherChartPageRoute.obj;
 
   // ================= POPUP ================
   static final immunizationPopup = _PregnancyImmunizationPopupRoute.obj;
@@ -87,5 +92,21 @@ class _PregnancyImmunizationPopupRoute {
   }
   void backPage(BuildContext context, String? date) {
     nav_ext.backPage(context, result: date);
+  }
+}
+
+
+class _MotherChartPageRoute {
+  _MotherChartPageRoute._();
+  static final obj = _MotherChartPageRoute._();
+
+  final _route = SibRoute("MotherChartPage", MotherChartPage, (ctx) => MainFrame(
+    body: MotherChartPage().inVmProvider([
+      (ctx) => KehamilankuVmDi.motherChartVm,
+    ]),
+  ));
+
+  void go(BuildContext context, MotherChartType type) {
+    _route.goToPage(context, args: { Const.KEY_DATA: type });
   }
 }

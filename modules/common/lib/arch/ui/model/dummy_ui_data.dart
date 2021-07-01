@@ -33,13 +33,13 @@ final babyFormMenuList_ui = List<BabyFormMenuData>.generate(5, (i) => BabyFormMe
   monthEnd: (i+1)*12,
 ));
 
-final babyGrowthGraphMenuList_ui = <BabyGraphMenuData>[
-  BabyGraphMenuData(title: "Grafik KMS", img: dummyImg),
-  BabyGraphMenuData(title: "Grafik Berat Badan Menurut Umur", img: dummyImg),
-  BabyGraphMenuData(title: "Grafik Panjang Badan Menurut Umur", img: dummyImg),
-  BabyGraphMenuData(title: "Grafik Berat Badan Menurut  Panjang Badan", img: dummyImg),
-  BabyGraphMenuData(title: "Grafik Lingkar Kepala", img: dummyImg),
-  BabyGraphMenuData(title: "Grafik Indeks Massa Tubuh", img: dummyImg),
+final babyGrowthGraphMenuList_ui = <ChartMenuData>[
+  ChartMenuData(title: "Grafik KMS", img: dummyImg),
+  ChartMenuData(title: "Grafik Berat Badan Menurut Umur", img: dummyImg),
+  ChartMenuData(title: "Grafik Panjang Badan Menurut Umur", img: dummyImg),
+  ChartMenuData(title: "Grafik Berat Badan Menurut  Panjang Badan", img: dummyImg),
+  ChartMenuData(title: "Grafik Lingkar Kepala", img: dummyImg),
+  ChartMenuData(title: "Grafik Indeks Massa Tubuh", img: dummyImg),
 ];
 
 /*

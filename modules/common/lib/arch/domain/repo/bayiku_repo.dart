@@ -9,7 +9,7 @@ mixin MyBabyRepo {
   Future<Result<BabyAgeOverview>> getBabyAgeOverview(String babyNik);
   Future<Result<List<HomeGraphMenu>>> getBabyGraphMenu();
   Future<Result<List<BabyFormMenuData>>> getBabyFormMenu();
-  Future<Result<List<BabyGraphMenuData>>> getBabyGrowthGraphMenu();
+  Future<Result<List<ChartMenuData>>> getBabyGrowthGraphMenu();
 }
 
 
@@ -26,7 +26,7 @@ class MyBabyRepoDummy with MyBabyRepo {
   @override
   Future<Result<List<BabyFormMenuData>>> getBabyFormMenu() async => Success(babyFormMenuList_ui);
   @override
-  Future<Result<List<BabyGraphMenuData>>> getBabyGrowthGraphMenu() async => Success(babyGrowthGraphMenuList_ui);
+  Future<Result<List<ChartMenuData>>> getBabyGrowthGraphMenu() async => Success(babyGrowthGraphMenuList_ui);
 }
 
 

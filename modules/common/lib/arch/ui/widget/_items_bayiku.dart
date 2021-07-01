@@ -99,7 +99,7 @@ class ItemBabyGraphMenu extends StatelessWidget {
     this.onClick,
   });
 
-  ItemBabyGraphMenu.fromData(BabyGraphMenuData data, {this.onClick}):
+  ItemBabyGraphMenu.fromData(ChartMenuData data, {this.onClick}):
     title = data.title,
     img = data.img
   ;
