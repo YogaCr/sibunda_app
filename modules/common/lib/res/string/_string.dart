@@ -95,6 +95,13 @@ class Strings {
 
   static const check_covid_menu = "Menu Cek Covid-19 Bunda dan Bayi";
 
+  static const lower_limit = "Batas Bawah";
+  static const upper_limit = "Batas Atas";
+  static const normal_limit = "Batas Normal";
+  static const input = "Input";
+  static const over_limit = "Batas Over";
+  static const obese_limit = "Batas Obesitas";
+
   static const year =  "Tahun";
   static const month =  "Bulan";
   static const day =  "Hari";

@@ -6,8 +6,11 @@ class GetStartedFormMainPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    PageView(
+      physics: NeverScrollableScrollPhysics(),
 
+    );
   }
 }
 
- */
+// */

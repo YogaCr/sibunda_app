@@ -47,7 +47,7 @@ class BabyCheckFormPage extends StatelessWidget {
         child: TopBarItemCenterAlignList(
           dataList: monthList,
           pageController: pageController,
-          onItemClick: (i) => showSnackBar(context, "Dipencet i = $i"),
+          //onItemClick: (i) => showSnackBar(context, "Dipencet i = $i"),
         ),
       ),
       body: Padding(
@@ -75,6 +75,7 @@ class _MonthlyCheckFormPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    vm.initFormDataInMonth(month);
 
     return BelowTopBarScrollContentArea([
       SliverList(delegate: SliverChildListDelegate.fixed([

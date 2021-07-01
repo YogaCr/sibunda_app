@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+part of '_theme.dart';
 
 class SibDimens {
   SibDimens._();
@@ -10,3 +10,7 @@ class SibDimens {
 class SibDimensWidget {
   static const std_radius_circular = Radius.circular(SibDimens.std_radius);
 }
+
+const chartLineWidth = 2.0;
+const chartAnimationDuration = 2500.0;
+const chartAnimationDurationOffset = 2500.0;

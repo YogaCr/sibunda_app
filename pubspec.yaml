@@ -45,6 +45,7 @@ dependencies:
   async: ^2.5.0
   jiffy: ^4.1.0
   faker: ^2.0.0
+  syncfusion_flutter_charts: ^19.2.44
 
   common:
     path: modules/common
@@ -64,6 +65,8 @@ dependencies:
     path: modules/keluargaku
   notif:
     path: modules/notif
+  profile:
+    path: modules/profile
 
 dev_dependencies:
   flutter_test:

@@ -1,6 +1,7 @@
 import 'package:common/arch/domain/model/form_data.dart';
 import 'package:common/arch/domain/model/img_data.dart';
 import 'package:common/arch/ui/model/form_data.dart';
+import 'package:common/config/_config.dart';
 import 'package:common/res/string/_string.dart';
 import 'package:common/value/const_values.dart';
 
@@ -90,8 +91,86 @@ final childFormData = <FormGroupData>[
 ];
 
 
+List<FormGroupData> getBabyFormGroupData_dummy(int month) {
+  final list = [babyFormGroupData1,babyFormGroupData2,];
+  return list[month % list.length];
+}
 
-final babyFormGroupData = <FormGroupData>[
+final babyFormGroupData1 = <FormGroupData>[
+  FormGroupData(
+    header: "Form Pemeriksaan Pertumbuhan Bayi",
+    data: [
+      FormData(key: "key1", question: "Tanggal Periksa", type: FormType.text,),
+      FormData(key: "key2", question: "Tempat Periksa", type: FormType.text,),
+      FormData(key: "key3", question: "Nama Pemeriksa", type: FormType.text,),
+      FormData(key: "key4", question: "Usia Bayi", type: FormType.text,),
+      FormData(key: "key5", question: "Berat Badan (kg)", type: FormType.text,),
+      FormData(key: "key6", question: "Panjang/Tinggi Badan (cm)", type: FormType.text,),
+      FormData(key: "key7", question: "Lingkar Kepala (cm)", type: FormType.text,),
+      FormData(key: "key8", question: "IMT Bayi", type: FormType.text,),
+    ],
+  ),
+];
+
+final babyFormGroupData2 = <FormGroupData>[
+  FormGroupData(
+    header: "Form Pemeriksaan Pertumbuhan Bayi",
+    data: [
+      FormData(key: "key1", question: "Tanggal Periksa", type: FormType.text,),
+      FormData(key: "key2", question: "Tempat Periksa", type: FormType.text,),
+      FormData(key: "key3", question: "Nama Pemeriksa", type: FormType.text,),
+      FormData(key: "key4", question: "Usia Bayi", type: FormType.text,),
+      FormData(key: "key5", question: "Berat Badan (kg)", type: FormType.text,),
+      FormData(key: "key6", question: "Panjang/Tinggi Badan (cm)", type: FormType.text,),
+      FormData(key: "key7", question: "Lingkar Kepala (cm)", type: FormType.text,),
+      FormData(key: "key8", question: "IMT Bayi", type: FormType.text,),
+    ],
+  ),
+  FormGroupData(
+    header: "Form Pemeriksaan Pertumbuhan Bayi",
+    data: [
+      FormData(key: "key9",
+        question: "Pada waktu bayi telentang, apakah masing-masing lengan dan tungkai bergerak dengan mudah? (Jawab TIDAK bila salah satu atau kedua tungkai atau lengan bayi bergerak tak terarah/tak terkendali)", 
+        type: FormType.radio,
+        options: [
+          FormOption(label: "Ya", isSelected: false),
+          FormOption(label: "Tidak", isSelected: false),
+        ],
+      ),
+      FormData(key: "key10",
+        question: "Pada waktu bayi telentang apakah ia melihat dan menatap wajah anda? ",
+        type: FormType.radio,
+        options: [
+          FormOption(label: "Ya", isSelected: false),
+          FormOption(label: "Tidak", isSelected: false),
+        ],
+      ),
+      FormData(key: "key11",
+        question: "Apakah bayi dapat mengeluarkan suara-suara lain (ngoceh), disamping menangis?",
+        type: FormType.radio,
+        options: [
+          FormOption(label: "Ya", isSelected: false),
+          FormOption(label: "Tidak", isSelected: false),
+        ],
+      ),
+      FormData(key: "key12",
+        question: "Pada waktu bayi telentang, apakah ia dapat mengikuti gerakan anda dengan menggerakkan kepalanya dari kanan/kiri ke tengah?",
+        type: FormType.radio,
+        options: [
+          FormOption(label: "Ya", isSelected: false),
+          FormOption(label: "Tidak", isSelected: false),
+        ],
+        img: [
+          ImgData(link: "pic_baby_head_side_to_middle.png", package: GlobalRoutes.bayiku, isLocal: true),
+        ],
+      ),
+    ],
+  ),
+];
+
+/*
+JANGAN DIHAPUS
+final babyFormGroupData_dummy = <FormGroupData>[
   FormGroupData(
     header: "Yuk cek",
     data: [
@@ -145,8 +224,9 @@ final babyFormGroupData = <FormGroupData>[
     ],
   ),
 ];
-va(){
-}
+ */
+
+
 
 final motherFormGroupData = <FormGroupData>[
   FormGroupData(

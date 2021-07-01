@@ -3,10 +3,11 @@ import 'dart:ui';
 import 'package:common/config/manifest.dart';
 import 'package:flutter/material.dart';
 
-export 'dimens.dart';
+//export 'dimens.dart';
 
 part 'colors.dart';
 part 'fonts.dart';
+part 'dimens.dart';
 
 
 class MaterialTheme {

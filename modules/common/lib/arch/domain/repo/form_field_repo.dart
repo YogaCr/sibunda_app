@@ -3,7 +3,7 @@ import 'package:common/arch/domain/model/form_data.dart';
 import 'package:core/domain/model/result.dart';
 
 mixin FormFieldRepo {
-  Future<Result<List<FormGroupData>>> getBabyFormGroupData();
+  Future<Result<List<FormGroupData>>> getBabyFormGroupData(int month);
   Future<Result<List<FormGroupData>>> getPregnancyFormGroupData();
   Future<Result<List<FormGroupData>>> getPregnancyImmunizationFormGroupData();
   Future<Result<List<FormGroupData>>> getBabyImmunizationFormGroupData();
@@ -14,7 +14,7 @@ class FormFieldRepoDummy with FormFieldRepo {
   FormFieldRepoDummy._();
   static final obj = FormFieldRepoDummy._();
   @override
-  Future<Result<List<FormGroupData>>> getBabyFormGroupData() async => Success(babyFormGroupData);
+  Future<Result<List<FormGroupData>>> getBabyFormGroupData(int month) async => Success(getBabyFormGroupData_dummy(month));
   @override
   Future<Result<List<FormGroupData>>> getPregnancyFormGroupData() async => Success(motherFormGroupData);
   @override

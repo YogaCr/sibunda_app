@@ -14,13 +14,19 @@ class BabyCheckFormVm extends FormVmGroup {
   final GetBabyCheckForm _getBabyCheckForm;
 
   int currentMonth = 0;
+  int _currentMonthForForm = 0;
 
   @override
   Future<Result<String>> doSubmitJob() async => Success("ok");
 
+  void initFormDataInMonth(int month) {
+    _currentMonthForForm = month;
+    init(isOneShot: false);
+  }
+
   @override
   Future<List<FormUiGroupData>> getFieldGroupList() async {
-    final res = await _getBabyCheckForm();
+    final res = await _getBabyCheckForm(_currentMonthForForm-1);
     if(res is Success<List<FormGroupData>>) {
       return res.data.map((e) => FormUiGroupData.fromModel(e)).toList(growable: false);
     } else {

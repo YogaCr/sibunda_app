@@ -195,19 +195,19 @@ final motherWarningStatusList = <FormWarningStatus>[
     desc: "Berat Badan Bunda kurang sesuai ya Bun. ",
     action: "Lihat rekomendasi makanan",
     isSafe: false,
-    imgLink: "",
+    imgLink: dummyImg,
   ),
   FormWarningStatus(
     desc: "Denyut Jantung Janin Bunda kurang ya. Silahkan periksa ke faskes ya Bun",
     action: "Cari Faskes terdekat",
     isSafe: false,
-    imgLink: "",
+    imgLink: dummyImg,
   ),
   FormWarningStatus(
     desc: "Selamat Bunda! \nTinggi Fundus Uterus Bunda normal ya Bun.",
     action: "Cari Faskes terdekat",
     isSafe: true,
-    imgLink: "",
+    imgLink: dummyImg,
   ),
 ];
 
@@ -216,19 +216,19 @@ final babyWarningStatusList = <FormWarningStatus>[
     desc: "Bunda, berat badan bayi tidak normal ya Bun menurut usia bayi.",
     action: "Cari Faskes terdekat",
     isSafe: false,
-    imgLink: "",
+    imgLink: dummyImg,
   ),
   FormWarningStatus(
     desc: "Selamat Bunda! \n Panjang badan atau tinggi badan menurut usia bayi normal.",
     action: "Cari Faskes terdekat",
     isSafe: true,
-    imgLink: "",
+    imgLink: dummyImg,
   ),
   FormWarningStatus(
     desc: "Bunda, berat badan bayi menurut panjang/tinggi badan tidak normal.",
     action: "Cari Faskes terdekat",
     isSafe: false,
-    imgLink: "",
+    imgLink: dummyImg,
   ),
 ];
 

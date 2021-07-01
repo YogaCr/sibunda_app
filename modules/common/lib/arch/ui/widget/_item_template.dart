@@ -498,8 +498,6 @@ class ItemProfile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    final image = SibImages.resolve(img, fit: BoxFit.cover);
-
     final txtChildren = <Widget>[
       Text(name, style: SibTextStyles.size_plus_2_colorOnPrimary,),
     ];
@@ -520,14 +518,14 @@ class ItemProfile extends StatelessWidget {
       margin: EdgeInsets.only(left: 30,),
       child: Row(
         children: [
-          CircleAvatar(
+          ClipOval(
             child: Container(
               width: 50,
               height: 50,
-              margin: EdgeInsets.only(right: 15,),
-              child: image,
+              child: SibImages.resolve(img, fit: BoxFit.cover),
             ),
           ),
+          SizedBox(width: 15,),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.center,

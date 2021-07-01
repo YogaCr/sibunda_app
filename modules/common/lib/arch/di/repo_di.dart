@@ -1,5 +1,7 @@
 import 'package:common/arch/domain/repo/_repos.dart';
 import 'package:common/arch/domain/repo/bayiku_repo.dart';
+import 'package:common/arch/domain/repo/chart_baby_repo.dart';
+import 'package:common/arch/domain/repo/chart_mother_repo.dart';
 import 'package:common/arch/domain/repo/covid_repo.dart';
 import 'package:common/arch/domain/repo/education_repo.dart';
 import 'package:common/arch/domain/repo/form_field_repo.dart';
@@ -34,4 +36,7 @@ class RepoDi {
   static MyBabyRepo get myBabyRepo => MyBabyRepoDummy.obj;
 
   static CovidRepo get covidRepo => CovidRepoDummy.obj;
+
+  static BabyChartRepo get babyChartRepo => BabyChartRepoDummy.obj;
+  static MotherChartRepo get motherChartRepo => MotherChartRepoDummy.obj;
 }

@@ -43,8 +43,10 @@ class HomePage extends StatelessWidget {
       child: LiveDataObserver<Profile>(
         liveData: vm.profile,
         builder: (ctx, data) => data != null
-            ? ItemProfile.fromData(data)
-            : defaultLoading(),
+            ? InkWell(
+              child: ItemProfile.fromData(data),
+              onTap: () => HomeRoutes.obj.goToModule(context, GlobalRoutes.profile),
+            ) : defaultLoading(),
       ),
     );
 
