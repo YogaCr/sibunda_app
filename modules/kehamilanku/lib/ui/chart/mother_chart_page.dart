@@ -1,7 +1,9 @@
 import 'package:common/arch/domain/model/chart_data_mother.dart';
 import 'package:common/arch/domain/model/form_warning_status.dart';
+import 'package:common/arch/ui/adapter/form_warning_adp.dart';
 import 'package:common/arch/ui/page/secondary_frames.dart';
 import 'package:common/arch/ui/widget/_basic_widget.dart';
+import 'package:common/arch/ui/widget/_item_template.dart';
 import 'package:common/arch/ui/widget/_items_chart.dart';
 import 'package:common/util/data_mapper.dart';
 import 'package:common/util/navigations.dart';
@@ -42,8 +44,12 @@ class MotherChartPage extends StatelessWidget {
                         seriesList: data,
                     ): defaultLoading(),
               ),
+              SizedBox(height: 10,),
               LiveDataObserver<List<FormWarningStatus>>(
-                liveData: vm,
+                liveData: vm.warningList,
+                builder: (ctx, data) => data != null
+                    ? FormWarningList(data)
+                    : defaultLoading(),
               ),
             ]),
           ),

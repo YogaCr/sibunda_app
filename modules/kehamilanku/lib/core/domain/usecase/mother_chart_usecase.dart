@@ -1,4 +1,5 @@
 import 'package:common/arch/domain/model/chart_data_mother.dart';
+import 'package:common/arch/domain/model/form_warning_status.dart';
 import 'package:common/arch/domain/repo/chart_mother_repo.dart';
 import 'package:core/domain/model/result.dart';
 
@@ -17,6 +18,25 @@ mixin GetMotherBmiChart {
 mixin GetMotherMapChart {
   Future<Result<List<MotherMapChartData>>> call(String motherNik);
 }
+
+
+
+mixin GetMotherTfuChartWarning {
+  Future<Result<List<FormWarningStatus>>> call(String motherNik);
+}
+
+mixin GetMotherDjjChartWarning {
+  Future<Result<List<FormWarningStatus>>> call(String motherNik);
+}
+
+mixin GetMotherBmiChartWarning {
+  Future<Result<List<FormWarningStatus>>> call(String motherNik);
+}
+
+mixin GetMotherMapChartWarning {
+  Future<Result<List<FormWarningStatus>>> call(String motherNik);
+}
+
 
 
 class GetMotherTfuChartImpl with GetMotherTfuChart {
@@ -49,4 +69,30 @@ class GetMotherMapChartImpl with GetMotherMapChart {
 
 
 
+class GetMotherTfuChartWarningImpl with GetMotherTfuChartWarning {
+  final MotherChartRepo _repo;
+  GetMotherTfuChartWarningImpl(this._repo);
+  @override
+  Future<Result<List<FormWarningStatus>>> call(String motherNik) => _repo.getMotherTfuChartWarning(motherNik);
+}
 
+class GetMotherDjjChartWarningImpl with GetMotherDjjChartWarning {
+  final MotherChartRepo _repo;
+  GetMotherDjjChartWarningImpl(this._repo);
+  @override
+  Future<Result<List<FormWarningStatus>>> call(String motherNik) => _repo.getMotherDjjChartWaning(motherNik);
+}
+
+class GetMotherBmiChartWarningImpl with GetMotherBmiChartWarning {
+  final MotherChartRepo _repo;
+  GetMotherBmiChartWarningImpl(this._repo);
+  @override
+  Future<Result<List<FormWarningStatus>>> call(String motherNik) => _repo.getMotherBmiChartWaning(motherNik);
+}
+
+class GetMotherMapChartWarningImpl with GetMotherMapChartWarning {
+  final MotherChartRepo _repo;
+  GetMotherMapChartWarningImpl(this._repo);
+  @override
+  Future<Result<List<FormWarningStatus>>> call(String motherNik) => _repo.getMotherMapChartWaning(motherNik);
+}

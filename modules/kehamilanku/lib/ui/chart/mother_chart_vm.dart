@@ -1,4 +1,5 @@
 import 'package:common/arch/domain/model/chart_data_mother.dart';
+import 'package:common/arch/domain/model/form_warning_status.dart';
 import 'package:common/arch/domain/usecase/mother_usecase.dart';
 import 'package:core/domain/model/result.dart';
 import 'package:core/ui/base/async_vm.dart';
@@ -15,12 +16,20 @@ class MotherChartVm extends AsyncVm {
     required GetMotherDjjChart getMotherDjjChart,
     required GetMotherBmiChart getMotherBmiChart,
     required GetMotherMapChart getMotherMapChart,
+    required GetMotherTfuChartWarning getMotherTfuChartWarning,
+    required GetMotherDjjChartWarning getMotherDjjChartWarning,
+    required GetMotherBmiChartWarning getMotherBmiChartWarning,
+    required GetMotherMapChartWarning getMotherMapChartWarning,
   }):
     _getMotherNik = getMotherNik,
     _getMotherBmiChart = getMotherBmiChart,
     _getMotherDjjChart = getMotherDjjChart,
     _getMotherMapChart = getMotherMapChart,
-    _getMotherTfuChart = getMotherTfuChart
+    _getMotherTfuChart = getMotherTfuChart,
+    _getMotherTfuChartWarning = getMotherTfuChartWarning,
+    _getMotherDjjChartWarning = getMotherDjjChartWarning,
+    _getMotherBmiChartWarning = getMotherBmiChartWarning,
+    _getMotherMapChartWarning = getMotherMapChartWarning
   ;
   final GetMotherNik _getMotherNik;
   final GetMotherTfuChart _getMotherTfuChart;
@@ -28,8 +37,17 @@ class MotherChartVm extends AsyncVm {
   final GetMotherBmiChart _getMotherBmiChart;
   final GetMotherMapChart _getMotherMapChart;
 
+  final GetMotherTfuChartWarning _getMotherTfuChartWarning;
+  final GetMotherDjjChartWarning _getMotherDjjChartWarning;
+  final GetMotherBmiChartWarning _getMotherBmiChartWarning;
+  final GetMotherMapChartWarning _getMotherMapChartWarning;
+
+
   final MutableLiveData<List<LineSeries<dynamic, num>>> _seriesList = MutableLiveData();
+  final MutableLiveData<List<FormWarningStatus>> _warningList = MutableLiveData();
+
   LiveData<List<LineSeries<dynamic, num>>> get seriesList => _seriesList;
+  LiveData<List<FormWarningStatus>> get warningList => _warningList;
 
   MotherChartType? _currentType;
 
@@ -44,15 +62,25 @@ class MotherChartVm extends AsyncVm {
         final motherNik = res1.data;
         Result res2;
 
+        Result<List<FormWarningStatus>> res3;
+
         switch(type) {
           case MotherChartType.tfu: res2 = await _getMotherTfuChart(motherNik);
+            res3 = await _getMotherTfuChartWarning(motherNik);
             break;
           case MotherChartType.djj: res2 = await _getMotherDjjChart(motherNik);
+            res3 = await _getMotherDjjChartWarning(motherNik);
             break;
           case MotherChartType.map: res2 = await _getMotherMapChart(motherNik);
+            res3 = await _getMotherMapChartWarning(motherNik);
             break;
           case MotherChartType.bmi: res2 = await _getMotherBmiChart(motherNik);
+            res3 = await _getMotherBmiChartWarning(motherNik);
             break;
+        }
+
+        if(res3 is! Success<List<FormWarningStatus>>) {
+          return res3 as Fail; //TODO: Cek apakah operator is! itu benar
         }
 
         if(res2 is Success) {
@@ -70,6 +98,7 @@ class MotherChartVm extends AsyncVm {
             break;
           }
           _seriesList.value = seriesList;
+          _warningList.value = res3.data;
           _currentType = type;
 
         } else {
