@@ -6,7 +6,7 @@ part 'child.g.dart';
 
 @JsonSerializable()
 class Child {
-  @JsonKey(name: Const.KEY_NAME)
+  @JsonKey(name: Const.KEY_NAME_INDO)
   final String name;
   @JsonKey(name: Const.KEY_CHILD_ORDER)
   final int childOrder;

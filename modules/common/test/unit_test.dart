@@ -1,6 +1,8 @@
 
+import 'package:common/util/_util.dart';
 import 'package:common/util/auth.dart';
 import 'package:common/value/const_values.dart';
+import 'package:core/util/_consoles.dart';
 import 'package:equatable/equatable.dart';
 import 'package:retrofit/http.dart';
 import 'package:retrofit/retrofit.dart';
@@ -17,6 +19,14 @@ void main() async {
 
   print("users= $users");
   print("repos= $repos");
+
+  final dio = Dio();
+
+  final resp = await dio.get("https://api.github.com/users/alfalifr/repos",);
+
+  final resp2 = SimpleNetResponse.from(resp);
+
+  prinr("resp2 = $resp2");
 /*
   final name = "ayu3";
   final email = "a6@a.a";
@@ -57,7 +67,6 @@ class User extends Equatable {
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 
   @override
-  // TODO: implement props
   List<Object?> get props => [login, id, avatar_url];
 }
 
@@ -66,18 +75,19 @@ class Repo extends Equatable {
   final String full_name;
   final int id;
   final String html_url;
+  final User owner;
 
   const Repo({
     required this.full_name,
     required this.id,
     required this.html_url,
+    required this.owner,
   });
 
   factory Repo.fromJson(Map<String, dynamic> json) => _$RepoFromJson(json);
 
   @override
-  // TODO: implement props
-  List<Object?> get props => [full_name, id, html_url];
+  List<Object?> get props => [full_name, id, html_url, owner];
 }
 
 

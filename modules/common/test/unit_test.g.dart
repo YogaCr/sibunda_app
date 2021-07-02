@@ -25,6 +25,7 @@ Repo _$RepoFromJson(Map<String, dynamic> json) {
     full_name: json['full_name'] as String,
     id: json['id'] as int,
     html_url: json['html_url'] as String,
+    owner: User.fromJson(json['owner'] as Map<String, dynamic>),
   );
 }
 
@@ -32,6 +33,7 @@ Map<String, dynamic> _$RepoToJson(Repo instance) => <String, dynamic>{
       'full_name': instance.full_name,
       'id': instance.id,
       'html_url': instance.html_url,
+      'owner': instance.owner,
     };
 
 // **************************************************************************

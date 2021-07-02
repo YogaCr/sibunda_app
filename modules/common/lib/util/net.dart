@@ -1,12 +1,13 @@
 
 import 'package:dio/dio.dart';
+import 'package:equatable/equatable.dart';
 
 const REMOTE_HOST = "https://sibunda.amirmb.com";
 const ENDPOINT_LOGIN = "$REMOTE_HOST/api/auth/login";
 const ENDPOINT_REGISTER = "$REMOTE_HOST/api/auth/register";
 const ENDPOINT_LOGOUT = "$REMOTE_HOST/api/auth/logout";
 
-class SimpleNetResponse {
+class SimpleNetResponse extends Equatable {
   final int? statusCode;
   final String? message;
   final data;
@@ -20,12 +21,24 @@ class SimpleNetResponse {
     final superStr = super.toString();
     return "$superStr(statusCode=$statusCode, message=$message, data=$data)";
   }
+
+  @override
+  List<Object?> get props => [statusCode, message, data];
 }
 
 class SibDio {
   SibDio._();
+  static const Map<String, dynamic> defaultHeaders = {
+    "Accept": "application/json"
+  };
   static Options defaultOptions() => Options(
     followRedirects: false,
     validateStatus: (code) => true, //So that every response, even errors, is returned.
+    headers: defaultHeaders,
+  );
+  static BaseOptions defaultBaseOptions() => BaseOptions(
+    followRedirects: false,
+    //validateStatus: (code) => true, //So that every response, even errors, is returned.
+    headers: defaultHeaders,
   );
 }

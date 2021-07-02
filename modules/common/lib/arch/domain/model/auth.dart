@@ -1,6 +1,16 @@
-class SignUpData {
+import 'package:common/value/const_values.dart';
+import 'package:equatable/equatable.dart';
+import 'package:json_annotation/json_annotation.dart';
+
+part 'auth.g.dart';
+
+@JsonSerializable()
+class SignUpData extends Equatable {
+  @JsonKey(name: Const.KEY_NAME)
   final String name;
+  @JsonKey(name: Const.KEY_EMAIL)
   final String email;
+  @JsonKey(name: Const.KEY_PSWD)
   final String password;
 
   const SignUpData({
@@ -8,6 +18,12 @@ class SignUpData {
     required this.email,
     required this.password,
   });
+
+  @override
+  List<Object?> get props => [name, email, password];
+
+  factory SignUpData.fromJson(Map<String, dynamic> json) => _$SignUpDataFromJson(json);
+  Map<String, dynamic> get toJson => _$SignUpDataToJson(this);
 }
 
 class LoginData {
@@ -20,7 +36,17 @@ class LoginData {
   });
 }
 
-class SessionData {
+class SessionData extends Equatable {
   final String token;
-  const SessionData(this.token);
+  final String tokenType;
+
+  const SessionData({
+    required this.token,
+    required this.tokenType,
+  });
+
+  @override
+  List<Object?> get props => [tokenType, token];
+
+  String toAuthString() => "$tokenType $token";
 }

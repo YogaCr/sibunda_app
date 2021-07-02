@@ -6,7 +6,7 @@ part 'mother.g.dart';
 
 @JsonSerializable()
 class Mother {
-  @JsonKey(name: Const.KEY_NAME)
+  @JsonKey(name: Const.KEY_NAME_INDO)
   final String name;
   @JsonKey(name: Const.KEY_NIK)
   final String nik;

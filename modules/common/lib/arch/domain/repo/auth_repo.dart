@@ -1,22 +1,92 @@
 // User and Auth related repository.
 
+import 'package:common/arch/data/remote/api/auth_api.dart';
+import 'package:common/arch/data/remote/model/login_api_model.dart';
+import 'package:common/arch/data/remote/model/logout_api_model.dart';
+import 'package:common/arch/data/remote/model/register_api_model.dart';
 import 'package:common/arch/domain/model/auth.dart';
-import 'package:common/config/_config.dart';
-import 'package:common/value/const_values.dart';
-import 'package:common/util/_util.dart';
-import 'package:common/config/network.dart';
+import 'package:common/arch/domain/model/child.dart';
+import 'package:common/arch/domain/model/father.dart';
+import 'package:common/arch/domain/model/mother.dart';
 import 'package:core/domain/model/result.dart';
 
 import '../dummy_data.dart';
 
 mixin AuthRepo {
-  Future<Result<bool>> signup(SignUpData data);
+  Future<Result<bool>> signup({
+    required SignUpData signup,
+    required Mother mother,
+    required Father father,
+    required Child child,
+  });
   Future<Result<SessionData>> login(LoginData data);
-  Future<Result<bool>> logout(String accessToken);
+  Future<Result<bool>> logout(SessionData data);
   Future<Result<bool>> saveSession(SessionData data);
   Future<Result<SessionData>> getSession();
 }
 
+class AuthRepoImpl with AuthRepo {
+  final AuthApi _api;
+  AuthRepoImpl(this._api);
+
+  @override
+  Future<Result<bool>> signup({
+    required SignUpData signup,
+    required Mother mother,
+    required Father father,
+    required Child child,
+  }) async {
+    final body = RegisterBody(
+      signup: signup,
+      mother: mother,
+      father: father,
+      child: child,
+    );
+    try {
+      final res = await _api.register(body);
+      return res.code == 200
+          ? Success(true, 200)
+          : Fail(code: res.code, msg: res.message);
+    } catch(e) {
+      return Fail();
+    }
+  }
+
+  @override
+  Future<Result<SessionData>> login(LoginData data) async {
+    final body = LoginBody(data);
+    try {
+      final res = await _api.login(body);
+      if(res.code != 200) {
+        return Fail(code: res.code, msg: res.message);
+      }
+      final session = SessionData(token: res.data.token, tokenType: res.data.tokenType,);
+      return Success(session, 200);
+    } catch(e) {
+      return Fail();
+    }
+  }
+  @override
+  Future<Result<bool>> logout(SessionData data) async {
+    final body = LogoutBody(data);
+    try {
+      final res = await _api.logout(body);
+      return res.code == 200
+          ? Success(true, 200)
+          : Fail(code: res.code, msg: res.message);
+    } catch(e) {
+      return Fail();
+    }
+  }
+
+  //TODO yg lain
+  @override
+  Future<Result<bool>> saveSession(SessionData data) => throw UnimplementedError();
+  @override
+  Future<Result<SessionData>> getSession() => throw UnimplementedError();
+}
+
+/*
 class AuthApiRepo with AuthRepo {
   static AuthApiRepo? _instance;
 
@@ -66,6 +136,7 @@ class AuthApiRepo with AuthRepo {
     throw UnimplementedError();
   }
 }
+ */
 
 
 class AuthDummyRepo with AuthRepo {
@@ -78,9 +149,14 @@ class AuthDummyRepo with AuthRepo {
   Future<Result<SessionData>> login(LoginData data) async => Success(dummySessionData1);
 
   @override
-  Future<Result<bool>> signup(SignUpData data) async => Success(true, 200);
+  Future<Result<bool>> signup({
+    required SignUpData signup,
+    required Mother mother,
+    required Father father,
+    required Child child,
+  }) async => Success(true, 200);
 
-  Future<Result<bool>> logout(String accessToken) async => Success(true, 200);
+  Future<Result<bool>> logout(SessionData data) async => Success(true, 200);
 
   @override
   Future<Result<SessionData>> getSession() {

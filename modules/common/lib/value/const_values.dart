@@ -7,13 +7,22 @@ class Const {
 
   static const SEPARATOR_ANSWER_ITEM = ";~;";
 
+  static const REMOTE_HOST = "https://sibunda.amirmb.com";
+  static const ENDPOINT_ROOT = "$REMOTE_HOST/api";
+  static const ENDPOINT_AUTH = "$ENDPOINT_ROOT/auth";
+
+  static const CLIENT_SECRET = "5xnEHfLiRiyyRGrez97iEmqzTB4h48IWr5DnHEuO";
+  static const CLIENT_ID = 2;
+  static const FCM_TOKEN = "ini token";
+
   static const GENDER_MALE = "M";
   static const GENDER_FEMALE = "F";
 
   static const KEY_DATA = "data";
   static const KEY_ACCESS_TOKEN = "access_token";
   static const KEY_FCM_TOKEN = "fcm_token";
-  static const KEY_NAME = "nama";
+  static const KEY_NAME = "name";
+  static const KEY_NAME_INDO = "nama";
   static const KEY_EMAIL = "email";
   static const KEY_OLD_PSWD = "old_password";
   static const KEY_PSWD = "password";
@@ -22,6 +31,10 @@ class Const {
   static const KEY_CLIENT_ID = "client_id";
   static const KEY_CLIENT_SECRET = "client_secret";
 
+  static const KEY_USER_GROUP_ID = "user_group_id";
+  static const KEY_TOKEN_TYPE = "token_type";
+
+  static const KEY_CHILD = "anak";
   static const KEY_TRIMESTER = "trimester";
   static const KEY_NIK = "nik";
   static const KEY_JKN = "no_jkn";
@@ -39,13 +52,13 @@ class Const {
 
   static const KEY_COHORT_REG = "nomor_register_kohort_ibu";
 
-  static const KEY_BABY_COHORT_REG = "nomor_register_kohort_bayi";
+  static const KEY_BABY_COHORT_REG = "no_kohort"; //"nomor_register_kohort_bayi";
   static const KEY_TODDLER_COHORT_REG = "nomor_register_kohort_balita";
   static const KEY_CHILD_ORDER = "anak_ke";
   static const KEY_GENDER = "kelamin";
-  static const KEY_BIRTH_CERT_NO = "no_akte";
-  static const KEY_JKN_START_DATE = "tgl_berlaku_jkn";
-  static const KEY_HOSPITAL_MEDIC_NO = "no_catatan_medis_rs";
+  static const KEY_BIRTH_CERT_NO = "no_akte_kelahiran";
+  static const KEY_JKN_START_DATE = "tanggal_berlaku_jkn";
+  static const KEY_HOSPITAL_MEDIC_NO = "no_catatan_medik";
 
   static const KEY_VISIT_DATE = "tanggal_periksa";
   static const KEY_VISIT_PLACE = "tempat_periksa";

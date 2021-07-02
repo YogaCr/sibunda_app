@@ -1,7 +1,6 @@
 
 import 'package:common/arch/domain/model/baby_data.dart';
 import 'package:common/arch/domain/model/img_data.dart';
-import 'package:common/arch/domain/usecase/baby_chart_mapper_usecase.dart';
 import 'package:common/arch/ui/model/home_graph_menu.dart';
 import 'package:common/config/routes.dart';
 import 'package:common/res/string/_string.dart';
@@ -10,7 +9,6 @@ import 'package:faker/faker.dart';
 import 'package:flutter/material.dart';
 
 import 'model/auth.dart';
-import 'model/chart_data.dart';
 import 'model/chart_data_baby.dart';
 import 'model/chart_data_mother.dart';
 import 'model/child.dart';
@@ -38,9 +36,10 @@ final dummyName = "ayu";
 final dummyPswd = "ayu123";
 
 final dummyAccessToken = "aagajki1831huhf1i38y13";
+final dummyAccessTokenType = "Bearer";
 final dummySignUpData1 = SignUpData(name: dummyName, email: dummyEmail, password: dummyPswd);
 final dummyLoginData1 = LoginData(email: dummySignUpData1.email, password: dummySignUpData1.password);
-final dummySessionData1 = SessionData(dummyAccessToken);
+final dummySessionData1 = SessionData(token: dummyAccessToken, tokenType: dummyAccessTokenType,);
 
 
 final dummyFather = Father(
@@ -52,7 +51,7 @@ final dummyFather = Father(
   faskesRujukan: "Puskesmas 10",
   bloodType: "B",
   birthCity: "Jonggol",
-  birthDate: "17 Agustus 1949",
+  birthDate: "1949-08-17",
   education: "S4",
   occupancy: "Buruh halus",
   address: "Jl. In Aja Dulu",
@@ -66,9 +65,9 @@ final dummyMother = Mother(
   jkn: "JKN Kis 11",
   faskes1: "Kamar rumah",
   faskesRujukan: "Puskesmas 10",
-  bloodType: "C",
+  bloodType: "A",
   birthCity: "Konoha",
-  birthDate: "6 Okt 1973",
+  birthDate: "1973-06-06",
   education: "SD",
   occupancy: "Ibu aja",
   address: "Jl. In Aja Dulu",
@@ -84,9 +83,9 @@ final dummyChild = Child(
   nik: "1201902",
   bloodType: "O",
   birthCity: "Asgard",
-  birthDate: "12 Okt 2077",
+  birthDate: "2077-07-12",
   jkn: "JKN a",
-  jknStartDate: "10 Okt 2021",
+  jknStartDate: "2021-10-10",
   babyCohortRegistNo: "12381927921",
   toddlerCohortRegistNo: "123121424",
   hospitalMedicalNumber: "12312412412412",
