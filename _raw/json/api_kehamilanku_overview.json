@@ -1,0 +1,60 @@
+{
+  "message": "response success",
+  "status": "success",
+  "code": 200,
+  "data": [
+    {
+      "id": 1,
+      "nama": "nama anak",
+      "anak_ke": 1,
+      "week": 40,
+      "remaining_days": 0,
+      "food_recommendations": [
+        {
+          "food_category": "Nasi atau Makanan Pokok",
+          "food_dose": "Bunda, 1 hari minimal harus makan 5 porsi nasi ya, dengan 1 porsi = 100 gr atau 3/4 gelas nasi"
+        },
+        {
+          "food_category": "Nasi atau Makanan Pokok",
+          "food_dose": "Bunda, 1 hari minimal harus makan 5 porsi nasi ya, dengan 1 porsi = 100 gr atau 3/4 gelas nasi"
+        },
+        {
+          "food_category": "Nasi atau Makanan Pokok",
+          "food_dose": "Bunda, 1 hari minimal harus makan 5 porsi nasi ya, dengan 1 porsi = 100 gr atau 3/4 gelas nasi"
+        }
+      ],
+      "trisemesters": [
+        {
+          "id": 1,
+          "bb": null,
+          "tb": null,
+          "imt": null,
+          "trisemester": 1,
+          "kia_anak_id": 1,
+          "created_at": "2021-06-22T17:01:47.000000Z",
+          "updated_at": "2021-06-22T17:01:47.000000Z"
+        },
+        {
+          "id": 2,
+          "bb": null,
+          "tb": null,
+          "imt": null,
+          "trisemester": 2,
+          "kia_anak_id": 1,
+          "created_at": "2021-06-22T17:01:47.000000Z",
+          "updated_at": "2021-06-22T17:01:47.000000Z"
+        },
+        {
+          "id": 3,
+          "bb": null,
+          "tb": null,
+          "imt": null,
+          "trisemester": 3,
+          "kia_anak_id": 1,
+          "created_at": "2021-06-22T17:01:47.000000Z",
+          "updated_at": "2021-06-22T17:01:47.000000Z"
+        }
+      ]
+    }
+  ]
+}
