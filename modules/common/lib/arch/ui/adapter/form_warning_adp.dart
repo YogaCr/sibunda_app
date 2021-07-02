@@ -12,21 +12,17 @@ class FormWarningList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: dataList.length,
-      itemBuilder: (ctx, i) {
-        final data = dataList[i];
-        return Container(
-          margin: EdgeInsets.symmetric(vertical: 5),
-          child: ItemFormWarningStatus(
-            desc: data.desc,
-            warningTxt: data.isSafe ? null : data.action,
-            image: Container(
-              color: Manifest.theme.colorPrimary, //TODO: img
-            ),
+    return Column(
+      children: dataList.map((data) => Container(
+        margin: EdgeInsets.symmetric(vertical: 5),
+        child: ItemFormWarningStatus(
+          desc: data.desc,
+          warningTxt: data.isSafe ? null : data.action,
+          image: Container(
+            color: Manifest.theme.colorPrimary, //TODO: img
           ),
-        );
-      },
+        ),
+      )).toList(growable: false),
     );
   }
 }

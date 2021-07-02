@@ -4,6 +4,7 @@ import 'package:common/arch/domain/usecase/mother_usecase.dart';
 import 'package:core/domain/model/result.dart';
 import 'package:core/ui/base/async_vm.dart';
 import 'package:core/ui/base/live_data.dart';
+import 'package:core/util/_consoles.dart';
 import 'package:kehamilanku/core/domain/usecase/mother_chart_usecase.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
@@ -52,10 +53,11 @@ class MotherChartVm extends AsyncVm {
   MotherChartType? _currentType;
 
   @override
-  List<LiveData> get liveDatas => [_seriesList];
+  List<LiveData> get liveDatas => [_seriesList, _warningList,];
 
   void loadChart(MotherChartType type, { bool forceLoad = false }) {
-    if(!forceLoad && type != _currentType) return;
+    if(!forceLoad && type == _currentType) return;
+    //prind("MotherChartVm res2 = $res2 \n res3 = $res3");
     startJob(loadChartKey, (isActive) async {
       final res1 = await _getMotherNik();
       if(res1 is Success<String>) {
@@ -79,6 +81,8 @@ class MotherChartVm extends AsyncVm {
             break;
         }
 
+        prind("MotherChartVm res2 = $res2 \n res3 = $res3");
+
         if(res3 is! Success<List<FormWarningStatus>>) {
           return res3 as Fail; //TODO: Cek apakah operator is! itu benar
         }
@@ -100,6 +104,8 @@ class MotherChartVm extends AsyncVm {
           _seriesList.value = seriesList;
           _warningList.value = res3.data;
           _currentType = type;
+
+          prind("MotherChartVm res3.data = ${res3.data}");
 
         } else {
           return res2 as Fail;

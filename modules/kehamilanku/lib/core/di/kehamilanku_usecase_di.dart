@@ -1,6 +1,7 @@
 import 'package:common/arch/di/repo_di.dart';
 import 'package:kehamilanku/core/domain/usecase/home_usecase.dart';
 import 'package:kehamilanku/core/domain/usecase/mother_chart_usecase.dart';
+import 'package:kehamilanku/core/domain/usecase/mother_graph_menu_usecase.dart';
 import 'package:kehamilanku/core/domain/usecase/mother_immunization_use_case.dart';
 //import 'package:kehamilanku/core/domain/usecase/mother_overall_usecase.dart';
 import 'package:kehamilanku/core/domain/usecase/pregnancy_check_use_case.dart';
@@ -24,6 +25,8 @@ class KehamilankuUseCaseDi {
   static GetMotherImmunizationOverview get getMotherImmunizationOverview => GetMotherImmunizationOverviewImpl(RepoDi.immunizationRepo);
   static GetMotherImmunizationGroupList get getMotherImmunizationGroupList => GetMotherImmunizationGroupListImpl(RepoDi.immunizationRepo);
   static ConfirmMotherImmunization get confirmMotherImmunization => ConfirmMotherImmunizationImpl(RepoDi.immunizationRepo);
+
+  static GetMotherPregEvalGraphMenu get getMotherPregEvalGraphMenu => GetMotherPregEvalGraphMenuImpl(RepoDi.motherRepo);
 
   static GetMotherTfuChart get getMotherTfuChart => GetMotherTfuChartImpl(RepoDi.motherChartRepo);
   static GetMotherDjjChart get getMotherDjjChart => GetMotherDjjChartImpl(RepoDi.motherChartRepo);

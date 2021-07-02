@@ -1,3 +1,4 @@
+import 'package:bayiku/core/domain/usecase/baby_chart_usecase.dart';
 import 'package:bayiku/core/domain/usecase/baby_check_usecase.dart';
 import 'package:bayiku/core/domain/usecase/baby_graph_menu_usecase.dart';
 import 'package:bayiku/core/domain/usecase/baby_home_usecase.dart';
@@ -21,4 +22,20 @@ class BabyUseCaseDi {
   static ConfirmBabyImmunization get confirmBabyImmunization => ConfirmBabyImmunizationImpl(RepoDi.immunizationRepo);
 
   static GetBabyGrowthGraphMenu get getBabyGrowthGraphMenu => GetBabyGrowthGraphMenuImpl(RepoDi.myBabyRepo);
+
+  static GetBabyWeightChart get getBabyWeightChart => GetBabyWeightChartImpl(RepoDi.babyChartRepo);
+  static GetBabyKmsChart get getBabyKmsChart => GetBabyKmsChartImpl(RepoDi.babyChartRepo);
+  static GetBabyLenChart get getBabyLenChart => GetBabyLenChartImpl(RepoDi.babyChartRepo);
+  static GetBabyWeightToLenChart get getBabyWeightToLenChart => GetBabyWeightToLenChartImpl(RepoDi.babyChartRepo);
+  static GetBabyHeadCircumChart get getBabyHeadCircumChart => GetBabyHeadCircumChartImpl(RepoDi.babyChartRepo);
+  static GetBabyBmiChart get getBabyBmiChart => GetBabyBmiChartImpl(RepoDi.babyChartRepo);
+  static GetBabyDevChart get getBabyDevChart => GetBabyDevChartImpl(RepoDi.babyChartRepo);
+
+  static GetBabyWeightChartWarning get getBabyWeightChartWarning => GetBabyWeightChartWarningImpl(RepoDi.babyChartRepo);
+  static GetBabyKmsChartWarning get getBabyKmsChartWarning => GetBabyKmsChartWarningImpl(RepoDi.babyChartRepo);
+  static GetBabyLenChartWarning get getBabyLenChartWarning => GetBabyLenChartWarningImpl(RepoDi.babyChartRepo);
+  static GetBabyWeightToLenChartWarning get getBabyWeightToLenChartWarning => GetBabyWeightToLenChartWarningImpl(RepoDi.babyChartRepo);
+  static GetBabyHeadCircumChartWarning get getBabyHeadCircumChartWarning => GetBabyHeadCircumChartWarningImpl(RepoDi.babyChartRepo);
+  static GetBabyBmiChartWarning get getBabyBmiChartWarning => GetBabyBmiChartWarningImpl(RepoDi.babyChartRepo);
+  static GetBabyDevChartWarning get getBabyDevChartWarning => GetBabyDevChartWarningImpl(RepoDi.babyChartRepo);
 }

@@ -1,10 +1,25 @@
 
+import 'package:common/arch/domain/model/img_data.dart';
 import 'package:common/res/string/_string.dart';
 import 'package:common/res/theme/_theme.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
+import 'chart_data.dart';
+
 enum MotherChartType {
   tfu, djj, map, bmi,
+}
+
+class MotherChartMenuData extends ChartMenuData {
+  final MotherChartType type;
+  MotherChartMenuData({
+    required String title,
+    required ImgData img,
+    required this.type,
+  }) : super(
+    title: title,
+    img: img,
+  );
 }
 
 class MotherTfuChartData {

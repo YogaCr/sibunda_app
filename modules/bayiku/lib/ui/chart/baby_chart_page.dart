@@ -1,3 +1,4 @@
+import 'package:common/arch/domain/model/chart_data_baby.dart';
 import 'package:common/arch/domain/model/chart_data_mother.dart';
 import 'package:common/arch/domain/model/form_warning_status.dart';
 import 'package:common/arch/ui/adapter/form_warning_adp.dart';
@@ -10,21 +11,22 @@ import 'package:common/value/const_values.dart';
 import 'package:core/ui/base/live_data_observer.dart';
 import 'package:core/ui/base/view_model.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:kehamilanku/ui/chart/mother_chart_vm.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
-class MotherChartPage extends StatelessWidget {
+import 'baby_chart_vm.dart';
+
+class BabyChartPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final chartType = getArgs<MotherChartType>(context, Const.KEY_DATA);
+    final chartType = getArgs<BabyChartType>(context, Const.KEY_DATA);
     if(chartType == null) {
-      throw "MotherChartPage needs `MotherChartType` argument with key '${Const.KEY_DATA}'";
+      throw "BabyChartPage needs `BabyChartType` argument with key '${Const.KEY_DATA}'";
     }
-    final chartName = getMotherChartTypeString(chartType);
+    final chartName = getBabyChartTypeString(chartType);
     final chartTitle = "Grafik $chartName";
 
-    final vm = ViewModelProvider.of<MotherChartVm>(context)
+    final vm = ViewModelProvider.of<BabyChartVm>(context)
       ..loadChart(chartType);
 
     return TopBarTitleAndBackFrame(
@@ -40,7 +42,7 @@ class MotherChartPage extends StatelessWidget {
                 builder: (ctx, data) => data != null
                     ? ItemLineChart(
                         title: chartTitle,
-                        yLabelFormat: getMotherChartTypeYLabelFormat(chartType),
+                        yLabelFormat: getBabyChartTypeYLabelFormat(chartType),
                         seriesList: data,
                     ): defaultLoading(),
               ),

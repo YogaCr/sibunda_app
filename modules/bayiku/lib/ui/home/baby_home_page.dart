@@ -1,6 +1,7 @@
 import 'package:bayiku/config/baby_routes.dart';
 import 'package:bayiku/ui/home/baby_home_vm.dart';
 import 'package:common/arch/domain/model/baby_data.dart';
+import 'package:common/arch/domain/model/chart_data_baby.dart';
 import 'package:common/arch/ui/model/dummy_ui_data.dart';
 import 'package:common/arch/ui/page/secondary_frames.dart';
 import 'package:common/arch/ui/widget/_item_immunization.dart';
@@ -54,7 +55,7 @@ class BabyHomePage extends StatelessWidget {
                     child: ItemHomeGraphMenu(
                       image: Container(color: Manifest.theme.colorPrimary,),
                       text: "Pertumbuhan Bayi",
-                      onClick: () => BabyRoutes.babyGrowthGraphMenuPage.goToPage(context),
+                      onClick: () => BabyRoutes.growthChartMenuVm.goToPage(context),
                     ),
                   ),
                   Spacer(flex: 1,),
@@ -63,6 +64,7 @@ class BabyHomePage extends StatelessWidget {
                     child: ItemHomeGraphMenu(
                       image: Container(color: Manifest.theme.colorPrimary,),
                       text: "Perkembangan Bayi",
+                      onClick: () => BabyRoutes.chartPageRoute.go(context, BabyChartType.dev),
                     ),
                   ),
                 ],

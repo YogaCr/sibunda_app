@@ -1,6 +1,27 @@
 
+import 'package:common/arch/domain/usecase/chart_usecase.dart';
 import 'package:common/res/theme/_theme.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
+
+import 'chart_data.dart';
+import 'img_data.dart';
+
+enum BabyChartType {
+  weight, kms, len, weightToLen, head, bmi, dev
+}
+
+class BabyChartMenuData extends ChartMenuData {
+  final BabyChartType type;
+
+  BabyChartMenuData({
+    required String title,
+    required ImgData img,
+    required this.type,
+  }) : super(
+    title: title,
+    img: img,
+  );
+}
 
 class BabyWeightChartData {
   final int age;
@@ -252,7 +273,7 @@ class BabyChartLineSeries {
     ),
   ];
 
-  static List<LineSeries<BabyKmsChartData, num>> getBabyKbmSeries(List<BabyKmsChartData> dataList) => [
+  static List<LineSeries<BabyKmsChartData, num>> getBabyKmsSeries(List<BabyKmsChartData> dataList) => [
     LineSeries(
 			markerSettings: _markerSetting,
       name: "-1 SD",
@@ -393,7 +414,7 @@ class BabyChartLineSeries {
     ),
     LineSeries(
 			markerSettings: _markerSetting,
-      name: "Input (Kg)",
+      name: "Input (cm)",
       animationDuration: chartAnimationDuration +chartAnimationDurationOffset,
       width: chartLineWidth,
       dataSource: dataList,
@@ -468,7 +489,7 @@ class BabyChartLineSeries {
     ),
     LineSeries(
 			markerSettings: _markerSetting,
-      name: "Input (Kg)",
+      name: "Input (cm)",
       animationDuration: chartAnimationDuration +chartAnimationDurationOffset,
       width: chartLineWidth,
       dataSource: dataList,
@@ -543,7 +564,7 @@ class BabyChartLineSeries {
     ),
     LineSeries(
 			markerSettings: _markerSetting,
-      name: "Input (Kg)",
+      name: "Input (cm)",
       animationDuration: chartAnimationDuration +chartAnimationDurationOffset,
       width: chartLineWidth,
       dataSource: dataList,
@@ -618,7 +639,7 @@ class BabyChartLineSeries {
     ),
     LineSeries(
 			markerSettings: _markerSetting,
-      name: "Input (Kg)",
+      name: "Input (IMT)",
       animationDuration: chartAnimationDuration +chartAnimationDurationOffset,
       width: chartLineWidth,
       dataSource: dataList,
@@ -648,7 +669,7 @@ class BabyChartLineSeries {
     ),
     LineSeries(
 			markerSettings: _markerSetting,
-      name: "Input",
+      name: "Input 'Ya'",
       animationDuration: chartAnimationDuration +chartAnimationDurationOffset,
       width: chartLineWidth,
       dataSource: dataList,

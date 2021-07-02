@@ -1,5 +1,7 @@
 import 'package:common/arch/domain/dummy_data.dart';
 import 'package:common/arch/domain/model/baby_data.dart';
+import 'package:common/arch/domain/model/chart_data.dart';
+import 'package:common/arch/domain/model/chart_data_baby.dart';
 import 'package:common/arch/ui/model/dummy_ui_data.dart';
 import 'package:common/arch/ui/model/home_graph_menu.dart';
 import 'package:core/domain/model/result.dart';
@@ -9,7 +11,8 @@ mixin MyBabyRepo {
   Future<Result<BabyAgeOverview>> getBabyAgeOverview(String babyNik);
   Future<Result<List<HomeGraphMenu>>> getBabyGraphMenu();
   Future<Result<List<BabyFormMenuData>>> getBabyFormMenu();
-  Future<Result<List<ChartMenuData>>> getBabyGrowthGraphMenu();
+  Future<Result<List<BabyChartMenuData>>> getBabyGrowthGraphMenu();
+  Future<Result<List<BabyChartMenuData>>> getBabyDevGraphMenu();
 }
 
 
@@ -26,7 +29,9 @@ class MyBabyRepoDummy with MyBabyRepo {
   @override
   Future<Result<List<BabyFormMenuData>>> getBabyFormMenu() async => Success(babyFormMenuList_ui);
   @override
-  Future<Result<List<ChartMenuData>>> getBabyGrowthGraphMenu() async => Success(babyGrowthGraphMenuList_ui);
+  Future<Result<List<BabyChartMenuData>>> getBabyGrowthGraphMenu() async => Success(babyGrowthGraphMenuList);
+  @override
+  Future<Result<List<BabyChartMenuData>>> getBabyDevGraphMenu() async => Success(babyDevGraphMenuList);
 }
 
 

@@ -1,10 +1,12 @@
 import 'package:bayiku/di/baby_vm_di.dart';
+import 'package:bayiku/ui/chart/baby_chart_page.dart';
+import 'package:bayiku/ui/chart/baby_growth_chart_menu_page.dart';
 import 'package:bayiku/ui/check_form/baby_check_form_page.dart';
-import 'package:bayiku/ui/growth_graph_menu/baby_growth_graph_menu_page.dart';
 import 'package:bayiku/ui/home/baby_home_page.dart';
 import 'package:bayiku/ui/immunization/baby_immunization_page.dart';
 import 'package:bayiku/ui/immunization/baby_immunization_popup_page.dart';
 import 'package:common/arch/domain/model/baby_data.dart';
+import 'package:common/arch/domain/model/chart_data_baby.dart';
 import 'package:common/arch/domain/model/immunization.dart';
 import 'package:common/arch/ui/model/immunization_data.dart';
 import 'package:common/arch/ui/page/_page.dart';
@@ -29,6 +31,7 @@ class BabyRoutes extends ModuleRoute {
     babyHomePage,
     babyCheckPage._route,
     babyImmunizationPage,
+    chartPageRoute._route,
   };
 
   static final babyHomePage = SibRoute("BabyHomePage", BabyHomePage, (ctx) => MainFrame(
@@ -43,12 +46,12 @@ class BabyRoutes extends ModuleRoute {
           (ctx) => BabyVmDi.babyImmunizationVm,
     ]),
   ));
-
-  static final babyGrowthGraphMenuPage = SibRoute("BabyGrowthGraphMenuPage", BabyGrowthGraphMenuPage, (ctx) => MainFrame(
-    body: BabyGrowthGraphMenuPage().inVmProvider([
-          (ctx) => BabyVmDi.babyGrowthGraphMenuVm,
+  static final growthChartMenuVm = SibRoute("BabyGrowthChartMenuVm", BabyGrowthChartMenuPage, (ctx) => MainFrame(
+    body: BabyGrowthChartMenuPage().inVmProvider([
+          (ctx) => BabyVmDi.growthChartMenuVm,
     ]),
   ));
+  static final chartPageRoute = _BabyChartPageRoute.obj;
 
   // ================= POPUP ================
   static final immunizationPopup = _BabyImmunizationPopupRoute.obj;
@@ -94,5 +97,20 @@ class _BabyImmunizationPopupRoute {
   }
   void backPage(BuildContext context, BabyImmunizationPopupResult? date) {
     nav_ext.backPage(context, result: date);
+  }
+}
+
+class _BabyChartPageRoute {
+  _BabyChartPageRoute._();
+  static final obj = _BabyChartPageRoute._();
+
+  final _route = SibRoute("BabyChartPage", BabyChartPage, (ctx) => MainFrame(
+    body: BabyChartPage().inVmProvider([
+      (ctx) => BabyVmDi.chartVm,
+    ]),
+  ));
+
+  void go(BuildContext context, BabyChartType type) {
+    _route.goToPage(context, args: { Const.KEY_DATA: type });
   }
 }

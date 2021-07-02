@@ -23,13 +23,3 @@ class BabyFormMenuData {
     required this.monthEnd,
   });
 }
-
-class ChartMenuData {
-  final String title;
-  final ImgData img;
-
-  ChartMenuData({
-    required this.title,
-    required this.img,
-  });
-}

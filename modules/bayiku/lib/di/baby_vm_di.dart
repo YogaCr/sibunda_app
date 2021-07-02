@@ -1,4 +1,6 @@
 import 'package:bayiku/core/di/baby_usecase_di.dart';
+import 'package:bayiku/ui/chart/baby_chart_vm.dart';
+import 'package:bayiku/ui/chart/baby_growth_chart_menu_vm.dart';
 import 'package:bayiku/ui/check_form/baby_check_form_vm.dart';
 import 'package:bayiku/ui/growth_graph_menu/baby_growth_graph_menu_vm.dart';
 import 'package:bayiku/ui/home/baby_home_vm.dart';
@@ -27,7 +29,24 @@ class BabyVmDi {
     getBabyImmunizationConfirmForm: BabyUseCaseDi.getBabyImmunizationConfirmForm,
     confirmBabyImmunization: BabyUseCaseDi.confirmBabyImmunization,
   );
-  static BabyGrowthGraphMenuVm get babyGrowthGraphMenuVm => BabyGrowthGraphMenuVm(
+  static BabyGrowthChartMenuVm get growthChartMenuVm => BabyGrowthChartMenuVm(
       getBabyGrowthGraphMenu: BabyUseCaseDi.getBabyGrowthGraphMenu,
+  );
+  static BabyChartVm get chartVm => BabyChartVm(
+    getBabyNik: BabyUseCaseDi.getBabyNik,
+    getBabyWeightChart: BabyUseCaseDi.getBabyWeightChart,
+    getBabyKmsChart: BabyUseCaseDi.getBabyKmsChart,
+    getBabyLenChart: BabyUseCaseDi.getBabyLenChart,
+    getBabyWeightToLenChart: BabyUseCaseDi.getBabyWeightToLenChart,
+    getBabyHeadCircumChart: BabyUseCaseDi.getBabyHeadCircumChart,
+    getBabyBmiChart: BabyUseCaseDi.getBabyBmiChart,
+    getBabyDevChart: BabyUseCaseDi.getBabyDevChart,
+    getBabyWeightChartWarning: BabyUseCaseDi.getBabyWeightChartWarning,
+    getBabyKmsChartWarning: BabyUseCaseDi.getBabyKmsChartWarning,
+    getBabyLenChartWarning: BabyUseCaseDi.getBabyLenChartWarning,
+    getBabyWeightToLenChartWarning: BabyUseCaseDi.getBabyWeightToLenChartWarning,
+    getBabyHeadCircumChartWarning: BabyUseCaseDi.getBabyHeadCircumChartWarning,
+    getBabyBmiChartWarning: BabyUseCaseDi.getBabyBmiChartWarning,
+    getBabyDevChartWarning: BabyUseCaseDi.getBabyDevChartWarning,
   );
 }

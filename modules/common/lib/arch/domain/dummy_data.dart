@@ -1,6 +1,7 @@
 
 import 'package:common/arch/domain/model/baby_data.dart';
 import 'package:common/arch/domain/model/img_data.dart';
+import 'package:common/arch/domain/usecase/baby_chart_mapper_usecase.dart';
 import 'package:common/arch/ui/model/home_graph_menu.dart';
 import 'package:common/config/routes.dart';
 import 'package:common/res/string/_string.dart';
@@ -9,6 +10,9 @@ import 'package:faker/faker.dart';
 import 'package:flutter/material.dart';
 
 import 'model/auth.dart';
+import 'model/chart_data.dart';
+import 'model/chart_data_baby.dart';
+import 'model/chart_data_mother.dart';
 import 'model/child.dart';
 import 'model/covid_data.dart';
 import 'model/education_data.dart';
@@ -325,4 +329,30 @@ final covidHomeCheckHistory = <CovidCheckHistory>[
     img: dummyImg,
     category: CovidCategory.pdp,
   ),
+];
+
+
+
+final motherPregEvalGraphMenuList = <MotherChartMenuData>[
+  MotherChartMenuData(title: "Grafik Tinggi Fundus Uterus", img: dummyImg, type: MotherChartType.tfu),
+  MotherChartMenuData(title: "Grafik Denyut Jantung Janin", img: dummyImg, type: MotherChartType.djj),
+  MotherChartMenuData(title: "Grafik Denyut Nadi Bunda", img: dummyImg, type: MotherChartType.map),
+];
+
+final motherWeightGraphMenuList = <MotherChartMenuData>[
+  MotherChartMenuData(title: "Grafik Peningkatan Berat Badan", img: dummyImg, type: MotherChartType.bmi),
+];
+
+
+final babyGrowthGraphMenuList = <BabyChartMenuData>[
+  BabyChartMenuData(title: "Grafik KMS", img: dummyImg, type: BabyChartType.kms,),
+  BabyChartMenuData(title: "Grafik Berat Badan Menurut Umur", img: dummyImg, type: BabyChartType.weight,),
+  BabyChartMenuData(title: "Grafik Panjang Badan Menurut Umur", img: dummyImg, type: BabyChartType.len,),
+  BabyChartMenuData(title: "Grafik Berat Badan Menurut Panjang Badan", img: dummyImg, type: BabyChartType.weightToLen,),
+  BabyChartMenuData(title: "Grafik Lingkar Kepala", img: dummyImg, type: BabyChartType.head,),
+  BabyChartMenuData(title: "Grafik Indeks Massa Tubuh", img: dummyImg, type: BabyChartType.bmi),
+];
+
+final babyDevGraphMenuList = <BabyChartMenuData>[
+  BabyChartMenuData(title: "Grafik Perkembangan Bayi", img: dummyImg, type: BabyChartType.dev),
 ];

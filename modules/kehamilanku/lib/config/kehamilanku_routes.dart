@@ -10,6 +10,7 @@ import 'package:core/util/_consoles.dart';
 import 'package:flutter/material.dart';
 import 'package:kehamilanku/di/kehamilanku_vm_di.dart';
 import 'package:kehamilanku/ui/chart/mother_chart_page.dart';
+import 'package:kehamilanku/ui/chart/mother_preg_eval_chart_menu_page.dart';
 import 'package:kehamilanku/ui/home/kehamilanku_home_page.dart';
 import 'package:kehamilanku/ui/immunization/pregnancy_immunization_page.dart';
 import 'package:kehamilanku/ui/immunization/pregnancy_immunization_popup_page.dart';
@@ -47,6 +48,11 @@ class KehamilankuRoutes extends ModuleRoute {
     ]),
   ));
 
+  static final pregEvalChartMenuPage = SibRoute("MotherPregEvalChartMenuPage", MotherPregEvalChartMenuPage, (ctx) => MainFrame(
+    body: MotherPregEvalChartMenuPage().inVmProvider([
+      (ctx) => KehamilankuVmDi.pregEvalChartMenuVm,
+    ]),
+  ));
   static final chartPage = _MotherChartPageRoute.obj;
 
   // ================= POPUP ================

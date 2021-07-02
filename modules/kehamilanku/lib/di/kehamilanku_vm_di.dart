@@ -2,6 +2,7 @@ import 'package:common/arch/di/usecase_di.dart';
 import 'package:common/arch/domain/model/immunization.dart';
 import 'package:kehamilanku/core/di/kehamilanku_usecase_di.dart';
 import 'package:kehamilanku/ui/chart/mother_chart_vm.dart';
+import 'package:kehamilanku/ui/chart/mother_preg_eval_chart_menu_vm.dart';
 import 'package:kehamilanku/ui/home/kehamilanku_home_vm.dart';
 import 'package:kehamilanku/ui/immunization/pregnancy_immunization_popup_vm.dart';
 import 'package:kehamilanku/ui/immunization/pregnancy_immunization_vm.dart';
@@ -31,6 +32,9 @@ class KehamilankuVmDi {
     getMotherNik: UseCaseDi.getMotherNik,
     getPregnancyImmunizationConfirmForm: KehamilankuUseCaseDi.getPregnancyImmunizationConfirmForm,
     confirmMotherImmunization: KehamilankuUseCaseDi.confirmMotherImmunization,
+  );
+  static MotherPregEvalChartMenuVm get pregEvalChartMenuVm => MotherPregEvalChartMenuVm(
+    getMotherPregEvalGraphMenu: KehamilankuUseCaseDi.getMotherPregEvalGraphMenu,
   );
   static MotherChartVm get motherChartVm => MotherChartVm(
     getMotherNik: UseCaseDi.getMotherNik,
