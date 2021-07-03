@@ -65,7 +65,7 @@ class PregnancyHomeTrimester {
   final int id;
   @JsonKey(name: Const.KEY_TRIMESTER_NO)
   final int no;
-  @JsonKey(name: Const.KEY_TRIMESTER_BABY_ID)
+  @JsonKey(name: Const.KEY_BABY_ID)
   final int babyId;
 
   PregnancyHomeTrimester({

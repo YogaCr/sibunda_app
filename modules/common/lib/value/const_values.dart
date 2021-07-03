@@ -11,6 +11,8 @@ class Const {
   static const ENDPOINT_ROOT = "$REMOTE_HOST/api";
   static const ENDPOINT_AUTH = "$ENDPOINT_ROOT/auth";
   static const ENDPOINT_PREGNANCY = "$ENDPOINT_ROOT/kehamilanku";
+  static const ENDPOINT_BABY = "$ENDPOINT_ROOT/anaku";
+  static const ENDPOINT_DATA = "$ENDPOINT_ROOT/data";
 
   static const CLIENT_SECRET = "5xnEHfLiRiyyRGrez97iEmqzTB4h48IWr5DnHEuO";
   static const CLIENT_ID = 2;
@@ -21,6 +23,8 @@ class Const {
 
   static const KEY_ID = "id";
   static const KEY_DATA = "data";
+  static const KEY_IMG = "img";
+  static const KEY_PIC = "pic";
   static const KEY_ACCESS_TOKEN = "access_token";
   static const KEY_FCM_TOKEN = "fcm_token";
   static const KEY_NAME = "name";
@@ -90,12 +94,28 @@ class Const {
   static const KEY_TRIMESTERS = "trisemesters";
   static const KEY_TRIMESTER_NO = "trisemester";
   static const KEY_TRIMESTER_ID = "trisemester_id";
-  static const KEY_TRIMESTER_BABY_ID = "kia_anak_id";
+  static const KEY_BABY_ID = "kia_anak_id";
   static const KEY_FOOD_CATEGORY = "food_category";
   static const KEY_FOOD_DESC = "food_dose";
   static const KEY_WEEK = "week";
 
   static const KEY_PREGNANCY_CHECKUP_ID = "weekly_trisemester_checkup_id";
+
+  static const KEY_FETUS_GROWTH_DESC = "fetus_growth_desc";
+  static const KEY_WEIGHT_DESC = "weight_desc";
+  static const KEY_MOM_PULSE_DESC = "mom_pulse_desc";
+  static const KEY_TFU_DESC = "tfu_desc";
+  static const KEY_DJJ_DESC = "djj_desc";
+  static const KEY_BABY_MOVEMENT_DESC = "baby_movement_desc";
+
+  static const KEY_IMMUNIZATION_ID = "immunization_id";
+
+  static const KEY_BOTTOM_THRESHOLD = "bottom_threshold";
+  static const KEY_NORMAL_THRESHOLD = "normal_threshold";
+  static const KEY_TOP_THRESHOLD = "top_threshold";
+  static const KEY_BOTTOM_OBESITY_THRESHOLD = "bottom_obesity_threshold";
+  static const KEY_BOTTOM_OVER_THRESHOLD = "bottom_over_threshold";
+  static const KEY_BOTTOM_NORMAL_THRESHOLD = "bottom_normal_threshold";
 
   static const KEY_IMMUNIZATION_DATE = "tanggal_imunisasi";
   static const KEY_IMMUNIZATION_PLACE = "tempat_imunisasi";

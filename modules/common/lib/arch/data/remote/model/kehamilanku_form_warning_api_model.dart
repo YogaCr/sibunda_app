@@ -1,0 +1,121 @@
+import 'package:common/value/const_values.dart';
+import 'package:json_annotation/json_annotation.dart';
+
+part 'kehamilanku_form_warning_api_model.g.dart';
+
+@JsonSerializable()
+class PregnancyCheckFormWarningResponse {
+  final int code;
+  final String message;
+  final String status;
+  final List<PregnancyCheckFormWarningDataResponse> data;
+
+  PregnancyCheckFormWarningResponse({
+    required this.code,
+    required this.message,
+    required this.status,
+    required this.data,
+  });
+  factory PregnancyCheckFormWarningResponse.fromJson(Map<String, dynamic> map) => _$PregnancyCheckFormWarningResponseFromJson(map);
+}
+
+@JsonSerializable()
+class PregnancyCheckFormWarningDataResponse {
+  @JsonKey(name: Const.KEY_FETUS_GROWTH_DESC)
+  final PregnancyCheckFetusGrowthWarningResponse fetusGrowth;
+  @JsonKey(name: Const.KEY_WEIGHT_DESC)
+  final PregnancyCheckWeightWarningResponse weight;
+  @JsonKey(name: Const.KEY_MOM_PULSE_DESC)
+  final PregnancyCheckMomPulseWarningResponse momPulse;
+  @JsonKey(name: Const.KEY_TFU_DESC)
+  final PregnancyCheckTfuWarningResponse tfu;
+  @JsonKey(name: Const.KEY_DJJ_DESC)
+  final PregnancyCheckDjjWarningResponse djj;
+  @JsonKey(name: Const.KEY_BABY_MOVEMENT_DESC)
+  final PregnancyCheckBabyMovementWarningResponse babyMovement;
+
+  PregnancyCheckFormWarningDataResponse({
+    required this.fetusGrowth,
+    required this.weight,
+    required this.momPulse,
+    required this.tfu,
+    required this.djj,
+    required this.babyMovement,
+  });
+  factory PregnancyCheckFormWarningDataResponse.fromJson(Map<String, dynamic> map) => _$PregnancyCheckFormWarningDataResponseFromJson(map);
+}
+
+//Baby size overview in pregnancy form
+@JsonSerializable()
+class PregnancyCheckFetusGrowthWarningResponse {
+  final int week;
+  final num length;
+  final num weight;
+  final String desc;
+  @JsonKey(name: Const.KEY_IMG)
+  final String imgLink;
+
+  PregnancyCheckFetusGrowthWarningResponse({
+    required this.week,
+    required this.length,
+    required this.weight,
+    required this.desc,
+    required this.imgLink,
+  });
+  factory PregnancyCheckFetusGrowthWarningResponse.fromJson(Map<String, dynamic> map) => _$PregnancyCheckFetusGrowthWarningResponseFromJson(map);
+}
+
+@JsonSerializable()
+class PregnancyCheckWeightWarningResponse {
+  final int type; //TODO: Is this the severity level or what ???
+  final String desc;
+  PregnancyCheckWeightWarningResponse({
+    required this.type,
+    required this.desc,
+  });
+  factory PregnancyCheckWeightWarningResponse.fromJson(Map<String, dynamic> map) => _$PregnancyCheckWeightWarningResponseFromJson(map);
+}
+
+@JsonSerializable()
+class PregnancyCheckMomPulseWarningResponse {
+  final int type; //TODO: Is this the severity level or what ???
+  final String desc;
+  PregnancyCheckMomPulseWarningResponse({
+    required this.type,
+    required this.desc,
+  });
+  factory PregnancyCheckMomPulseWarningResponse.fromJson(Map<String, dynamic> map) => _$PregnancyCheckMomPulseWarningResponseFromJson(map);
+}
+
+@JsonSerializable()
+class PregnancyCheckTfuWarningResponse {
+  final int type; //TODO: Is this the severity level or what ???
+  final String desc;
+  PregnancyCheckTfuWarningResponse({
+    required this.type,
+    required this.desc,
+  });
+  factory PregnancyCheckTfuWarningResponse.fromJson(Map<String, dynamic> map) => _$PregnancyCheckTfuWarningResponseFromJson(map);
+}
+
+@JsonSerializable()
+class PregnancyCheckDjjWarningResponse {
+  final int type; //TODO: Is this the severity level or what ???
+  final String desc;
+  PregnancyCheckDjjWarningResponse({
+    required this.type,
+    required this.desc,
+  });
+  factory PregnancyCheckDjjWarningResponse.fromJson(Map<String, dynamic> map) => _$PregnancyCheckDjjWarningResponseFromJson(map);
+}
+
+@JsonSerializable()
+class PregnancyCheckBabyMovementWarningResponse {
+  final int type; //TODO: Is this the severity level or what ???
+  final String desc;
+  PregnancyCheckBabyMovementWarningResponse({
+    required this.type,
+    required this.desc,
+  });
+  factory PregnancyCheckBabyMovementWarningResponse.fromJson(Map<String, dynamic> map) => _$PregnancyCheckBabyMovementWarningResponseFromJson(map);
+}
