@@ -66,22 +66,27 @@ class Const {
   static const KEY_JKN_START_DATE = "tanggal_berlaku_jkn";
   static const KEY_HOSPITAL_MEDIC_NO = "no_catatan_medik";
 
+  static const KEY_DATE = "date";
+  static const KEY_PLACE = "location";
+  static const KEY_AGE = "age";
+
   static const KEY_VISIT_DATE = "tanggal_periksa";
   static const KEY_VISIT_PLACE = "tempat_periksa";
   static const KEY_CHECKER_NAME = "nama_pemeriksa";
+  static const KEY_CHECKER = "pemeriksa";
   static const KEY_MOTHER_DIFFICULTY = "keluhan_bunda";
   static const KEY_PREGNANCY_AGE = "usia_kehamilan";
-  static const KEY_BABY_GENDER = "kelamin_bayi";
+  static const KEY_BABY_GENDER = "jenis_kelamin"; //"kelamin_bayi";
   static const KEY_FUTURE_VISIT_DATE = "tanggal_periksa_kembali";
   static const KEY_HPHT = "hpht";
   static const KEY_HPL = "hpl";
-  static const KEY_MOTHER_WEIGHT = "berat_badan_bunda";
-  static const KEY_MOTHER_WEIGHT_DIFF = "kenaikan_berat_badan_bunda";
-  static const KEY_MOTHER_HEIGHT = "tinggi_badan_bunda";
+  static const KEY_MOTHER_WEIGHT = "bb"; //"berat_badan_bunda";
+  static const KEY_MOTHER_WEIGHT_DIFF = "kenaikan_bb"; //"kenaikan_berat_badan_bunda";
+  static const KEY_MOTHER_HEIGHT = "tb"; //"tinggi_badan_bunda";
   static const KEY_TFU = "tfu";
   static const KEY_DJJ = "djj";
-  static const KEY_SYSTOLIC_PRESSURE = "tekanan_darah_sistolik";
-  static const KEY_DIASTOLIC_PRESSURE = "tekanan_darah_diastolik";
+  static const KEY_SYSTOLIC_PRESSURE = "sistolik";
+  static const KEY_DIASTOLIC_PRESSURE = "diastolik";
   static const KEY_MAP = "map";
   static const KEY_BABY_MOVEMENT = "gerakan_bayi";
   static const KEY_DRUG_PRESCRIPT = "resep_obat";
@@ -116,6 +121,10 @@ class Const {
   static const KEY_BOTTOM_OBESITY_THRESHOLD = "bottom_obesity_threshold";
   static const KEY_BOTTOM_OVER_THRESHOLD = "bottom_over_threshold";
   static const KEY_BOTTOM_NORMAL_THRESHOLD = "bottom_normal_threshold";
+
+  static const KEY_IS_NORMAL = "is_normal";
+  static const KEY_HEAD_CIRCUM = "lingkar_kepala";
+  static const KEY_IMT = "imt";
 
   static const KEY_IMMUNIZATION_DATE = "tanggal_imunisasi";
   static const KEY_IMMUNIZATION_PLACE = "tempat_imunisasi";

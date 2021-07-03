@@ -7,8 +7,10 @@ import 'package:home/ui/form_get_started/child_form_page.dart';
 import 'package:home/ui/form_get_started/children_count_page.dart';
 import 'package:home/ui/form_get_started/do_mother_have_pregnancy_page.dart';
 import 'package:home/ui/form_get_started/father_form_page.dart';
+import 'package:home/ui/form_get_started/get_started_form_main_page.dart';
 import 'package:home/ui/form_get_started/mother_form_page.dart';
 import 'package:home/ui/form_get_started/mother_hpl_page.dart';
+import 'package:home/ui/form_get_started/new_account_confirmation_page.dart';
 import 'package:home/ui/home/home_page.dart';
 import 'package:home/ui/home/notif_and_message_page.dart';
 import 'package:home/ui/splash/splash_page.dart';
@@ -35,15 +37,22 @@ class HomeRoutes extends ModuleRoute {
     body: SplashPage(),
     padding: EdgeInsets.all(20),
   ));
-  static final signUpPage = SibRoute("SignUpPage", SignUpPage, (ctx) =>  PlainBackFrame(
-    body: SignUpPage().inVmProvider([
-      (ctx) => HomeVmDi.signUpFormVm,
-    ]),
-    padding: EdgeInsets.all(20),
-  ));
   static final loginPage = SibRoute("LoginPage", LoginPage, (ctx) =>  PlainBackFrame(
     body: LoginPage().inVmProvider([
       (ctx) => HomeVmDi.loginFormVm,
+    ]),
+    padding: EdgeInsets.all(20),
+  ));
+
+  static final getStartedFormMainPage = SibRoute("GetStartedFormMainPage", GetStartedFormMainPage, (ctx) => MainFrame(
+    body: GetStartedFormMainPage().inVmProvider([
+      (ctx) => HomeVmDi.getStartedFormMainVm,
+    ]),
+  ));
+  //============ Get started forms ==========
+  static final signUpPage = SibRoute("SignUpPage", SignUpPage, (ctx) =>  PlainBackFrame(
+    body: SignUpPage().inVmProvider([
+          (ctx) => HomeVmDi.signUpFormVm,
     ]),
     padding: EdgeInsets.all(20),
   ));
@@ -69,18 +78,25 @@ class HomeRoutes extends ModuleRoute {
     ]), //.inVmProvider([(ctx) => HomeVmDi.childFormVm,]),
     padding: EdgeInsets.all(20),
   ));
+  static final childrenCountPage = SibRoute("ChildrenCountPage", ChildrenCountPage, (ctx) =>  PlainBackFrame(
+    body: ChildrenCountPage().inVmProvider([
+          (ctx) => HomeVmDi.childrenCountVm,
+    ]), //.inVmProvider([(ctx) => HomeVmDi.childFormVm,]),
+    padding: EdgeInsets.all(20),
+  ));
   static final childFormPage = SibRoute("ChildFormPage", ChildFormPage, (ctx) =>  PlainBackFrame(
     body: ChildFormPage().inVmProvider([
       (ctx) => HomeVmDi.childFormVm,
     ]),
     padding: EdgeInsets.all(20),
   ));
-  static final childrenCountPage = SibRoute("ChildrenCountPage", ChildrenCountPage, (ctx) =>  PlainBackFrame(
-    body: ChildrenCountPage().inVmProvider([
-      (ctx) => HomeVmDi.childrenCountVm,
-    ]), //.inVmProvider([(ctx) => HomeVmDi.childFormVm,]),
+  static final newAccountConfirmPage = SibRoute("NewAccountConfirmPage", NewAccountConfirmPage, (ctx) =>  PlainBackFrame(
+    body: NewAccountConfirmPage().inVmProvider([
+      (ctx) => HomeVmDi.getStartedFormMainVm,
+    ]),
     padding: EdgeInsets.all(20),
   ));
+  //============ Get started forms ========== end
 
   static final homePage = SibRoute("HomePage", HomePage, (ctx) =>  MainFrame(
     body: HomePage().inVmProvider([

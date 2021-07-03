@@ -13,6 +13,10 @@ mixin MyBabyRepo {
   Future<Result<List<BabyFormMenuData>>> getBabyFormMenu();
   Future<Result<List<BabyChartMenuData>>> getBabyGrowthGraphMenu();
   Future<Result<List<BabyChartMenuData>>> getBabyDevGraphMenu();
+  Future<Result<bool>> saveNeonatalServiceForm({
+    required int page,
+    required Map<String, dynamic> formData,
+  });
 }
 
 
@@ -32,6 +36,12 @@ class MyBabyRepoDummy with MyBabyRepo {
   Future<Result<List<BabyChartMenuData>>> getBabyGrowthGraphMenu() async => Success(babyGrowthGraphMenuList);
   @override
   Future<Result<List<BabyChartMenuData>>> getBabyDevGraphMenu() async => Success(babyDevGraphMenuList);
+
+  @override
+  Future<Result<bool>> saveNeonatalServiceForm({
+    required int page,
+    required Map<String, dynamic> formData,
+  }) async => Success(true);
 }
 
 

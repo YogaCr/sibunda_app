@@ -18,7 +18,7 @@ class SignUpFormVm extends FormVmGroup {
   SignUpFormVm(this.useCase) {
     init();
   }
-  final SignUp useCase;
+  final SaveSignUpData useCase;
 
   LiveData<dynamic>? _pswd_re;
 

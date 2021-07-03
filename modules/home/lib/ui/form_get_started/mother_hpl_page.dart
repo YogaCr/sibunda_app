@@ -11,10 +11,20 @@ import 'package:home/config/home_routes.dart';
 import 'package:home/ui/form_get_started/mother_hpl_vm.dart';
 
 class MotherHplPage extends StatelessWidget {
+  final PageController? pageControll;
+  MotherHplPage({ this.pageControll });
 
   @override
   Widget build(BuildContext context) {
     final vm = ViewModelProvider.of<MotherHplVm>(context);
+
+    vm.onSubmit.observeForever((success) {
+      if(success == true) {
+        _moveToNext(context);
+      } else {
+        showSnackBar(context, Strings.error_occurred_when_saving_data);
+      }
+    });
 
     final now = DateTime.now();
     //DateTime? hplDate;
@@ -29,6 +39,7 @@ class MotherHplPage extends StatelessWidget {
         ),
         Text("Sudah tahu kapan HPL Bunda?"),
         TxtInputUnderline(
+          enabled: false,
           textController: vm.hplTxtControl,
           overText: "Masukkan hari perkiraan menurut dokter Bunda",
           onSuffixIconClick: () async {
@@ -47,6 +58,7 @@ class MotherHplPage extends StatelessWidget {
         //Spacer(flex: 1,),
         Text("Yuk hitung HPL Bunda"),
         TxtInputUnderline(
+          enabled: false,
           textController: vm.hphtTxtControl,
           overText: "Masukkan HPHT Bunda",
           onSuffixIconClick: () async {
@@ -82,11 +94,23 @@ class MotherHplPage extends StatelessWidget {
             ],
           ).withMargin(EdgeInsets.all(SibDimens.std_padding)),
         ),
-        TxtBtn(
-          Strings.save,
-          onTap: () => HomeRoutes.childrenCountPage.goToPage(context),
+        LiveDataObserver<bool>(
+          liveData: vm.canProceed,
+          builder: (ctx, canProceed) => TxtBtn(
+            Strings.save,
+            color: canProceed == true ? Manifest.theme.colorPrimary : grey,
+            onTap: () => canProceed == true
+                ? vm.proceed()
+                : showSnackBar(ctx, Strings.there_still_invalid_fields), //canProceed != true ? null : () => _moveToNext(context),
+          ),
         ),
       ],
     );
+  }
+
+  void _moveToNext(BuildContext context) {
+    pageControll == null
+        ? HomeRoutes.childrenCountPage.goToPage(context)
+        : pageControll!.jumpToPage(pageControll!.page!.toInt() +1);
   }
 }

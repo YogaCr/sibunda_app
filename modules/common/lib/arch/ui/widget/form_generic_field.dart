@@ -36,6 +36,7 @@ class TxtField extends SibFormField {
   final String invalidMsg;
   final String? Function(String? response)? invalidMsgGenerator;
   final Var<bool> isChanging = Var(false);
+  final bool enabled;
 
   TxtField({
     required this.itemData,
@@ -43,6 +44,7 @@ class TxtField extends SibFormField {
     this.invalidMsgGenerator,
     this.invalidMsg = Strings.field_can_not_be_empty,
     this.imgPosition = RelativePosition.below,
+    this.enabled = true,
     bool? isLiveDataOwner,
     //TextEditingController? textController,
     MutableLiveData<String>? responseLiveData
@@ -81,6 +83,7 @@ class TxtField extends SibFormField {
           liveData: isValid!,
           builder: (ctx, isValid) {
             final txtWidget = TxtInput(
+              enabled: enabled,
               textController: textController,
               label: itemData.question,
               errorText: (isValid == false && !isInit)

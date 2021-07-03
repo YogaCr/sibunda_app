@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 
 //TODO 23 Mei 2021: Add constructor with [FormState] as Param.
 class TxtInputUnderline extends StatefulWidget {
+  final bool enabled;
   final String? hint;
   final String? label;
   final String overText;
@@ -33,11 +34,13 @@ class TxtInputUnderline extends StatefulWidget {
     this.textValidator,
     this.isTypePassword = false,
     this.initIsTxtValid = true,
+    this.enabled = true,
   }): this.hint = hint ?? label;
 
 
   @override
   State createState() => TxtInputUnderlineState(
+    enabled: enabled,
     overText: overText,
     label: label,
     hint: hint,
@@ -54,6 +57,7 @@ class TxtInputUnderline extends StatefulWidget {
 }
 
 class TxtInputUnderlineState extends State<TxtInputUnderline> {
+  final bool enabled;
   final String? hint;
   final String? label;
   final String? errorText;
@@ -72,6 +76,7 @@ class TxtInputUnderlineState extends State<TxtInputUnderline> {
 
   TxtInputUnderlineState({
     required this.overText,
+    required this.enabled,
     this.label,
     String? hint,
     this.errorText,
@@ -105,6 +110,7 @@ class TxtInputUnderlineState extends State<TxtInputUnderline> {
           style: SibTextStyles.overText,
         ),
         TextField(
+          readOnly: !enabled,
           style: SibTextStyles.size_0_colorPrimary,
           obscureText: isTypePassword && !_isPasswordVisible,
           autocorrect: !isTypePassword,

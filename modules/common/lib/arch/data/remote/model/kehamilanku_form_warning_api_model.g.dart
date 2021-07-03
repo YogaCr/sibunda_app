@@ -12,10 +12,8 @@ PregnancyCheckFormWarningResponse _$PregnancyCheckFormWarningResponseFromJson(
     code: json['code'] as int,
     message: json['message'] as String,
     status: json['status'] as String,
-    data: (json['data'] as List<dynamic>)
-        .map((e) => PregnancyCheckFormWarningDataResponse.fromJson(
-            e as Map<String, dynamic>))
-        .toList(),
+    data: PregnancyCheckFormWarningDataResponse.fromJson(
+        json['data'] as Map<String, dynamic>),
   );
 }
 
@@ -62,10 +60,10 @@ PregnancyCheckFetusGrowthWarningResponse
         Map<String, dynamic> json) {
   return PregnancyCheckFetusGrowthWarningResponse(
     week: json['week'] as int,
-    length: json['length'] as num,
-    weight: json['weight'] as num,
-    desc: json['desc'] as String,
-    imgLink: json['img'] as String,
+    length: json['length'] as num?,
+    weight: json['weight'] as num?,
+    desc: json['desc'] as String?,
+    imgLink: json['img'] as String?,
   );
 }
 
@@ -84,6 +82,7 @@ PregnancyCheckWeightWarningResponse
   return PregnancyCheckWeightWarningResponse(
     type: json['type'] as int,
     desc: json['desc'] as String,
+    isNormal: json['is_normal'] as bool,
   );
 }
 
@@ -92,6 +91,7 @@ Map<String, dynamic> _$PregnancyCheckWeightWarningResponseToJson(
     <String, dynamic>{
       'type': instance.type,
       'desc': instance.desc,
+      'is_normal': instance.isNormal,
     };
 
 PregnancyCheckMomPulseWarningResponse
@@ -99,6 +99,7 @@ PregnancyCheckMomPulseWarningResponse
   return PregnancyCheckMomPulseWarningResponse(
     type: json['type'] as int,
     desc: json['desc'] as String,
+    isNormal: json['is_normal'] as bool,
   );
 }
 
@@ -107,6 +108,7 @@ Map<String, dynamic> _$PregnancyCheckMomPulseWarningResponseToJson(
     <String, dynamic>{
       'type': instance.type,
       'desc': instance.desc,
+      'is_normal': instance.isNormal,
     };
 
 PregnancyCheckTfuWarningResponse _$PregnancyCheckTfuWarningResponseFromJson(
@@ -114,6 +116,7 @@ PregnancyCheckTfuWarningResponse _$PregnancyCheckTfuWarningResponseFromJson(
   return PregnancyCheckTfuWarningResponse(
     type: json['type'] as int,
     desc: json['desc'] as String,
+    isNormal: json['is_normal'] as bool,
   );
 }
 
@@ -122,6 +125,7 @@ Map<String, dynamic> _$PregnancyCheckTfuWarningResponseToJson(
     <String, dynamic>{
       'type': instance.type,
       'desc': instance.desc,
+      'is_normal': instance.isNormal,
     };
 
 PregnancyCheckDjjWarningResponse _$PregnancyCheckDjjWarningResponseFromJson(
@@ -129,6 +133,7 @@ PregnancyCheckDjjWarningResponse _$PregnancyCheckDjjWarningResponseFromJson(
   return PregnancyCheckDjjWarningResponse(
     type: json['type'] as int,
     desc: json['desc'] as String,
+    isNormal: json['is_normal'] as bool,
   );
 }
 
@@ -137,6 +142,7 @@ Map<String, dynamic> _$PregnancyCheckDjjWarningResponseToJson(
     <String, dynamic>{
       'type': instance.type,
       'desc': instance.desc,
+      'is_normal': instance.isNormal,
     };
 
 PregnancyCheckBabyMovementWarningResponse
@@ -145,6 +151,7 @@ PregnancyCheckBabyMovementWarningResponse
   return PregnancyCheckBabyMovementWarningResponse(
     type: json['type'] as int,
     desc: json['desc'] as String,
+    isNormal: json['is_normal'] as bool,
   );
 }
 
@@ -153,4 +160,5 @@ Map<String, dynamic> _$PregnancyCheckBabyMovementWarningResponseToJson(
     <String, dynamic>{
       'type': instance.type,
       'desc': instance.desc,
+      'is_normal': instance.isNormal,
     };

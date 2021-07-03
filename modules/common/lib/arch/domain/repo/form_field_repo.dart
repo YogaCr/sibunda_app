@@ -8,6 +8,8 @@ mixin FormFieldRepo {
   Future<Result<List<FormGroupData>>> getPregnancyImmunizationFormGroupData();
   Future<Result<List<FormGroupData>>> getBabyImmunizationFormGroupData();
   Future<Result<List<FormGroupData>>> getCovidMotherCheckFormGroupData();
+
+  Future<Result<List<FormGroupData>>> getNeonatalFormData(int page);
 }
 
 class FormFieldRepoDummy with FormFieldRepo {
@@ -23,4 +25,6 @@ class FormFieldRepoDummy with FormFieldRepo {
   Future<Result<List<FormGroupData>>> getBabyImmunizationFormGroupData() async => Success(babyImmunizationFormGroupData);
   @override
   Future<Result<List<FormGroupData>>> getCovidMotherCheckFormGroupData() async => Success(covidMotherCheckFormGroupData);
+  @override
+  Future<Result<List<FormGroupData>>> getNeonatalFormData(int page) async => Success(babyFormGroupData_neonatal);
 }

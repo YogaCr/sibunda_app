@@ -9,9 +9,9 @@ part 'baby_api.g.dart';
 
 @RestApi(baseUrl: Const.ENDPOINT_BABY)
 abstract class BabyApi {
-  factory BabyApi(SessionData session, { Dio? dio }) => _BabyApi(dio ?? Dio(
-      SibDio.defaultBaseOptions()..headers[Const.HEADER_AUTH] = session.toAuthString()
-  ));
+  factory BabyApi(SessionData session, { Dio? dio }) => _BabyApi(
+    SibDio.getDefaultInstance(preExisting: dio, session: session)
+  );
 
   @GET("/overview")
   Future<BabyHomeResponse> getHomeData();

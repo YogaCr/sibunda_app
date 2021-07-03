@@ -14,7 +14,7 @@ const ansi_cyan = "\u001B[36m";
 class IoConfig {
   IoConfig._();
 
-  static bool canPrint = true;
+  static const canPrint = true;
 
   static bool _canPrintDebug = true;
   static set canPrintDebug(v) => _canPrintDebug = v;

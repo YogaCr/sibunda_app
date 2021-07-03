@@ -91,7 +91,9 @@ class _WeeklyFormPage extends StatelessWidget {
             AsyncVmObserver<KehamilankuCheckFormVm, PregnancyBabySize>(
               vm: vm,
               liveDataGetter: (vm2) => vm2.pregnancyBabySize,
-              builder: (ctx, data) => ItemMotherBabySizeOverview.fromData(data),
+              builder: (ctx, data) => data != null
+                  ? ItemMotherBabySizeOverview.fromData(data)
+                  : defaultLoading(),
             ),
             AsyncVmObserver<KehamilankuCheckFormVm, List<FormWarningStatus>>(
               vm: vm,

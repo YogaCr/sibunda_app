@@ -13,6 +13,7 @@ import 'package:core/domain/model/result.dart';
 import '../dummy_data.dart';
 
 mixin AuthRepo {
+  Future<Result<bool>> saveSignupData(SignUpData signup);
   Future<Result<bool>> signup({
     required SignUpData signup,
     required Mother mother,
@@ -29,6 +30,8 @@ class AuthRepoImpl with AuthRepo {
   final AuthApi _api;
   AuthRepoImpl(this._api);
 
+  @override
+  Future<Result<bool>> saveSignupData(SignUpData signup) async => Success(true); //For now, this is just for gymmic. it is because `SignUpData` is stored together with other get started related data.
   @override
   Future<Result<bool>> signup({
     required SignUpData signup,
@@ -144,6 +147,9 @@ class AuthDummyRepo with AuthRepo {
 
   factory AuthDummyRepo() => _instance ??= AuthDummyRepo._();
   AuthDummyRepo._();
+
+  @override
+  Future<Result<bool>> saveSignupData(SignUpData signup) async => Success(true);
 
   @override
   Future<Result<SessionData>> login(LoginData data) async => Success(dummySessionData1);

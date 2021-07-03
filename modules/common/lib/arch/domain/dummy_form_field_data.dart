@@ -36,7 +36,7 @@ final editFormData = <FormGroupData>[
 
 final motherFormData = <FormGroupData>[
   FormGroupData(header: "header", data: [
-    FormData(key: Const.KEY_NAME, question: Strings.name, type: FormType.text,),
+    FormData(key: Const.KEY_NAME_INDO, question: Strings.name, type: FormType.text,),
     FormData(key: Const.KEY_NIK, question: Strings.nik, type: FormType.text,),
     FormData(key: Const.KEY_SALARY, question: Strings.salary, type: FormType.text,),
     FormData(key: Const.KEY_JKN, question: Strings.jkn, type: FormType.text,),
@@ -56,7 +56,7 @@ final motherFormData = <FormGroupData>[
 
 final fatherFormData = <FormGroupData>[
   FormGroupData(header: "header", data: [
-    FormData(key: Const.KEY_NAME, question: Strings.name, type: FormType.text,),
+    FormData(key: Const.KEY_NAME_INDO, question: Strings.name, type: FormType.text,),
     FormData(key: Const.KEY_NIK, question: Strings.nik, type: FormType.text,),
     FormData(key: Const.KEY_SALARY, question: Strings.salary, type: FormType.text,),
     FormData(key: Const.KEY_JKN, question: Strings.jkn, type: FormType.text,),
@@ -74,7 +74,7 @@ final fatherFormData = <FormGroupData>[
 
 final childFormData = <FormGroupData>[
   FormGroupData(header: "header", data: [
-    FormData(key: Const.KEY_NAME, question: Strings.name, type: FormType.text,),
+    FormData(key: Const.KEY_NAME_INDO, question: Strings.name, type: FormType.text,),
     FormData(key: Const.KEY_NIK, question: Strings.nik, type: FormType.text,),
     FormData(key: Const.KEY_JKN, question: Strings.jkn, type: FormType.text,),
     FormData(key: Const.KEY_BLOOD_TYPE, question: Strings.blood_type, type: FormType.text,),
@@ -92,22 +92,22 @@ final childFormData = <FormGroupData>[
 
 
 List<FormGroupData> getBabyFormGroupData_dummy(int month) {
-  final list = [babyFormGroupData1,babyFormGroupData2,];
+  final list = [babyFormGroupData_growth,babyFormGroupData2,];
   return list[month % list.length];
 }
 
-final babyFormGroupData1 = <FormGroupData>[
+final babyFormGroupData_growth = <FormGroupData>[
   FormGroupData(
     header: "Form Pemeriksaan Pertumbuhan Bayi",
     data: [
-      FormData(key: "key1", question: "Tanggal Periksa", type: FormType.text,),
-      FormData(key: "key2", question: "Tempat Periksa", type: FormType.text,),
-      FormData(key: "key3", question: "Nama Pemeriksa", type: FormType.text,),
-      FormData(key: "key4", question: "Usia Bayi", type: FormType.text,),
-      FormData(key: "key5", question: "Berat Badan (kg)", type: FormType.text,),
-      FormData(key: "key6", question: "Panjang/Tinggi Badan (cm)", type: FormType.text,),
-      FormData(key: "key7", question: "Lingkar Kepala (cm)", type: FormType.text,),
-      FormData(key: "key8", question: "IMT Bayi", type: FormType.text,),
+      FormData(key: Const.KEY_DATE, question: "Tanggal Periksa", type: FormType.text,),
+      FormData(key: Const.KEY_PLACE, question: "Tempat Periksa", type: FormType.text,),
+      FormData(key: Const.KEY_CHECKER, question: "Nama Pemeriksa", type: FormType.text,),
+      FormData(key: Const.KEY_AGE, question: "Usia Bayi", type: FormType.text,),
+      FormData(key: Const.KEY_MOTHER_WEIGHT, question: "Berat Badan (kg)", type: FormType.text,),
+      FormData(key: Const.KEY_MOTHER_HEIGHT, question: "Panjang/Tinggi Badan (cm)", type: FormType.text,),
+      FormData(key: Const.KEY_HEAD_CIRCUM, question: "Lingkar Kepala (cm)", type: FormType.text,),
+      FormData(key: Const.KEY_IMT, question: "IMT Bayi", type: FormType.text,),
     ],
   ),
 ];
@@ -162,6 +162,38 @@ final babyFormGroupData2 = <FormGroupData>[
         ],
         img: [
           ImgData(link: "pic_baby_head_side_to_middle.png", package: GlobalRoutes.bayiku, isLocal: true),
+        ],
+      ),
+    ],
+  ),
+];
+
+final babyNeonatalServicePages = [
+  "0-6 Jam", "KN 1", "KN 2", "KN 3",
+];
+final babyFormGroupData_neonatal = <FormGroupData>[
+  FormGroupData(
+    header: "Kondisi",
+    data: [
+      FormData(key: Const.KEY_MOTHER_WEIGHT, question: "Berat Badan (kg)", type: FormType.text,),
+      FormData(key: Const.KEY_MOTHER_HEIGHT, question: "Panjang/Tinggi Badan (cm)", type: FormType.text,),
+      FormData(key: Const.KEY_HEAD_CIRCUM, question: "Lingkar Kepala (cm)", type: FormType.text,),
+      FormData(key: "key1", question: "Inisiasi Menyusui Dini (IMD)", type: FormType.radio,
+        options: [
+          FormOption(label: "Sudah", isSelected: false),
+          FormOption(label: "Belum", isSelected: false),
+        ],
+      ),
+      FormData(key: "key2", question: "Vit K1", type: FormType.radio,
+        options: [
+          FormOption(label: "Sudah", isSelected: false),
+          FormOption(label: "Belum", isSelected: false),
+        ],
+      ),
+      FormData(key: "key3", question: "Salep/Tetes Mata", type: FormType.radio,
+        options: [
+          FormOption(label: "Sudah", isSelected: false),
+          FormOption(label: "Belum", isSelected: false),
         ],
       ),
     ],

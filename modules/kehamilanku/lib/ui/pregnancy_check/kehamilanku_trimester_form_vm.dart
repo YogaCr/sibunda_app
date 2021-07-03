@@ -56,6 +56,7 @@ class KehamilankuCheckFormVm extends FormVmGroup {
     Const.KEY_MOTHER_WEIGHT,
     Const.KEY_MOTHER_WEIGHT_DIFF,
     Const.KEY_MOTHER_HEIGHT,
+    Const.KEY_BABY_MOVEMENT,
     Const.KEY_TFU,
     Const.KEY_DJJ,
     Const.KEY_SYSTOLIC_PRESSURE,
@@ -72,6 +73,7 @@ class KehamilankuCheckFormVm extends FormVmGroup {
       case Const.KEY_MOTHER_WEIGHT:
       case Const.KEY_MOTHER_WEIGHT_DIFF:
       case Const.KEY_MOTHER_HEIGHT:
+      case Const.KEY_BABY_MOVEMENT:
       case Const.KEY_TFU:
       case Const.KEY_DJJ:
       case Const.KEY_SYSTOLIC_PRESSURE:

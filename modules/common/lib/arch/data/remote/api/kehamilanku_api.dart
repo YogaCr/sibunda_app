@@ -13,12 +13,9 @@ part 'kehamilanku_api.g.dart';
 
 @RestApi(baseUrl: Const.ENDPOINT_PREGNANCY)
 abstract class KehamilankuApi {
-  factory KehamilankuApi(SessionData session, {Dio? dio}) =>
-      _KehamilankuApi(dio ?? Dio(
-          SibDio.defaultBaseOptions()
-            ..headers["Authorization"] = session.toAuthString()
-        )
-      );
+  factory KehamilankuApi(SessionData session, {Dio? dio}) => _KehamilankuApi(
+      SibDio.getDefaultInstance(preExisting: dio, session: session)
+  );
 
   @GET("/overview")
   Future<PregnancyHomeResponse> getHomeData();

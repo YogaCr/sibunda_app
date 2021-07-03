@@ -1,3 +1,4 @@
+import 'package:common/config/_config.dart';
 import 'package:common/config/manifest.dart';
 import 'package:flutter/material.dart';
 import 'package:home/config/home_routes.dart';
@@ -9,9 +10,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: "Home Module",
+      title: GlobalRoutes.home,
       theme: Manifest.theme.materialData,
-      home: HomeRoutes.doMotherHavePregnancyPage.build(context),
+      home: HomeRoutes.obj.entryPoint.build(context), //HomeRoutes.motherHplPage.build(context), //
     );
   }
 }

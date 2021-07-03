@@ -10,6 +10,8 @@ import 'package:home/config/home_routes.dart';
 import 'package:home/ui/form_get_started/mother_form_vm.dart';
 
 class MotherFormPage extends StatelessWidget {
+  final PageController? pageControll;
+  MotherFormPage({ this.pageControll });
 
   @override
   Widget build(BuildContext context) {
@@ -21,13 +23,21 @@ class MotherFormPage extends StatelessWidget {
         ).withMargin(EdgeInsets.only(top: 60)),
         FormVmGroupObserver<MotherFormVm>(
           showHeader: false,
-          onSubmit: (ctx, success) => success
-              ? HomeRoutes.fatherFormPage.goToPage(context)
-              : showSnackBar(context, "Gagal",),
+          onSubmit: (ctx, success) {
+            if(success) {
+              if(pageControll != null) {
+                pageControll!.jumpToPage(pageControll!.page!.toInt() +1);
+              } else {
+                HomeRoutes.fatherFormPage.goToPage(context);
+              }
+            } else {
+              showSnackBar(context, "Gagal",);
+            }
+          },
           submitBtnBuilder: (ctx, canProceed) => FloatingActionButton(
             child: Icon(Icons.arrow_forward_rounded,),
             backgroundColor: canProceed == true ? pink_300 : grey,
-            onPressed: canProceed == true ? null : () => showSnackBar(context, "Ada yg blum valid"),
+            onPressed: null, //canProceed == true ? null : () => showSnackBar(context, "Ada yg blum valid"),
           ),
         ),
 /*

@@ -245,21 +245,21 @@ class ItemMotherRecomFood extends StatelessWidget {
 class ItemMotherBabySizeOverview extends StatelessWidget {
   final Widget image;
   final String sizeString;
-  final double babyLen;
-  final double babyWeight;
+  final double? babyLen;
+  final double? babyWeight;
 
   ItemMotherBabySizeOverview({
     required this.image,
     required this.sizeString,
-    required this.babyLen,
-    required this.babyWeight,
+    this.babyLen,
+    this.babyWeight,
   });
 
-  ItemMotherBabySizeOverview.fromData(PregnancyBabySize? data):
+  ItemMotherBabySizeOverview.fromData(PregnancyBabySize data):
     image = Container(color: Manifest.theme.colorPrimary,),
-    sizeString = data?.sizeString ?? "<null>",
-    babyLen = data?.babyLen ?? -1,
-    babyWeight = data?.babyWeight ?? -1
+    sizeString = data.sizeString, //?? "<null>",
+    babyLen = data.babyLen, // ?? -1,
+    babyWeight = data.babyWeight // ?? -1
   ;
 
   @override
@@ -286,7 +286,7 @@ class ItemMotherBabySizeOverview extends StatelessWidget {
       ),
     );
 
-    final babyLenChild = RichText(
+    final babyLenChild = babyLen != null ? RichText(
       text: TextSpan(
         style: SibTextStyles.size_min_2_black,
         children: [
@@ -294,9 +294,9 @@ class ItemMotherBabySizeOverview extends StatelessWidget {
           TextSpan(text: "$babyLen inch", style: SibTextStyles.size_min_2_bold_colorPrimary),
         ],
       ),
-    );
+    ) : null;
 
-    final babyWeightChild = RichText(
+    final babyWeightChild = babyWeight != null ? RichText(
       text: TextSpan(
         style: SibTextStyles.size_min_2_black,
         children: [
@@ -304,7 +304,34 @@ class ItemMotherBabySizeOverview extends StatelessWidget {
           TextSpan(text: "$babyWeight pounds", style: SibTextStyles.size_min_2_bold_colorPrimary),
         ],
       ),
-    );
+    ) : null;
+
+    final sizeQuantitativeChildren = <Widget>[];
+    if(babyLenChild != null) {
+      sizeQuantitativeChildren.add(babyLenChild);
+    }
+    if(babyWeightChild != null) {
+      sizeQuantitativeChildren.add(babyWeightChild);
+    }
+    if(sizeQuantitativeChildren.length == 2) {
+      sizeQuantitativeChildren.insert(1, SizedBox(width: 15,),);
+    }
+    final sizeQuantitativeRow = sizeQuantitativeChildren.isNotEmpty
+        ? Row(children: sizeQuantitativeChildren,) : null;
+
+    final colChildren = <Widget>[
+      Row(
+        children: [
+          imgChild,
+          Container(width: 10,),
+          descChild,
+        ],
+      ),
+      Container(height: 10,),
+    ];
+    if(sizeQuantitativeRow != null) {
+      colChildren.add(sizeQuantitativeRow);
+    }
 
     return ClipRRect(
       borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -313,7 +340,9 @@ class ItemMotherBabySizeOverview extends StatelessWidget {
         child: Padding(
           padding: EdgeInsets.all(10),
           child: Column(
-            children: [
+            children: colChildren,
+/*
+            [
               Row(
                 children: [
                   imgChild,
@@ -330,6 +359,7 @@ class ItemMotherBabySizeOverview extends StatelessWidget {
                 ],
               ),
             ],
+*/
           ),
         ),
       ),

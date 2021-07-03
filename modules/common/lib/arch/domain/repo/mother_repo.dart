@@ -11,6 +11,8 @@ mixin MotherRepo {
   Future<Result<bool>> saveMotherData(Mother data);
   Future<Result<List<MotherChartMenuData>>> getMotherPregnancyEvalGraphMenu();
   Future<Result<List<MotherChartMenuData>>> getMotherWeightGraphMenu();
+
+  Future<Result<bool>> saveMotherHpl(DateTime date);
 }
 
 class MotherRepoDummy with MotherRepo {
@@ -27,4 +29,6 @@ class MotherRepoDummy with MotherRepo {
   Future<Result<List<MotherChartMenuData>>> getMotherPregnancyEvalGraphMenu() async => Success(motherPregEvalGraphMenuList);
   @override
   Future<Result<List<MotherChartMenuData>>> getMotherWeightGraphMenu() async => Success(motherWeightGraphMenuList);
+  @override
+  Future<Result<bool>> saveMotherHpl(DateTime date) async => Success(true);
 }

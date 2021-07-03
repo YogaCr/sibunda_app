@@ -45,6 +45,8 @@ class PregnancyHomeBabyResponse {
     required this.foodRecomList,
     required this.trimesterList,
   });
+
+  factory PregnancyHomeBabyResponse.fromJson(Map<String, dynamic> map) => _$PregnancyHomeBabyResponseFromJson(map);
 }
 
 @JsonSerializable()
@@ -58,6 +60,8 @@ class PregnancyHomeFoodRecom {
     required this.category,
     required this.desc,
   });
+
+  factory PregnancyHomeFoodRecom.fromJson(Map<String, dynamic> map) => _$PregnancyHomeFoodRecomFromJson(map);
 }
 
 @JsonSerializable()
@@ -73,4 +77,6 @@ class PregnancyHomeTrimester {
     required this.no,
     required this.babyId,
   });
+
+  factory PregnancyHomeTrimester.fromJson(Map<String, dynamic> map) => _$PregnancyHomeTrimesterFromJson(map);
 }

@@ -10,6 +10,8 @@ import 'package:home/config/home_routes.dart';
 import 'package:home/ui/form_get_started/child_form_vm.dart';
 
 class ChildFormPage extends StatelessWidget {
+  final PageController? pageControll;
+  ChildFormPage({ this.pageControll });
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +36,11 @@ class ChildFormPage extends StatelessWidget {
           onSubmit: (ctx, success) {
             if(success) {
               showSnackBar(context, "Berhasil", backgroundColor: Colors.green);
-              HomeRoutes.homePage.goToPage(ctx, clearPrevs: true);
+              if(pageControll != null) {
+                pageControll!.jumpToPage(pageControll!.page!.toInt() +1);
+              } else {
+                HomeRoutes.newAccountConfirmPage.goToPage(ctx);
+              }
             } else {
               showSnackBar(context, "Terjadi kesalahan",);
             }

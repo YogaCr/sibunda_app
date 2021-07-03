@@ -32,8 +32,8 @@ PregnancyImmunizationResponse _$PregnancyImmunizationResponseFromJson(
     immunizationId: json['immunization_id'] as int,
     date: json['date'] as String?,
     location: json['location'] as String?,
-    trimester: json['trimester'] as int,
-    imgLink: json['pic'] as String,
+    trimester: json['trisemester'] as int,
+    imgLink: json['pic'] as String?,
   );
 }
 
@@ -44,6 +44,6 @@ Map<String, dynamic> _$PregnancyImmunizationResponseToJson(
       'immunization_id': instance.immunizationId,
       'date': instance.date,
       'location': instance.location,
-      'trimester': instance.trimester,
+      'trisemester': instance.trimester,
       'pic': instance.imgLink,
     };

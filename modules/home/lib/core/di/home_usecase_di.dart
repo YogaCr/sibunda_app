@@ -8,12 +8,16 @@ class HomeUseCaseDi {
   HomeUseCaseDi._();
   static final obj = HomeUseCaseDi._();
 
-  static SignUp get signUp => SignUpImpl(RepoDi.authRepo);
+  static SignUpAndRegisterOtherData get signUpAndRegister => SignUpAndRegisterOtherDataImpl(RepoDi.authRepo);
+  static SaveSignUpData get signUp => SaveSignUpDataImpl(RepoDi.authRepo);
   static Login get login => LoginImpl(RepoDi.authRepo);
   static Logout get logout => LogoutImpl(RepoDi.authRepo);
   static SaveMotherData get saveMotherData => SaveMotherDataImpl(RepoDi.motherRepo);
   static SaveFatherData get saveFatherData => SaveFatherDataImpl(RepoDi.fatherRepo);
   static SaveChildData get saveChildData => SaveChildDataImpl(RepoDi.childRepo);
+  static SaveMotherHpl get saveMotherHpl => SaveMotherHplImpl(RepoDi.motherRepo);
+  static SaveLastChildBirthDate get saveLastChildBirthDate => SaveLastChildBirthDateImpl(RepoDi.childRepo);
+  static SaveChildrenCount get saveChildrenCount => SaveChildrenCountImpl(RepoDi.childRepo);
 
   static GetHomeStatusList get getHomeStatusList => GetHomeStatusListImpl(RepoDi.homeStatusRepo);
   static GetHomeMenuList get getHomeMenuList => GetHomeMenuListImpl(RepoDi.homeMenuRepo);

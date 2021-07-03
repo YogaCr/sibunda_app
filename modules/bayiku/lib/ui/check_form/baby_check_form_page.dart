@@ -1,3 +1,4 @@
+import 'package:bayiku/config/baby_routes.dart';
 import 'package:common/arch/domain/dummy_data.dart';
 import 'package:common/arch/domain/model/baby_data.dart';
 import 'package:common/arch/ui/adapter/top_bar_item_list_adp.dart';
@@ -111,7 +112,7 @@ class _NeonatalServicePanel extends StatelessWidget {
         img: dummyImg, //TODO: _NeonatalServicePanel: img
         title: "Selamat untuk Kelahiran si Kecil ya Bun",
         action: "Isi Pelayanan Neonatus",
-        onBtnClick: () => showSnackBar(context, "To Neonatal service page"),
+        onBtnClick: () => BabyRoutes.neonatalServicePage.goToPage(context),
       ),
     );
   }

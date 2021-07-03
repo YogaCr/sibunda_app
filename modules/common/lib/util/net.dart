@@ -1,4 +1,7 @@
 
+import 'package:common/arch/domain/model/auth.dart';
+import 'package:common/value/const_values.dart';
+import 'package:core/util/_consoles.dart';
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 
@@ -28,6 +31,25 @@ class SimpleNetResponse extends Equatable {
 
 class SibDio {
   SibDio._();
+  static Dio getDefaultInstance({
+    Dio? preExisting,
+    SessionData? session,
+    bool isLogging = IoConfig.canPrint,
+    LogInterceptor? interceptor,
+  }) {
+    final dio = preExisting ?? Dio(SibDio.defaultBaseOptions());
+    if(session != null) {
+      dio.options.headers[Const.HEADER_AUTH] = session.toAuthString();
+    }
+    if(isLogging) {
+      dio.interceptors.add(interceptor ?? LogInterceptor(
+        responseBody: true,
+        requestBody: true,
+        logPrint: prind,
+      ));
+    }
+    return dio;
+  } 
   static const Map<String, dynamic> defaultHeaders = {
     "Accept": "application/json"
   };

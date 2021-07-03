@@ -14,6 +14,7 @@ class TxtInput extends StatelessWidget {
   final TextEditingController? textController;
   final bool isTypePassword;
   final bool _isPasswordVisible = false;
+  final bool enabled;
 
   TxtInput({
     required this.label,
@@ -23,11 +24,13 @@ class TxtInput extends StatelessWidget {
     this.onSubmitted,
     this.textController,
     this.isTypePassword = false,
+    this.enabled = true,
     bool initIsTxtValid = true,
   }): this.hint = hint ?? label;
 
   @override
   Widget build(BuildContext context) => TextField(
+    readOnly: !enabled,
     obscureText: isTypePassword && !_isPasswordVisible,
     autocorrect: !isTypePassword,
     enableSuggestions: !isTypePassword,

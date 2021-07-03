@@ -58,7 +58,7 @@ class Mother {
   factory Mother.from(Map<String, String> map) => Mother(
     puskesmasDomisili: map[Const.KEY_PUSKESMAS_DOMISILI]!,
     cohortRegistNo: map[Const.KEY_COHORT_REG]!,
-    name: map[Const.KEY_NAME]!,
+    name: map[Const.KEY_NAME_INDO]!,
     nik: map[Const.KEY_NIK]!,
     salary: int.parse(map[Const.KEY_SALARY]!),
     jkn: map[Const.KEY_JKN]!,

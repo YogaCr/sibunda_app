@@ -39,7 +39,7 @@ class SplashPage extends StatelessWidget {
         ).withMargin(EdgeInsets.only(top: 20)),
         TxtLink(
           Strings.register_here,
-          onTap: () => HomeRoutes.signUpPage.goToPage(context),
+          onTap: () => HomeRoutes.getStartedFormMainPage.goToPage(context), //HomeRoutes.signUpPage.goToPage(context),
         ).withMargin(EdgeInsets.only(top: 5)),
       ],
     ),

@@ -5,32 +5,50 @@ import 'package:common/arch/domain/model/mother.dart';
 import 'package:core/domain/model/result.dart';
 import 'package:core/ui/base/async_vm.dart';
 import 'package:core/ui/base/live_data.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:core/util/_consoles.dart';
 import 'package:home/core/domain/usecase/_auth_usecase.dart';
 import 'package:home/core/domain/usecase/form_get_started_usecase.dart';
 import 'package:home/ui/form_get_started/child_form_vm.dart';
 import 'package:home/ui/form_get_started/father_form_vm.dart';
 import 'package:home/ui/form_get_started/mother_form_vm.dart';
+import 'package:home/ui/form_get_started/mother_hpl_vm.dart';
 import 'package:home/ui/signup/sign_up_vm.dart';
+
+import 'children_count_vm.dart';
 
 ///*
 class GetStartedFormMainVm extends AsyncVm {
-  GetStartedFormMainVm() {
-    _signUpFormVm = SignUpFormVm(_signup);
-    _motherVm = MotherFormVm(_saveMotherData);
-    _fatherVm = FatherFormVm(_saveFatherData);
-    _childVm = ChildFormVm(_saveChildData);
+  static const sendDataKey = "sendData";
+
+  GetStartedFormMainVm({
+    required SignUpAndRegisterOtherData signUpAndRegisterOtherData,
+  }): _signUpAndRegisterOtherData = signUpAndRegisterOtherData {
+    signUpFormVm = SignUpFormVm(_signup);
+    motherVm = MotherFormVm(_saveMotherData);
+    fatherVm = FatherFormVm(_saveFatherData);
+    childVm = ChildFormVm(_saveChildData);
+    motherHplVm = MotherHplVm(saveMotherHpl: _saveMotherHpl);
+    childrenCountVm = ChildrenCountVm(
+      saveChildrenCount: _saveChildrenCount,
+      saveLastChildBirthDate: _saveLastChildBirthDate,
+    );
   }
+  final SignUpAndRegisterOtherData _signUpAndRegisterOtherData;
 
   final _SignupImpl _signup = _SignupImpl();
   final _SaveChildDataImpl _saveChildData = _SaveChildDataImpl();
   final _SaveFatherDataImpl _saveFatherData = _SaveFatherDataImpl();
   final _SaveMotherDataImpl _saveMotherData = _SaveMotherDataImpl();
+  final _SaveMotherHplImpl _saveMotherHpl = _SaveMotherHplImpl();
+  final _SaveLastChildBirthDateImpl _saveLastChildBirthDate = _SaveLastChildBirthDateImpl();
+  final _SaveChildrenCountImpl _saveChildrenCount = _SaveChildrenCountImpl();
 
-  late final SignUpFormVm _signUpFormVm;
-  late final MotherFormVm _motherVm;
-  late final FatherFormVm _fatherVm;
-  late final ChildFormVm _childVm;
+  late final SignUpFormVm signUpFormVm;
+  late final MotherFormVm motherVm;
+  late final FatherFormVm fatherVm;
+  late final ChildFormVm childVm;
+  late final MotherHplVm motherHplVm;
+  late final ChildrenCountVm childrenCountVm;
 
   final MutableLiveData<bool> _onSubmit = MutableLiveData();
   LiveData<bool> get onSubmit => _onSubmit;
@@ -41,18 +59,43 @@ class GetStartedFormMainVm extends AsyncVm {
     _saveMotherData.data,
     _saveFatherData.data,
     _saveChildData.data,
+    _saveMotherHpl.data,
   ];
 
 
-  
+  void sendData() {
+    startJob(sendDataKey, (isActive) async {
+      final signup = _signup.data.value;
+      final mother = _saveMotherData.data.value;
+      final father = _saveFatherData.data.value;
+      final child = _saveChildData.data.value;
+
+      if(signup == null || mother == null || father == null || child == null) {
+        throw "`signup`, `mother`, `father`, `child` are both non-nullable.\n Current data (signup=$signup), (mother=$mother), (father=$father), (child=$child)";
+      }
+      final res = await _signUpAndRegisterOtherData(
+        signup: signup,
+        mother: mother,
+        father: father,
+        child: child,
+      );
+      if(res is Success<bool>) {
+        final data = res.data;
+        _onSubmit.value = data;
+      } else {
+        return res as Fail;
+      }
+    });
+  }
 
   @override
   void dispose() {
     super.dispose();
-    _signUpFormVm.dispose();
-    _motherVm.dispose();
-    _fatherVm.dispose();
-    _childVm.dispose();
+    signUpFormVm.dispose();
+    motherVm.dispose();
+    fatherVm.dispose();
+    childVm.dispose();
+    motherHplVm.dispose();
   }
 }
 
@@ -61,14 +104,15 @@ class GetStartedFormMainVm extends AsyncVm {
 
 
 
-class _SignupImpl with SignUp {
+class _SignupImpl with SaveSignUpData {
   final MutableLiveData<SignUpData> _data = MutableLiveData();
   LiveData<SignUpData> get data => _data;
 
   @override
-  Future<Result<bool>> call(SignUpData data) {
+  Future<Result<bool>> call(SignUpData data) async {
+    prind("_SignupImpl.call() data= $data");
     _data.value = data;
-    throw Success(true);
+    return Success(true);
   }
   
 }
@@ -98,6 +142,36 @@ class _SaveMotherDataImpl with SaveMotherData {
   @override
   Future<Result<bool>> call(Mother data) async {
     _data.value = data;
+    return Success(true);
+  }
+}
+
+class _SaveMotherHplImpl with SaveMotherHpl {
+  final MutableLiveData<DateTime> _data = MutableLiveData();
+  LiveData<DateTime> get data => _data;
+  @override
+  Future<Result<bool>> call(DateTime date) async {
+    _data.value = date;
+    return Success(true);
+  }
+}
+
+class _SaveLastChildBirthDateImpl with SaveLastChildBirthDate {
+  final MutableLiveData<DateTime> _data = MutableLiveData();
+  LiveData<DateTime> get data => _data;
+  @override
+  Future<Result<bool>> call(DateTime date) async {
+    _data.value = date;
+    return Success(true);
+  }
+}
+
+class _SaveChildrenCountImpl with SaveChildrenCount {
+  final MutableLiveData<int> _data = MutableLiveData();
+  LiveData<int> get data => _data;
+  @override
+  Future<Result<bool>> call(int count) async {
+    _data.value = count;
     return Success(true);
   }
 }

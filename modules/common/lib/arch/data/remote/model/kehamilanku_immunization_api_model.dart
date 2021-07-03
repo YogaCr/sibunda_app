@@ -1,4 +1,5 @@
 import 'package:common/value/const_values.dart';
+import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'kehamilanku_immunization_api_model.g.dart';
@@ -22,15 +23,16 @@ class PregnancyCreateImmunizationBody {
 }
 
 @JsonSerializable()
-class PregnancyImmunizationResponse {
+class PregnancyImmunizationResponse extends Equatable  {
   final int id;
   @JsonKey(name: Const.KEY_IMMUNIZATION_ID)
   final int immunizationId;
   final String? date;
   final String? location;
+  @JsonKey(name: Const.KEY_TRIMESTER_NO)
   final int trimester;
   @JsonKey(name: Const.KEY_PIC)
-  final String imgLink;
+  final String? imgLink;
 
   PregnancyImmunizationResponse({
     required this.id,
@@ -42,4 +44,7 @@ class PregnancyImmunizationResponse {
   });
 
   factory PregnancyImmunizationResponse.fromJson(Map<String, dynamic> map) => _$PregnancyImmunizationResponseFromJson(map);
+
+  @override
+  List<Object?> get props => [id, immunizationId, date, location, trimester, imgLink];
 }

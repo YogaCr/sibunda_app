@@ -9,9 +9,9 @@ part 'data_api.g.dart';
 
 @RestApi(baseUrl: Const.ENDPOINT_DATA)
 abstract class DataApi {
-  factory DataApi(SessionData session, { Dio? dio }) => _DataApi(dio ?? Dio(
-    SibDio.defaultBaseOptions()..headers[Const.HEADER_AUTH] = session.toAuthString()
-  ));
+  factory DataApi(SessionData session, { Dio? dio }) => _DataApi(
+      SibDio.getDefaultInstance(preExisting: dio, session: session)
+  );
 
   @GET("/kota")
   Future<List<CityResponse>> getCity();

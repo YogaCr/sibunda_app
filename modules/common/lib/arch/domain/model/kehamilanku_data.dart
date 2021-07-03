@@ -13,7 +13,7 @@ class PregnancyCheck {
   final String checkerName;
   @JsonKey(name: Const.KEY_MOTHER_DIFFICULTY)
   final String difficulty;
-  @JsonKey(name: Const.KEY_PREGNANCY_AGE)
+  @JsonKey(name: Const.KEY_WEEK)
   final int pregnancyAge; // in week
   @JsonKey(name: Const.KEY_BABY_GENDER)
   final String babyGender;
@@ -40,7 +40,7 @@ class PregnancyCheck {
   @JsonKey(name: Const.KEY_MAP)
   final int MAP;
   @JsonKey(name: Const.KEY_BABY_MOVEMENT)
-  final String babyMovement;
+  final int babyMovement; //movement count //TODO: pasang cek pada vm tuk mrubah format
   @JsonKey(name: Const.KEY_DRUG_PRESCRIPT)
   final String drugPrescript;
   @JsonKey(name: Const.KEY_DRUG_ALLERGY)
@@ -94,7 +94,7 @@ class PregnancyCheck {
     systolicPressure: int.parse(map[Const.KEY_SYSTOLIC_PRESSURE]!),
     diastolicPressure: int.parse(map[Const.KEY_DIASTOLIC_PRESSURE]!),
     MAP: int.parse(map[Const.KEY_MAP]!),
-    babyMovement: map[Const.KEY_BABY_MOVEMENT]!,
+    babyMovement: int.parse(map[Const.KEY_BABY_MOVEMENT]!),
     drugPrescript: map[Const.KEY_DRUG_PRESCRIPT]!,
     drugAllergy: map[Const.KEY_DRUG_ALLERGY]!,
     diseaseHistory: map[Const.KEY_DISEASE_HISTORY]!,
@@ -157,8 +157,8 @@ Weekly Check Form
 
 class PregnancyBabySize {
   final String sizeString;
-  final double babyLen;
-  final double babyWeight;
+  final double? babyLen;
+  final double? babyWeight;
 
   PregnancyBabySize({
     required this.sizeString,

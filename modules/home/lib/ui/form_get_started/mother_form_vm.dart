@@ -8,6 +8,7 @@ import 'package:common/util/data_mapper.dart';
 import 'package:common/value/const_values.dart';
 import 'package:core/domain/model/result.dart';
 import 'package:core/ui/base/live_data.dart';
+import 'package:core/util/_consoles.dart';
 import 'package:home/core/domain/usecase/form_get_started_usecase.dart';
 import 'package:tuple/tuple.dart';
 
@@ -29,6 +30,7 @@ class MotherFormVm extends FormVmGroup {
   @override
   Future<Result<String>> doSubmitJob() async {
     final txtMap = getResponseMap();
+    prind("MotherFormVm txtMap = $txtMap");
     final data = Mother.fromJson(txtMap);
     return await _useCase(data).then<Result<String>>((value) => value is Success ? Success("") : value as Fail<String>);
   }

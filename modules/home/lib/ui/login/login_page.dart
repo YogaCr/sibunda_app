@@ -60,7 +60,7 @@ class LoginPage extends StatelessWidget {
         ).withMargin(EdgeInsets.only(top: 30)),
         TxtLink(
           Strings.register_here,
-          onTap: () => HomeRoutes.signUpPage.goToPage(context),
+          onTap: () => HomeRoutes.getStartedFormMainPage.goToPage(context), //HomeRoutes.signUpPage.goToPage(context),
         ).withMargin(EdgeInsets.only(top: 10)),
       ],
     ).insideScroll();

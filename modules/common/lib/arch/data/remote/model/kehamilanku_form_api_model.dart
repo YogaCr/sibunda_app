@@ -1,4 +1,5 @@
 import 'package:common/value/const_values.dart';
+import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'kehamilanku_form_api_model.g.dart';
@@ -21,7 +22,7 @@ class PregnancyCheckBody {
   @JsonKey(name: Const.KEY_FUTURE_VISIT_DATE)
   final String futureVisitDate;
   @JsonKey(name: Const.KEY_HPHT)
-  final String HPHT;
+  final String? HPHT;
   @JsonKey(name: Const.KEY_HPL)
   final String HPL;
   @JsonKey(name: Const.KEY_MOTHER_WEIGHT)
@@ -41,7 +42,7 @@ class PregnancyCheckBody {
   @JsonKey(name: Const.KEY_MAP)
   final int MAP;
   @JsonKey(name: Const.KEY_BABY_MOVEMENT)
-  final String babyMovement;
+  final int babyMovement;
   @JsonKey(name: Const.KEY_DRUG_PRESCRIPT)
   final String drugPrescript;
   @JsonKey(name: Const.KEY_DRUG_ALLERGY)
@@ -51,7 +52,7 @@ class PregnancyCheckBody {
   @JsonKey(name: Const.KEY_SPECIAL_NOTE)
   final String note;
   @JsonKey(name: Const.KEY_TRIMESTER_ID)
-  final String trimesterId;
+  final int trimesterId;
 
   PregnancyCheckBody({
     required this.visitDate,
@@ -100,7 +101,7 @@ class PregnancyShowCheckBody {
 
 // ========== Response ===========
 @JsonSerializable()
-class PregnancyCreateCheckResponse {
+class PregnancyCreateCheckResponse extends Equatable {
   final String message;
   final String status;
   final int code;
@@ -115,10 +116,13 @@ class PregnancyCreateCheckResponse {
   });
 
   factory PregnancyCreateCheckResponse.fromJson(Map<String, dynamic> map) => _$PregnancyCreateCheckResponseFromJson(map);
+
+  @override
+  List<Object?> get props => [code, message, status, checkupId];
 }
 
 @JsonSerializable()
-class PregnancyCreateCheckIdResponse {
+class PregnancyCreateCheckIdResponse extends Equatable {
   @JsonKey(name: Const.KEY_PREGNANCY_CHECKUP_ID)
   final int id;
 
@@ -127,4 +131,7 @@ class PregnancyCreateCheckIdResponse {
   });
 
   factory PregnancyCreateCheckIdResponse.fromJson(Map<String, dynamic> map) => _$PregnancyCreateCheckIdResponseFromJson(map);
+
+  @override
+  List<Object?> get props => [id];
 }

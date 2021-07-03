@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:home/config/home_routes.dart';
 
 class DoMotherHavePregnancyPage extends StatelessWidget {
+  final PageController? pageControll;
+  DoMotherHavePregnancyPage({ this.pageControll });
 
   @override
   Widget build(BuildContext context) {
@@ -40,14 +42,26 @@ class DoMotherHavePregnancyPage extends StatelessWidget {
               TxtBtn(
                 Strings.yes,
                 minWidth: 80,
-                onTap: () => HomeRoutes.motherHplPage.goToPage(context),
+                onTap: () {
+                  if(pageControll != null) {
+                    pageControll!.jumpToPage(pageControll!.page!.toInt() +1);
+                  } else {
+                    HomeRoutes.motherHplPage.goToPage(context);
+                  }
+                },
               ),
               Spacer(flex: 3,),
               TxtBtn(
                 Strings.no,
                 isHollow: true,
                 minWidth: 80,
-                onTap: () => HomeRoutes.childrenCountPage.goToPage(context),
+                onTap: () {
+                  if(pageControll != null) {
+                    pageControll!.jumpToPage(pageControll!.page!.toInt() +2);
+                  } else {
+                    HomeRoutes.childrenCountPage.goToPage(context);
+                  }
+                },
               ),
               Spacer(flex: 3,),
             ],

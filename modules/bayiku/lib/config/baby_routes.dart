@@ -5,6 +5,7 @@ import 'package:bayiku/ui/check_form/baby_check_form_page.dart';
 import 'package:bayiku/ui/home/baby_home_page.dart';
 import 'package:bayiku/ui/immunization/baby_immunization_page.dart';
 import 'package:bayiku/ui/immunization/baby_immunization_popup_page.dart';
+import 'package:bayiku/ui/neonatal_service/neonatal_service_page.dart';
 import 'package:common/arch/domain/model/baby_data.dart';
 import 'package:common/arch/domain/model/chart_data_baby.dart';
 import 'package:common/arch/domain/model/immunization.dart';
@@ -40,6 +41,11 @@ class BabyRoutes extends ModuleRoute {
     ]),
   ));
   static final babyCheckPage = _BabyCheckFormPage.obj;
+  static final neonatalServicePage = SibRoute("NeonatalServicePage", NeonatalServicePage, (ctx) => MainFrame(
+    body: NeonatalServicePage().inVmProvider([
+      (ctx) => BabyVmDi.neonatalServiceVm,
+    ]),
+  ));
 
   static final babyImmunizationPage = SibRoute("BabyImmunizationPage", BabyImmunizationPage, (ctx) => MainFrame(
     body: BabyImmunizationPage().inVmProvider([

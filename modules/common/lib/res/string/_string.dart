@@ -22,7 +22,8 @@ class Strings {
   static const password_re_does_not_match = "Konfirmasi password tidak sama";
   static const wrong_email_or_password = "Email atau password salah";
   static const form_submission_success = "Form berhasil dikirim";
-  static const form_submission_fail = "Terjadi kesalahan saat mengirim form";
+  static const form_submission_fail = "Terjadi kesalahan saat mengirim form. Harap ulangi.";
+  static const error_occurred_when_saving_data = "Terjadi kesalahan saat menyimpan. Harap ulangi.";
 
   static const ready_to_be_mother_assistant = "Siap Jadi Asisten Bunda";
   static const splash_motto_desc = "Dengan aplikasi kami, Bunda akan serasa memiliki asisten untuk merawat buah hati";
