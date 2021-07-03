@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: GlobalRoutes.home,
       theme: Manifest.theme.materialData,
-      home: HomeRoutes.obj.entryPoint.build(context), //HomeRoutes.motherHplPage.build(context), //
+      home: HomeRoutes.obj.entryPoint.build(context), //HomeRoutes.newAccountConfirmPage.build(context), //HomeRoutes.motherHplPage.build(context), //
     );
   }
 }

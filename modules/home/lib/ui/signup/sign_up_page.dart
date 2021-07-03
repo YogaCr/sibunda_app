@@ -31,6 +31,7 @@ class SignUpPage extends StatelessWidget {
         ImgPick(placeholderImg: dummyImg_profile,)
             .withMargin(EdgeInsets.only(top: 10, bottom: 20,)),
         FormVmGroupObserver<SignUpFormVm>(
+          showHeader: false,
           onSubmit: (ctx, success) {
             if(success) {
               if(pageControll != null) {
@@ -42,11 +43,13 @@ class SignUpPage extends StatelessWidget {
               showSnackBar(context, "Gagal", backgroundColor: Colors.red);
             }
           },
+/*
           preSubmitBtnBuilder: (ctx, key) => Container(
             padding: EdgeInsets.all(10),
             color: Colors.yellow,
             child: Text("Sending..."),
           ),
+ */
           submitBtnBuilder: (ctx, canProceed) => FloatingActionButton(
             backgroundColor: canProceed == true ? pink_300 : grey,
             onPressed: null, //canProceed == true ? null : () => showSnackBar(context, "Ada yg blum valid",),

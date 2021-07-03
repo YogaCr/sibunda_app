@@ -35,7 +35,7 @@ class ChildFormPage extends StatelessWidget {
           },
           onSubmit: (ctx, success) {
             if(success) {
-              showSnackBar(context, "Berhasil", backgroundColor: Colors.green);
+              //showSnackBar(context, "Berhasil", backgroundColor: Colors.green);
               if(pageControll != null) {
                 pageControll!.jumpToPage(pageControll!.page!.toInt() +1);
               } else {

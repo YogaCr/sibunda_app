@@ -10,7 +10,7 @@ Child _$ChildFromJson(Map<String, dynamic> json) {
   return Child(
     name: json['nama'] as String,
     childOrder: json['anak_ke'] as int,
-    gender: json['kelamin'] as String,
+    gender: json['jenis_kelamin'] as String,
     birthCertificateNo: json['no_akte_kelahiran'] as String,
     nik: json['nik'] as String,
     bloodType: json['gol_darah'] as String,
@@ -27,7 +27,7 @@ Child _$ChildFromJson(Map<String, dynamic> json) {
 Map<String, dynamic> _$ChildToJson(Child instance) => <String, dynamic>{
       'nama': instance.name,
       'anak_ke': instance.childOrder,
-      'kelamin': instance.gender,
+      'jenis_kelamin': instance.gender,
       'no_akte_kelahiran': instance.birthCertificateNo,
       'nik': instance.nik,
       'gol_darah': instance.bloodType,

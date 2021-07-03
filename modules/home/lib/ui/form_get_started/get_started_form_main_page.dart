@@ -28,23 +28,10 @@ class GetStartedFormMainPage extends StatelessWidget {
         (ctx) => vm.childVm,
         (ctx) => vm.motherHplVm,
         (ctx) => vm.childrenCountVm,
+        (ctx) => vm,
       ],
       child: Stack(
         children: [
-          Align(
-            alignment: Alignment.topLeft,
-            child: SizedBox(
-              width: 50,
-              height: 50,
-              child: InkWell(
-                child: Icon(
-                  Icons.arrow_back_rounded,
-                  color: Colors.black,
-                ),
-                onTap: () => pageControl.jumpToPage(pageControl.page!.toInt() -1),
-              ),
-            ),
-          ), //Back
           PageView(
             controller: pageControl,
             physics: NeverScrollableScrollPhysics(),
@@ -59,6 +46,20 @@ class GetStartedFormMainPage extends StatelessWidget {
               NewAccountConfirmPage(),
             ],
           ),
+          Align(
+            alignment: Alignment.topLeft,
+            child: SizedBox(
+              width: 50,
+              height: 50,
+              child: InkWell(
+                child: Icon(
+                  Icons.arrow_back_rounded,
+                  color: Colors.black,
+                ),
+                onTap: () => pageControl.jumpToPage(pageControl.page!.toInt() -1),
+              ),
+            ),
+          ), //Back
         ],
       ),
     );

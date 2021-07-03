@@ -64,11 +64,13 @@ class GetStartedFormMainVm extends AsyncVm {
 
 
   void sendData() {
+    prind("sendData()");
     startJob(sendDataKey, (isActive) async {
       final signup = _signup.data.value;
       final mother = _saveMotherData.data.value;
       final father = _saveFatherData.data.value;
       final child = _saveChildData.data.value;
+      prind("sendData() Current data (signup=$signup), (mother=$mother), (father=$father), (child=$child)");
 
       if(signup == null || mother == null || father == null || child == null) {
         throw "`signup`, `mother`, `father`, `child` are both non-nullable.\n Current data (signup=$signup), (mother=$mother), (father=$father), (child=$child)";
@@ -79,11 +81,11 @@ class GetStartedFormMainVm extends AsyncVm {
         father: father,
         child: child,
       );
-      if(res is Success<bool>) {
-        final data = res.data;
-        _onSubmit.value = data;
-      } else {
-        return res as Fail;
+      prind("sendData() res= $res");
+
+      _onSubmit.value = res is Success<bool>;
+      if(res is Fail<bool>) {
+        return res;
       }
     });
   }

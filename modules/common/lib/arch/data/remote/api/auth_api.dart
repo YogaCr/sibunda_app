@@ -11,9 +11,7 @@ part 'auth_api.g.dart';
 
 @RestApi(baseUrl: Const.ENDPOINT_AUTH)
 abstract class AuthApi {
-  factory AuthApi([Dio? dio]) => _AuthApi(dio ?? Dio(
-    SibDio.defaultBaseOptions(),
-  ));
+  factory AuthApi([Dio? dio]) => _AuthApi(SibDio.getDefaultInstance(preExisting: dio));
   @POST("/register")
   Future<RegisterResponse> register(@Body() RegisterBody body);
   @POST("/login")

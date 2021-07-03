@@ -10,7 +10,7 @@ class Child {
   final String name;
   @JsonKey(name: Const.KEY_CHILD_ORDER)
   final int childOrder;
-  @JsonKey(name: Const.KEY_GENDER)
+  @JsonKey(name: Const.KEY_BABY_GENDER)
   final String gender; //'M' or 'F'
   @JsonKey(name: Const.KEY_BIRTH_CERT_NO)
   final String birthCertificateNo;

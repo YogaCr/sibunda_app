@@ -3,7 +3,7 @@ class ImgData {
   final String? package;
   final bool isLocal;
 
-  ImgData({
+  const ImgData({
     required this.link,
     this.package,
     required this.isLocal,
