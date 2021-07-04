@@ -1,3 +1,4 @@
+import 'package:common/arch/domain/model/immunization.dart';
 import 'package:common/value/const_values.dart';
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -19,7 +20,19 @@ class PregnancyCreateImmunizationBody {
     required this.pic,
   });
 
+  factory PregnancyCreateImmunizationBody.fromModel({
+    required ImmunizationData data,
+    required int immunizationId,
+    required String pic,
+  }) {
+    if(data.date == null || data.location == null) {
+      throw "`date` and `location` both should not be null. Current data (date=${data.date}), (location=${data.location})";
+    }
+    return PregnancyCreateImmunizationBody(immunizationId: immunizationId, date: data.date!, location: data.location!, pic: pic);
+  }
+
   factory PregnancyCreateImmunizationBody.fromJson(Map<String, dynamic> map) => _$PregnancyCreateImmunizationBodyFromJson(map);
+  Map<String, dynamic> toJson() => _$PregnancyCreateImmunizationBodyToJson(this);
 }
 
 @JsonSerializable()

@@ -24,6 +24,7 @@ class Const {
   static const KEY_ID = "id";
   static const KEY_DATA = "data";
   static const KEY_IMG = "img";
+  static const KEY_IMG_URL = "img_url";
   static const KEY_PIC = "pic";
   static const KEY_ACCESS_TOKEN = "access_token";
   static const KEY_FCM_TOKEN = "fcm_token";

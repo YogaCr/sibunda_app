@@ -238,19 +238,19 @@ final babyWarningStatusList = <FormWarningStatus>[
 
 // ========== Immunization ============
 final motherImmunizationList = <ImmunizationData>[
-  ImmunizationData(name: "Tetanus", date: "13 Desember 2020"),
-  ImmunizationData(name: "Tetanus", date: "17 Desember 2020"),
+  ImmunizationData(name: "Tetanus", date: "2020-12-13", location: "ITS"),
+  ImmunizationData(name: "Tetanus", date: "2020-12-17", location: "ITS"),
   ImmunizationData(name: "Tetanus",),
   ImmunizationData(name: "Tetanus",),
-  ImmunizationData(name: "Tetanus", date: "14 November 2021"),
+  ImmunizationData(name: "Tetanus", date: "2021-11-14", location: "Your home"),
   ImmunizationData(name: "Tetanus",),
 ];
 final babyImmunizationList = <ImmunizationData>[
-  ImmunizationData(name: "Hepatitis B (<24 Jam)", date: "13 Desember 2020"),
-  ImmunizationData(name: "BCG", date: "17 Desember 2020"),
+  ImmunizationData(name: "Hepatitis B (<24 Jam)", date: "2020-12-13", location: "ITS"),
+  ImmunizationData(name: "BCG", date: "2020-12-17"),
   ImmunizationData(name: "Polio Tetes 1",),
   ImmunizationData(name: "DPT-HB-Hib 1",),
-  ImmunizationData(name: "Polio Tetes 2", date: "14 November 2021"),
+  ImmunizationData(name: "Polio Tetes 2", date: "2021-11-14", location: "ITS"),
   ImmunizationData(name: "DPT-HB-Hib 2",),
 ];
 

@@ -32,8 +32,10 @@ class RegisterBody {
     var childMap = child.toJson;
 
     motherMap[Const.KEY_SALARY] = motherMap[Const.KEY_SALARY].toString();
-    motherMap[Const.KEY_BIRTH_PLACE] = 1104;
     fatherMap[Const.KEY_SALARY] = fatherMap[Const.KEY_SALARY].toString();
+
+    //TODO: Hilangi dummy
+    motherMap[Const.KEY_BIRTH_PLACE] = 1104;
     fatherMap[Const.KEY_BIRTH_PLACE] = 1104;
     childMap[Const.KEY_BIRTH_PLACE] = 1104;
 

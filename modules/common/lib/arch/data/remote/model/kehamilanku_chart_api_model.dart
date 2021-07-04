@@ -23,6 +23,7 @@ class PregnancyChartTfuResponse {
   });
 
   factory PregnancyChartTfuResponse.fromJson(Map<String, dynamic> map) => _$PregnancyChartTfuResponseFromJson(map);
+  Map<String, dynamic> toJson() => _$PregnancyChartTfuResponseToJson(this);
 }
 
 @JsonSerializable()
@@ -42,6 +43,7 @@ class PregnancyChartDjjResponse {
   });
 
   factory PregnancyChartDjjResponse.fromJson(Map<String, dynamic> map) => _$PregnancyChartDjjResponseFromJson(map);
+  Map<String, dynamic> toJson() => _$PregnancyChartDjjResponseToJson(this);
 }
 
 @JsonSerializable()
@@ -58,6 +60,7 @@ class PregnancyChartMapResponse {
   });
 
   factory PregnancyChartMapResponse.fromJson(Map<String, dynamic> map) => _$PregnancyChartMapResponseFromJson(map);
+  Map<String, dynamic> toJson() => _$PregnancyChartMapResponseToJson(this);
 }
 
 @JsonSerializable()
@@ -80,4 +83,5 @@ class PregnancyChartWeightResponse {
   });
 
   factory PregnancyChartWeightResponse.fromJson(Map<String, dynamic> map) => _$PregnancyChartWeightResponseFromJson(map);
+  Map<String, dynamic> toJson() => _$PregnancyChartWeightResponseToJson(this);
 }

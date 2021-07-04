@@ -1,3 +1,4 @@
+import 'package:common/util/type_util.dart';
 import 'package:common/value/const_values.dart';
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -80,7 +81,18 @@ class PregnancyCheckBody {
     required this.trimesterId,
   });
 
-  factory PregnancyCheckBody.fromJson(Map<String, dynamic> map) => _$PregnancyCheckBodyFromJson(map);
+  factory PregnancyCheckBody.fromJson(Map<String, dynamic> map) {
+    map[Const.KEY_MOTHER_WEIGHT] = tryParseInt(map[Const.KEY_MOTHER_WEIGHT]);
+    map[Const.KEY_MOTHER_WEIGHT_DIFF] = tryParseInt(map[Const.KEY_MOTHER_WEIGHT_DIFF]);
+    map[Const.KEY_MOTHER_HEIGHT] = tryParseInt(map[Const.KEY_MOTHER_HEIGHT]);
+    map[Const.KEY_TFU] = tryParseInt(map[Const.KEY_TFU]);
+    map[Const.KEY_DJJ] = tryParseInt(map[Const.KEY_DJJ]);
+    map[Const.KEY_SYSTOLIC_PRESSURE] = tryParseInt(map[Const.KEY_SYSTOLIC_PRESSURE]);
+    map[Const.KEY_DIASTOLIC_PRESSURE] = tryParseInt(map[Const.KEY_DIASTOLIC_PRESSURE]);
+    map[Const.KEY_MAP] = tryParseInt(map[Const.KEY_MAP]);
+    map[Const.KEY_BABY_MOVEMENT] = tryParseInt(map[Const.KEY_BABY_MOVEMENT]);
+    return _$PregnancyCheckBodyFromJson(map);
+  }
   Map<String, dynamic> toJson() => _$PregnancyCheckBodyToJson(this);
 }
 

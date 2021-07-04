@@ -7,18 +7,33 @@ import 'package:json_annotation/json_annotation.dart';
 class ImmunizationData {
   final String name;
   final String? date; //null if the person hasn't taken it.
+  final String? location; //null if the person hasn't taken it.
 
-  ImmunizationData({
+  ImmunizationData._({
     required this.name,
     this.date,
+    this.location,
   });
+
+  factory ImmunizationData({
+    required String name,
+    String? date,
+    String? location,
+  }) {
+    if((date != null && location == null) || (date == null && location != null)) {
+      throw "If `date` and `location` can't be either null or not null. Current data (date=$date), (location=$location)";
+    }
+    return ImmunizationData._(name: name, date: date, location: location);
+  }
 
   ImmunizationData copy({
     String? name,
     String? date, //null if the person hasn't taken it.
-  }) => ImmunizationData(
+    String? location, //null if the person hasn't taken it.
+  }) => ImmunizationData._(
     name: name ?? this.name,
     date: date ?? this.date,
+    location: location ?? this.location,
   );
 }
 

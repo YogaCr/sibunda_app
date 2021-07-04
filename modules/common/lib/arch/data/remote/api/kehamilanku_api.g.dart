@@ -98,6 +98,21 @@ class _KehamilankuApi implements KehamilankuApi {
   }
 
   @override
+  Future<CommonResponse> sendPregnancyImmunization(body) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = body;
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<CommonResponse>(
+            Options(method: 'POST', headers: <String, dynamic>{}, extra: _extra)
+                .compose(_dio.options, '/immunization',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = CommonResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
   Future<List<PregnancyChartTfuResponse>> getPregnancyTfuChart() async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -159,7 +174,7 @@ class _KehamilankuApi implements KehamilankuApi {
     final _result = await _dio.fetch<List<dynamic>>(
         _setStreamType<List<PregnancyChartWeightResponse>>(
             Options(method: 'GET', headers: <String, dynamic>{}, extra: _extra)
-                .compose(_dio.options, '/graph/weight',
+                .compose(_dio.options, '/graph/mom-weight',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     var value = _result.data!

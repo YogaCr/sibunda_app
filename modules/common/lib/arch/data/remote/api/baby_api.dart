@@ -1,3 +1,5 @@
+import 'package:common/arch/data/remote/model/_common_api_model.dart';
+import 'package:common/arch/data/remote/model/baby_immunization_api_model.dart';
 import 'package:common/arch/data/remote/model/baby_overview_api_model.dart';
 import 'package:common/arch/domain/model/auth.dart';
 import 'package:common/util/net.dart';
@@ -15,4 +17,8 @@ abstract class BabyApi {
 
   @GET("/overview")
   Future<BabyHomeResponse> getHomeData();
+  @GET("/immunization/{id}")
+  Future<List<BabyImmunizationResponse>> getImmunization(@Path("id") String childId);
+  @POST("/immunization")
+  Future<CommonResponse> sendImmunization(@Body() BabyCreateImmunizationBody body);
 }

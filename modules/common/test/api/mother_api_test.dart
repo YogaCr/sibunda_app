@@ -1,9 +1,11 @@
 import 'package:common/arch/data/remote/api/kehamilanku_api.dart';
 import 'package:common/arch/data/remote/model/kehamilanku_form_api_model.dart';
+import 'package:common/arch/data/remote/model/kehamilanku_immunization_api_model.dart';
 import 'package:common/arch/domain/dummy_data.dart';
 import 'package:common/arch/domain/model/kehamilanku_data.dart';
 import 'package:common/value/const_values.dart';
 import 'package:core/util/_consoles.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../util/common_test_const.dart';
@@ -13,9 +15,11 @@ late int _checkId;
 late PregnancyCheck _checkModel;
 
 main() async {
-  _api = KehamilankuApi(CommonTestConst.dummySession);
+  _api = KehamilankuApi(await CommonTestConst.getDummySession());
 
   _group1();
+  print("");
+  _group2();
   print("");
 }
 
@@ -63,6 +67,15 @@ _group1() {
 
     print("");
 
+
+    test("_sendImmunizationTest", () async {
+      prinw("_sendImmunizationTest ========");
+      await _sendImmunizationTest();
+      prinw("_sendImmunizationTest ======== end");
+    });
+
+    print("");
+
   });
 
   prinw("Mother Overall ======== end");
@@ -87,11 +100,19 @@ _showCheckTest() async {
   final body = PregnancyShowCheckBody(checkId: _checkId);
   final res = await _api.getPregnancyCheckForm(body);
   final resMap = res.toJson();
-  prinr("resMap = $resMap");
+  final modelMap = _checkModel.toJson();
 
   resMap.remove(Const.KEY_TRIMESTER_ID);
+  resMap.remove(Const.KEY_HPHT);
+  modelMap.remove(Const.KEY_HPHT);
 
-  assert(resMap == _checkModel.toJson());
+  prinr("resMap = $resMap");
+  prinr("modelMap = $modelMap");
+
+  prind("resMap.runtimeType= ${resMap.runtimeType}");
+  prind("modelMap.runtimeType= ${modelMap.runtimeType}");
+
+  assert(mapEquals(resMap, modelMap));
 }
 _getWarningTest() async {
   final body = PregnancyShowCheckBody(checkId: _checkId);
@@ -104,7 +125,80 @@ _getImmunizationTest() async {
   prinr("res = $res");
   assert(res.isNotEmpty);
 }
+_sendImmunizationTest() async {
+  final data = motherImmunizationList.firstWhere((element) => element.date != null);
+  final body = PregnancyCreateImmunizationBody.fromModel(data: data, immunizationId: 1, pic: "pic");
+  final res = await _api.sendPregnancyImmunization(body);
+  prinr("res = $res");
+  assert(res.code == 200);
+}
 
+
+
+
+_group2() {
+  prinw("Mother Chart Group ========");
+
+  group("Mother Chart Group", () {
+    test("_getTfuChart", () async {
+      prinw("_getTfuChart ========");
+      await _getTfuChart();
+      prinw("_getTfuChart ======== end");
+    });
+
+    print("");
+
+    test("_getDjjChart", () async {
+      prinw("_getDjjChart ========");
+      await _getDjjChart();
+      prinw("_getDjjChart ======== end");
+    });
+
+    print("");
+
+    test("_getMapChart", () async {
+      prinw("_getMapChart ========");
+      await _getMapChart();
+      prinw("_getMapChart ======== end");
+    });
+
+    print("");
+
+    test("_getWeightChart", () async {
+      prinw("_getWeightChart ========");
+      await _getWeightChart();
+      prinw("_getWeightChart ======== end");
+    });
+
+    print("");
+  });
+
+  prinw("Mother Chart Group ======== end");
+}
+
+_getTfuChart() async {
+  final res = await _api.getPregnancyTfuChart();
+  final map = res.map((e) => e.toJson());
+  prind("res map = $map");
+}
+
+_getDjjChart() async {
+  final res = await _api.getPregnancyDjjChart();
+  final map = res.map((e) => e.toJson());
+  prind("res map = $map");
+}
+
+_getMapChart() async {
+  final res = await _api.getPregnancyMapChart();
+  final map = res.map((e) => e.toJson());
+  prind("res map = $map");
+}
+
+_getWeightChart() async {
+  final res = await _api.getPregnancyWeightChart();
+  final map = res.map((e) => e.toJson());
+  prind("res map = $map");
+}
 
 /*
 @GET("/overview")

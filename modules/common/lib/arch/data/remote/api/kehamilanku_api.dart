@@ -1,3 +1,4 @@
+import 'package:common/arch/data/remote/model/_common_api_model.dart';
 import 'package:common/arch/data/remote/model/kehamilanku_chart_api_model.dart';
 import 'package:common/arch/data/remote/model/kehamilanku_form_api_model.dart';
 import 'package:common/arch/data/remote/model/kehamilanku_form_warning_api_model.dart';
@@ -27,6 +28,8 @@ abstract class KehamilankuApi {
   Future<PregnancyCheckFormWarningResponse> getPregnancyCheckWarning(@Body() PregnancyShowCheckBody body);
   @GET("/immunization")
   Future<List<PregnancyImmunizationResponse>> getPregnancyImmunization();
+  @POST("/immunization")
+  Future<CommonResponse> sendPregnancyImmunization(@Body() PregnancyCreateImmunizationBody body);
 
   // ======= Chart =========
 
@@ -36,6 +39,6 @@ abstract class KehamilankuApi {
   Future<List<PregnancyChartDjjResponse>> getPregnancyDjjChart();
   @GET("/graph/map")
   Future<List<PregnancyChartMapResponse>> getPregnancyMapChart();
-  @GET("/graph/weight")
+  @GET("/graph/mom-weight")
   Future<List<PregnancyChartWeightResponse>> getPregnancyWeightChart();
 }
