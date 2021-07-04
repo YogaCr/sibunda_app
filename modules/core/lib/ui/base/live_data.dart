@@ -11,7 +11,8 @@ class LiveData<T> implements Expirable {
   T? get value => _value;
 
   Map<Tuple2<Expirable, String>, Tuple2<void Function(T?), bool>>? _observers = {};
-  List<void Function(T?)>? _foreverObservers = [];
+  List<void Function(T?)>? _foreverObservers;
+  List<void Function(T)>? _getValueObservers;
 
   @override
   bool get isActive => _observers != null;
@@ -43,16 +44,36 @@ class LiveData<T> implements Expirable {
   }
   void observeForever(void Function(T?) onChange,) {
     _assertNotDisposed();
+    if(_foreverObservers == null) {
+      _foreverObservers = [];
+    }
     _foreverObservers!.add(onChange);
   }
   void removeObserver(void Function(T?) onChange,) {
     _assertNotDisposed();
+    if(_foreverObservers == null) return;
     if(!_foreverObservers!.remove(onChange)) {
       final entry = _observers!.entries.firstWhereOrNull((element) => element.value.item1 == onChange);
       if(entry != null) {
         _observers!.remove(entry.key);
       }
     }
+  }
+  void getOrWaitForValue(void Function(T) onGet) {
+    final v = _value;
+    if(v is T) {
+      onGet(v);
+    } else {
+      if(_getValueObservers == null) {
+        _getValueObservers = [];
+      }
+      _getValueObservers!.add(onGet);
+    }
+  }
+
+  Future<T> waitForValue() async {
+    while(_value is! T) {}
+    return _value as T;
   }
 
   bool get hasActiveObserver => _observers?.length.compareTo(0) == 1;
@@ -62,8 +83,10 @@ class LiveData<T> implements Expirable {
     _assertNotDisposed();
     _observers!.clear();
     _observers = null;
-    _foreverObservers!.clear();
+    _foreverObservers?.clear();
     _foreverObservers = null;
+    _getValueObservers?.clear();
+    _getValueObservers = null;
   }
 
   void notifyObservers({T? oldValue, T? newValue}) {
@@ -83,8 +106,19 @@ class LiveData<T> implements Expirable {
         _observers!.remove(observer);
       }
     }
-    for(final onChange in _foreverObservers!) {
-      onChange(_value);
+    if(_foreverObservers?.isNotEmpty == true) {
+      for(final onChange in _foreverObservers!) {
+        onChange(_value);
+      }
+    }
+    if(_getValueObservers?.isNotEmpty == true) {
+      final v = _value;
+      if(v is T) {
+        for(final onGet in _getValueObservers!) {
+          onGet(v);
+        }
+        _getValueObservers!.clear();
+      }
     }
   }
 

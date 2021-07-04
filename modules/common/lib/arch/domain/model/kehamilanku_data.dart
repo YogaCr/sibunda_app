@@ -1,4 +1,10 @@
+import 'package:common/arch/data/remote/model/kehamilanku_form_api_model.dart';
+import 'package:common/arch/data/remote/model/kehamilanku_form_warning_api_model.dart';
+import 'package:common/arch/data/remote/model/kehamilanku_overview_api_model.dart';
+import 'package:common/arch/domain/dummy_data.dart';
+import 'package:common/arch/domain/model/img_data.dart';
 import 'package:common/value/const_values.dart';
+import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'kehamilanku_data.g.dart';
@@ -103,8 +109,33 @@ class PregnancyCheck {
 
   factory PregnancyCheck.fromJson(Map<String, dynamic> json) => _$PregnancyCheckFromJson(json);
   Map<String, dynamic> toJson() => _$PregnancyCheckToJson(this);
+
+  factory PregnancyCheck.fromResponse(PregnancyCheckBody response) {
+    final respMap = response.toJson();
+    return PregnancyCheck.fromJson(respMap);
+  }
 }
 
+class PregnancyCheckUpId extends Equatable {
+  final String motherNik;
+  final int week;
+  final int id;
+
+  PregnancyCheckUpId({
+    required this.motherNik,
+    required this.week,
+    required this.id,
+  });
+
+  PregnancyCheckUpId.fromResponse({
+    required this.motherNik,
+    required this.week,
+    required PregnancyCreateCheckIdResponse response,
+  }): id = response.id;
+
+  @override
+  List<Object?> get props => [motherNik, week, id];
+}
 
 /*
 ======================
@@ -126,26 +157,45 @@ class MotherTrimester {
   final int trimester;
   final int startWeek;
   final int endWeek;
-  final String imgLink;
+  final ImgData img;
 
   MotherTrimester({
     required this.trimester,
     required this.startWeek,
     required this.endWeek,
-    required this.imgLink,
+    required this.img,
   });
+
+  factory MotherTrimester.fromResponse(PregnancyHomeTrimester response) {
+    final startWeek = (response.no -1) *12 +1;
+    final endWeek = response.no *12;
+    return MotherTrimester(
+      trimester: response.no,
+      startWeek: startWeek,
+      endWeek: endWeek,
+      img: dummyImg,
+    );
+  }
 }
 
 class MotherFoodRecom {
-  final String imgLink;
+  final ImgData img;
   final String food;
   final String desc;
 
   MotherFoodRecom({
-    required this.imgLink,
+    required this.img,
     required this.food,
     required this.desc,
   });
+
+  factory MotherFoodRecom.fromResponse(PregnancyHomeFoodRecom response) {
+    return MotherFoodRecom(
+      food: response.category,
+      desc: response.desc,
+      img: dummyImg,
+    );
+  }
 }
 
 
@@ -165,4 +215,82 @@ class PregnancyBabySize {
     required this.babyWeight,
     required this.babyLen,
   });
+
+  factory PregnancyBabySize.fromResponse(PregnancyCheckFetusGrowthWarningResponse response) =>
+      PregnancyBabySize(
+        sizeString: response.desc!,
+        babyLen: response.length?.toDouble(),
+        babyWeight: response.weight?.toDouble(),
+      );
 }
+
+
+
+
+class MotherHomeBabyData {
+  final int babyId;
+  final String babyName;
+  final int childOrder;
+  //final int week;
+  //final int remainingDays;
+  final MotherPregnancyAgeOverview pregnancyAge;
+  final List<MotherFoodRecom> foodRecomList;
+  final List<MotherTrimester> trimesterList;
+
+  MotherHomeBabyData({
+    required this.babyId,
+    required this.babyName,
+    required this.childOrder,
+    required this.pregnancyAge,
+    required this.foodRecomList,
+    required this.trimesterList,
+  });
+
+  factory MotherHomeBabyData.fromResponse(PregnancyHomeBabyResponse response) {
+    return MotherHomeBabyData(
+      babyId: response.babyId,
+      babyName: response.name,
+      childOrder: response.childOrder,
+      pregnancyAge: MotherPregnancyAgeOverview(
+        weekAge: response.week,
+        daysRemaining: response.remainingDays,
+      ),
+      foodRecomList: response.foodRecomList.map((e) => MotherFoodRecom.fromResponse(e)).toList(growable: false),
+      trimesterList: response.trimesterList.map((e) => MotherTrimester.fromResponse(e)).toList(growable: false),
+    );
+  }
+}
+/*
+@JsonSerializable()
+class MotherFoodRecom {
+  @JsonKey(name: Const.KEY_FOOD_CATEGORY)
+  final String category;
+  @JsonKey(name: Const.KEY_FOOD_DESC)
+  final String desc;
+
+  MotherFoodRecom({
+    required this.category,
+    required this.desc,
+  });
+
+  factory PregnancyHomeFoodRecom.fromJson(Map<String, dynamic> map) => _$PregnancyHomeFoodRecomFromJson(map);
+}
+ */
+/*
+@JsonSerializable()
+class PregnancyHomeTrimester {
+  final int id;
+  @JsonKey(name: Const.KEY_TRIMESTER_NO)
+  final int no;
+  @JsonKey(name: Const.KEY_BABY_ID)
+  final int babyId;
+
+  PregnancyHomeTrimester({
+    required this.id,
+    required this.no,
+    required this.babyId,
+  });
+
+  factory PregnancyHomeTrimester.fromJson(Map<String, dynamic> map) => _$PregnancyHomeTrimesterFromJson(map);
+}
+ */

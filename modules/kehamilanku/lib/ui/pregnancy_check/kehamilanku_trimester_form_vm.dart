@@ -1,12 +1,15 @@
+import 'package:common/arch/di/config_di.dart';
 import 'package:common/arch/domain/model/form_data.dart';
 import 'package:common/arch/domain/model/form_warning_status.dart';
 import 'package:common/arch/domain/model/kehamilanku_data.dart';
+import 'package:common/arch/domain/usecase/mother_usecase.dart';
 import 'package:common/arch/ui/model/form_data.dart';
 import 'package:common/arch/ui/vm/form_vm_group.dart';
 import 'package:common/res/string/_string.dart';
 import 'package:common/value/const_values.dart';
 import 'package:core/domain/model/result.dart';
 import 'package:core/ui/base/live_data.dart';
+import 'package:core/util/val_util.dart';
 import 'package:kehamilanku/core/domain/usecase/pregnancy_check_use_case.dart';
 
 class KehamilankuCheckFormVm extends FormVmGroup {
@@ -15,18 +18,21 @@ class KehamilankuCheckFormVm extends FormVmGroup {
   static const getPregnancyBabySizeKey = "getPregnancyBabySize";
 
   KehamilankuCheckFormVm({
+    required GetPregnancyCheckUpId getPregnancyCheckUpId,
     required SavePregnancyCheck savePregnancyCheck,
     required GetPregnancyCheck getPregnancyCheck,
     required GetMotherFormWarningStatus getMotherFormWarningStatus,
     required GetPregnancyBabySize getPregnancyBabySize,
     required GetPregnancyCheckForm getPregnancyCheckForm,
   }):
+    _getPregnancyCheckUpId = getPregnancyCheckUpId,
     _savePregnancyCheck = savePregnancyCheck,
     _getPregnancyCheck = getPregnancyCheck,
     _getMotherFormWarningStatus = getMotherFormWarningStatus,
     _getPregnancyBabySize = getPregnancyBabySize,
     _getPregnancyCheckForm = getPregnancyCheckForm;
 
+  final GetPregnancyCheckUpId _getPregnancyCheckUpId;
   final SavePregnancyCheck _savePregnancyCheck;
   final GetPregnancyCheck _getPregnancyCheck;
   final GetMotherFormWarningStatus _getMotherFormWarningStatus;
@@ -42,12 +48,16 @@ class KehamilankuCheckFormVm extends FormVmGroup {
   LiveData<PregnancyBabySize> get pregnancyBabySize => _pregnancyBabySize;
 
   int currentWeek = 0;
+  late int currentTrimester;
 
   @override
   Future<Result<String>> doSubmitJob() async {
     final responseMap = getResponse();
     final data = PregnancyCheck.fromJson(responseMap.responseGroups.values.first);
-    return _savePregnancyCheck(data).then((value) => value is Success<bool> ? Success("") : value as Fail<String>);
+    final motherNik = await VarDi.motherNik.waitForValue();
+    return _savePregnancyCheck(motherNik, data, currentTrimester).then((value) =>
+      value is Success<bool> ? Success("") : value as Fail<String>
+    );
   }
 
   @override
@@ -119,33 +129,45 @@ class KehamilankuCheckFormVm extends FormVmGroup {
 
 
   void getPregnancyCheck({
-    required String motherNik,
+//    required String motherNik,
     required int week,
     bool forceLoad = false,
   }) {
     if(!forceLoad && _pregnancyCheck.value != null) return;
     startJob(getPregnancyCheckKey, (isActive) async {
-      _getPregnancyCheck(motherNik, week).then((value) {
-        if(value is Success<PregnancyCheck>) {
-          final data = value.data;
-          _pregnancyCheck.value = data;
-        }
-      });
+      final motherNik = await VarDi.motherNik.waitForValue();
+      final checkUpId = tryGetResultValue(await _getPregnancyCheckUpId(motherNik, week));
+      if(checkUpId != null) {
+        _getPregnancyCheck(checkUpId).then((value) {
+          if(value is Success<PregnancyCheck>) {
+            final data = value.data;
+            _pregnancyCheck.value = data;
+          }
+        });
+      } else {
+        _pregnancyCheck.value = null;
+      }
     });
   }
   void getMotherFormWarningStatus({
-    required String motherNik,
+    //required String motherNik,
     required int week,
     bool forceLoad = false,
   }) {
     if(!forceLoad && _formWarningStatusList.value != null) return;
     startJob(getMotherFormWarningStatusKey, (isActive) async {
-      _getMotherFormWarningStatus(motherNik, week).then((value) {
-        if(value is Success<List<FormWarningStatus>>) {
-          final data = value.data;
-          _formWarningStatusList.value = data;
-        }
-      });
+      final motherNik = await VarDi.motherNik.waitForValue();
+      final checkUpId = tryGetResultValue(await _getPregnancyCheckUpId(motherNik, week));
+      if(checkUpId != null) {
+        _getMotherFormWarningStatus(checkUpId).then((value) {
+          if(value is Success<List<FormWarningStatus>>) {
+            final data = value.data;
+            _formWarningStatusList.value = data;
+          }
+        });
+      } else {
+        _formWarningStatusList.value = null;
+      }
     });
   }
   void getPregnancyBabySize({
@@ -154,12 +176,18 @@ class KehamilankuCheckFormVm extends FormVmGroup {
   }) {
     if(!forceLoad && _pregnancyBabySize.value != null) return;
     startJob(getPregnancyBabySizeKey, (isActive) async {
-      _getPregnancyBabySize(pregnancyWeekAge).then((value) {
-        if(value is Success<PregnancyBabySize>) {
-          final data = value.data;
-          _pregnancyBabySize.value = data;
-        }
-      });
+      final motherNik = await VarDi.motherNik.waitForValue();
+      final checkUpId = tryGetResultValue(await _getPregnancyCheckUpId(motherNik, pregnancyWeekAge));
+      if(checkUpId != null) {
+        _getPregnancyBabySize(checkUpId).then((value) {
+          if(value is Success<PregnancyBabySize>) {
+            final data = value.data;
+            _pregnancyBabySize.value = data;
+          }
+        });
+      } else {
+        _pregnancyBabySize.value = null;
+      }
     });
   }
 }

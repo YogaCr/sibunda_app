@@ -20,6 +20,8 @@ class BabyCheckDevFormDataResponse {
     required this.month_start,
     required this.month_until,
   });
+
   factory BabyCheckDevFormDataResponse.fromJson(Map<String, dynamic> map) => _$BabyCheckDevFormDataResponseFromJson(map);
+  Map<String, dynamic> toJson() => _$BabyCheckDevFormDataResponseToJson(this);
 }
 

@@ -4,12 +4,12 @@ class FormWarningStatus {
   final String desc;
   final String action;
   final bool isSafe;
-  final ImgData imgLink;
+  final ImgData img;
 
   FormWarningStatus({
     required this.desc,
     required this.action,
     required this.isSafe,
-    required this.imgLink,
+    required this.img,
   });
 }

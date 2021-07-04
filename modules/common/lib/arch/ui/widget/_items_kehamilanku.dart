@@ -1,8 +1,10 @@
+import 'package:common/arch/domain/model/img_data.dart';
 import 'package:common/arch/domain/model/kehamilanku_data.dart';
 import 'package:common/arch/ui/model/immunization.dart';
 import 'package:common/config/manifest.dart';
 import 'package:common/res/theme/_theme.dart';
 import 'package:common/arch/ui/widget/_item_template.dart';
+import 'package:common/util/assets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -91,24 +93,31 @@ class ItemMotherTrimester extends StatelessWidget {
 
 ///*
 class ItemMotherTrimester extends StatelessWidget {
-  final Widget image;
+  final ImgData img;
   final int trimester;
   final int pregnancyAgeStart; //in weeks
   final int pregnancyAgeEnd; //in weeks
   final void Function()? onClick; //in weeks
 
   ItemMotherTrimester({
-    required this.image,
+    required this.img,
     required this.trimester,
     required this.pregnancyAgeStart,
     required this.pregnancyAgeEnd,
     this.onClick,
   });
 
+  ItemMotherTrimester.fromData(MotherTrimester data, { this.onClick }):
+    img = data.img,
+    trimester = data.trimester,
+    pregnancyAgeStart = data.startWeek,
+    pregnancyAgeEnd = data.endWeek
+  ;
+
   @override
   Widget build(BuildContext context) {
     return ItemHomeFormMenu(
-      image: image,
+      image: SibImages.resolve(img),
       title: "Trimester $trimester",
       desc: "Usia kehamilan $pregnancyAgeStart hingga $pregnancyAgeEnd Minggu",
       onClick: onClick,
@@ -166,15 +175,21 @@ class ItemMotherGraphMenu extends StatelessWidget {
 
 
 class ItemMotherRecomFood extends StatelessWidget {
-  final Widget image;
+  final ImgData img;
   final String foodName;
   final String desc;
 
   ItemMotherRecomFood({
-    required this.image,
+    required this.img,
     required this.foodName,
     required this.desc,
   });
+
+  ItemMotherRecomFood.fromData(MotherFoodRecom data):
+    img = data.img,
+    foodName = data.food,
+    desc = data.desc
+  ;
 
   @override
   Widget build(BuildContext context) {
@@ -192,7 +207,7 @@ class ItemMotherRecomFood extends StatelessWidget {
               child: Container(
                 height: 60,
                 width: 60,
-                child: image,
+                child: SibImages.resolve(img),
               ),
             ),
           ),

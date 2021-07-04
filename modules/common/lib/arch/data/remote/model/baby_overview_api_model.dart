@@ -18,6 +18,7 @@ class BabyHomeResponse {
   });
 
   factory BabyHomeResponse.fromJson(Map<String, dynamic> map) => _$BabyHomeResponseFromJson(map);
+  Map<String, dynamic> toJson() => _$BabyHomeResponseToJson(this);
 }
 
 @JsonSerializable()
@@ -34,6 +35,7 @@ class BabyHomeChildResponse {
   });
 
   factory BabyHomeChildResponse.fromJson(Map<String, dynamic> map) => _$BabyHomeChildResponseFromJson(map);
+  Map<String, dynamic> toJson() => _$BabyHomeChildResponseToJson(this);
 }
 
 @JsonSerializable()
@@ -50,4 +52,5 @@ class BabyHomeChildYearFormResponse {
   });
 
   factory BabyHomeChildYearFormResponse.fromJson(Map<String, dynamic> map) => _$BabyHomeChildYearFormResponseFromJson(map);
+  Map<String, dynamic> toJson() => _$BabyHomeChildYearFormResponseToJson(this);
 }

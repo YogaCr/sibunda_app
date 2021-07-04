@@ -1,5 +1,7 @@
+import 'package:common/arch/data/remote/model/kehamilanku_overview_api_model.dart';
 import 'package:common/arch/domain/model/chart_data.dart';
 import 'package:common/arch/domain/model/chart_data_mother.dart';
+import 'package:common/arch/domain/model/kehamilanku_data.dart';
 import 'package:common/arch/domain/model/mother.dart';
 import 'package:core/domain/model/result.dart';
 
@@ -9,8 +11,8 @@ mixin MotherRepo {
   Future<Result<String>> getMotherNik();
   Future<Result<Mother>> getMotherData(String nik);
   Future<Result<bool>> saveMotherData(Mother data);
-  Future<Result<List<MotherChartMenuData>>> getMotherPregnancyEvalGraphMenu();
-  Future<Result<List<MotherChartMenuData>>> getMotherWeightGraphMenu();
+
+  //Future<Result<List<MotherHomeData>>> getMotherHomeData();
 
   Future<Result<bool>> saveMotherHpl(DateTime date);
 }
@@ -25,10 +27,10 @@ class MotherRepoDummy with MotherRepo {
   Future<Result<Mother>> getMotherData(String nik) async => Success(dummyMother);
   @override
   Future<Result<bool>> saveMotherData(Mother data) async => Success(true);
+/*
   @override
-  Future<Result<List<MotherChartMenuData>>> getMotherPregnancyEvalGraphMenu() async => Success(motherPregEvalGraphMenuList);
-  @override
-  Future<Result<List<MotherChartMenuData>>> getMotherWeightGraphMenu() async => Success(motherWeightGraphMenuList);
+  Future<Result<List<MotherHomeData>>> getMotherHomeData() async => Success(motherHomeData);
+ */
   @override
   Future<Result<bool>> saveMotherHpl(DateTime date) async => Success(true);
 }

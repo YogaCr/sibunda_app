@@ -22,7 +22,7 @@ final motherTfuWarning = <FormWarningStatus>[
     desc: "TFU Bunda tidak normal ya Bun. Bisa konsultasikan ke dokter terdekat ya",
     action: "Cari Faskes terdekat",
     isSafe: false,
-    imgLink: dummyImg,
+    img: dummyImg,
   ),
 ];
 
@@ -37,7 +37,7 @@ final motherDjjWarning = <FormWarningStatus>[
     desc: "Denyut Jantung Janin Bunda kurang ya. Silahkan periksa ke faskes ya Bun",
     action: "Cari Faskes terdekat",
     isSafe: false,
-    imgLink: dummyImg,
+    img: dummyImg,
   ),
 ];
 
@@ -51,7 +51,7 @@ final motherMapWarning = <FormWarningStatus>[
     desc: "Bunda beresiko mengalami preeklamsia. Segera menghubungi dokter ya Bun",
     action: "Cari Faskes terdekat",
     isSafe: false,
-    imgLink: dummyImg,
+    img: dummyImg,
   ),
 ];
 
@@ -67,7 +67,7 @@ final motherBmiWarning = <FormWarningStatus>[
     desc: "Bunda obesitas ya bun",
     action: "Cari Faskes terdekat",
     isSafe: false,
-    imgLink: dummyImg,
+    img: dummyImg,
   ),
 ];
 
@@ -93,7 +93,7 @@ final babyWeightWarning = <FormWarningStatus>[
     desc: "Bayi gemuk ya bun",
     action: "Cari Faskes terdekat",
     isSafe: false,
-    imgLink: dummyImg,
+    img: dummyImg,
   ),
 ];
 
@@ -128,7 +128,7 @@ final babyLenWarning = <FormWarningStatus>[
     desc: "Bayi pendek ya bun",
     action: "Cari Faskes terdekat",
     isSafe: false,
-    imgLink: dummyImg,
+    img: dummyImg,
   ),
 ];
 
@@ -148,7 +148,7 @@ final babyWeightToLenWarning = <FormWarningStatus>[
     desc: "Bayi pendek dan gemuk",
     action: "Cari Faskes terdekat",
     isSafe: false,
-    imgLink: dummyImg,
+    img: dummyImg,
   ),
 ];
 
@@ -168,7 +168,7 @@ final babyHeadCircumWarning = <FormWarningStatus>[
     desc: "Bunda, ukuran lingkar kepala bayi tidak normal menurut usia bayi.",
     action: "Cari Faskes terdekat",
     isSafe: false,
-    imgLink: dummyImg,
+    img: dummyImg,
   ),
 ];
 
@@ -196,6 +196,6 @@ final babyDevWarning = <FormWarningStatus>[
     desc: "Bunda, perkembangan bayi bunda tidak normal ya Bun",
     action: "Cari Faskes terdekat",
     isSafe: false,
-    imgLink: dummyImg,
+    img: dummyImg,
   ),
 ];

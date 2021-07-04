@@ -3,7 +3,7 @@ import 'package:common/arch/domain/model/form_warning_status.dart';
 import 'package:core/domain/model/result.dart';
 
 mixin FormWarningStatusRepo {
-  Future<Result<List<FormWarningStatus>>> getMotherWarningStatus(String motherNik, int week);
+  //Future<Result<List<FormWarningStatus>>> getMotherWarningStatus(String motherNik, int week);
   Future<Result<List<FormWarningStatus>>> getBabyWarningStatus(String babyNik, int week);
 }
 

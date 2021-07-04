@@ -11,19 +11,19 @@ mixin GetPregnancyCheckForm {
 }
 
 mixin GetPregnancyBabySize {
-  Future<Result<PregnancyBabySize>> call(int pregnancyWeekAge);
+  Future<Result<PregnancyBabySize?>> call(PregnancyCheckUpId checkUpId);
 }
 
 mixin SavePregnancyCheck {
-  Future<Result<bool>> call(PregnancyCheck data);
+  Future<Result<bool>> call(String motherNik, PregnancyCheck data, int trimester);
 }
 
 mixin GetPregnancyCheck {
-  Future<Result<PregnancyCheck>> call(String motherNik, int week);
+  Future<Result<PregnancyCheck>> call(PregnancyCheckUpId checkUpId);
 }
 
 mixin GetMotherFormWarningStatus {
-  Future<Result<List<FormWarningStatus>>> call(String motherNik, int week);
+  Future<Result<List<FormWarningStatus>>> call(PregnancyCheckUpId checkUpId);
 }
 
 
@@ -37,30 +37,30 @@ class GetPregnancyCheckFormImpl with GetPregnancyCheckForm {
 
 class GetPregnancyBabySizeImpl with GetPregnancyBabySize {
   GetPregnancyBabySizeImpl(this._repo);
-  final MotherPregnancyRepo _repo;
+  final PregnancyRepo _repo;
   @override
-  Future<Result<PregnancyBabySize>> call(int pregnancyWeekAge) => _repo.getPregnancyBabySize(pregnancyWeekAge);
+  Future<Result<PregnancyBabySize?>> call(PregnancyCheckUpId checkUpId) => _repo.getPregnancyBabySize(checkUpId);
 }
 
 class SavePregnancyCheckImpl with SavePregnancyCheck {
   SavePregnancyCheckImpl(this._repo);
-  final PregnancyCheckRepo _repo;
+  final PregnancyRepo _repo;
   @override
-  Future<Result<bool>> call(PregnancyCheck data) => _repo.savePregnancyCheck(data);
+  Future<Result<bool>> call(String motherNik, PregnancyCheck data, int trimester) =>
+      _repo.savePregnancyCheck(motherNik, data, trimester);
 }
 
 class GetPregnancyCheckImpl with GetPregnancyCheck {
   GetPregnancyCheckImpl(this._repo);
-  final PregnancyCheckRepo _repo;
+  final PregnancyRepo _repo;
   @override
-  Future<Result<PregnancyCheck>> call(String motherNik, int week) =>
-      _repo.getPregnancyCheck(motherNik, week);
+  Future<Result<PregnancyCheck>> call(PregnancyCheckUpId checkUpId) => _repo.getPregnancyCheck(checkUpId);
 }
 
 
 class GetMotherFormWarningStatusImpl with GetMotherFormWarningStatus {
   GetMotherFormWarningStatusImpl(this._repo);
-  final FormWarningStatusRepo _repo;
+  final PregnancyRepo _repo;
   @override
-  Future<Result<List<FormWarningStatus>>> call(String motherNik, int week) => _repo.getMotherWarningStatus(motherNik, week);
+  Future<Result<List<FormWarningStatus>>> call(PregnancyCheckUpId checkUpId) => _repo.getMotherWarningStatus(checkUpId);
 }

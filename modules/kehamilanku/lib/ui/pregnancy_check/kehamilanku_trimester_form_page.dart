@@ -13,6 +13,7 @@ import 'package:common/util/navigations.dart';
 import 'package:common/util/ui.dart';
 import 'package:common/value/const_values.dart';
 import 'package:core/ui/base/async_view_model_observer.dart';
+import 'package:core/ui/base/live_data_observer.dart';
 import 'package:core/ui/base/view_model.dart';
 import 'package:core/util/_consoles.dart';
 import 'package:flutter/cupertino.dart';
@@ -32,6 +33,7 @@ class KehamilankuTrimesterFormPage extends StatelessWidget {
       ..init();
 
     vm.currentWeek = startWeek;
+    vm.currentTrimester = trimester.trimester;
 
     pageController.addListener(() {
       final page = pageController.page?.toInt();
@@ -80,24 +82,22 @@ class _WeeklyFormPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    vm..getPregnancyCheck(motherNik: "", week: week, forceLoad: true)
+    vm..getPregnancyCheck(week: week, forceLoad: true)
       ..getPregnancyBabySize(pregnancyWeekAge: week, forceLoad: true)
-      ..getMotherFormWarningStatus(motherNik: "", week: week, forceLoad: true);
+      ..getMotherFormWarningStatus(week: week, forceLoad: true);
 
     return BelowTopBarScrollContentArea(
       [
         SliverList(
           delegate: SliverChildListDelegate.fixed([
-            AsyncVmObserver<KehamilankuCheckFormVm, PregnancyBabySize>(
-              vm: vm,
-              liveDataGetter: (vm2) => vm2.pregnancyBabySize,
+            LiveDataObserver<PregnancyBabySize>(
+              liveData: vm.pregnancyBabySize,
               builder: (ctx, data) => data != null
                   ? ItemMotherBabySizeOverview.fromData(data)
-                  : defaultLoading(),
+                  : defaultEmptyWidget(),
             ),
-            AsyncVmObserver<KehamilankuCheckFormVm, List<FormWarningStatus>>(
-              vm: vm,
-              liveDataGetter: (vm2) => vm2.formWarningStatusList,
+            LiveDataObserver<List<FormWarningStatus>>(
+              liveData: vm.formWarningStatusList,
               builder: (ctx, data) => Container(
                 margin: EdgeInsets.only(top: 20, bottom: 5,),
                 child: data?.isNotEmpty == true ? Text(

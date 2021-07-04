@@ -1,7 +1,10 @@
+import 'package:common/arch/di/config_di.dart';
 import 'package:common/arch/domain/model/kehamilanku_data.dart';
+import 'package:common/arch/domain/usecase/mother_usecase.dart';
 import 'package:core/domain/model/result.dart';
 import 'package:core/ui/base/async_vm.dart';
 import 'package:core/ui/base/live_data.dart';
+import 'package:core/util/val_util.dart';
 import 'package:kehamilanku/core/domain/usecase/home_usecase.dart';
 
 class KehamilankuHomeVm extends AsyncVm {
@@ -10,15 +13,18 @@ class KehamilankuHomeVm extends AsyncVm {
   static const getFoodRecomListKey = "getFoodRecomList";
 
   KehamilankuHomeVm({
+    //required GetMotherNik getMotherNik,
     required GetPregnancyAgeOverview getPregnancyAgeOverview,
     required GetTrimesterList getTrimesterList,
     required GetMotherFoodRecomList  getMotherFoodRecomList,
   }):
+      //_getMotherNik = getMotherNik,
       _getPregnancyAgeOverview = getPregnancyAgeOverview,
       _getTrimesterList = getTrimesterList,
       _getMotherFoodRecomList = getMotherFoodRecomList
   ;
 
+  //final GetMotherNik _getMotherNik;
   final GetPregnancyAgeOverview _getPregnancyAgeOverview;
   final GetTrimesterList _getTrimesterList;
   final GetMotherFoodRecomList  _getMotherFoodRecomList;
@@ -59,7 +65,10 @@ class KehamilankuHomeVm extends AsyncVm {
   void getFoodRecomList([bool forceLoad = false]) {
     if(!forceLoad && _trimesterList.value != null) return;
     startJob(getFoodRecomListKey, (isActive) async {
-      _getMotherFoodRecomList(0).then((value){ //TODO: weekPregnancyAge
+      final week = await VarDi.pregnancyWeek.waitForValue();
+      final motherNik = await VarDi.motherNik.waitForValue();
+
+      _getMotherFoodRecomList(motherNik, week).then((value) {
         if(value is Success<List<MotherFoodRecom>>) {
           final data = value.data;
           _foodRecomList.value = data;

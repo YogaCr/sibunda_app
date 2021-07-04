@@ -88,9 +88,9 @@ _homeTest() async {
 }
 _sendCheckTest() async {
   _checkModel = dummyPregnancyCheck(1);
-  final checkMap = _checkModel.toJson();
-  checkMap[Const.KEY_TRIMESTER_ID] = 1;
-  final body = PregnancyCheckBody.fromJson(checkMap);
+  //final checkMap = _checkModel.toJson();
+  //checkMap[Const.KEY_TRIMESTER_ID] = 1;
+  final body = PregnancyCheckBody.fromModel(model: _checkModel, trimesterId: 1);
   final res = await _api.sendPregnancyCheckForm(body);
   prinr("res = $res");
   _checkId = res.checkupId.id;

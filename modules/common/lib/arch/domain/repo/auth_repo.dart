@@ -4,11 +4,13 @@ import 'package:common/arch/data/remote/api/auth_api.dart';
 import 'package:common/arch/data/remote/model/login_api_model.dart';
 import 'package:common/arch/data/remote/model/logout_api_model.dart';
 import 'package:common/arch/data/remote/model/register_api_model.dart';
+import 'package:common/arch/di/config_di.dart';
 import 'package:common/arch/domain/model/auth.dart';
 import 'package:common/arch/domain/model/child.dart';
 import 'package:common/arch/domain/model/father.dart';
 import 'package:common/arch/domain/model/mother.dart';
 import 'package:core/domain/model/result.dart';
+import 'package:core/util/annotation/data_annotation.dart';
 
 import '../dummy_data.dart';
 
@@ -84,9 +86,14 @@ class AuthRepoImpl with AuthRepo {
 
   //TODO yg lain
   @override
-  Future<Result<bool>> saveSession(SessionData data) => throw UnimplementedError();
+  Future<Result<bool>> saveSession(SessionData data) {
+    VarDi.session = data;
+    throw UnimplementedError();
+  }
   @override
-  Future<Result<SessionData>> getSession() => throw UnimplementedError();
+  Future<Result<SessionData>> getSession() {
+    throw UnimplementedError();
+  }
 }
 
 /*
@@ -165,14 +172,8 @@ class AuthDummyRepo with AuthRepo {
   Future<Result<bool>> logout(SessionData data) async => Success(true, 200);
 
   @override
-  Future<Result<SessionData>> getSession() {
-    // TODO: implement getSession
-    throw UnimplementedError();
-  }
+  Future<Result<SessionData>> getSession() async => Success(dummySessionData1);
 
   @override
-  Future<Result<bool>> saveSession(SessionData data) {
-    // TODO: implement saveSession
-    throw UnimplementedError();
-  }
+  Future<Result<bool>> saveSession(SessionData data) async => Success(true);
 }

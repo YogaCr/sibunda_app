@@ -1,3 +1,4 @@
+import 'package:common/arch/domain/model/kehamilanku_data.dart';
 import 'package:common/util/type_util.dart';
 import 'package:common/value/const_values.dart';
 import 'package:equatable/equatable.dart';
@@ -94,6 +95,15 @@ class PregnancyCheckBody {
     return _$PregnancyCheckBodyFromJson(map);
   }
   Map<String, dynamic> toJson() => _$PregnancyCheckBodyToJson(this);
+
+  factory PregnancyCheckBody.fromModel({
+    required PregnancyCheck model,
+    required int trimesterId,
+  }) {
+    final map = model.toJson();
+    map[Const.KEY_TRIMESTER_ID] = trimesterId;
+    return PregnancyCheckBody.fromJson(map);
+  }
 }
 
 @JsonSerializable()

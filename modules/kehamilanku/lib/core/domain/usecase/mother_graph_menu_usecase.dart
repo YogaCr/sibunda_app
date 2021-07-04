@@ -9,7 +9,7 @@ mixin GetMotherPregEvalGraphMenu {
 
 
 class GetMotherPregEvalGraphMenuImpl with GetMotherPregEvalGraphMenu {
-  final MotherRepo _repo;
+  final PregnancyRepo _repo;
   GetMotherPregEvalGraphMenuImpl(this._repo);
   @override
   Future<Result<List<MotherChartMenuData>>> call() => _repo.getMotherPregnancyEvalGraphMenu();

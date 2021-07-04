@@ -188,11 +188,8 @@ class _MotherTrimesterList extends StatelessWidget {
         final data = dataList[i];
         return Container(
           margin: EdgeInsets.symmetric(vertical: 5),
-          child: ItemMotherTrimester(
-            image: Container(color: Manifest.theme.colorPrimary,),
-            trimester: data.trimester,
-            pregnancyAgeStart: data.startWeek,
-            pregnancyAgeEnd: data.endWeek,
+          child: ItemMotherTrimester.fromData(
+            data,
             onClick: () => KehamilankuRoutes.pregnancyCheckPage.go(context, data,),
           ),
         );
@@ -215,11 +212,7 @@ class _MotherFoodRecomList extends StatelessWidget {
           final data = dataList[i];
           return Container(
             margin: EdgeInsets.symmetric(vertical: 5),
-            child: ItemMotherRecomFood(
-              image: Container(color: Manifest.theme.colorPrimary,),
-              foodName: data.food,
-              desc: data.desc,
-            ),
+            child: ItemMotherRecomFood.fromData(data),
           );
         },
       childCount: dataList.length,

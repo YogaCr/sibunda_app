@@ -28,9 +28,10 @@ class RepoDi {
   static MotherRepo get motherRepo => MotherRepoDummy.obj;
   static FatherRepo get fatherRepo => FatherRepoDummy.obj;
   static ChildRepo get childRepo => ChildRepoDummy.obj;
-  static MotherFoodRecomRepo get foodRepo => MotherFoodRecomRepoDummy.obj;
-  static MotherPregnancyRepo get pregnancyRepo => MotherPregnancyRepoDummy.obj;
-  static PregnancyCheckRepo get pregnancyCheckRepo => PregnancyCheckRepoDummy.obj;
+  static PregnancyRepo get pregnancyRepo => PregnancyRepoImpl(ApiDi.kehamilankuApi);
+  //static MotherFoodRecomRepo get foodRepo => MotherFoodRecomRepoDummy.obj;
+  //static MotherHomeRepo get pregnancyRepo => MotherPregnancyRepoDummy.obj;
+  //static PregnancyCheckRepo get pregnancyCheckRepo => PregnancyCheckRepoDummy.obj;
   static FormWarningStatusRepo get formWarningStatusRepo => FormWarningStatusRepoDummy.obj;
   static ImmunizationRepo get immunizationRepo => ImmunizationRepoDummy.obj;
 

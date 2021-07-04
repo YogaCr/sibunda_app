@@ -13,12 +13,12 @@ class KehamilankuUseCaseDi {
 
   static GetPregnancyAgeOverview get getPregnancyAgeOverview => GetPregnancyAgeOverviewImpl(RepoDi.pregnancyRepo);
   static GetTrimesterList get getTrimesterList => GetTrimesterListImpl(RepoDi.pregnancyRepo);
-  static GetMotherFoodRecomList get getMotherFoodRecomList => GetMotherFoodRecomListImpl(RepoDi.foodRepo);
+  static GetMotherFoodRecomList get getMotherFoodRecomList => GetMotherFoodRecomListImpl(RepoDi.pregnancyRepo);
 
   static GetPregnancyCheckForm get getPregnancyCheckForm => GetPregnancyCheckFormImpl(RepoDi.formFieldRepo);
-  static SavePregnancyCheck get savePregnancyCheck => SavePregnancyCheckImpl(RepoDi.pregnancyCheckRepo);
-  static GetPregnancyCheck get getPregnancyCheck => GetPregnancyCheckImpl(RepoDi.pregnancyCheckRepo);
-  static GetMotherFormWarningStatus get getMotherFormWarningStatus => GetMotherFormWarningStatusImpl(RepoDi.formWarningStatusRepo);
+  static SavePregnancyCheck get savePregnancyCheck => SavePregnancyCheckImpl(RepoDi.pregnancyRepo);
+  static GetPregnancyCheck get getPregnancyCheck => GetPregnancyCheckImpl(RepoDi.pregnancyRepo);
+  static GetMotherFormWarningStatus get getMotherFormWarningStatus => GetMotherFormWarningStatusImpl(RepoDi.pregnancyRepo);
   static GetPregnancyBabySize get getPregnancyBabySize => GetPregnancyBabySizeImpl(RepoDi.pregnancyRepo);
 
   static GetPregnancyImmunizationConfirmForm get getPregnancyImmunizationConfirmForm => GetPregnancyImmunizationConfirmFormImpl(RepoDi.formFieldRepo);
@@ -26,7 +26,7 @@ class KehamilankuUseCaseDi {
   static GetMotherImmunizationGroupList get getMotherImmunizationGroupList => GetMotherImmunizationGroupListImpl(RepoDi.immunizationRepo);
   static ConfirmMotherImmunization get confirmMotherImmunization => ConfirmMotherImmunizationImpl(RepoDi.immunizationRepo);
 
-  static GetMotherPregEvalGraphMenu get getMotherPregEvalGraphMenu => GetMotherPregEvalGraphMenuImpl(RepoDi.motherRepo);
+  static GetMotherPregEvalGraphMenu get getMotherPregEvalGraphMenu => GetMotherPregEvalGraphMenuImpl(RepoDi.pregnancyRepo);
 
   static GetMotherTfuChart get getMotherTfuChart => GetMotherTfuChartImpl(RepoDi.motherChartRepo);
   static GetMotherDjjChart get getMotherDjjChart => GetMotherDjjChartImpl(RepoDi.motherChartRepo);

@@ -8,32 +8,37 @@ class ImmunizationData {
   final String name;
   final String? date; //null if the person hasn't taken it.
   final String? location; //null if the person hasn't taken it.
+  final String? batchNo; //null if the person hasn't taken it.
 
   ImmunizationData._({
     required this.name,
-    this.date,
-    this.location,
+    required this.date,
+    required this.location,
+    required this.batchNo,
   });
 
   factory ImmunizationData({
     required String name,
     String? date,
     String? location,
+    String? batchNo,
   }) {
     if((date != null && location == null) || (date == null && location != null)) {
       throw "If `date` and `location` can't be either null or not null. Current data (date=$date), (location=$location)";
     }
-    return ImmunizationData._(name: name, date: date, location: location);
+    return ImmunizationData._(name: name, date: date, location: location, batchNo: batchNo);
   }
 
   ImmunizationData copy({
     String? name,
     String? date, //null if the person hasn't taken it.
     String? location, //null if the person hasn't taken it.
+    String? batchNo, //null if the person hasn't taken it.
   }) => ImmunizationData._(
     name: name ?? this.name,
     date: date ?? this.date,
     location: location ?? this.location,
+    batchNo: batchNo ?? this.batchNo,
   );
 }
 
@@ -46,7 +51,7 @@ class ImmunizationDetail {
   final IntRange? monthRange;
   final int? monthExact;
   final int? maxMonthLimit;
-  final String? batchNo;
+  //final String? batchNo;
   final bool noDetail;
 
   ImmunizationDetail({
@@ -54,15 +59,15 @@ class ImmunizationDetail {
     this.maxMonthLimit,
     this.monthRange,
     this.monthExact,
-    this.batchNo,
+    //this.batchNo,
     this.noDetail = false,
   }) {
     if(!noDetail) {
-      if(immunization.date != null && batchNo == null
-          || immunization.date == null && batchNo != null) {
+      if(immunization.date != null //&& batchNo == null
+          || immunization.date == null /*&& batchNo != null*/) {
         throw "If immunization.date != null then batchNo != null. \n"
             "If immunization.date == null then batchNo == null. \n"
-            "Current immunization.date = '${immunization.date}', current batchNo = '$batchNo'";
+            "Current immunization.date = '${immunization.date}'"; //, current batchNo = '$batchNo'
       }
       if(monthExact == null && monthRange == null) {
         throw "both `monthExact` and `monthExact` can't be null";

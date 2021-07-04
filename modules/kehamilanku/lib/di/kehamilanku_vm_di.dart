@@ -17,6 +17,7 @@ class KehamilankuVmDi {
     getMotherFoodRecomList: KehamilankuUseCaseDi.getMotherFoodRecomList,
   );
   static KehamilankuCheckFormVm get checkFormVm => KehamilankuCheckFormVm(
+    getPregnancyCheckUpId: UseCaseDi.getPregnancyCheckUpId,
     getPregnancyCheck: KehamilankuUseCaseDi.getPregnancyCheck,
     savePregnancyCheck: KehamilankuUseCaseDi.savePregnancyCheck,
     getMotherFormWarningStatus: KehamilankuUseCaseDi.getMotherFormWarningStatus,

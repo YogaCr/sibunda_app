@@ -8,4 +8,5 @@ class UseCaseDi {
   static GetMotherNik get getMotherNik => GetMotherNikImpl(RepoDi.motherRepo);
   static GetProfile get getProfile => GetProfileImpl(RepoDi.profileRepo);
   static GetCurrentEmail get getCurrentEmail => GetCurrentEmailImpl(RepoDi.profileRepo);
+  static GetPregnancyCheckUpId get getPregnancyCheckUpId => GetPregnancyCheckUpIdImpl(RepoDi.pregnancyRepo);
 }

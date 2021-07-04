@@ -1,4 +1,5 @@
 
+import 'package:common/arch/data/remote/model/kehamilanku_overview_api_model.dart';
 import 'package:common/arch/domain/model/baby_data.dart';
 import 'package:common/arch/domain/model/img_data.dart';
 import 'package:common/arch/ui/model/home_graph_menu.dart';
@@ -128,15 +129,15 @@ PregnancyCheck dummyPregnancyCheck(int week) => PregnancyCheck(
 );
 
 final dummyTrimesterList = <MotherTrimester>[
-  MotherTrimester(trimester: 1, startWeek: 0, endWeek: 12, imgLink: "",),
-  MotherTrimester(trimester: 2, startWeek: 13, endWeek: 24, imgLink: "",),
-  MotherTrimester(trimester: 3, startWeek: 25, endWeek: 40, imgLink: "",),
+  MotherTrimester(trimester: 1, startWeek: 0, endWeek: 12, img: dummyImg,),
+  MotherTrimester(trimester: 2, startWeek: 13, endWeek: 24, img: dummyImg,),
+  MotherTrimester(trimester: 3, startWeek: 25, endWeek: 40, img: dummyImg,),
 ];
 
 List<MotherFoodRecom> dummyFoodRecomList(int week) => [
-  MotherFoodRecom(food: "Beras", desc: "Makan nasi biar kenyang", imgLink: "https://begnimbe.com/wp-content/uploads/2021/03/Buford-FrenchRice.jpg"),
-  MotherFoodRecom(food: "Kacang", desc: "Kacang dapat mengenyangkan jika dimakan dalam skala besar", imgLink: "https://www.jessicagavin.com/wp-content/uploads/2020/05/how-to-cook-pinto-beans-6-1200.jpg"),
-  MotherFoodRecom(food: "Susu", desc: "Biar pola makan sempurna, minum susu.", imgLink: "https://www2.biomin.net/fileadmin/user_upload/Articles/2019/Boosting_milk_yield/Milk-production-in-heifers-fed-Digestarom-Dairy-increased-by-0.7-kg-per-day.jpg"),
+  MotherFoodRecom(food: "Beras", desc: "Makan nasi biar kenyang", img: dummyImg), //imgLink: "https://begnimbe.com/wp-content/uploads/2021/03/Buford-FrenchRice.jpg"),
+  MotherFoodRecom(food: "Kacang", desc: "Kacang dapat mengenyangkan jika dimakan dalam skala besar", img: dummyImg),//imgLink: "https://www.jessicagavin.com/wp-content/uploads/2020/05/how-to-cook-pinto-beans-6-1200.jpg"),
+  MotherFoodRecom(food: "Susu", desc: "Biar pola makan sempurna, minum susu.", img: dummyImg),//imgLink: "https://www2.biomin.net/fileadmin/user_upload/Articles/2019/Boosting_milk_yield/Milk-production-in-heifers-fed-Digestarom-Dairy-increased-by-0.7-kg-per-day.jpg"),
 ];
 
 final dummyPregnancyBabySizes = <PregnancyBabySize>[
@@ -198,19 +199,19 @@ final motherWarningStatusList = <FormWarningStatus>[
     desc: "Berat Badan Bunda kurang sesuai ya Bun. ",
     action: "Lihat rekomendasi makanan",
     isSafe: false,
-    imgLink: dummyImg,
+    img: dummyImg,
   ),
   FormWarningStatus(
     desc: "Denyut Jantung Janin Bunda kurang ya. Silahkan periksa ke faskes ya Bun",
     action: "Cari Faskes terdekat",
     isSafe: false,
-    imgLink: dummyImg,
+    img: dummyImg,
   ),
   FormWarningStatus(
     desc: "Selamat Bunda! \nTinggi Fundus Uterus Bunda normal ya Bun.",
     action: "Cari Faskes terdekat",
     isSafe: true,
-    imgLink: dummyImg,
+    img: dummyImg,
   ),
 ];
 
@@ -219,19 +220,19 @@ final babyWarningStatusList = <FormWarningStatus>[
     desc: "Bunda, berat badan bayi tidak normal ya Bun menurut usia bayi.",
     action: "Cari Faskes terdekat",
     isSafe: false,
-    imgLink: dummyImg,
+    img: dummyImg,
   ),
   FormWarningStatus(
     desc: "Selamat Bunda! \n Panjang badan atau tinggi badan menurut usia bayi normal.",
     action: "Cari Faskes terdekat",
     isSafe: true,
-    imgLink: dummyImg,
+    img: dummyImg,
   ),
   FormWarningStatus(
     desc: "Bunda, berat badan bayi menurut panjang/tinggi badan tidak normal.",
     action: "Cari Faskes terdekat",
     isSafe: false,
-    imgLink: dummyImg,
+    img: dummyImg,
   ),
 ];
 
@@ -246,11 +247,11 @@ final motherImmunizationList = <ImmunizationData>[
   ImmunizationData(name: "Tetanus",),
 ];
 final babyImmunizationList = <ImmunizationData>[
-  ImmunizationData(name: "Hepatitis B (<24 Jam)", date: "2020-12-13", location: "ITS"),
-  ImmunizationData(name: "BCG", date: "2020-12-17"),
+  ImmunizationData(name: "Hepatitis B (<24 Jam)", date: "2020-12-13", location: "ITS", batchNo: "001"),
+  ImmunizationData(name: "BCG", date: "2020-12-17", location: "ITS", batchNo: "001"),
   ImmunizationData(name: "Polio Tetes 1",),
   ImmunizationData(name: "DPT-HB-Hib 1",),
-  ImmunizationData(name: "Polio Tetes 2", date: "2021-11-14", location: "ITS"),
+  ImmunizationData(name: "Polio Tetes 2", date: "2021-11-14", location: "ITS", batchNo: "001"),
   ImmunizationData(name: "DPT-HB-Hib 2",),
 ];
 
@@ -261,7 +262,7 @@ final motherImmunizationDetailList = motherImmunizationList.map((e) => Immunizat
 final babyImmunizationDetailList = babyImmunizationList.map((e) => ImmunizationDetail(
   immunization: e,
   monthRange: IntRange(0, 4),
-  batchNo: e.date != null ? "001" : null,
+  //batchNo: e.date != null ? "001" : null,
 )).toList(growable: false);
 
 
@@ -330,6 +331,18 @@ final covidHomeCheckHistory = <CovidCheckHistory>[
   ),
 ];
 
+
+final motherHomeData = List<MotherHomeBabyData>.generate(3, (i) => MotherHomeBabyData(
+  babyId: i+1,
+  babyName: faker.person.name(),
+  childOrder: i+1,
+  pregnancyAge: MotherPregnancyAgeOverview(
+    weekAge: i+1,
+    daysRemaining: i+3,
+  ),
+  foodRecomList: dummyFoodRecomList(i+1),
+  trimesterList: dummyTrimesterList,
+));
 
 
 final motherPregEvalGraphMenuList = <MotherChartMenuData>[

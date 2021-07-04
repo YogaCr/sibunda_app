@@ -40,7 +40,7 @@ class UiImmunizationListItemDetail {
   UiImmunizationListItemDetail.fromModelDetail(ImmunizationDetail detailData):
     monthRange = detailData.monthRange,
     monthExact = detailData.monthExact,
-    batchNo = detailData.batchNo
+    batchNo = detailData.immunization.batchNo
   ;
 
   UiImmunizationListItemDetail copy({

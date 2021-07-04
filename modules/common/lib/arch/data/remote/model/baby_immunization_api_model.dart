@@ -1,3 +1,4 @@
+import 'package:common/arch/domain/model/immunization.dart';
 import 'package:common/value/const_values.dart';
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -24,6 +25,20 @@ class BabyCreateImmunizationBody {
 
   factory BabyCreateImmunizationBody.fromJson(Map<String, dynamic> map) => _$BabyCreateImmunizationBodyFromJson(map);
   Map<String, dynamic> toJson() => _$BabyCreateImmunizationBodyToJson(this);
+
+
+  factory BabyCreateImmunizationBody.fromModel({
+    required ImmunizationData data,
+    required int immunizationId,
+    required String pic,
+  }) {
+    if(data.date == null || data.location == null || data.batchNo == null) {
+      throw "`date`, `location`, and `batchNo` both should not be null. Current data (date=${data.date}), (location=${data.location}), (batchNo=${data.batchNo})";
+    }
+    return BabyCreateImmunizationBody(
+      id: immunizationId, date: data.date!, location: data.location!, pic: pic, noBatch: data.batchNo!,
+    );
+  }
 }
 
 
@@ -44,6 +59,7 @@ class BabyImmunizationResponse extends Equatable  {
   });
 
   factory BabyImmunizationResponse.fromJson(Map<String, dynamic> map) => _$BabyImmunizationResponseFromJson(map);
+  Map<String, dynamic> toJson() => _$BabyImmunizationResponseToJson(this);
 
   @override
   List<Object?> get props => [code, message, status, data];
