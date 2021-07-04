@@ -19,7 +19,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.12.0 <3.0.0"
+  sdk: ">=2.13.0 <3.0.0"
 
 dependencies:
   flutter:
@@ -47,6 +47,10 @@ dependencies:
   jiffy: ^4.1.0
   faker: ^2.0.0
   syncfusion_flutter_charts: ^19.2.44
+  floor: ^1.1.0
+  moor: ^4.4.0
+  path_provider: any
+  #path: ^1.6.4
 
   core:
     path: ../core
@@ -56,6 +60,8 @@ dev_dependencies:
     sdk: flutter
 
   retrofit_generator: any
+  floor_generator: any
+  moor_generator: any
   build_runner: any
   json_serializable: ^4.1.3
 
