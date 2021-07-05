@@ -80,7 +80,7 @@ mixin FormVmGroupMixin implements AsyncVm {
     required SibFormField field,
   }) {
     field.responseLiveData.observe(this, (data) {
-      //print("registerField() position= $position data= $data field.responseLiveData= ${field.responseLiveData}");
+      prind("registerField() groupPosition= $groupPosition inputKey= $inputKey data= $data field.responseLiveData= ${field.responseLiveData}");
       _responseGroupList[groupPosition][inputKey]!.response.value = data;
     }, tag: "FormVmGroupMixin.registerField() $groupPosition, $inputKey",);
   }
@@ -130,7 +130,14 @@ mixin FormVmGroupMixin implements AsyncVm {
   @protected
   void onReady(){}
   Future<Result<String>> doSubmitJob();
+
+  /// Until July 5th, 2021, probable types of [response] is like this:
+  /// - For [FormType.text] : It can be either [String] or [DateTime].
+  /// - For [FormType.radio] : [String] for selected radio value.
+  /// - For [FormType.check] : [Set<int>].
   Future<bool> validateField(int groupPosition, String inputKey, dynamic response);
+  String getResponseStringRepr(int groupPosition, String inputKey, dynamic response) =>
+      response is String ? response : response?.toString() ?? "";
   String getInvalidMsg(String inputKey, dynamic response) => defaultInvalidMsg;
 }
 

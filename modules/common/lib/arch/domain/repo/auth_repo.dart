@@ -25,7 +25,8 @@ mixin AuthRepo {
   Future<Result<SessionData>> login(LoginData data);
   Future<Result<bool>> logout(SessionData data);
   Future<Result<bool>> saveSession(SessionData data);
-  Future<Result<SessionData>> getSession();
+  /// Returns null if user hasn't logged in yet.
+  Future<Result<SessionData?>> getSession();
 }
 
 class AuthRepoImpl with AuthRepo {
@@ -91,7 +92,7 @@ class AuthRepoImpl with AuthRepo {
     throw UnimplementedError();
   }
   @override
-  Future<Result<SessionData>> getSession() {
+  Future<Result<SessionData?>> getSession() {
     throw UnimplementedError();
   }
 }
@@ -172,7 +173,7 @@ class AuthDummyRepo with AuthRepo {
   Future<Result<bool>> logout(SessionData data) async => Success(true, 200);
 
   @override
-  Future<Result<SessionData>> getSession() async => Success(dummySessionData1);
+  Future<Result<SessionData?>> getSession() async => Success(dummySessionData1);
 
   @override
   Future<Result<bool>> saveSession(SessionData data) async => Success(true);

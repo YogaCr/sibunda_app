@@ -43,7 +43,7 @@ class ChildrenCountPage extends StatelessWidget {
           max: 11,
         ),
         TxtInputUnderline(
-          enabled: false,
+          readOnly: true,
           overText: "Tanggal lahir anak terakhir",
           textController: vm.lastChildBirthDateTxtControl,
           onSuffixIconClick: () async {

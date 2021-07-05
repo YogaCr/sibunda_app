@@ -1,21 +1,76 @@
+import 'package:common/arch/data/local/dao/data_dao.dart';
+import 'package:common/arch/data/local/db/app_db.dart';
+import 'package:common/arch/data/local/db/executor/shared.dart';
+import 'package:common/arch/data/remote/api/data_api.dart';
 import 'package:common/arch/domain/dummy_data.dart';
+import 'package:common/arch/domain/model/form_data.dart';
 import 'package:common/arch/domain/model/img_data.dart';
+import 'package:common/arch/ui/model/form_data.dart';
+import 'package:common/arch/ui/vm/form_vm_group.dart';
+import 'package:common/arch/ui/widget/_basic_widget.dart';
 import 'package:common/arch/ui/widget/_items_education.dart';
+import 'package:common/arch/ui/widget/form_generic_group.dart';
+import 'package:common/arch/ui/widget/form_generic_vm_group_observer.dart';
 import 'package:common/arch/ui/widget/popup_widget.dart';
+import 'package:common/arch/ui/widget/splash_widget.dart';
 import 'package:common/config/_config.dart';
+import 'package:common/res/theme/_theme.dart';
+import 'package:common/test/__common_test_const.dart';
 import 'package:common/util/navigations.dart';
 import 'package:common/util/ui.dart';
+import 'package:core/domain/model/result.dart';
+import 'package:core/ui/base/live_data.dart';
+import 'package:core/util/_consoles.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
-void main() => runApp(MyApp());
+void main() async {
+  await initializeDateFormatting("id_ID");
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    final db = constructDb();
+
+    final cityDao = db.cityDao;
+
     return MaterialApp(
       title: 'Flutter Cob',
       theme: Manifest.theme.materialData,
+      home: Scaffold(
+        body: SplashScreen(
+          child: Center(
+            child: Column(
+              children: [
+                FlutterLogo(size: 70,),
+                SizedBox(height: 20,),
+                Text("Ini SPlash screen"),
+                SizedBox(height: 50,),
+                CircularProgressIndicator(),
+              ],
+            ),
+          ),
+          pageBuilder: (ctx) => Scaffold(
+            body: SizedBox(
+              height: 300,
+              child: _CityList(cityDao),
+            ),
+          ),
+          computation: () async {
+            final api = DataApi(await CommonTestConst.getDummySession());
+            final resp = await api.getCity();
+
+            final ent = resp.map((e) => e.toEntityJson()).map((e) => CityEntity.fromJson(e)).toList(growable: false);
+            cityDao.insertAll(ent);
+          },
+        ),
+      ),
+      /*
       home: Scaffold(
         body: Column(
           children: [
@@ -28,7 +83,145 @@ class MyApp extends StatelessWidget {
               kind: "Halo",
               headline: "Nih Bun 5 Makanan Rekomendasi untuk Bunda Hamil Trimester 2",  //afafijaoiga agiuoigaja afjaifan gagi",
             ),
+
+            TextField(
+              keyboardType: TextInputType.emailAddress,
+/*
+              inputFormatters: [
+                FilteringTextInputFormatter.digitsOnly
+              ],
+ */
+            ),
+            SizedBox(height: 10,),
+            FormVmGroupObserver<_Vm>(
+              vm: _Vm()..init(),
+              submitBtnBuilder: (ctx, canProceed) => TxtBtn(
+                "Kirim",
+                color: canProceed == true ? Manifest.theme.colorPrimary : grey,
+              ),
+            ),
           ],
+        ),
+      ),
+       */
+    );
+  }
+}
+
+class _CityList extends StatelessWidget {
+  final CityDao dao;
+  _CityList(this.dao);
+
+  @override
+  Widget build(BuildContext context) {
+    final citiesFuture = dao.get(limit: 20);
+    return FutureBuilder<List<CityEntity>>(
+      future: citiesFuture,
+      builder: (ctx, snapshot) {
+        if(snapshot.hasData) {
+          final cities = snapshot.data;
+          return ListView.builder(
+            itemCount: cities.length,
+            itemBuilder: (ctx, i) => ListTile(
+              title: Text(cities[i].name),
+              subtitle: Text(cities[i].id.toString()),
+            ),
+          );
+        }
+        return defaultLoading();
+      },
+    );
+  }
+}
+
+class _Vm extends FormVmGroup {
+  @override
+  Future<Result<String>> doSubmitJob() async => Success("ok");
+
+  @override
+  Future<List<FormUiGroupData>> getFieldGroupList() async => [
+    FormUiGroupData(
+      header: "header",
+      data: [
+        FormUiTxt(key: "key1", question: "question 1", input: FieldInputMethod.pickDate),
+      ],
+    ),
+  ];
+
+  @override
+  List<LiveData> get liveDatas => [];
+
+  @override
+  Future<bool> validateField(int groupPosition, String inputKey, response) async => true;
+
+}
+
+
+class _Splash extends StatefulWidget {
+
+  @override
+  State createState() => _SplashState();
+}
+
+class _SplashState extends State<_Splash> {
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(Duration(seconds: 2), () {
+      Navigator.push(context, PageRouteBuilder(
+        transitionDuration: Duration(seconds: 2),
+        transitionsBuilder: (ctx, anim, secAnim, child) {
+          final start = Offset(0, -1);
+          final end = Offset.zero;
+          final tween = Tween(begin: start, end: end);
+
+          final curve = Curves.bounceOut;
+          final ct = CurveTween(curve: curve);
+          final t = tween.chain(ct);
+
+          final off = anim.drive(ct);
+
+          return RotationTransition(
+            turns: anim.drive(ct),
+            child: child,
+          );
+        },
+        pageBuilder: (ctx, anim, secAnim) {
+          prind("to _NextPage");
+          return _NextPage();
+        },
+      ));
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    prind("_Splash");
+    return Scaffold(
+      body: Container(
+        width: double.infinity,
+        height: double.infinity,
+        color: Colors.green,
+        child: Expanded(
+          child: Text("Ini Splash", textAlign: TextAlign.center,),
+        ),
+      ),
+    );
+  }
+}
+
+class _NextPage extends StatelessWidget {
+
+  @override
+  Widget build(BuildContext context) {
+    prind("_NextPage");
+    return Scaffold(
+      body: Container(
+        width: double.infinity,
+        height: double.infinity,
+        color: Colors.blue,
+        child: Expanded(
+          child: Text("Ini halaman slanjutnya", textAlign: TextAlign.center,),
         ),
       ),
     );

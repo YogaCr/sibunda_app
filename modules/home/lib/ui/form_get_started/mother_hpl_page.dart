@@ -39,7 +39,7 @@ class MotherHplPage extends StatelessWidget {
         ),
         Text("Sudah tahu kapan HPL Bunda?"),
         TxtInputUnderline(
-          enabled: false,
+          readOnly: true,
           textController: vm.hplTxtControl,
           overText: "Masukkan hari perkiraan menurut dokter Bunda",
           onSuffixIconClick: () async {
@@ -58,7 +58,7 @@ class MotherHplPage extends StatelessWidget {
         //Spacer(flex: 1,),
         Text("Yuk hitung HPL Bunda"),
         TxtInputUnderline(
-          enabled: false,
+          readOnly: true,
           textController: vm.hphtTxtControl,
           overText: "Masukkan HPHT Bunda",
           onSuffixIconClick: () async {

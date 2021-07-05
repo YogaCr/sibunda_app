@@ -38,6 +38,7 @@ class FormTxtFieldState extends Equatable {
 
 abstract class FormUiData extends Equatable {
   final FormType type;
+  final FieldInputMethod input;
   final String key;
   final String question;
   final List<ImgData>? img;
@@ -47,6 +48,7 @@ abstract class FormUiData extends Equatable {
     required this.key,
     required this.question,
     this.img,
+    this.input = FieldInputMethod.direct,
   });
 
   @override
@@ -60,16 +62,19 @@ class FormUiTxt extends FormUiData {
     required String key,
     required String question,
     this.answer,
+    FieldInputMethod input = FieldInputMethod.direct,
     List<ImgData>? img,
   }): super(
     type: FormType.text,
     key: key,
     question: question,
     img: img,
+    input: input,
   );
 
   factory FormUiTxt.fromModel(FormData data) => FormUiTxt(
     key: data.key, question: data.question, answer: data.answer, img: data.img,
+    input: data.input,
   );
 }
 
@@ -82,12 +87,14 @@ class FormUiRadio extends FormUiData {
     required String question,
     required this.answerItems,
     this.selectedAnswer,
+    FieldInputMethod input = FieldInputMethod.direct,
     List<ImgData>? img
   }): super(
     type: FormType.radio,
     key: key,
     question: question,
     img: img,
+    input: input,
   );
 
   factory FormUiRadio.fromModel(FormData data) {
@@ -109,6 +116,7 @@ class FormUiRadio extends FormUiData {
       answerItems: options ?? List.empty(),
       selectedAnswer: selectedItem,
       img: data.img,
+      input: data.input,
     );
   }
 }
@@ -121,6 +129,7 @@ class FormUiCheck extends FormUiData {
     required String key,
     required String question,
     required this.answerItems,
+    FieldInputMethod input = FieldInputMethod.direct,
     Set<int>? selectedAnswers,
     List<ImgData>? img
   }): this.selectedAnswers = selectedAnswers ?? {},
@@ -129,6 +138,7 @@ class FormUiCheck extends FormUiData {
     key: key,
     question: question,
     img: img,
+    input: input,
   );
 
   factory FormUiCheck.fromModel(FormData data,) {
@@ -149,6 +159,7 @@ class FormUiCheck extends FormUiData {
       answerItems: options ?? List.empty(),
       selectedAnswers: selectedItems,
       img: data.img,
+      input: data.input,
     );
   }
 }

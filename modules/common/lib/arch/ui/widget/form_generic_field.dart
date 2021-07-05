@@ -4,6 +4,8 @@ import 'package:common/arch/ui/widget/txt_input.dart';
 import 'package:common/res/string/_string.dart';
 import 'package:common/res/theme/_theme.dart';
 import 'package:common/util/assets.dart';
+import 'package:common/util/form_util.dart';
+import 'package:common/util/times.dart';
 import 'package:common/value/enums.dart';
 import 'package:core/domain/model/wrapper.dart';
 import 'package:core/ui/base/live_data.dart';
@@ -21,22 +23,26 @@ abstract class SibFormField extends StatelessWidget {
 }
 
 
-class TxtField extends SibFormField {
+class TxtField<D> extends SibFormField {
   final FormUiTxt itemData;
   @override
   final LiveData<bool>? isValid;
-  late final LiveData<String> _response; //TODO: msh blum di dispose.
-  final TextEditingController textController = TextEditingController();
+  late final MutableLiveData<D> _response; //TODO: msh blum di dispose.
+  final TextEditingController _textController = TextEditingController();
   @override
-  LiveData<String> get responseLiveData => _response;
+  LiveData<D> get responseLiveData => _response;
   final bool isLiveDataOwner;
   final RelativePosition imgPosition;
 
   /// This will become default invalid message.
   final String invalidMsg;
   final String? Function(String? response)? invalidMsgGenerator;
+  final String Function(D? response)? getResponseRepresentation;
+  final D? Function(String response)? rawResponseMapper;
+  //final Future<D?> Function()? dataPicker;
   final Var<bool> isChanging = Var(false);
-  final bool enabled;
+  final bool readOnly;
+  final Widget? suffixIcon;
 
   TxtField({
     required this.itemData,
@@ -44,30 +50,66 @@ class TxtField extends SibFormField {
     this.invalidMsgGenerator,
     this.invalidMsg = Strings.field_can_not_be_empty,
     this.imgPosition = RelativePosition.below,
-    this.enabled = true,
+    this.readOnly = false,
+    this.suffixIcon,
+    //this.dataPicker,
+    this.getResponseRepresentation,
+    this.rawResponseMapper,
     bool? isLiveDataOwner,
     //TextEditingController? textController,
-    MutableLiveData<String>? responseLiveData
+    MutableLiveData<D>? responseLiveData
   }): this.isLiveDataOwner = isLiveDataOwner ?? responseLiveData == null
   //  this.textController = textController ?? TextEditingController()
   {
-    _response = responseLiveData ?? MutableChangeNotifLiveData(
-      this.textController,
-      getNotif: (notif) => this.textController.text,
-      setNotif: (notif, data) => this.textController.text = data ?? "",
+    _response = responseLiveData ?? MutableLiveData();
+/*
+    ?? MutableChangeNotifLiveData(
+      this._textController,
+      getNotif: (notif) => this._textController.text,
+      setNotif: (notif, data) {
+        if(!isChanging.value) {
+          isChanging.value = true;
+          this._textController.text = getResponseRepresentation?.call(data) ?? data?.toString() ?? "";
+          isChanging.value = false;
+        }
+      },
     );
-    if(responseLiveData != null) {
-      this.textController.addListener(() {
-        if(responseLiveData.isActive) {
-          //prind("TxtField this.textController.addListener isChanging = $isChanging");
+ */
+    _response.observeForever((data) {
+      prind("TxtField responseLiveData.observeForever hasCode= ${hashCode} isChanging = $isChanging data= $data data?.runtimeType = ${data?.runtimeType}");
+      if(!isChanging.value) {
+        isChanging.value = true;
+        _textController.text = getResponseRepresentation?.call(data) ?? data?.toString() ?? "";
+        isChanging.value = false;
+      }
+    });
+
+    if(!readOnly) {
+      _textController.addListener(() {
+        if(_response.isActive) {
+          prind("TxtField this.textController.addListener isChanging = $isChanging");
           if(!isChanging.value) {
-            //prind("TxtField this.textController.addListener txt = ${textController.text}");
+            prind("TxtField this.textController.addListener txt = ${_textController.text}");
             isChanging.value = true;
-            responseLiveData.value = this.textController.text;
+            if(rawResponseMapper == null) {
+              prinw("`rawResponseMapper` == null and this `$runtimeType` is recording raw input from text. This `$runtimeType` is recording if only `D` is String.");
+              if(D is String){
+                _response.value = _textController.text as D;
+              } else {
+                prinw("`rawResponseMapper` == null and `D` ($D) is not String. Raw response from text is ignored!");
+              }
+            } else {
+              _response.value = rawResponseMapper?.call(_textController.text);
+            }
             isChanging.value = false;
           }
         }
       });
+    }
+
+    if(responseLiveData?.value != null) {
+      final data = responseLiveData!.value;
+      _textController.text = getResponseRepresentation?.call(data) ?? data?.toString() ?? "";
     }
   }
 
@@ -76,18 +118,21 @@ class TxtField extends SibFormField {
     bool isInit = true;
     final widget = isValid == null
         ? TxtInput(
-          textController: textController,
+          readOnly: readOnly,
+          suffixIcon: suffixIcon,
+          textController: _textController,
           label: itemData.question,
         ) : LiveDataObserver<bool>(
           isLiveDataOwner: isLiveDataOwner,
           liveData: isValid!,
           builder: (ctx, isValid) {
             final txtWidget = TxtInput(
-              enabled: enabled,
-              textController: textController,
+              readOnly: readOnly,
+              suffixIcon: suffixIcon,
+              textController: _textController,
               label: itemData.question,
               errorText: (isValid == false && !isInit)
-                  ? invalidMsgGenerator?.call(textController.text) ?? invalidMsg
+                  ? invalidMsgGenerator?.call(_textController.text) ?? invalidMsg
                   : null,
             );
             if(isValid != null) { //if `isValid` still null, then this widget is still init (`isInit` == true)
@@ -98,7 +143,7 @@ class TxtField extends SibFormField {
         );
 
     if(isLiveDataOwner && itemData.answer != null) {
-      textController.text = itemData.answer!;
+      _textController.text = itemData.answer!;
     }
     final colChildren = <Widget>[widget,];
     if(itemData.img?.isNotEmpty == true) {

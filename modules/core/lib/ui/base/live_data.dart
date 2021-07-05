@@ -1,4 +1,5 @@
 
+import 'package:core/util/_consoles.dart';
 import 'package:flutter/material.dart';
 import 'package:tuple/tuple.dart';
 import 'package:collection/collection.dart';
@@ -91,7 +92,7 @@ class LiveData<T> implements Expirable {
 
   void notifyObservers({T? oldValue, T? newValue}) {
     _assertNotDisposed();
-    //print("notifyObservers() oldValue= $oldValue newValue= $newValue _observers= $_observers");
+    //prind("notifyObservers() type = $runtimeType oldValue= $oldValue newValue= $newValue _observers= $_observers");
     for(final key in _observers!.keys) {
       //print("notifyObservers() FOR AWAL key= $key");
       final observer = key.item1;

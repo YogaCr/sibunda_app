@@ -8,6 +8,17 @@ enum FormType {
   check,
 }
 
+enum FieldInputMethod {
+  direct,
+
+  /// Only for [FormType.text]
+  pickDate,
+
+  /// User can input by pick provided selection.
+  /// Only for [FormType.text]
+  pick,
+}
+
 class FormData {
   final String key;
   final String question;
@@ -15,6 +26,7 @@ class FormData {
   final List<FormOption>? options;
   final List<ImgData>? img;
   final FormType type;
+  final FieldInputMethod input;
 
   FormData({
     required this.key,
@@ -23,6 +35,7 @@ class FormData {
     this.img,
     this.answer,
     this.options,
+    this.input = FieldInputMethod.direct,
   });
 }
 

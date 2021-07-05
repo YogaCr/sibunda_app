@@ -18,7 +18,7 @@ AppDatabase constructDb({bool logStatements = false}) {
     });
     return AppDatabase(executor);
   }
-  if (Platform.isMacOS || Platform.isLinux) {
+  if (Platform.isMacOS || Platform.isLinux || Platform.isWindows) {
     final file = File(DbConst.DB_FILE);
     return AppDatabase(VmDatabase(file, logStatements: logStatements));
   }
