@@ -1,6 +1,7 @@
 import 'package:common/arch/data/remote/model/_common_api_model.dart';
 import 'package:common/arch/data/remote/model/baby_chart_api_model.dart';
 import 'package:common/arch/data/remote/model/baby_check_form_api_model.dart';
+import 'package:common/arch/data/remote/model/baby_form_warning_api_model.dart';
 import 'package:common/arch/data/remote/model/baby_immunization_api_model.dart';
 import 'package:common/arch/data/remote/model/baby_neonatal_form_api_model.dart';
 import 'package:common/arch/data/remote/model/baby_overview_api_model.dart';
@@ -29,6 +30,9 @@ abstract class BabyApi {
   Future<BabyMonthlyFormBody> getMonthlyForm(@Body() BabyGetMonthlyFormBody body,);
   @POST("/create-monthly-report")
   Future<CommonResponse> sendMonthlyForm(@Body() BabyMonthlyFormBody body,);
+
+  @POST("/show-monthly-report-analysis")
+  Future<BabyFormWarningResponse> getFormWarning(@Body() BabyFormWarningBody body,);
 
   @POST("//create-neonatus-6-hours")
   Future<CommonResponse> sendNeo6hForm(@Body() Neonatal6HourFormBody body,);

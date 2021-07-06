@@ -33,10 +33,15 @@ class BabyFormWarningResponse {
 
 @JsonSerializable()
 class BabyFormWarningDataResponse {
+  @JsonKey(name: "bb_usia_desc")
   final BabyFormWarningDescResponse weight;
+  @JsonKey(name: "pb_usia_desc")
   final BabyFormWarningDescResponse len;
+  @JsonKey(name: "bb_pb_desc")
   final BabyFormWarningDescResponse weightToLen;
+  @JsonKey(name: "lingkar_kepala_desc")
   final BabyFormWarningDescResponse headCircum;
+  @JsonKey(name: "imt_desc")
   final BabyFormWarningDescResponse imt;
 
   BabyFormWarningDataResponse({

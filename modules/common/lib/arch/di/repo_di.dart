@@ -36,13 +36,20 @@ class RepoDi {
   //static MotherFoodRecomRepo get foodRepo => MotherFoodRecomRepoDummy.obj;
   //static MotherHomeRepo get pregnancyRepo => MotherPregnancyRepoDummy.obj;
   //static PregnancyCheckRepo get pregnancyCheckRepo => PregnancyCheckRepoDummy.obj;
-  static FormWarningStatusRepo get formWarningStatusRepo => FormWarningStatusRepoDummy.obj;
+  //static FormWarningStatusRepo get formWarningStatusRepo => FormWarningStatusRepoDummy.obj;
   static ImmunizationRepo get immunizationRepo => ImmunizationRepoDummy.obj;
 
-  static MyBabyRepo get myBabyRepo => MyBabyRepoDummy.obj;
+  static MyBabyRepo get myBabyRepo => MyBabyRepoImpl(
+    api: ApiDi.babyApi, accountLocalSrc: LocalSrcDi.accountSrc,
+  ); //MyBabyRepoDummy.obj;
 
   static CovidRepo get covidRepo => CovidRepoDummy.obj;
 
-  static BabyChartRepo get babyChartRepo => BabyChartRepoDummy.obj;
-  static MotherChartRepo get motherChartRepo => MotherChartRepoDummy.obj;
+  static BabyChartRepo get babyChartRepo => BabyChartRepoImpl(
+    api: ApiDi.babyApi,
+    accountLocalSrc: LocalSrcDi.accountSrc,
+  ); //BabyChartRepoDummy.obj;
+  static MotherChartRepo get motherChartRepo => MotherChartRepoImpl(
+    api: ApiDi.kehamilankuApi,
+  ); //MotherChartRepoDummy.obj;
 }

@@ -68,4 +68,19 @@ class ProfileDao extends DatabaseAccessor<AppDatabase> with _$ProfileDaoMixin {
     }
     return res;
   }
+
+  /// It returns [Map]<int, String> that maps [ProfileEntities.type] to [ProfileEntities.serverId];
+  Future<Map<int, int>> getServerIdByNik(String nik, { int? type }) async {
+    final sel = (select(profileEntities)..where((it) => it.nik.equals(nik)));
+    if(type != null) {
+      sel.where((it) => it.type.equals(type));
+    }
+
+    final queried = await sel.map((it) => {it.type: it.serverId}).get();
+    final res = <int, int>{};
+    for(final e in queried) {
+      res.addAll(e);
+    }
+    return res;
+  }
 }

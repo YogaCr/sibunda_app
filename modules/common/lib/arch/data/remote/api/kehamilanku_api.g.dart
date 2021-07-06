@@ -114,73 +114,73 @@ class _KehamilankuApi implements KehamilankuApi {
   }
 
   @override
-  Future<List<PregnancyChartTfuResponse>> getPregnancyTfuChart() async {
+  Future<List<MotherTfuChartData>> getPregnancyTfuChart() async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<List<dynamic>>(
-        _setStreamType<List<PregnancyChartTfuResponse>>(
+        _setStreamType<List<MotherTfuChartData>>(
             Options(method: 'GET', headers: <String, dynamic>{}, extra: _extra)
                 .compose(_dio.options, '/graph/tfu',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     var value = _result.data!
         .map((dynamic i) =>
-            PregnancyChartTfuResponse.fromJson(i as Map<String, dynamic>))
+            MotherTfuChartData.fromJson(i as Map<String, dynamic>))
         .toList();
     return value;
   }
 
   @override
-  Future<List<PregnancyChartDjjResponse>> getPregnancyDjjChart() async {
+  Future<List<MotherDjjChartData>> getPregnancyDjjChart() async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<List<dynamic>>(
-        _setStreamType<List<PregnancyChartDjjResponse>>(
+        _setStreamType<List<MotherDjjChartData>>(
             Options(method: 'GET', headers: <String, dynamic>{}, extra: _extra)
                 .compose(_dio.options, '/graph/djj',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     var value = _result.data!
         .map((dynamic i) =>
-            PregnancyChartDjjResponse.fromJson(i as Map<String, dynamic>))
+            MotherDjjChartData.fromJson(i as Map<String, dynamic>))
         .toList();
     return value;
   }
 
   @override
-  Future<List<PregnancyChartMapResponse>> getPregnancyMapChart() async {
+  Future<List<MotherMapChartData>> getPregnancyMapChart() async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<List<dynamic>>(
-        _setStreamType<List<PregnancyChartMapResponse>>(
+        _setStreamType<List<MotherMapChartData>>(
             Options(method: 'GET', headers: <String, dynamic>{}, extra: _extra)
                 .compose(_dio.options, '/graph/map',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     var value = _result.data!
         .map((dynamic i) =>
-            PregnancyChartMapResponse.fromJson(i as Map<String, dynamic>))
+            MotherMapChartData.fromJson(i as Map<String, dynamic>))
         .toList();
     return value;
   }
 
   @override
-  Future<List<PregnancyChartWeightResponse>> getPregnancyWeightChart() async {
+  Future<List<MotherBmiChartData>> getPregnancyWeightChart() async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<List<dynamic>>(
-        _setStreamType<List<PregnancyChartWeightResponse>>(
+        _setStreamType<List<MotherBmiChartData>>(
             Options(method: 'GET', headers: <String, dynamic>{}, extra: _extra)
                 .compose(_dio.options, '/graph/mom-weight',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     var value = _result.data!
         .map((dynamic i) =>
-            PregnancyChartWeightResponse.fromJson(i as Map<String, dynamic>))
+            MotherBmiChartData.fromJson(i as Map<String, dynamic>))
         .toList();
     return value;
   }

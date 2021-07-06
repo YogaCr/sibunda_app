@@ -1,3 +1,4 @@
+import 'package:common/arch/data/remote/model/baby_overview_api_model.dart';
 import 'package:common/arch/domain/model/img_data.dart';
 import 'package:common/value/const_values.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -17,6 +18,7 @@ class BabyAgeOverview {
 }
 
 class BabyFormMenuData {
+  final int? id;
   final int year;
   final int monthStart;
   final int monthEnd;
@@ -25,7 +27,15 @@ class BabyFormMenuData {
     required this.year,
     required this.monthStart,
     required this.monthEnd,
+    this.id,
   });
+
+  factory BabyFormMenuData.fromResponse(BabyHomeChildYearFormResponse response) => BabyFormMenuData(
+    year: response.year,
+    monthStart: (response.year -1) *12,
+    monthEnd: response.year *12,
+    id: response.id,
+  );
 }
 
 @JsonSerializable()

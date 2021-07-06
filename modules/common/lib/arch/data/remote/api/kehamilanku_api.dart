@@ -5,6 +5,7 @@ import 'package:common/arch/data/remote/model/kehamilanku_form_warning_api_model
 import 'package:common/arch/data/remote/model/kehamilanku_immunization_api_model.dart';
 import 'package:common/arch/data/remote/model/kehamilanku_overview_api_model.dart';
 import 'package:common/arch/domain/model/auth.dart';
+import 'package:common/arch/domain/model/chart_data_mother.dart';
 import 'package:common/util/_util.dart';
 import 'package:common/value/const_values.dart';
 import 'package:dio/dio.dart';
@@ -34,11 +35,11 @@ abstract class KehamilankuApi {
   // ======= Chart =========
 
   @GET("/graph/tfu")
-  Future<List<PregnancyChartTfuResponse>> getPregnancyTfuChart();
+  Future<List<MotherTfuChartData>> getPregnancyTfuChart();
   @GET("/graph/djj")
-  Future<List<PregnancyChartDjjResponse>> getPregnancyDjjChart();
+  Future<List<MotherDjjChartData>> getPregnancyDjjChart();
   @GET("/graph/map")
-  Future<List<PregnancyChartMapResponse>> getPregnancyMapChart();
+  Future<List<MotherMapChartData>> getPregnancyMapChart();
   @GET("/graph/mom-weight")
-  Future<List<PregnancyChartWeightResponse>> getPregnancyWeightChart();
+  Future<List<MotherBmiChartData>> getPregnancyWeightChart();
 }

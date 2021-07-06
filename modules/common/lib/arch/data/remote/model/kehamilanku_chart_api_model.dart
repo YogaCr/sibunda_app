@@ -1,8 +1,9 @@
 import 'package:common/value/const_values.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-part 'kehamilanku_chart_api_model.g.dart';
+//part 'kehamilanku_chart_api_model.g.dart';
 
+/*
 @JsonSerializable()
 class PregnancyChartTfuResponse {
   final int week;
@@ -85,3 +86,4 @@ class PregnancyChartWeightResponse {
   factory PregnancyChartWeightResponse.fromJson(Map<String, dynamic> map) => _$PregnancyChartWeightResponseFromJson(map);
   Map<String, dynamic> toJson() => _$PregnancyChartWeightResponseToJson(this);
 }
+ */

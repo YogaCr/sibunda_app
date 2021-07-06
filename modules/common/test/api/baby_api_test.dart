@@ -1,5 +1,6 @@
 import 'package:common/arch/data/remote/api/baby_api.dart';
 import 'package:common/arch/data/remote/model/baby_check_form_api_model.dart';
+import 'package:common/arch/data/remote/model/baby_form_warning_api_model.dart';
 import 'package:common/arch/data/remote/model/baby_immunization_api_model.dart';
 import 'package:common/arch/data/remote/model/baby_neonatal_form_api_model.dart';
 import 'package:common/arch/domain/dummy_data.dart';
@@ -11,7 +12,7 @@ import '../util/common_test_const.dart';
 
 late BabyApi _api;
 late BabyMonthlyFormBody _growthForm;
-final int _month = 9;
+final int _month = 11;
 late int _yearId;
 late int _growthFormMonth;
 late int _growthFormId;
@@ -56,6 +57,15 @@ _group1() {
       await _getShowMonthlyForm();
       prinw("_getShowMonthlyForm ======== end");
     });
+
+    print("");
+
+    test("_getFormWarning", () async {
+      prinw("_getFormWarning ========");
+      await _getFormWarning();
+      prinw("_getFormWarning ======== end");
+    });
+
     print("");
 
     test("_sendNeo6hForm", () async {
@@ -207,6 +217,15 @@ _getShowMonthlyForm() async {
   _growthFormId = res.id!;
 }
 
+_getFormWarning() async {
+  final body = BabyFormWarningBody(monthId: _month);
+  final res = await _api.getFormWarning(body);
+  final resMap = res.toJson();
+  prinr("res = $resMap");
+
+  assert(res.code == 200);
+}
+
 _sendNeo6hForm() async {
   final dummy = neonatal6HourForm;
   final body = Neonatal6HourFormBody.fromModel(dummy, monthly_checkup_id: _growthFormId);
@@ -291,6 +310,9 @@ _getBmiChart() async {
   Future<BabyMonthlyFormBody> getMonthlyForm(@Body() BabyGetMonthlyFormBody body,);
   @POST("/create-monthly-report")
   Future<CommonResponse> sendMonthlyForm(@Body() BabyMonthlyFormBody body,);
+
+  @POST("/show-monthly-report-analysis")
+  Future<BabyFormWarningResponse> getFormWarning(@Body() BabyFormWarningBody body,);
 
   @POST("//create-neonatus-6-hours")
   Future<CommonResponse> sendNeo6hForm(@Body() Neonatal6HourFormBody body,);

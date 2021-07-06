@@ -16,7 +16,7 @@ import 'package:core/util/annotation/data_annotation.dart';
 import '../dummy_data.dart';
 
 mixin AuthRepo {
-  //Future<Result<bool>> saveSignupData(SignUpData signup);
+  Future<Result<bool>> saveSignupData(SignUpData signup);
   Future<Result<bool>> signup({
     required SignUpData signup,
     required Mother mother,
@@ -42,8 +42,8 @@ class AuthRepoImpl with AuthRepo {
     _localSrc = localSrc
   ;
 
-  //@override
-  //Future<Result<bool>> saveSignupData(SignUpData signup) async => Success(true); //For now, this is just for gymmic. it is because `SignUpData` is stored together with other get started related data.
+  @override
+  Future<Result<bool>> saveSignupData(SignUpData signup) async => Success(true); //For now, this is just for gymmic. it is because `SignUpData` is stored together with other get started related data.
   @override
   Future<Result<bool>> signup({
     required SignUpData signup,

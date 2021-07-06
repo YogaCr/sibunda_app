@@ -145,6 +145,8 @@ class Const {
   static const KEY_PETUGAS = "petugas";
   static const KEY_CATATAN_PENTING = "catatan_penting";
 
+  static const KEY_INPUT = "input";
+
   static const KEY_IMMUNIZATION_DATE = "tanggal_imunisasi";
   static const KEY_IMMUNIZATION_PLACE = "tempat_imunisasi";
   static const KEY_RESPONSIBLE_NAME = "nama_penanggungjawab";

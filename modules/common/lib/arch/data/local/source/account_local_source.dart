@@ -32,6 +32,10 @@ mixin AccountLocalSrc {
   Future<Result<String>> getFatherNik(String email);
   Future<Result<String>> getChildNik(String email);
 
+  Future<Result<int>> getMotherId(String nik);
+  Future<Result<int>> getFatherId(String nik);
+  Future<Result<int>> getChildId(String nik);
+
   Future<Result<Profile>> getProfile(String email);
 
   Future<Result<bool>> saveCurrentEmail(String email);
@@ -73,6 +77,8 @@ class AccountLocalSrcImpl with AccountLocalSrc {
       role: userRole,
     );
 
+    final dummyId = 1; //TODO: dummy id for profile.
+
     final motherProf = ProfileEntity(
       userId: userId,
       type: DbConst.TYPE_MOTHER,
@@ -80,6 +86,7 @@ class AccountLocalSrcImpl with AccountLocalSrc {
       nik: mother.nik,
       birthDate: DateTime.parse(mother.birthDate),
       birthPlace: mother.birthCity,
+      serverId: dummyId,
     );
     final fatherProf = ProfileEntity(
       userId: userId,
@@ -88,6 +95,7 @@ class AccountLocalSrcImpl with AccountLocalSrc {
       nik: father.nik,
       birthDate: DateTime.parse(father.birthDate),
       birthPlace: father.birthCity,
+      serverId: dummyId,
     );
     final childProf = ProfileEntity(
       userId: userId,
@@ -96,6 +104,7 @@ class AccountLocalSrcImpl with AccountLocalSrc {
       nik: child.nik,
       birthDate: DateTime.parse(child.birthDate),
       birthPlace: child.birthCity,
+      serverId: dummyId,
     );
     final profiles = [motherProf, fatherProf, childProf];
 
@@ -160,7 +169,6 @@ class AccountLocalSrcImpl with AccountLocalSrc {
       return Fail();
     }
   }
-
   @override
   Future<Result<String>> getFatherNik(String email) async {
     final niks = await _profileDao.getNiksByEmail(email);
@@ -171,13 +179,43 @@ class AccountLocalSrcImpl with AccountLocalSrc {
       return Fail();
     }
   }
-
   @override
   Future<Result<String>> getChildNik(String email) async {
     final niks = await _profileDao.getNiksByEmail(email);
     final nik = niks[DbConst.TYPE_CHILD];
     if(nik != null) {
       return Success(nik);
+    } else {
+      return Fail();
+    }
+  }
+
+  @override
+  Future<Result<int>> getMotherId(String nik) async {
+    final ids = await _profileDao.getServerIdByNik(nik);
+    final id = ids[DbConst.TYPE_MOTHER];
+    if(id != null) {
+      return Success(id);
+    } else {
+      return Fail();
+    }
+  }
+  @override
+  Future<Result<int>> getFatherId(String nik) async {
+    final ids = await _profileDao.getServerIdByNik(nik);
+    final id = ids[DbConst.TYPE_FATHER];
+    if(id != null) {
+      return Success(id);
+    } else {
+      return Fail();
+    }
+  }
+  @override
+  Future<Result<int>> getChildId(String nik) async {
+    final ids = await _profileDao.getServerIdByNik(nik);
+    final id = ids[DbConst.TYPE_CHILD];
+    if(id != null) {
+      return Success(id);
     } else {
       return Fail();
     }

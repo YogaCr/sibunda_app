@@ -2,9 +2,13 @@
 import 'package:common/arch/domain/model/img_data.dart';
 import 'package:common/res/string/_string.dart';
 import 'package:common/res/theme/_theme.dart';
+import 'package:common/value/const_values.dart';
+import 'package:json_annotation/json_annotation.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 import 'chart_data.dart';
+
+part 'chart_data_mother.g.dart';
 
 enum MotherChartType {
   tfu, djj, map, bmi,
@@ -22,11 +26,16 @@ class MotherChartMenuData extends ChartMenuData {
   );
 }
 
+@JsonSerializable()
 class MotherTfuChartData {
   final int week;
-  final num upperLimit;
+  @JsonKey(name: Const.KEY_BOTTOM_THRESHOLD)
   final num lowerLimit;
+  @JsonKey(name: Const.KEY_NORMAL_THRESHOLD)
   final num normalLimit;
+  @JsonKey(name: Const.KEY_TOP_THRESHOLD)
+  final num upperLimit;
+  @JsonKey(name: Const.KEY_INPUT)
   final num observed;
 
   MotherTfuChartData({
@@ -36,12 +45,19 @@ class MotherTfuChartData {
     required this.normalLimit,
     required this.observed,
   });
+
+  factory MotherTfuChartData.fromJson(Map<String, dynamic> map) => _$MotherTfuChartDataFromJson(map);
+  Map<String, dynamic> toJson() => _$MotherTfuChartDataToJson(this);
 }
 
+@JsonSerializable()
 class MotherDjjChartData {
   final int week;
-  final num upperLimit;
+  @JsonKey(name: Const.KEY_BOTTOM_THRESHOLD)
   final num lowerLimit;
+  @JsonKey(name: Const.KEY_TOP_THRESHOLD)
+  final num upperLimit;
+  @JsonKey(name: Const.KEY_INPUT)
   final num observed;
 
   MotherDjjChartData({
@@ -50,11 +66,17 @@ class MotherDjjChartData {
     required this.lowerLimit,
     required this.observed,
   });
+
+  factory MotherDjjChartData.fromJson(Map<String, dynamic> map) => _$MotherDjjChartDataFromJson(map);
+  Map<String, dynamic> toJson() => _$MotherDjjChartDataToJson(this);
 }
 
+@JsonSerializable()
 class MotherMapChartData {
   final int week;
+  @JsonKey(name: Const.KEY_TOP_THRESHOLD)
   final num lowerLimit;
+  @JsonKey(name: Const.KEY_INPUT)
   final num observed;
 
   MotherMapChartData({
@@ -62,13 +84,21 @@ class MotherMapChartData {
     required this.lowerLimit,
     required this.observed,
   });
+
+  factory MotherMapChartData.fromJson(Map<String, dynamic> map) => _$MotherMapChartDataFromJson(map);
+  Map<String, dynamic> toJson() => _$MotherMapChartDataToJson(this);
 }
 
+@JsonSerializable()
 class MotherBmiChartData {
   final int week;
+  @JsonKey(name: Const.KEY_BOTTOM_OBESITY_THRESHOLD)
   final num obeseLimit;
+  @JsonKey(name: Const.KEY_BOTTOM_OVER_THRESHOLD)
   final num overLimit;
+  @JsonKey(name: Const.KEY_BOTTOM_NORMAL_THRESHOLD)
   final num normalLimit;
+  @JsonKey(name: Const.KEY_INPUT)
   final num observed;
 
   MotherBmiChartData({
@@ -78,6 +108,9 @@ class MotherBmiChartData {
     required this.normalLimit,
     required this.observed,
   });
+
+  factory MotherBmiChartData.fromJson(Map<String, dynamic> map) => _$MotherBmiChartDataFromJson(map);
+  Map<String, dynamic> toJson() => _$MotherBmiChartDataToJson(this);
 }
 
 class MotherChartLineSeries {

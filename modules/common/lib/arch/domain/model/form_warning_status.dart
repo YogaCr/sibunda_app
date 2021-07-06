@@ -1,3 +1,5 @@
+import 'package:common/arch/data/remote/model/baby_form_warning_api_model.dart';
+import 'package:common/arch/domain/dummy_data.dart';
 import 'package:common/arch/domain/model/img_data.dart';
 
 class FormWarningStatus {
@@ -12,4 +14,11 @@ class FormWarningStatus {
     required this.isSafe,
     required this.img,
   });
+
+  factory FormWarningStatus.fromBabyResponse(BabyFormWarningDescResponse response) => FormWarningStatus(
+    desc: response.desc,
+    action: "Cari faskes terdekat",
+    isSafe: response.isNormal,
+    img: dummyImg,
+  );
 }

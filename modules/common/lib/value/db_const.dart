@@ -6,6 +6,7 @@ class DbConst {
   static const NAME_ROLES = "roles";
   static const NAME_PROFILES = "profiles";
   static const NAME_PREGNANCY_CHECK_UP_ID = "pregnancy_check_up_ids";
+  static const NAME_BABY_CHECK_UP_ID = "baby_check_up_ids";
   static const REFERENCES = "REFERENCES";
 
   static const ROLE_ADMIN = 1;

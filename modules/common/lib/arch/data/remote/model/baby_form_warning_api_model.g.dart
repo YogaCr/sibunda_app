@@ -30,26 +30,26 @@ BabyFormWarningDataResponse _$BabyFormWarningDataResponseFromJson(
     Map<String, dynamic> json) {
   return BabyFormWarningDataResponse(
     weight: BabyFormWarningDescResponse.fromJson(
-        json['weight'] as Map<String, dynamic>),
+        json['bb_usia_desc'] as Map<String, dynamic>),
     len: BabyFormWarningDescResponse.fromJson(
-        json['len'] as Map<String, dynamic>),
+        json['pb_usia_desc'] as Map<String, dynamic>),
     weightToLen: BabyFormWarningDescResponse.fromJson(
-        json['weightToLen'] as Map<String, dynamic>),
+        json['bb_pb_desc'] as Map<String, dynamic>),
     headCircum: BabyFormWarningDescResponse.fromJson(
-        json['headCircum'] as Map<String, dynamic>),
+        json['lingkar_kepala_desc'] as Map<String, dynamic>),
     imt: BabyFormWarningDescResponse.fromJson(
-        json['imt'] as Map<String, dynamic>),
+        json['imt_desc'] as Map<String, dynamic>),
   );
 }
 
 Map<String, dynamic> _$BabyFormWarningDataResponseToJson(
         BabyFormWarningDataResponse instance) =>
     <String, dynamic>{
-      'weight': instance.weight,
-      'len': instance.len,
-      'weightToLen': instance.weightToLen,
-      'headCircum': instance.headCircum,
-      'imt': instance.imt,
+      'bb_usia_desc': instance.weight,
+      'pb_usia_desc': instance.len,
+      'bb_pb_desc': instance.weightToLen,
+      'lingkar_kepala_desc': instance.headCircum,
+      'imt_desc': instance.imt,
     };
 
 BabyFormWarningDescResponse _$BabyFormWarningDescResponseFromJson(

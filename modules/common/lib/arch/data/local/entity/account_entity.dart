@@ -53,6 +53,7 @@ class ProfileTypeEntities extends Table {
 class ProfileEntities extends Table {
   IntColumn get userId => integer().named("user_id").customConstraint("REFERENCES credentials(id)")();
   IntColumn get type => integer().customConstraint("REFERENCES profile_types(id)")();
+  IntColumn get serverId => integer().named("server_id")(); // saves id of user from server.
   TextColumn get name => text()();
   TextColumn get nik => text()();
   DateTimeColumn get birthDate => dateTime().named("birth_date")();
