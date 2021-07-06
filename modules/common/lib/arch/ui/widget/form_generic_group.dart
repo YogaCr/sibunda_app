@@ -25,6 +25,8 @@ class FormGenericGroup extends StatefulWidget {
   final int groupPosition;
   final RelativePosition imgPosition;
   final bool showHeader;
+  /// Flag whether 'all' fields in this [FormGenericGroup] is enabled or not.
+  final bool enabled;
   final Widget? Function(int group, String key, MutableLiveData data)? pickerIconBuilder;
   //final String Function(int group, String key, dynamic data)? pickedDataRepresentator;
 
@@ -34,6 +36,7 @@ class FormGenericGroup extends StatefulWidget {
     required this.groupPosition,
     this.imgPosition = RelativePosition.below,
     this.showHeader = true,
+    this.enabled = true,
     this.pickerIconBuilder,
     //this.pickedDataRepresentator,
   });
@@ -45,6 +48,7 @@ class FormGenericGroup extends StatefulWidget {
     groupPosition: groupPosition,
     imgPosition: imgPosition,
     showHeader: showHeader,
+    enabled: enabled,
     pickerIconBuilder: pickerIconBuilder,
     //pickedDataRepresentator: pickedDataRepresentator,
   );
@@ -60,6 +64,7 @@ class _FormGenericGroupState
   final int groupPosition;
   final RelativePosition imgPosition;
   final bool showHeader;
+  final bool enabled;
   //final Future<dynamic> Function(int group, String key)? dataPicker;
   final Widget? Function(int group, String key, MutableLiveData data)? pickerIconBuilder;
   //final String Function(int group, String key, dynamic data)? pickedDataRepresentator;
@@ -73,6 +78,7 @@ class _FormGenericGroupState
     required this.groupPosition,
     required this.imgPosition,
     required this.showHeader,
+    required this.enabled,
     //required this.dataPicker,
     required this.pickerIconBuilder,
     //required this.pickedDataRepresentator,
@@ -137,6 +143,7 @@ class _FormGenericGroupState
               responseLiveData: vmLiveData, //txtLiveData,
               imgPosition: imgPosition,
               suffixIcon: suffixIcon,
+              enabled: enabled && itemData.isInputEnabled,
               readOnly: itemData.input != FieldInputMethod.direct,
               getResponseRepresentation: responseRepresentator,
             );
@@ -188,6 +195,7 @@ class _FormGenericGroupState
               invalidMsgGenerator: (response) => vm.getInvalidMsg(key, groupValue.value),
               groupValueLiveData: groupValue,
               imgPosition: imgPosition,
+              enabled: enabled && itemData.isInputEnabled,
             );
 
             vmLiveData.observe(this, (data) {
@@ -218,6 +226,7 @@ class _FormGenericGroupState
               invalidMsgGenerator: (response) => vm.getInvalidMsg(key, selectedAnswerIndices.value),
               selectedIndicesLiveData: selectedAnswerIndices,
               imgPosition: imgPosition,
+              enabled: enabled && itemData.isInputEnabled,
             );
 
             vmLiveData.observe(this, (data) {

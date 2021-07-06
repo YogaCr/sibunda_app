@@ -20,6 +20,7 @@ import 'package:common/util/navigations.dart';
 import 'package:common/util/ui.dart';
 import 'package:core/domain/model/result.dart';
 import 'package:core/ui/base/live_data.dart';
+import 'package:core/ui/base/view_model.dart';
 import 'package:core/util/_consoles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -35,41 +36,16 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    final db = constructDb();
+    //final db = constructDb();
 
-    final cityDao = db.cityDao;
+    //final cityDao = db.cityDao;
+
+    final txtC = TextEditingController();
 
     return MaterialApp(
       title: 'Flutter Cob',
       theme: Manifest.theme.materialData,
-      home: Scaffold(
-        body: SplashScreen(
-          child: Center(
-            child: Column(
-              children: [
-                FlutterLogo(size: 70,),
-                SizedBox(height: 20,),
-                Text("Ini SPlash screen"),
-                SizedBox(height: 50,),
-                CircularProgressIndicator(),
-              ],
-            ),
-          ),
-          pageBuilder: (ctx) => Scaffold(
-            body: SizedBox(
-              height: 300,
-              child: _CityList(cityDao),
-            ),
-          ),
-          computation: () async {
-            final api = DataApi(await CommonTestConst.getDummySession());
-            final resp = await api.getCity();
-
-            final ent = resp.map((e) => e.toEntityJson()).map((e) => CityEntity.fromJson(e)).toList(growable: false);
-            cityDao.insertAll(ent);
-          },
-        ),
-      ),
+      home: _FormPage(),
       /*
       home: Scaffold(
         body: Column(
@@ -108,6 +84,41 @@ class MyApp extends StatelessWidget {
   }
 }
 
+class _SplashPage extends StatelessWidget {
+  final CityDao cityDao;
+  _SplashPage(this.cityDao);
+
+  @override
+  Widget build(BuildContext context) {
+    return SplashScreen(
+      child: Center(
+        child: Column(
+          children: [
+            FlutterLogo(size: 70,),
+            SizedBox(height: 20,),
+            Text("Ini SPlash screen"),
+            SizedBox(height: 50,),
+            CircularProgressIndicator(),
+          ],
+        ),
+      ),
+      pageBuilder: (ctx) => Scaffold(
+        body: SizedBox(
+          height: 300,
+          child: _CityList(cityDao),
+        ),
+      ),
+      computation: () async {
+        final api = DataApi(await CommonTestConst.getDummySession());
+        final resp = await api.getCity();
+
+        final ent = resp.map((e) => e.toEntityJson()).map((e) => CityEntity.fromJson(e)).toList(growable: false);
+        cityDao.insertAll(ent);
+      },
+    );
+  }
+}
+
 class _CityList extends StatelessWidget {
   final CityDao dao;
   _CityList(this.dao);
@@ -134,6 +145,28 @@ class _CityList extends StatelessWidget {
   }
 }
 
+class _FormPage extends StatelessWidget {
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SingleChildScrollView(
+        child: ViewModelProvider(
+          creators: [
+                (ctx) => _Vm()..init(),
+          ],
+          child: FormVmGroupObserver<_Vm>(
+            submitBtnBuilder: (ctx, canProceed) => TxtBtn(
+              "Kirim",
+              color:  canProceed == true ? Manifest.theme.colorPrimary : grey,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 class _Vm extends FormVmGroup {
   @override
   Future<Result<String>> doSubmitJob() async => Success("ok");
@@ -144,6 +177,38 @@ class _Vm extends FormVmGroup {
       header: "header",
       data: [
         FormUiTxt(key: "key1", question: "question 1", input: FieldInputMethod.pickDate),
+        FormUiTxt(key: "key1.1", question: "question 1.1", input: FieldInputMethod.pickDate, answer: "aha", isInputEnabled: false),
+        FormUiRadio(key: "key2", question: "question 2",
+          selectedAnswer: 0,
+          answerItems: [
+            "ya",
+            "tidak",
+          ],
+        ),
+        FormUiRadio(key: "key3", question: "question 3",
+          isInputEnabled: false,
+          selectedAnswer: 1,
+          answerItems: [
+            "ya",
+            "tidak",
+          ],
+        ),
+        FormUiCheck(key: "key4", question: "question 4",
+          isInputEnabled: false,
+          selectedAnswers: {1,2},
+          answerItems: [
+            "ya",
+            "tidak",
+            "ok",
+          ],
+        ),
+        FormUiCheck(key: "key5", question: "question 5",
+          answerItems: [
+            "ya",
+            "tidak",
+            "ok",
+          ],
+        ),
       ],
     ),
   ];
@@ -152,7 +217,12 @@ class _Vm extends FormVmGroup {
   List<LiveData> get liveDatas => [];
 
   @override
-  Future<bool> validateField(int groupPosition, String inputKey, response) async => true;
+  Future<bool> validateField(int groupPosition, String inputKey, response) async {
+    prind("validateField() response?.runtimeType = ${response?.runtimeType} resp = $response");
+    if(response is String) return response.isNotEmpty;
+    if(response is Set) return response.isNotEmpty;
+    return response != null;
+  }
 
 }
 

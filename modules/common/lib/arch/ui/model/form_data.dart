@@ -42,6 +42,7 @@ abstract class FormUiData extends Equatable {
   final String key;
   final String question;
   final List<ImgData>? img;
+  final bool isInputEnabled;
 
   FormUiData({
     required this.type,
@@ -49,6 +50,7 @@ abstract class FormUiData extends Equatable {
     required this.question,
     this.img,
     this.input = FieldInputMethod.direct,
+    this.isInputEnabled = true,
   });
 
   @override
@@ -62,6 +64,7 @@ class FormUiTxt extends FormUiData {
     required String key,
     required String question,
     this.answer,
+    bool isInputEnabled = true,
     FieldInputMethod input = FieldInputMethod.direct,
     List<ImgData>? img,
   }): super(
@@ -70,11 +73,12 @@ class FormUiTxt extends FormUiData {
     question: question,
     img: img,
     input: input,
+    isInputEnabled: isInputEnabled,
   );
 
   factory FormUiTxt.fromModel(FormData data) => FormUiTxt(
     key: data.key, question: data.question, answer: data.answer, img: data.img,
-    input: data.input,
+    input: data.input, isInputEnabled: data.isInputEnabled,
   );
 }
 
@@ -87,6 +91,7 @@ class FormUiRadio extends FormUiData {
     required String question,
     required this.answerItems,
     this.selectedAnswer,
+    bool isInputEnabled = true,
     FieldInputMethod input = FieldInputMethod.direct,
     List<ImgData>? img
   }): super(
@@ -95,6 +100,7 @@ class FormUiRadio extends FormUiData {
     question: question,
     img: img,
     input: input,
+    isInputEnabled: isInputEnabled,
   );
 
   factory FormUiRadio.fromModel(FormData data) {
@@ -117,6 +123,7 @@ class FormUiRadio extends FormUiData {
       selectedAnswer: selectedItem,
       img: data.img,
       input: data.input,
+      isInputEnabled: data.isInputEnabled,
     );
   }
 }
@@ -129,6 +136,7 @@ class FormUiCheck extends FormUiData {
     required String key,
     required String question,
     required this.answerItems,
+    bool isInputEnabled = true,
     FieldInputMethod input = FieldInputMethod.direct,
     Set<int>? selectedAnswers,
     List<ImgData>? img
@@ -139,6 +147,7 @@ class FormUiCheck extends FormUiData {
     question: question,
     img: img,
     input: input,
+    isInputEnabled: isInputEnabled,
   );
 
   factory FormUiCheck.fromModel(FormData data,) {
@@ -160,6 +169,7 @@ class FormUiCheck extends FormUiData {
       selectedAnswers: selectedItems,
       img: data.img,
       input: data.input,
+      isInputEnabled: data.isInputEnabled,
     );
   }
 }

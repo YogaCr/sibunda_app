@@ -37,6 +37,8 @@ class Const {
   static const KEY_NAME_CLIENT = "user_name";
   static const KEY_CLIENT_ID = "client_id";
   static const KEY_CLIENT_SECRET = "client_secret";
+  static const KEY_SESSION = "_session_";
+  static const KEY_ACTIVE_EMAIL = "_active_email_";
 
   static const KEY_USER_GROUP_ID = "user_group_id";
   static const KEY_TOKEN_TYPE = "token_type";

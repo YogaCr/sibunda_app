@@ -34,6 +34,8 @@ class FormVmGroupObserver<VM extends FormVmGroup> extends StatefulWidget {
   final bool Function()? predicate;
 
   final bool showHeader;
+  /// Flag whether 'all' fields this [FormVmGroupObserver] will build is enabled or not.
+  final bool enabled;
 
   final VM? vm;
   final RelativePosition imgPosition;
@@ -47,6 +49,7 @@ class FormVmGroupObserver<VM extends FormVmGroup> extends StatefulWidget {
     this.vm,
     this.imgPosition = RelativePosition.below,
     this.showHeader = true,
+    this.enabled = true,
   });
 
   @override
@@ -59,6 +62,7 @@ class FormVmGroupObserver<VM extends FormVmGroup> extends StatefulWidget {
     vm: vm,
     imgPosition: imgPosition,
     showHeader: showHeader,
+    enabled: enabled,
   );
 }
 
@@ -87,6 +91,8 @@ class _FormVmGroupObserverState<VM extends FormVmGroup>
   final bool Function()? predicate;
 
   final bool showHeader;
+  /// Flag whether 'all' fields this [FormVmGroupObserver] will build is enabled or not.
+  final bool enabled;
 
   VM? vm;
   final RelativePosition imgPosition;
@@ -100,6 +106,7 @@ class _FormVmGroupObserverState<VM extends FormVmGroup>
     required this.vm,
     required this.imgPosition,
     required this.showHeader,
+    required this.enabled,
   });
 
   @override
@@ -121,6 +128,7 @@ class _FormVmGroupObserverState<VM extends FormVmGroup>
                 groupPosition: i,
                 imgPosition: imgPosition,
                 showHeader: showHeader,
+                enabled: enabled,
               ): defaultLoading(),
             ),
           );

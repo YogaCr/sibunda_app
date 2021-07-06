@@ -21,7 +21,7 @@ class Mother {
   @JsonKey(name: Const.KEY_BLOOD_TYPE)
   final String bloodType;
   @JsonKey(name: Const.KEY_BIRTH_PLACE)
-  final String birthCity;
+  final int birthCity; // city id.
   @JsonKey(name: Const.KEY_BIRTH_DATE)
   final String birthDate;
   @JsonKey(name: Const.KEY_EDUCATION)
@@ -65,7 +65,7 @@ class Mother {
     faskes1: map[Const.KEY_FASKES1]!,
     faskesRujukan: map[Const.KEY_FASKES_RUJUKAN]!,
     bloodType: map[Const.KEY_BLOOD_TYPE]!,
-    birthCity: map[Const.KEY_BIRTH_PLACE]!,
+    birthCity: int.parse(map[Const.KEY_BIRTH_PLACE]!),
     birthDate: map[Const.KEY_BIRTH_DATE]!,
     education: map[Const.KEY_EDUCATION]!,
     occupancy: map[Const.KEY_OCCUPANCY]!,

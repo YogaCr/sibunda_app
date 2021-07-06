@@ -5,7 +5,7 @@ class VarDi {
   VarDi._();
 
   static SessionData? _session;
-  static set session(v) => _session = v;
+  static set session(SessionData v) => _session = v;
   static SessionData get session {
     if(_session == null) {
       throw "`session` still not ready";

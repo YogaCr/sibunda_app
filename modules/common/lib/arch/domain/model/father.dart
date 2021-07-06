@@ -21,7 +21,7 @@ class Father {
   @JsonKey(name: Const.KEY_BLOOD_TYPE)
   final String bloodType;
   @JsonKey(name: Const.KEY_BIRTH_PLACE)
-  final String birthCity;
+  final int birthCity;
   @JsonKey(name: Const.KEY_BIRTH_DATE)
   final String birthDate;
   @JsonKey(name: Const.KEY_EDUCATION)

@@ -1,4 +1,5 @@
 import 'package:common/arch/di/api_di.dart';
+import 'package:common/arch/di/data_source_di.dart';
 import 'package:common/arch/domain/repo/_repos.dart';
 import 'package:common/arch/domain/repo/bayiku_repo.dart';
 import 'package:common/arch/domain/repo/chart_baby_repo.dart';
@@ -13,9 +14,9 @@ import 'package:common/arch/domain/repo/profile_repo.dart';
 class RepoDi {
   RepoDi._();
 
-  static AuthRepo get authRepo => AuthRepoImpl(ApiDi.authApi); //AuthDummyRepo();
+  static AuthRepo get authRepo => AuthRepoImpl(api: ApiDi.authApi, localSrc: LocalSrcDi.accountSrc); //AuthDummyRepo();
 
-  static ProfileRepo get profileRepo => ProfileRepoDummy.obj;
+  static ProfileRepo get profileRepo => ProfileRepoImpl(localSrc: LocalSrcDi.accountSrc); //ProfileRepoDummy.obj;
   static HomeStatusRepo get homeStatusRepo => HomeStatusRepoDummy.obj;
   static HomeMenuRepo get homeMenuRepo => HomeMenuRepoDummy.obj;
   //static TipsRepo get tipsRepo => TipsRepoDummy.obj;

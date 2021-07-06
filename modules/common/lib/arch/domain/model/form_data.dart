@@ -27,6 +27,7 @@ class FormData {
   final List<ImgData>? img;
   final FormType type;
   final FieldInputMethod input;
+  final bool isInputEnabled;
 
   FormData({
     required this.key,
@@ -36,6 +37,7 @@ class FormData {
     this.answer,
     this.options,
     this.input = FieldInputMethod.direct,
+    this.isInputEnabled = false,
   });
 }
 

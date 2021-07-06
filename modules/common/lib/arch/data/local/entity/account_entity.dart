@@ -5,8 +5,9 @@ import 'package:moor/moor.dart';
 @DataClassName("CredentialEntity")
 class CredentialEntities extends Table {
   IntColumn get id => integer()();
-  //TextColumn get name => text()();
+  TextColumn get name => text()();
   TextColumn get email => text()();
+  IntColumn get role => integer().customConstraint("REFERENCES roles(id)")();
 
   @override
   String? get tableName => "credentials"; //DbConst.NAME_CREDENTIALS;
@@ -31,10 +32,27 @@ class RoleEntities extends Table {
   ];
 }
 
+
+
+@DataClassName("ProfileTypeEntity")
+class ProfileTypeEntities extends Table {
+  IntColumn get id => integer()();
+  TextColumn get name => text()();
+
+  @override
+  String? get tableName => "profile_types"; //DbConst.NAME_ROLES;
+
+  @override
+  List<String> get customConstraints => [
+    "UNIQUE (id, name)"
+  ];
+}
+
+/// One user, can have many profiles. It is intended to suits the server side data structure.
 @DataClassName("ProfileEntity")
 class ProfileEntities extends Table {
-  IntColumn get id => integer().customConstraint("REFERENCES credentials(id)")();
-  IntColumn get role => integer().customConstraint("REFERENCES roles(id)")();
+  IntColumn get userId => integer().named("user_id").customConstraint("REFERENCES credentials(id)")();
+  IntColumn get type => integer().customConstraint("REFERENCES profile_types(id)")();
   TextColumn get name => text()();
   TextColumn get nik => text()();
   DateTimeColumn get birthDate => dateTime().named("birth_date")();
@@ -43,4 +61,12 @@ class ProfileEntities extends Table {
 
   @override
   String? get tableName => "profiles"; //DbConst.NAME_PROFILES;
+
+  @override
+  Set<Column>? get primaryKey => {userId, type};
+
+  @override
+  List<String> get customConstraints => [
+    "UNIQUE (nik)"
+  ];
 }

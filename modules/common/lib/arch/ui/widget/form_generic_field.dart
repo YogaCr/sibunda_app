@@ -42,6 +42,7 @@ class TxtField<D> extends SibFormField {
   //final Future<D?> Function()? dataPicker;
   final Var<bool> isChanging = Var(false);
   final bool readOnly;
+  final bool enabled;
   final Widget? suffixIcon;
 
   TxtField({
@@ -51,6 +52,7 @@ class TxtField<D> extends SibFormField {
     this.invalidMsg = Strings.field_can_not_be_empty,
     this.imgPosition = RelativePosition.below,
     this.readOnly = false,
+    this.enabled = true,
     this.suffixIcon,
     //this.dataPicker,
     this.getResponseRepresentation,
@@ -84,7 +86,7 @@ class TxtField<D> extends SibFormField {
       }
     });
 
-    if(!readOnly) {
+    if(enabled && !readOnly) {
       _textController.addListener(() {
         if(_response.isActive) {
           prind("TxtField this.textController.addListener isChanging = $isChanging");
@@ -127,6 +129,7 @@ class TxtField<D> extends SibFormField {
           liveData: isValid!,
           builder: (ctx, isValid) {
             final txtWidget = TxtInput(
+              enabled: enabled,
               readOnly: readOnly,
               suffixIcon: suffixIcon,
               textController: _textController,
@@ -176,6 +179,7 @@ class RadioGroup extends SibFormField {
   LiveData<String> get responseLiveData => groupValueLiveData;
   final bool isLiveDataOwner;
   final RelativePosition imgPosition;
+  final bool enabled;
 
   /// This will become default invalid message.
   final String invalidMsg;
@@ -186,6 +190,7 @@ class RadioGroup extends SibFormField {
     this.isValid,
     this.invalidMsg = Strings.field_can_not_be_empty,
     this.imgPosition = RelativePosition.below,
+    this.enabled = true,
     this.invalidMsgGenerator,
     MutableLiveData<String>? groupValueLiveData,
     bool? isLiveDataOwner,
@@ -217,7 +222,7 @@ class RadioGroup extends SibFormField {
               builder: (ctx, data) => Radio<String>(
                 value: option,
                 groupValue: data,
-                onChanged: (value) => groupValueLiveData.value = value,
+                onChanged: enabled ? (value) => groupValueLiveData.value = value : null,
               ),
             ),
           ),
@@ -278,6 +283,7 @@ class CheckGroup extends SibFormField {
   LiveData<Set<int>> get responseLiveData => selectedIndicesLiveData;
   final bool isLiveDataOwner;
   final RelativePosition imgPosition;
+  final bool enabled;
 
   /// This will become default invalid message.
   final String invalidMsg;
@@ -288,6 +294,7 @@ class CheckGroup extends SibFormField {
     this.isValid,
     this.invalidMsg = Strings.field_can_not_be_empty,
     this.imgPosition = RelativePosition.below,
+    this.enabled = true,
     this.invalidMsgGenerator,
     MutableLiveData<Set<int>>? selectedIndicesLiveData,
     bool? isLiveDataOwner,
@@ -318,14 +325,14 @@ class CheckGroup extends SibFormField {
               liveData: selectedIndicesLiveData,
               builder: (ctx, data) => Checkbox(
                 value: selectedIndicesLiveData.value!.contains(i2),
-                onChanged: (isSelected) {
+                onChanged: enabled ? (isSelected) {
                   if(isSelected == true) {
                     selectedIndicesLiveData.value!.add(i2);
                   } else {
                     selectedIndicesLiveData.value!.remove(i2);
                   }
                   selectedIndicesLiveData.notifyObservers();
-                },
+                } : null,
               ),
             ),
           ),

@@ -10,8 +10,14 @@ part of 'app_db.dart';
 class CredentialEntity extends DataClass
     implements Insertable<CredentialEntity> {
   final int id;
+  final String name;
   final String email;
-  CredentialEntity({required this.id, required this.email});
+  final int role;
+  CredentialEntity(
+      {required this.id,
+      required this.name,
+      required this.email,
+      required this.role});
   factory CredentialEntity.fromData(
       Map<String, dynamic> data, GeneratedDatabase db,
       {String? prefix}) {
@@ -19,22 +25,30 @@ class CredentialEntity extends DataClass
     return CredentialEntity(
       id: const IntType()
           .mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
+      name: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}name'])!,
       email: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}email'])!,
+      role: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}role'])!,
     );
   }
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
+    map['name'] = Variable<String>(name);
     map['email'] = Variable<String>(email);
+    map['role'] = Variable<int>(role);
     return map;
   }
 
   CredentialEntitiesCompanion toCompanion(bool nullToAbsent) {
     return CredentialEntitiesCompanion(
       id: Value(id),
+      name: Value(name),
       email: Value(email),
+      role: Value(role),
     );
   }
 
@@ -43,7 +57,9 @@ class CredentialEntity extends DataClass
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return CredentialEntity(
       id: serializer.fromJson<int>(json['id']),
+      name: serializer.fromJson<String>(json['name']),
       email: serializer.fromJson<String>(json['email']),
+      role: serializer.fromJson<int>(json['role']),
     );
   }
   @override
@@ -51,59 +67,88 @@ class CredentialEntity extends DataClass
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
+      'name': serializer.toJson<String>(name),
       'email': serializer.toJson<String>(email),
+      'role': serializer.toJson<int>(role),
     };
   }
 
-  CredentialEntity copyWith({int? id, String? email}) => CredentialEntity(
+  CredentialEntity copyWith(
+          {int? id, String? name, String? email, int? role}) =>
+      CredentialEntity(
         id: id ?? this.id,
+        name: name ?? this.name,
         email: email ?? this.email,
+        role: role ?? this.role,
       );
   @override
   String toString() {
     return (StringBuffer('CredentialEntity(')
           ..write('id: $id, ')
-          ..write('email: $email')
+          ..write('name: $name, ')
+          ..write('email: $email, ')
+          ..write('role: $role')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => $mrjf($mrjc(id.hashCode, email.hashCode));
+  int get hashCode => $mrjf($mrjc(
+      id.hashCode, $mrjc(name.hashCode, $mrjc(email.hashCode, role.hashCode))));
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is CredentialEntity &&
           other.id == this.id &&
-          other.email == this.email);
+          other.name == this.name &&
+          other.email == this.email &&
+          other.role == this.role);
 }
 
 class CredentialEntitiesCompanion extends UpdateCompanion<CredentialEntity> {
   final Value<int> id;
+  final Value<String> name;
   final Value<String> email;
+  final Value<int> role;
   const CredentialEntitiesCompanion({
     this.id = const Value.absent(),
+    this.name = const Value.absent(),
     this.email = const Value.absent(),
+    this.role = const Value.absent(),
   });
   CredentialEntitiesCompanion.insert({
     required int id,
+    required String name,
     required String email,
+    required int role,
   })  : id = Value(id),
-        email = Value(email);
+        name = Value(name),
+        email = Value(email),
+        role = Value(role);
   static Insertable<CredentialEntity> custom({
     Expression<int>? id,
+    Expression<String>? name,
     Expression<String>? email,
+    Expression<int>? role,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
+      if (name != null) 'name': name,
       if (email != null) 'email': email,
+      if (role != null) 'role': role,
     });
   }
 
-  CredentialEntitiesCompanion copyWith({Value<int>? id, Value<String>? email}) {
+  CredentialEntitiesCompanion copyWith(
+      {Value<int>? id,
+      Value<String>? name,
+      Value<String>? email,
+      Value<int>? role}) {
     return CredentialEntitiesCompanion(
       id: id ?? this.id,
+      name: name ?? this.name,
       email: email ?? this.email,
+      role: role ?? this.role,
     );
   }
 
@@ -113,8 +158,14 @@ class CredentialEntitiesCompanion extends UpdateCompanion<CredentialEntity> {
     if (id.present) {
       map['id'] = Variable<int>(id.value);
     }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
     if (email.present) {
       map['email'] = Variable<String>(email.value);
+    }
+    if (role.present) {
+      map['role'] = Variable<int>(role.value);
     }
     return map;
   }
@@ -123,7 +174,9 @@ class CredentialEntitiesCompanion extends UpdateCompanion<CredentialEntity> {
   String toString() {
     return (StringBuffer('CredentialEntitiesCompanion(')
           ..write('id: $id, ')
-          ..write('email: $email')
+          ..write('name: $name, ')
+          ..write('email: $email, ')
+          ..write('role: $role')
           ..write(')'))
         .toString();
   }
@@ -138,12 +191,22 @@ class $CredentialEntitiesTable extends CredentialEntities
   late final GeneratedColumn<int?> id = GeneratedColumn<int?>(
       'id', aliasedName, false,
       typeName: 'INTEGER', requiredDuringInsert: true);
+  final VerificationMeta _nameMeta = const VerificationMeta('name');
+  late final GeneratedColumn<String?> name = GeneratedColumn<String?>(
+      'name', aliasedName, false,
+      typeName: 'TEXT', requiredDuringInsert: true);
   final VerificationMeta _emailMeta = const VerificationMeta('email');
   late final GeneratedColumn<String?> email = GeneratedColumn<String?>(
       'email', aliasedName, false,
       typeName: 'TEXT', requiredDuringInsert: true);
+  final VerificationMeta _roleMeta = const VerificationMeta('role');
+  late final GeneratedColumn<int?> role = GeneratedColumn<int?>(
+      'role', aliasedName, false,
+      typeName: 'INTEGER',
+      requiredDuringInsert: true,
+      $customConstraints: 'REFERENCES roles(id)');
   @override
-  List<GeneratedColumn> get $columns => [id, email];
+  List<GeneratedColumn> get $columns => [id, name, email, role];
   @override
   String get aliasedName => _alias ?? 'credentials';
   @override
@@ -158,11 +221,23 @@ class $CredentialEntitiesTable extends CredentialEntities
     } else if (isInserting) {
       context.missing(_idMeta);
     }
+    if (data.containsKey('name')) {
+      context.handle(
+          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
     if (data.containsKey('email')) {
       context.handle(
           _emailMeta, email.isAcceptableOrUnknown(data['email']!, _emailMeta));
     } else if (isInserting) {
       context.missing(_emailMeta);
+    }
+    if (data.containsKey('role')) {
+      context.handle(
+          _roleMeta, role.isAcceptableOrUnknown(data['role']!, _roleMeta));
+    } else if (isInserting) {
+      context.missing(_roleMeta);
     }
     return context;
   }
@@ -182,15 +257,15 @@ class $CredentialEntitiesTable extends CredentialEntities
 }
 
 class ProfileEntity extends DataClass implements Insertable<ProfileEntity> {
-  final int id;
-  final int role;
+  final int userId;
+  final int type;
   final String name;
   final String nik;
   final DateTime birthDate;
   final int birthPlace;
   ProfileEntity(
-      {required this.id,
-      required this.role,
+      {required this.userId,
+      required this.type,
       required this.name,
       required this.nik,
       required this.birthDate,
@@ -200,10 +275,10 @@ class ProfileEntity extends DataClass implements Insertable<ProfileEntity> {
       {String? prefix}) {
     final effectivePrefix = prefix ?? '';
     return ProfileEntity(
-      id: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
-      role: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}role'])!,
+      userId: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}user_id'])!,
+      type: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}type'])!,
       name: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}name'])!,
       nik: const StringType()
@@ -217,8 +292,8 @@ class ProfileEntity extends DataClass implements Insertable<ProfileEntity> {
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    map['id'] = Variable<int>(id);
-    map['role'] = Variable<int>(role);
+    map['user_id'] = Variable<int>(userId);
+    map['type'] = Variable<int>(type);
     map['name'] = Variable<String>(name);
     map['nik'] = Variable<String>(nik);
     map['birth_date'] = Variable<DateTime>(birthDate);
@@ -228,8 +303,8 @@ class ProfileEntity extends DataClass implements Insertable<ProfileEntity> {
 
   ProfileEntitiesCompanion toCompanion(bool nullToAbsent) {
     return ProfileEntitiesCompanion(
-      id: Value(id),
-      role: Value(role),
+      userId: Value(userId),
+      type: Value(type),
       name: Value(name),
       nik: Value(nik),
       birthDate: Value(birthDate),
@@ -241,8 +316,8 @@ class ProfileEntity extends DataClass implements Insertable<ProfileEntity> {
       {ValueSerializer? serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return ProfileEntity(
-      id: serializer.fromJson<int>(json['id']),
-      role: serializer.fromJson<int>(json['role']),
+      userId: serializer.fromJson<int>(json['userId']),
+      type: serializer.fromJson<int>(json['type']),
       name: serializer.fromJson<String>(json['name']),
       nik: serializer.fromJson<String>(json['nik']),
       birthDate: serializer.fromJson<DateTime>(json['birthDate']),
@@ -253,8 +328,8 @@ class ProfileEntity extends DataClass implements Insertable<ProfileEntity> {
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
-      'id': serializer.toJson<int>(id),
-      'role': serializer.toJson<int>(role),
+      'userId': serializer.toJson<int>(userId),
+      'type': serializer.toJson<int>(type),
       'name': serializer.toJson<String>(name),
       'nik': serializer.toJson<String>(nik),
       'birthDate': serializer.toJson<DateTime>(birthDate),
@@ -263,15 +338,15 @@ class ProfileEntity extends DataClass implements Insertable<ProfileEntity> {
   }
 
   ProfileEntity copyWith(
-          {int? id,
-          int? role,
+          {int? userId,
+          int? type,
           String? name,
           String? nik,
           DateTime? birthDate,
           int? birthPlace}) =>
       ProfileEntity(
-        id: id ?? this.id,
-        role: role ?? this.role,
+        userId: userId ?? this.userId,
+        type: type ?? this.type,
         name: name ?? this.name,
         nik: nik ?? this.nik,
         birthDate: birthDate ?? this.birthDate,
@@ -280,8 +355,8 @@ class ProfileEntity extends DataClass implements Insertable<ProfileEntity> {
   @override
   String toString() {
     return (StringBuffer('ProfileEntity(')
-          ..write('id: $id, ')
-          ..write('role: $role, ')
+          ..write('userId: $userId, ')
+          ..write('type: $type, ')
           ..write('name: $name, ')
           ..write('nik: $nik, ')
           ..write('birthDate: $birthDate, ')
@@ -292,9 +367,9 @@ class ProfileEntity extends DataClass implements Insertable<ProfileEntity> {
 
   @override
   int get hashCode => $mrjf($mrjc(
-      id.hashCode,
+      userId.hashCode,
       $mrjc(
-          role.hashCode,
+          type.hashCode,
           $mrjc(
               name.hashCode,
               $mrjc(nik.hashCode,
@@ -303,8 +378,8 @@ class ProfileEntity extends DataClass implements Insertable<ProfileEntity> {
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is ProfileEntity &&
-          other.id == this.id &&
-          other.role == this.role &&
+          other.userId == this.userId &&
+          other.type == this.type &&
           other.name == this.name &&
           other.nik == this.nik &&
           other.birthDate == this.birthDate &&
@@ -312,44 +387,44 @@ class ProfileEntity extends DataClass implements Insertable<ProfileEntity> {
 }
 
 class ProfileEntitiesCompanion extends UpdateCompanion<ProfileEntity> {
-  final Value<int> id;
-  final Value<int> role;
+  final Value<int> userId;
+  final Value<int> type;
   final Value<String> name;
   final Value<String> nik;
   final Value<DateTime> birthDate;
   final Value<int> birthPlace;
   const ProfileEntitiesCompanion({
-    this.id = const Value.absent(),
-    this.role = const Value.absent(),
+    this.userId = const Value.absent(),
+    this.type = const Value.absent(),
     this.name = const Value.absent(),
     this.nik = const Value.absent(),
     this.birthDate = const Value.absent(),
     this.birthPlace = const Value.absent(),
   });
   ProfileEntitiesCompanion.insert({
-    required int id,
-    required int role,
+    required int userId,
+    required int type,
     required String name,
     required String nik,
     required DateTime birthDate,
     required int birthPlace,
-  })  : id = Value(id),
-        role = Value(role),
+  })  : userId = Value(userId),
+        type = Value(type),
         name = Value(name),
         nik = Value(nik),
         birthDate = Value(birthDate),
         birthPlace = Value(birthPlace);
   static Insertable<ProfileEntity> custom({
-    Expression<int>? id,
-    Expression<int>? role,
+    Expression<int>? userId,
+    Expression<int>? type,
     Expression<String>? name,
     Expression<String>? nik,
     Expression<DateTime>? birthDate,
     Expression<int>? birthPlace,
   }) {
     return RawValuesInsertable({
-      if (id != null) 'id': id,
-      if (role != null) 'role': role,
+      if (userId != null) 'user_id': userId,
+      if (type != null) 'type': type,
       if (name != null) 'name': name,
       if (nik != null) 'nik': nik,
       if (birthDate != null) 'birth_date': birthDate,
@@ -358,15 +433,15 @@ class ProfileEntitiesCompanion extends UpdateCompanion<ProfileEntity> {
   }
 
   ProfileEntitiesCompanion copyWith(
-      {Value<int>? id,
-      Value<int>? role,
+      {Value<int>? userId,
+      Value<int>? type,
       Value<String>? name,
       Value<String>? nik,
       Value<DateTime>? birthDate,
       Value<int>? birthPlace}) {
     return ProfileEntitiesCompanion(
-      id: id ?? this.id,
-      role: role ?? this.role,
+      userId: userId ?? this.userId,
+      type: type ?? this.type,
       name: name ?? this.name,
       nik: nik ?? this.nik,
       birthDate: birthDate ?? this.birthDate,
@@ -377,11 +452,11 @@ class ProfileEntitiesCompanion extends UpdateCompanion<ProfileEntity> {
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    if (id.present) {
-      map['id'] = Variable<int>(id.value);
+    if (userId.present) {
+      map['user_id'] = Variable<int>(userId.value);
     }
-    if (role.present) {
-      map['role'] = Variable<int>(role.value);
+    if (type.present) {
+      map['type'] = Variable<int>(type.value);
     }
     if (name.present) {
       map['name'] = Variable<String>(name.value);
@@ -401,8 +476,8 @@ class ProfileEntitiesCompanion extends UpdateCompanion<ProfileEntity> {
   @override
   String toString() {
     return (StringBuffer('ProfileEntitiesCompanion(')
-          ..write('id: $id, ')
-          ..write('role: $role, ')
+          ..write('userId: $userId, ')
+          ..write('type: $type, ')
           ..write('name: $name, ')
           ..write('nik: $nik, ')
           ..write('birthDate: $birthDate, ')
@@ -417,18 +492,18 @@ class $ProfileEntitiesTable extends ProfileEntities
   final GeneratedDatabase _db;
   final String? _alias;
   $ProfileEntitiesTable(this._db, [this._alias]);
-  final VerificationMeta _idMeta = const VerificationMeta('id');
-  late final GeneratedColumn<int?> id = GeneratedColumn<int?>(
-      'id', aliasedName, false,
+  final VerificationMeta _userIdMeta = const VerificationMeta('userId');
+  late final GeneratedColumn<int?> userId = GeneratedColumn<int?>(
+      'user_id', aliasedName, false,
       typeName: 'INTEGER',
       requiredDuringInsert: true,
       $customConstraints: 'REFERENCES credentials(id)');
-  final VerificationMeta _roleMeta = const VerificationMeta('role');
-  late final GeneratedColumn<int?> role = GeneratedColumn<int?>(
-      'role', aliasedName, false,
+  final VerificationMeta _typeMeta = const VerificationMeta('type');
+  late final GeneratedColumn<int?> type = GeneratedColumn<int?>(
+      'type', aliasedName, false,
       typeName: 'INTEGER',
       requiredDuringInsert: true,
-      $customConstraints: 'REFERENCES roles(id)');
+      $customConstraints: 'REFERENCES profile_types(id)');
   final VerificationMeta _nameMeta = const VerificationMeta('name');
   late final GeneratedColumn<String?> name = GeneratedColumn<String?>(
       'name', aliasedName, false,
@@ -449,7 +524,7 @@ class $ProfileEntitiesTable extends ProfileEntities
       $customConstraints: 'REFERENCES cities(id)');
   @override
   List<GeneratedColumn> get $columns =>
-      [id, role, name, nik, birthDate, birthPlace];
+      [userId, type, name, nik, birthDate, birthPlace];
   @override
   String get aliasedName => _alias ?? 'profiles';
   @override
@@ -459,16 +534,17 @@ class $ProfileEntitiesTable extends ProfileEntities
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
-    if (data.containsKey('id')) {
-      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    if (data.containsKey('user_id')) {
+      context.handle(_userIdMeta,
+          userId.isAcceptableOrUnknown(data['user_id']!, _userIdMeta));
     } else if (isInserting) {
-      context.missing(_idMeta);
+      context.missing(_userIdMeta);
     }
-    if (data.containsKey('role')) {
+    if (data.containsKey('type')) {
       context.handle(
-          _roleMeta, role.isAcceptableOrUnknown(data['role']!, _roleMeta));
+          _typeMeta, type.isAcceptableOrUnknown(data['type']!, _typeMeta));
     } else if (isInserting) {
-      context.missing(_roleMeta);
+      context.missing(_typeMeta);
     }
     if (data.containsKey('name')) {
       context.handle(
@@ -500,7 +576,7 @@ class $ProfileEntitiesTable extends ProfileEntities
   }
 
   @override
-  Set<GeneratedColumn> get $primaryKey => <GeneratedColumn>{};
+  Set<GeneratedColumn> get $primaryKey => {userId, type};
   @override
   ProfileEntity map(Map<String, dynamic> data, {String? tablePrefix}) {
     return ProfileEntity.fromData(data, _db,
@@ -510,6 +586,180 @@ class $ProfileEntitiesTable extends ProfileEntities
   @override
   $ProfileEntitiesTable createAlias(String alias) {
     return $ProfileEntitiesTable(_db, alias);
+  }
+}
+
+class ProfileTypeEntity extends DataClass
+    implements Insertable<ProfileTypeEntity> {
+  final int id;
+  final String name;
+  ProfileTypeEntity({required this.id, required this.name});
+  factory ProfileTypeEntity.fromData(
+      Map<String, dynamic> data, GeneratedDatabase db,
+      {String? prefix}) {
+    final effectivePrefix = prefix ?? '';
+    return ProfileTypeEntity(
+      id: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
+      name: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}name'])!,
+    );
+  }
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['name'] = Variable<String>(name);
+    return map;
+  }
+
+  ProfileTypeEntitiesCompanion toCompanion(bool nullToAbsent) {
+    return ProfileTypeEntitiesCompanion(
+      id: Value(id),
+      name: Value(name),
+    );
+  }
+
+  factory ProfileTypeEntity.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return ProfileTypeEntity(
+      id: serializer.fromJson<int>(json['id']),
+      name: serializer.fromJson<String>(json['name']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'name': serializer.toJson<String>(name),
+    };
+  }
+
+  ProfileTypeEntity copyWith({int? id, String? name}) => ProfileTypeEntity(
+        id: id ?? this.id,
+        name: name ?? this.name,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('ProfileTypeEntity(')
+          ..write('id: $id, ')
+          ..write('name: $name')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => $mrjf($mrjc(id.hashCode, name.hashCode));
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is ProfileTypeEntity &&
+          other.id == this.id &&
+          other.name == this.name);
+}
+
+class ProfileTypeEntitiesCompanion extends UpdateCompanion<ProfileTypeEntity> {
+  final Value<int> id;
+  final Value<String> name;
+  const ProfileTypeEntitiesCompanion({
+    this.id = const Value.absent(),
+    this.name = const Value.absent(),
+  });
+  ProfileTypeEntitiesCompanion.insert({
+    required int id,
+    required String name,
+  })  : id = Value(id),
+        name = Value(name);
+  static Insertable<ProfileTypeEntity> custom({
+    Expression<int>? id,
+    Expression<String>? name,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (name != null) 'name': name,
+    });
+  }
+
+  ProfileTypeEntitiesCompanion copyWith({Value<int>? id, Value<String>? name}) {
+    return ProfileTypeEntitiesCompanion(
+      id: id ?? this.id,
+      name: name ?? this.name,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ProfileTypeEntitiesCompanion(')
+          ..write('id: $id, ')
+          ..write('name: $name')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $ProfileTypeEntitiesTable extends ProfileTypeEntities
+    with TableInfo<$ProfileTypeEntitiesTable, ProfileTypeEntity> {
+  final GeneratedDatabase _db;
+  final String? _alias;
+  $ProfileTypeEntitiesTable(this._db, [this._alias]);
+  final VerificationMeta _idMeta = const VerificationMeta('id');
+  late final GeneratedColumn<int?> id = GeneratedColumn<int?>(
+      'id', aliasedName, false,
+      typeName: 'INTEGER', requiredDuringInsert: true);
+  final VerificationMeta _nameMeta = const VerificationMeta('name');
+  late final GeneratedColumn<String?> name = GeneratedColumn<String?>(
+      'name', aliasedName, false,
+      typeName: 'TEXT', requiredDuringInsert: true);
+  @override
+  List<GeneratedColumn> get $columns => [id, name];
+  @override
+  String get aliasedName => _alias ?? 'profile_types';
+  @override
+  String get actualTableName => 'profile_types';
+  @override
+  VerificationContext validateIntegrity(Insertable<ProfileTypeEntity> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => <GeneratedColumn>{};
+  @override
+  ProfileTypeEntity map(Map<String, dynamic> data, {String? tablePrefix}) {
+    return ProfileTypeEntity.fromData(data, _db,
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
+  }
+
+  @override
+  $ProfileTypeEntitiesTable createAlias(String alias) {
+    return $ProfileTypeEntitiesTable(_db, alias);
   }
 }
 
@@ -1070,12 +1320,16 @@ abstract class _$AppDatabase extends GeneratedDatabase {
       $CredentialEntitiesTable(this);
   late final $ProfileEntitiesTable profileEntities =
       $ProfileEntitiesTable(this);
+  late final $ProfileTypeEntitiesTable profileTypeEntities =
+      $ProfileTypeEntitiesTable(this);
   late final $RoleEntitiesTable roleEntities = $RoleEntitiesTable(this);
   late final $CityEntitiesTable cityEntities = $CityEntitiesTable(this);
   late final $PregnancyCheckUpIdEntitiesTable pregnancyCheckUpIdEntities =
       $PregnancyCheckUpIdEntitiesTable(this);
   late final CredentialDao credentialDao = CredentialDao(this as AppDatabase);
   late final ProfileDao profileDao = ProfileDao(this as AppDatabase);
+  late final ProfileTypeDao profileTypeDao =
+      ProfileTypeDao(this as AppDatabase);
   late final RoleDao roleDao = RoleDao(this as AppDatabase);
   late final CityDao cityDao = CityDao(this as AppDatabase);
   late final PregnancyCheckUpIdDao pregnancyCheckUpIdDao =
@@ -1086,6 +1340,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   List<DatabaseSchemaEntity> get allSchemaEntities => [
         credentialEntities,
         profileEntities,
+        profileTypeEntities,
         roleEntities,
         cityEntities,
         pregnancyCheckUpIdEntities

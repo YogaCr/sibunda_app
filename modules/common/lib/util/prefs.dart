@@ -6,8 +6,11 @@ class Prefs {
   Prefs._();
 
   static SharedPreferences? _prefs;
-  static Future<SharedPreferences> loadPrefs() async {
-    _prefs = await SharedPreferences.getInstance();
+  static Future<SharedPreferences> loadPrefs() async => _prefs ??= await SharedPreferences.getInstance();
+  static SharedPreferences get prefs {
+    if(_prefs == null) {
+      throw "`SharedPreferences` is not ready yet. Call `loadPrefs()` instead.";
+    }
     return _prefs!;
   }
 

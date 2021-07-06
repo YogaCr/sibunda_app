@@ -46,6 +46,7 @@ dependencies:
   jiffy: ^4.1.0
   faker: ^2.0.0
   syncfusion_flutter_charts: ^19.2.44
+  sqlite3_flutter_libs: ^0.5.0 #For sqlite3 implementation in Android.
 
   common:
     path: modules/common

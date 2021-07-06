@@ -13,6 +13,7 @@ part 'app_db.g.dart';
   tables: [
     CredentialEntities,
     ProfileEntities,
+    ProfileTypeEntities,
     RoleEntities,
     CityEntities,
     PregnancyCheckUpIdEntities,
@@ -20,6 +21,7 @@ part 'app_db.g.dart';
   daos: [
     CredentialDao,
     ProfileDao,
+    ProfileTypeDao,
     RoleDao,
     CityDao,
     PregnancyCheckUpIdDao,

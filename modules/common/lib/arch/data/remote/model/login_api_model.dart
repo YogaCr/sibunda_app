@@ -44,6 +44,7 @@ class LoginResponse extends Equatable {
 
 @JsonSerializable()
 class LoginDataResponse extends Equatable {
+  //TODO: LoginDataResponse: Tanya Amir apakah bisa response yg dikembalikan dari server brupa datanya user, trutama NIK ibu dan anak.
   @JsonKey(name: Const.KEY_TOKEN_TYPE)
   final String tokenType;
   @JsonKey(name: Const.KEY_ACCESS_TOKEN)

@@ -1,5 +1,6 @@
 // User and Auth related repository.
 
+import 'package:common/arch/data/local/source/account_local_source.dart';
 import 'package:common/arch/data/remote/api/auth_api.dart';
 import 'package:common/arch/data/remote/model/login_api_model.dart';
 import 'package:common/arch/data/remote/model/logout_api_model.dart';
@@ -15,7 +16,7 @@ import 'package:core/util/annotation/data_annotation.dart';
 import '../dummy_data.dart';
 
 mixin AuthRepo {
-  Future<Result<bool>> saveSignupData(SignUpData signup);
+  //Future<Result<bool>> saveSignupData(SignUpData signup);
   Future<Result<bool>> signup({
     required SignUpData signup,
     required Mother mother,
@@ -29,12 +30,20 @@ mixin AuthRepo {
   Future<Result<SessionData?>> getSession();
 }
 
+// Although it's a repo, but I feel the implementation is like use case.
 class AuthRepoImpl with AuthRepo {
   final AuthApi _api;
-  AuthRepoImpl(this._api);
+  final AccountLocalSrc _localSrc;
+  AuthRepoImpl({
+    required AuthApi api,
+    required AccountLocalSrc localSrc,
+  }):
+    _api = api,
+    _localSrc = localSrc
+  ;
 
-  @override
-  Future<Result<bool>> saveSignupData(SignUpData signup) async => Success(true); //For now, this is just for gymmic. it is because `SignUpData` is stored together with other get started related data.
+  //@override
+  //Future<Result<bool>> saveSignupData(SignUpData signup) async => Success(true); //For now, this is just for gymmic. it is because `SignUpData` is stored together with other get started related data.
   @override
   Future<Result<bool>> signup({
     required SignUpData signup,
@@ -50,9 +59,17 @@ class AuthRepoImpl with AuthRepo {
     );
     try {
       final res = await _api.register(body);
-      return res.code == 200
-          ? Success(true, 200)
-          : Fail(code: res.code, msg: res.message);
+      if(res.code != 200) {
+        return Fail(code: res.code, msg: res.message);
+      }
+      final userId = res.user.id;
+      final userRole = res.user.groupId;
+
+      final locRes = await _localSrc.saveBatchProfile(
+        userId: userId, userRole: userRole, signup: signup,
+        mother: mother, father: father, child: child,
+      );
+      return locRes;
     } catch(e) {
       return Fail();
     }
@@ -67,6 +84,15 @@ class AuthRepoImpl with AuthRepo {
         return Fail(code: res.code, msg: res.message);
       }
       final session = SessionData(token: res.data.token, tokenType: res.data.tokenType,);
+      var locRes = await _localSrc.saveSession(session);
+      if(locRes is! Success<bool>) {
+        return Fail(msg: "Can't save `session` in local");
+      }
+      VarDi.session = session;
+      locRes = await _localSrc.saveCurrentEmail(data.email);
+      if(locRes is! Success<bool>) {
+        return Fail(msg: "Can't save `email` in local");
+      }
       return Success(session, 200);
     } catch(e) {
       return Fail();
@@ -77,24 +103,35 @@ class AuthRepoImpl with AuthRepo {
     final body = LogoutBody(data);
     try {
       final res = await _api.logout(body);
-      return res.code == 200
-          ? Success(true, 200)
-          : Fail(code: res.code, msg: res.message);
+      if(res.code != 200) {
+        return Fail(code: res.code, msg: res.message);
+      }
+      var locRes = await _localSrc.deleteSession();
+      if(locRes is! Success<bool>) {
+        return Fail(msg: "Can't delete `session` in local");
+      }
+      locRes = await _localSrc.deleteCurrentEmail();
+      if(locRes is! Success<bool>) {
+        return Fail(msg: "Can't delete `email` in local");
+      }
+      return Success(true, 200);
     } catch(e) {
       return Fail();
     }
   }
 
-  //TODO yg lain
   @override
-  Future<Result<bool>> saveSession(SessionData data) {
+  Future<Result<bool>> saveSession(SessionData data) async {
+    var locRes = await _localSrc.saveSession(data);
+    if(locRes is! Success<bool>) {
+      return Fail(msg: "Can't save `session` in local");
+    }
     VarDi.session = data;
-    throw UnimplementedError();
+    return Success(true);
   }
+
   @override
-  Future<Result<SessionData?>> getSession() {
-    throw UnimplementedError();
-  }
+  Future<Result<SessionData?>> getSession() => _localSrc.getSession();
 }
 
 /*

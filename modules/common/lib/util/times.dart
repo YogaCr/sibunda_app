@@ -17,10 +17,9 @@ Future<String> formatTime(DateTime date, { String localeName = "id_ID" }) async 
 
 String syncFormatTime(DateTime date, { String localeName = "id_ID" }) {
   //initializeDateFormatting("id_ID");
-  prind("Platform.localeName = ${Platform.localeName}");
-  prind("window.locales = ${window.locales}");
-
   try {
+    prind("Platform.localeName = ${Platform.localeName}");
+    prind("window.locales = ${window.locales}");
     return DateFormat.yMMMMd(localeName).format(date);
   } catch(e) {
     return DateFormat.yMMMMd().format(date);

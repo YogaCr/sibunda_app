@@ -51,7 +51,7 @@ final dummyFather = Father(
   faskes1: "Kamar rumah",
   faskesRujukan: "Puskesmas 10",
   bloodType: "B",
-  birthCity: "Jonggol",
+  birthCity: 1101, //"Jonggol",
   birthDate: "1949-08-17",
   education: "S4",
   occupancy: "Buruh halus",
@@ -67,7 +67,7 @@ final dummyMother = Mother(
   faskes1: "Kamar rumah",
   faskesRujukan: "Puskesmas 10",
   bloodType: "A",
-  birthCity: "Konoha",
+  birthCity: 1101, //"Konoha",
   birthDate: "1973-06-06",
   education: "SD",
   occupancy: "Ibu aja",
@@ -76,6 +76,7 @@ final dummyMother = Mother(
   puskesmasDomisili: "Puskesmas 11",
   cohortRegistNo: "12312345",
 );
+final dummyMotherHpl = DateTime(2021);
 
 final dummyChild = Child(
   name: "Anak sinkong",
@@ -83,7 +84,7 @@ final dummyChild = Child(
   gender: "M",
   nik: "1201902",
   bloodType: "O",
-  birthCity: "Asgard",
+  birthCity: 1101, //"Asgard",
   birthDate: "2077-07-12",
   jkn: "JKN a",
   jknStartDate: "2021-10-10",

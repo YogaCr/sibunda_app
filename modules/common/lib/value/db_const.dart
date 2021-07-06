@@ -7,4 +7,11 @@ class DbConst {
   static const NAME_PROFILES = "profiles";
   static const NAME_PREGNANCY_CHECK_UP_ID = "pregnancy_check_up_ids";
   static const REFERENCES = "REFERENCES";
+
+  static const ROLE_ADMIN = 1;
+  static const ROLE_USER = 2;
+
+  static const TYPE_MOTHER = 1;
+  static const TYPE_FATHER = 2;
+  static const TYPE_CHILD = 3;
 }
