@@ -27,11 +27,11 @@ class PregnancyCheckBody {
   final String? HPHT;
   @JsonKey(name: Const.KEY_HPL)
   final String HPL;
-  @JsonKey(name: Const.KEY_MOTHER_WEIGHT)
+  @JsonKey(name: Const.KEY_WEIGHT)
   final int motherWeigth; // in kg
-  @JsonKey(name: Const.KEY_MOTHER_WEIGHT_DIFF)
+  @JsonKey(name: Const.KEY_WEIGHT_DIFF)
   final int motherWeigthDiff; // in kg
-  @JsonKey(name: Const.KEY_MOTHER_HEIGHT)
+  @JsonKey(name: Const.KEY_HEIGHT)
   final int motherHeight; // in cm
   @JsonKey(name: Const.KEY_TFU)
   final int TFU;
@@ -83,9 +83,9 @@ class PregnancyCheckBody {
   });
 
   factory PregnancyCheckBody.fromJson(Map<String, dynamic> map) {
-    map[Const.KEY_MOTHER_WEIGHT] = tryParseInt(map[Const.KEY_MOTHER_WEIGHT]);
-    map[Const.KEY_MOTHER_WEIGHT_DIFF] = tryParseInt(map[Const.KEY_MOTHER_WEIGHT_DIFF]);
-    map[Const.KEY_MOTHER_HEIGHT] = tryParseInt(map[Const.KEY_MOTHER_HEIGHT]);
+    map[Const.KEY_WEIGHT] = tryParseInt(map[Const.KEY_WEIGHT]);
+    map[Const.KEY_WEIGHT_DIFF] = tryParseInt(map[Const.KEY_WEIGHT_DIFF]);
+    map[Const.KEY_HEIGHT] = tryParseInt(map[Const.KEY_HEIGHT]);
     map[Const.KEY_TFU] = tryParseInt(map[Const.KEY_TFU]);
     map[Const.KEY_DJJ] = tryParseInt(map[Const.KEY_DJJ]);
     map[Const.KEY_SYSTOLIC_PRESSURE] = tryParseInt(map[Const.KEY_SYSTOLIC_PRESSURE]);

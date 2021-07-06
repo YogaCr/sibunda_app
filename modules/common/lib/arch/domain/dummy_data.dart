@@ -369,3 +369,68 @@ final babyGrowthGraphMenuList = <BabyChartMenuData>[
 final babyDevGraphMenuList = <BabyChartMenuData>[
   BabyChartMenuData(title: "Grafik Perkembangan Bayi", img: dummyImg, type: BabyChartType.dev),
 ];
+
+
+final babyGrowthCheck = BabyGrowthCheck(
+  date: "1987-09-09",
+  location: "ITS",
+  age: 10,
+  weight: 10,
+  height: 11,
+  headCircum: 12,
+  bmi: 13,
+  checkerName: "Dokter dia",
+);
+
+final neonatal6HourForm = Neonatal6HourForm(
+  weight: 10,
+  height: 120,
+  headCircum: 10,
+  q_imd: 1,
+  q_vit_k1: 0,
+  q_salep: 1,
+  q_imunisasi_hb: 1,
+  date: "2020-03-09",
+  time: "10:10",
+  no_batch: "80123456789",
+  dirujuk_ke: "Dokter",
+  petugas: "Perawat",
+  catatan_penting: "Gakda",
+);
+
+
+final neonatalKn1n2Form = NeonatalKn1n2Form(
+  q_menyusu: 1,
+  q_tali_pusat: 0,
+  q_vit_k1: 0,
+  q_salep: 0,
+  q_imunisasi_hb: 0,
+  q_skrining_hipotiroid_kongenital: 0,
+  date: "1798-03-02",
+  time: "10:11",
+  no_batch: "91037192",
+  weight: 10,
+  height: 10,
+  headCircum: 30,
+  dirujuk_ke: "Rumah bersalin",
+  petugas: "Dia",
+  catatan_penting: "Gakda",
+  masalah: "Banyak",
+);
+
+final neonatalKn3Form = NeonatalKn3Form(
+  q_menyusu: 1,
+  q_tali_pusat: 0,
+  q_vit_k1: 0,
+  q_salep: 0,
+  q_imunisasi_hb: 0,
+  q_kuning1: 1,
+  q_kuning2: 1,
+  q_kuning3: 1,
+  q_kuning4: 1,
+  q_kuning5: 1,
+  dirujuk_ke: "Rumah panti",
+  petugas: "Kamu",
+  catatan_penting: "Itu",
+  masalah: "Banyak",
+);

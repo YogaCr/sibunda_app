@@ -1,3 +1,7 @@
-//part 'baby_chart_api_model.g.dart';
+/*
+part 'baby_chart_api_model.g.dart';
 
-//class
+class BabyWeightChartResponse {
+  final int
+}
+ */

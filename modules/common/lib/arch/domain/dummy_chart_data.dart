@@ -133,7 +133,7 @@ final babyLenWarning = <FormWarningStatus>[
 ];
 
 final babyWeightToLenChartData = List<BabyWeightToLenChartData>.generate(21, (i) => BabyWeightToLenChartData(
-  age: i,
+  len: i,
   min3sd: _babyWeightLimit_low +(i*2),
   min2sd: _babyWeightLimit_low +(i*3) +1,
   min1sd: _babyWeightLimit_low +(i*3) +4,

@@ -29,11 +29,11 @@ class PregnancyCheck {
   final String HPHT;
   @JsonKey(name: Const.KEY_HPL)
   final String HPL;
-  @JsonKey(name: Const.KEY_MOTHER_WEIGHT)
+  @JsonKey(name: Const.KEY_WEIGHT)
   final int motherWeigth; // in kg
-  @JsonKey(name: Const.KEY_MOTHER_WEIGHT_DIFF)
+  @JsonKey(name: Const.KEY_WEIGHT_DIFF)
   final int motherWeigthDiff; // in kg
-  @JsonKey(name: Const.KEY_MOTHER_HEIGHT)
+  @JsonKey(name: Const.KEY_HEIGHT)
   final int motherHeight; // in cm
   @JsonKey(name: Const.KEY_TFU)
   final int TFU;
@@ -92,9 +92,9 @@ class PregnancyCheck {
     futureVisitDate: map[Const.KEY_FUTURE_VISIT_DATE]!,
     HPHT: map[Const.KEY_HPHT]!,
     HPL: map[Const.KEY_HPL]!,
-    motherWeigth: int.parse(map[Const.KEY_MOTHER_WEIGHT]!),
-    motherWeigthDiff: int.parse(map[Const.KEY_MOTHER_WEIGHT_DIFF]!),
-    motherHeight: int.parse(map[Const.KEY_MOTHER_HEIGHT]!),
+    motherWeigth: int.parse(map[Const.KEY_WEIGHT]!),
+    motherWeigthDiff: int.parse(map[Const.KEY_WEIGHT_DIFF]!),
+    motherHeight: int.parse(map[Const.KEY_HEIGHT]!),
     TFU: int.parse(map[Const.KEY_TFU]!),
     DJJ: int.parse(map[Const.KEY_DJJ]!),
     systolicPressure: int.parse(map[Const.KEY_SYSTOLIC_PRESSURE]!),

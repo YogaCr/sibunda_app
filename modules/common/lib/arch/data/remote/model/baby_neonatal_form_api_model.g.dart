@@ -1,38 +1,14 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'baby_data.dart';
+part of 'baby_neonatal_form_api_model.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-BabyGrowthCheck _$BabyGrowthCheckFromJson(Map<String, dynamic> json) {
-  return BabyGrowthCheck(
-    date: json['date'] as String,
-    location: json['location'] as String,
-    age: json['age'] as int,
-    weight: json['bb'] as num,
-    height: json['tb'] as num,
-    headCircum: json['lingkar_kepala'] as num,
-    bmi: json['imt'] as num,
-    checkerName: json['pemeriksa'] as String,
-  );
-}
-
-Map<String, dynamic> _$BabyGrowthCheckToJson(BabyGrowthCheck instance) =>
-    <String, dynamic>{
-      'date': instance.date,
-      'location': instance.location,
-      'age': instance.age,
-      'bb': instance.weight,
-      'tb': instance.height,
-      'lingkar_kepala': instance.headCircum,
-      'imt': instance.bmi,
-      'pemeriksa': instance.checkerName,
-    };
-
-Neonatal6HourForm _$Neonatal6HourFormFromJson(Map<String, dynamic> json) {
-  return Neonatal6HourForm(
+Neonatal6HourFormBody _$Neonatal6HourFormBodyFromJson(
+    Map<String, dynamic> json) {
+  return Neonatal6HourFormBody(
     weight: json['bb'] as num,
     height: json['tb'] as num,
     headCircum: json['lingkar_kepala'] as num,
@@ -46,10 +22,12 @@ Neonatal6HourForm _$Neonatal6HourFormFromJson(Map<String, dynamic> json) {
     dirujuk_ke: json['dirujuk_ke'] as String,
     petugas: json['petugas'] as String,
     catatan_penting: json['catatan_penting'] as String,
+    monthly_checkup_id: json['monthly_checkup_id'] as int,
   );
 }
 
-Map<String, dynamic> _$Neonatal6HourFormToJson(Neonatal6HourForm instance) =>
+Map<String, dynamic> _$Neonatal6HourFormBodyToJson(
+        Neonatal6HourFormBody instance) =>
     <String, dynamic>{
       'bb': instance.weight,
       'tb': instance.height,
@@ -64,10 +42,12 @@ Map<String, dynamic> _$Neonatal6HourFormToJson(Neonatal6HourForm instance) =>
       'dirujuk_ke': instance.dirujuk_ke,
       'petugas': instance.petugas,
       'catatan_penting': instance.catatan_penting,
+      'monthly_checkup_id': instance.monthly_checkup_id,
     };
 
-NeonatalKn1n2Form _$NeonatalKn1n2FormFromJson(Map<String, dynamic> json) {
-  return NeonatalKn1n2Form(
+NeonatalKn1n2FormBody _$NeonatalKn1n2FormBodyFromJson(
+    Map<String, dynamic> json) {
+  return NeonatalKn1n2FormBody(
     q_menyusu: json['q_menyusu'] as int,
     q_tali_pusat: json['q_tali_pusat'] as int,
     q_vit_k1: json['q_vit_k1'] as int,
@@ -85,10 +65,12 @@ NeonatalKn1n2Form _$NeonatalKn1n2FormFromJson(Map<String, dynamic> json) {
     petugas: json['petugas'] as String,
     catatan_penting: json['catatan_penting'] as String,
     masalah: json['masalah'] as String,
+    monthly_checkup_id: json['monthly_checkup_id'] as int,
   );
 }
 
-Map<String, dynamic> _$NeonatalKn1n2FormToJson(NeonatalKn1n2Form instance) =>
+Map<String, dynamic> _$NeonatalKn1n2FormBodyToJson(
+        NeonatalKn1n2FormBody instance) =>
     <String, dynamic>{
       'q_menyusu': instance.q_menyusu,
       'q_tali_pusat': instance.q_tali_pusat,
@@ -107,10 +89,11 @@ Map<String, dynamic> _$NeonatalKn1n2FormToJson(NeonatalKn1n2Form instance) =>
       'petugas': instance.petugas,
       'catatan_penting': instance.catatan_penting,
       'masalah': instance.masalah,
+      'monthly_checkup_id': instance.monthly_checkup_id,
     };
 
-NeonatalKn3Form _$NeonatalKn3FormFromJson(Map<String, dynamic> json) {
-  return NeonatalKn3Form(
+NeonatalKn3FormBody _$NeonatalKn3FormBodyFromJson(Map<String, dynamic> json) {
+  return NeonatalKn3FormBody(
     q_menyusu: json['q_menyusu'] as int,
     q_tali_pusat: json['q_tali_pusat'] as int,
     q_vit_k1: json['q_vit_k1'] as int,
@@ -125,10 +108,12 @@ NeonatalKn3Form _$NeonatalKn3FormFromJson(Map<String, dynamic> json) {
     petugas: json['petugas'] as String,
     catatan_penting: json['catatan_penting'] as String,
     masalah: json['masalah'] as String,
+    monthly_checkup_id: json['monthly_checkup_id'] as int,
   );
 }
 
-Map<String, dynamic> _$NeonatalKn3FormToJson(NeonatalKn3Form instance) =>
+Map<String, dynamic> _$NeonatalKn3FormBodyToJson(
+        NeonatalKn3FormBody instance) =>
     <String, dynamic>{
       'q_menyusu': instance.q_menyusu,
       'q_tali_pusat': instance.q_tali_pusat,
@@ -144,4 +129,5 @@ Map<String, dynamic> _$NeonatalKn3FormToJson(NeonatalKn3Form instance) =>
       'petugas': instance.petugas,
       'catatan_penting': instance.catatan_penting,
       'masalah': instance.masalah,
+      'monthly_checkup_id': instance.monthly_checkup_id,
     };

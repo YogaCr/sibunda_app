@@ -1,8 +1,11 @@
 import 'package:common/arch/data/remote/model/_common_api_model.dart';
+import 'package:common/arch/data/remote/model/baby_chart_api_model.dart';
 import 'package:common/arch/data/remote/model/baby_check_form_api_model.dart';
 import 'package:common/arch/data/remote/model/baby_immunization_api_model.dart';
+import 'package:common/arch/data/remote/model/baby_neonatal_form_api_model.dart';
 import 'package:common/arch/data/remote/model/baby_overview_api_model.dart';
 import 'package:common/arch/domain/model/auth.dart';
+import 'package:common/arch/domain/model/chart_data_baby.dart';
 import 'package:common/util/net.dart';
 import 'package:common/value/const_values.dart';
 import 'package:dio/dio.dart';
@@ -18,10 +21,40 @@ abstract class BabyApi {
 
   @GET("/overview")
   Future<BabyHomeResponse> getHomeData();
+
   @GET("/perkembangan-questionnaire/{month}")
   Future<List<BabyCheckDevFormDataResponse>> getDevFormData(@Path("month") int month,);
+
+  @POST("/show-monthly-report")
+  Future<BabyMonthlyFormBody> getMonthlyForm(@Body() BabyGetMonthlyFormBody body,);
+  @POST("/create-monthly-report")
+  Future<CommonResponse> sendMonthlyForm(@Body() BabyMonthlyFormBody body,);
+
+  @POST("//create-neonatus-6-hours")
+  Future<CommonResponse> sendNeo6hForm(@Body() Neonatal6HourFormBody body,);
+  @POST("/create-neonatus-kn1")
+  Future<CommonResponse> sendKn1Form(@Body() NeonatalKn1n2FormBody body,);
+  @POST("/create-neonatus-kn2")
+  Future<CommonResponse> sendKn2Form(@Body() NeonatalKn1n2FormBody body,);
+  @POST("/create-neonatus-kn3")
+  Future<CommonResponse> sendKn3Form(@Body() NeonatalKn3FormBody body,);
+
   @GET("/immunization/{id}")
   Future<BabyImmunizationResponse> getImmunization(@Path("id") int childId);
   @POST("/immunization")
   Future<CommonResponse> sendImmunization(@Body() BabyCreateImmunizationBody body);
+
+
+  //============ Chart ==========
+
+  @GET("/graph/bb-usia/{child_id}")
+  Future<List<BabyWeightChartData>> getWeightChart(@Path("child_id") int childId,);
+  @GET("/graph/pb-usia/{child_id}")
+  Future<List<BabyLenChartData>> getLenChart(@Path("child_id") int childId,);
+  @GET("/graph/bb-pb/{child_id}")
+  Future<List<BabyWeightToLenChartData>> getWeightToLenChart(@Path("child_id") int childId,);
+  @GET("/graph/lingkar-kepala/{child_id}")
+  Future<List<BabyHeadCircumChartData>> getHeadCircumChart(@Path("child_id") int childId,);
+  @GET("/graph/imt/{child_id}")
+  Future<List<BabyBmiChartData>> getBmiChart(@Path("child_id") int childId,);
 }
