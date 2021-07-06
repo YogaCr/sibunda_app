@@ -15,7 +15,7 @@ Father _$FatherFromJson(Map<String, dynamic> json) {
     faskes1: json['faskes_tk1'] as String,
     faskesRujukan: json['faskes_rujukan'] as String,
     bloodType: json['gol_darah'] as String,
-    birthCity: json['tempat_lahir'] as String,
+    birthCity: json['tempat_lahir'] as int,
     birthDate: json['tanggal_lahir'] as String,
     education: json['pendidikan'] as String,
     occupancy: json['pekerjaan'] as String,

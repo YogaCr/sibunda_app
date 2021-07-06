@@ -57,7 +57,7 @@ class Father {
     faskes1: map[Const.KEY_FASKES1]!,
     faskesRujukan: map[Const.KEY_FASKES_RUJUKAN]!,
     bloodType: map[Const.KEY_BLOOD_TYPE]!,
-    birthCity: map[Const.KEY_BIRTH_PLACE]!,
+    birthCity: int.parse(map[Const.KEY_BIRTH_PLACE]!),
     birthDate: map[Const.KEY_BIRTH_DATE]!,
     education: map[Const.KEY_EDUCATION]!,
     occupancy: map[Const.KEY_OCCUPANCY]!,

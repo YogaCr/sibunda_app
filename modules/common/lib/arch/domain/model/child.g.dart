@@ -14,7 +14,7 @@ Child _$ChildFromJson(Map<String, dynamic> json) {
     birthCertificateNo: json['no_akte_kelahiran'] as String,
     nik: json['nik'] as String,
     bloodType: json['gol_darah'] as String,
-    birthCity: json['tempat_lahir'] as String,
+    birthCity: json['tempat_lahir'] as int,
     birthDate: json['tanggal_lahir'] as String,
     jkn: json['no_jkn'] as String,
     jknStartDate: json['tanggal_berlaku_jkn'] as String,

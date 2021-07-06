@@ -26,7 +26,10 @@ class RepoDi {
   static FormFieldRepo get formFieldRepo => FormFieldRepoDummy.obj;
 
   //static FamilyRepo getFamilyRepo() => FamilyDummyRepo();
-  static MotherRepo get motherRepo => MotherRepoDummy.obj;
+  static MotherRepo get motherRepo => MotherRepoImpl(
+    accountLocalSrc: LocalSrcDi.accountSrc,
+    pregnancyLocalSrc: LocalSrcDi.pregnancySrc,
+  ); //MotherRepoDummy.obj;
   static FatherRepo get fatherRepo => FatherRepoDummy.obj;
   static ChildRepo get childRepo => ChildRepoDummy.obj;
   static PregnancyRepo get pregnancyRepo => PregnancyRepoImpl(ApiDi.kehamilankuApi);

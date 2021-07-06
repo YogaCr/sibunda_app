@@ -1,0 +1,37 @@
+import 'package:common/value/const_values.dart';
+import 'package:core/domain/model/result.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+mixin PregnancyLocalSrc {
+  Future<Result<bool>> saveMotherHpl(DateTime date);
+  Future<Result<DateTime>> getCurrentMotherHpl();
+}
+
+class PregnancyLocalSrcImpl with PregnancyLocalSrc {
+  final SharedPreferences _sharedPref;
+  PregnancyLocalSrcImpl({
+    required SharedPreferences sharedPref,
+  }):
+    _sharedPref = sharedPref
+  ;
+
+  @override
+  Future<Result<bool>> saveMotherHpl(DateTime date) async {
+    try {
+      final res = await _sharedPref.setString(Const.KEY_HPL, date.toString());
+      return Success(res);
+    } catch(e) {
+      return Fail();
+    }
+  }
+
+  @override
+  Future<Result<DateTime>> getCurrentMotherHpl() async {
+    final hpl = _sharedPref.getString(Const.KEY_HPL);
+    if(hpl == null) {
+      return Fail();
+    }
+    return Success(DateTime.parse(hpl));
+  }
+}
+

@@ -54,7 +54,7 @@ class Child {
     nik: map[Const.KEY_NIK]!,
     jkn: map[Const.KEY_JKN]!,
     bloodType: map[Const.KEY_BLOOD_TYPE]!,
-    birthCity: map[Const.KEY_BIRTH_PLACE]!,
+    birthCity: int.parse(map[Const.KEY_BIRTH_PLACE]!),
     birthDate: map[Const.KEY_BIRTH_DATE]!,
     childOrder: int.parse(map[Const.KEY_CHILD_ORDER]!),
     gender: map[Const.KEY_GENDER]!,
