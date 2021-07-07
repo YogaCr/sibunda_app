@@ -12,6 +12,7 @@ import 'package:common/util/ui.dart';
 import 'package:common/value/const_values.dart';
 import 'package:core/ui/base/async_view_model_observer.dart';
 import 'package:core/ui/base/view_model.dart';
+import 'package:core/util/_consoles.dart';
 import 'package:flutter/cupertino.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -25,10 +26,12 @@ class KehamilankuHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ViewModelProvider.of<KehamilankuHomeVm>(context)
+    prind("KehamilankuHomePage build()");
+    final vm = ViewModelProvider.of<KehamilankuHomeVm>(context)
       ..getAgeOverview("")
       ..getTrimesterList()
       ..getFoodRecomList();
+    prind("KehamilankuHomePage build() 2");
 
     return TopBarTitleAndBackFrame(
       title: Strings.my_pregnancy,
@@ -42,6 +45,7 @@ class KehamilankuHomePage extends StatelessWidget {
                 Container(
                   margin: EdgeInsets.symmetric(vertical: 15).copyWith(top: 20),
                   child: AsyncVmObserver<KehamilankuHomeVm, MotherPregnancyAgeOverview>(
+                    vm: vm,
                     liveDataGetter: (vm2) => vm2.ageOverview,
                     builder: (ctx, data) => ItemMotherOverview.fromData(data),
                   ),
@@ -57,6 +61,7 @@ class KehamilankuHomePage extends StatelessWidget {
               ]),
             ),
             AsyncVmObserver<KehamilankuHomeVm, List<MotherTrimester>>(
+              vm: vm,
               liveDataGetter: (vm2) => vm2.trimesterList,
               builder: (ctx, data) => _MotherTrimesterList(data ?? List.empty()),
             ),
@@ -143,6 +148,7 @@ class KehamilankuHomePage extends StatelessWidget {
               ]),
             ),
             AsyncVmObserver<KehamilankuHomeVm, List<MotherFoodRecom>>(
+              vm: vm,
               liveDataGetter: (vm2) => vm2.foodRecomList,
               builder: (ctx, data) => _MotherFoodRecomList(data ?? List.empty()),
             ),

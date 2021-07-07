@@ -1,11 +1,28 @@
+import 'package:common/arch/di/config_di.dart';
 import 'package:common/arch/domain/model/auth.dart';
 import 'package:common/util/net.dart';
+import 'package:common/util/prefs.dart';
 import 'package:common/value/const_values.dart';
 import 'package:core/util/_consoles.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
-class CommonTestConst {
-  CommonTestConst._();
-  
+class ConfigUtil {
+  ConfigUtil._();
+
+  static init() async {
+    await initializeDateFormatting("id_ID");
+    if(TestUtil.isDebug) {
+      await TestUtil.init();
+    }
+  }
+}
+
+class TestUtil {
+  TestUtil._();
+
+  static bool isDebug = true;
+  //static bool isTest = false;
+
   static String? _token;
   static _initToken() async {
     final dio = SibDio.getDefaultInstance();
@@ -35,5 +52,19 @@ class CommonTestConst {
     }
     prind("_dummySession = ${_dummySession!.toAuthString()}");
     return _dummySession!;
+  }
+
+  static init() async {
+    await initPrefs();
+    await initSession();
+    VarDi.motherNik.value = "10129";
+    VarDi.pregnancyWeek.value = 1;
+  }
+  static initSession() async {
+    final session = await getDummySession();
+    VarDi.session = session;
+  }
+  static initPrefs() async {
+    await Prefs.loadPrefs();
   }
 }

@@ -1,7 +1,10 @@
+import 'dart:math';
+
 import 'package:common/arch/domain/model/form_data.dart';
 import 'package:common/arch/ui/widget/form_generic_field.dart';
 import 'package:common/arch/ui/model/form_data.dart';
 import 'package:common/res/string/_string.dart';
+import 'package:common/test/__common_test_const.dart';
 import 'package:core/domain/model/result.dart';
 import 'package:core/ui/base/async_vm.dart';
 import 'package:core/ui/base/live_data.dart';
@@ -80,7 +83,7 @@ mixin FormVmGroupMixin implements AsyncVm {
     required SibFormField field,
   }) {
     field.responseLiveData.observe(this, (data) {
-      prind("registerField() groupPosition= $groupPosition inputKey= $inputKey data= $data field.responseLiveData= ${field.responseLiveData}");
+      //prind("registerField() groupPosition= $groupPosition inputKey= $inputKey data= $data field.responseLiveData= ${field.responseLiveData}");
       _responseGroupList[groupPosition][inputKey]!.response.value = data;
     }, tag: "FormVmGroupMixin.registerField() $groupPosition, $inputKey",);
   }
@@ -89,10 +92,20 @@ mixin FormVmGroupMixin implements AsyncVm {
   /// if [isFormReady] is currently true.
   void init({bool isOneShot = true,});
 
+  void _assertCanProceed() {
+    //prind("FormVmGroupMixin _assertCanProceed() _canProceed= $_canProceed isFormReady= $isFormReady");
+    if(_canProceed.value != true) {
+      if(isFormReady.value != true) {
+        throw "VM '$runtimeType' can't cal `_assertCanProceed()` because this VM is not ready yet (isFormReady=$isFormReady)";
+      }
+      throw "VM '$runtimeType' can't proceed (current proceed status = ${_canProceed.value}), (current each field status = $_responseGroupList)";
+    }
+  }
   void _checkCanProceed() {
     for(int i = 0; i < _responseGroupList.length ; i++) {
       final isResponseValidMap = _responseGroupList[i];
       for(final isResponseValid in isResponseValidMap.values) {
+        //prind("_checkCanProceed() isResponseValid= $isResponseValid");
         //final isResponseInit = _isResponseInitList[i];
         if(isResponseValid.isValid.value != true) {
           _canProceed.value = false;
@@ -118,9 +131,11 @@ mixin FormVmGroupMixin implements AsyncVm {
     }
   }
 
-  void submit() {
-    startJob(submitFormKey, (isActive) async {
-      doSubmitJob().then((value) {
+  Future<void> submit() {
+    _assertCanProceed(); // For unit test, make sure that programmer delay the submission after patch response.
+    return startJob(submitFormKey, (isActive) async {
+      return await doSubmitJob().then((value) {
+        //prind("FormVmGroupMixin() submit() value = $value");
         _onSubmit.value = value;
       });
     });
@@ -204,13 +219,20 @@ abstract class FormVmGroup extends AsyncVm with FormVmGroupMixin {
         for(final formData in e.data) {
           final isValidData = MutableLiveData<bool>();
           isValidData.observe(this, (isValid) {
+            //prind("isValidData.observe() formData.key = ${formData.key} isValid = $isValid");
             _checkCanProceed();
           }, tag: "FormVmGroup ${formData.key}",);
           final responseData = MutableLiveData();
-          responseData.observe(this, (response) {
-            validateField(i2, formData.key, response).then((isValid) {
+          responseData.observe(this, (response) async {
+            final isValid = await validateField(i2, formData.key, response);
+            isValidData.value = isValid;
+            //prind("responseData.observe() validateField() formData.key = ${formData.key} isValid = $isValid");
+/*
+            .then((isValid) {
               isValidData.value = isValid;
+              prind("responseData.observe() validateField() formData.key = ${formData.key} isValid = $isValid");
             });
+ */
           }, tag: "FormVmGroup ${formData.key}",);
           map[formData.key] = MutableFormVmResponse(
             response: responseData,
@@ -224,6 +246,22 @@ abstract class FormVmGroup extends AsyncVm with FormVmGroupMixin {
     });
   }
 
+  @protected
+  void patchResponse(List<Map<String, dynamic>> responses) {
+    //_assertFormReady();
+    final minLen = min(responses.length, _responseGroupList.length);
+    for(int i = 0; i < minLen; i++) {
+      final resps = responses[i];
+      final vmGroup = _responseGroupList[i];
+
+      for(final key in vmGroup.keys) {
+        //prind("resps.containsKey(${key}) = ${resps.containsKey(key)}");
+        if(resps.containsKey(key)) {
+          vmGroup[key]!.response.value = resps[key];
+        }
+      }
+    }
+  }
   @protected
   void setResponse(int group, String key, response) {
     if(_responseGroupList[group][key] == null) {

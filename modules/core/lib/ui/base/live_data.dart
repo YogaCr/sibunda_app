@@ -72,10 +72,18 @@ class LiveData<T> implements Expirable {
     }
   }
 
+  T getOrElse([T Function()? onElse]) {
+    if(onElse == null && _value is! T) {
+      throw "`value` of '$runtimeType' is not ready yet.";
+    }
+    return _value as T;
+  }
+/*
   Future<T> waitForValue() async {
     while(_value is! T) {}
     return _value as T;
   }
+ */
 
   bool get hasActiveObserver => _observers?.length.compareTo(0) == 1;
 

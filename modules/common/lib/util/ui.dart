@@ -1,4 +1,7 @@
 
+import 'package:common/arch/domain/model/_model_template.dart';
+import 'package:common/arch/ui/widget/popup_widget.dart';
+import 'package:common/res/theme/_theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -33,6 +36,35 @@ void showSnackBar(
         )
     );
   }
+}
+
+void showIdStringPopup({
+  required BuildContext context,
+  required List<IdStringModel> dataList,
+  void Function(int id, String name)? onItemClick,
+  bool autoDismiss = true,
+  String? title,
+}) {
+  final titleWidget = title != null ? Text(
+    title,
+    style: SibTextStyles.size_0_bold,
+  ) : null;
+
+  showDialog(
+    context: context,
+    builder: (ctx) => AlertDialog(
+      title: titleWidget,
+      content: IdStringPopup(
+        dataList: dataList,
+        onItemClick: (i, name) {
+          if(autoDismiss) {
+            Navigator.pop(context);
+          }
+          onItemClick?.call(i, name);
+        },
+      ),
+    ),
+  );
 }
 
 extension SizeFactor on num {

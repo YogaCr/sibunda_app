@@ -11,6 +11,7 @@ import 'package:common/util/type_util.dart';
 import 'package:common/value/const_values.dart';
 import 'package:core/domain/model/result.dart';
 import 'package:core/ui/base/live_data.dart';
+import 'package:core/util/_consoles.dart';
 import 'package:core/util/val_util.dart';
 import 'package:kehamilanku/core/domain/usecase/pregnancy_check_use_case.dart';
 
@@ -86,9 +87,12 @@ class KehamilankuCheckFormVm extends FormVmGroup {
 
   @override
   Future<Result<String>> doSubmitJob() async {
+    prind("KehamilankuCheckFormVm doSubmitJob() ==== AWAL");
     final responseMap = getResponse();
+    prind("KehamilankuCheckFormVm doSubmitJob() ==== responseMap = ${responseMap.responseGroups}");
     final data = PregnancyCheck.fromJson(responseMap.responseGroups.values.first);
-    final motherNik = await VarDi.motherNik.waitForValue();
+    prind("KehamilankuCheckFormVm doSubmitJob() ==== data = ${data.toJson()}");
+    final motherNik = VarDi.motherNik.getOrElse();
     return _savePregnancyCheck(motherNik, data, currentTrimesterId).then((value) =>
       value is Success<bool> ? Success("") : value as Fail<String>
     );
@@ -96,6 +100,11 @@ class KehamilankuCheckFormVm extends FormVmGroup {
 
   @override
   Set<String>? get mappedKey => {
+    Const.KEY_VISIT_DATE,
+    Const.KEY_FUTURE_VISIT_DATE,
+    Const.KEY_HPHT,
+    Const.KEY_HPL,
+
     Const.KEY_WEEK,
     Const.KEY_WEIGHT,
     Const.KEY_WEIGHT_DIFF,
@@ -108,10 +117,30 @@ class KehamilankuCheckFormVm extends FormVmGroup {
     Const.KEY_MAP,
   };
   @override
-  mapResponse(int groupPosition, String key, response) => parseInt(response);
+  mapResponse(int groupPosition, String key, response) {
+    switch(key) {
+      case Const.KEY_VISIT_DATE:
+      case Const.KEY_FUTURE_VISIT_DATE:
+      case Const.KEY_HPHT:
+      case Const.KEY_HPL: return response?.toString();
+
+      case Const.KEY_WEEK:
+      case Const.KEY_WEIGHT:
+      case Const.KEY_WEIGHT_DIFF:
+      case Const.KEY_HEIGHT:
+      case Const.KEY_BABY_MOVEMENT:
+      case Const.KEY_TFU:
+      case Const.KEY_DJJ:
+      case Const.KEY_SYSTOLIC_PRESSURE:
+      case Const.KEY_DIASTOLIC_PRESSURE:
+      case Const.KEY_MAP: return parseInt(response);
+    }
+    return super.mapResponse(groupPosition, key, response);
+  }
 
   @override
   Future<bool> validateField(int groupPosition, String inputKey, response) async {
+    //prind("PregTrimFormVm validateField() group=$groupPosition key=$inputKey resp=$response");
     switch(inputKey) {
       case Const.KEY_WEEK:
       case Const.KEY_WEIGHT:
@@ -177,7 +206,7 @@ class KehamilankuCheckFormVm extends FormVmGroup {
   }) {
     if(!forceLoad && _pregnancyCheck.value != null) return;
     startJob(getPregnancyCheckKey, (isActive) async {
-      final motherNik = await VarDi.motherNik.waitForValue();
+      final motherNik = VarDi.motherNik.getOrElse();
       final checkUpId = tryGetResultValue(await _getPregnancyCheckUpId(motherNik, week));
       if(checkUpId != null) {
         _getPregnancyCheck(checkUpId).then((value) {
@@ -198,7 +227,7 @@ class KehamilankuCheckFormVm extends FormVmGroup {
   }) {
     if(!forceLoad && _formWarningStatusList.value != null) return;
     startJob(getMotherFormWarningStatusKey, (isActive) async {
-      final motherNik = await VarDi.motherNik.waitForValue();
+      final motherNik = VarDi.motherNik.getOrElse();
       final checkUpId = tryGetResultValue(await _getPregnancyCheckUpId(motherNik, week));
       if(checkUpId != null) {
         _getMotherFormWarningStatus(checkUpId).then((value) {
@@ -218,7 +247,7 @@ class KehamilankuCheckFormVm extends FormVmGroup {
   }) {
     if(!forceLoad && _pregnancyBabySize.value != null) return;
     startJob(getPregnancyBabySizeKey, (isActive) async {
-      final motherNik = await VarDi.motherNik.waitForValue();
+      final motherNik = VarDi.motherNik.getOrElse();
       final checkUpId = tryGetResultValue(await _getPregnancyCheckUpId(motherNik, pregnancyWeekAge));
       if(checkUpId != null) {
         _getPregnancyBabySize(checkUpId).then((value) {

@@ -167,9 +167,9 @@ class PregnancyRepoImpl with PregnancyRepo {
 }
 
 
-class MotherPregnancyRepoDummy with PregnancyRepo {
-  MotherPregnancyRepoDummy._();
-  static final obj = MotherPregnancyRepoDummy._();
+class PregnancyRepoDummy with PregnancyRepo {
+  PregnancyRepoDummy._();
+  static final obj = PregnancyRepoDummy._();
 
   @override
   Future<Result<List<MotherHomeBabyData>>> getMotherHomeData(String motherNik) async => Success(motherHomeData);

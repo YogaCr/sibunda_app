@@ -48,3 +48,24 @@ double? tryParseDouble(source, { double Function(dynamic)? onError }) {
     return onError(source);
   }
 }
+
+DateTime parseDate(source, { DateTime Function(dynamic)? onError }) {
+  final res = tryParseDate(source, onError: onError);
+  if(res != null) {
+    return res;
+  }
+  throw "Unknown type '${source.runtimeType}' to parse to `DateTime`";
+}
+DateTime? tryParseDate(source, { DateTime Function(dynamic)? onError }) {
+  if(source is DateTime) return source;
+  if(source is String) {
+    final res = DateTime.tryParse(source);
+    if(res != null) {
+      return res;
+    }
+  }
+
+  if(onError != null) {
+    return onError(source);
+  }
+}

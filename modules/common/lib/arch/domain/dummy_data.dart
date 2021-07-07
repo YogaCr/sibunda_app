@@ -1,5 +1,6 @@
 
 import 'package:common/arch/data/remote/model/kehamilanku_overview_api_model.dart';
+import 'package:common/arch/domain/model/_model_template.dart';
 import 'package:common/arch/domain/model/baby_data.dart';
 import 'package:common/arch/domain/model/img_data.dart';
 import 'package:common/arch/ui/model/home_graph_menu.dart';
@@ -25,6 +26,12 @@ import 'model/notif_data.dart';
 import 'model/profile_data.dart';
 
 final faker = Faker();
+
+final idStringList = List<IdStringModel>.generate(20, (index) => IdStringModel(
+  id: index,
+  name: faker.person.name(),
+));
+
 
 final dummyImg = ImgData(link: "", isLocal: true);
 final dummyImg_smillingCat = ImgData(link: "_smiling_cat.jpg", package: GlobalRoutes.common, isLocal: true);

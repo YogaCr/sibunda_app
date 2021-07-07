@@ -45,7 +45,16 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Cob',
       theme: Manifest.theme.materialData,
-      home: _FormPage(),
+      home: Scaffold(
+        body: Builder(
+          builder: (ctx) => IdStringPopup(
+            dataList: idStringList,
+            onItemClick: (id, name) => showSnackBar(ctx, "id = $id name = $name"),
+          ),
+        ),
+      ),
+
+    //_FormPage(),
       /*
       home: Scaffold(
         body: Column(
@@ -109,7 +118,7 @@ class _SplashPage extends StatelessWidget {
         ),
       ),
       computation: () async {
-        final api = DataApi(await CommonTestConst.getDummySession());
+        final api = DataApi(await TestUtil.getDummySession());
         final resp = await api.getCity();
 
         final ent = resp.map((e) => e.toEntityJson()).map((e) => CityEntity.fromJson(e)).toList(growable: false);

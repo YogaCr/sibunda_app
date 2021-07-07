@@ -1,4 +1,5 @@
 import 'package:common/arch/data/local/source/account_local_source.dart';
+import 'package:common/arch/data/local/source/data_local_source.dart';
 import 'package:common/arch/data/local/source/pregnancy_local_source.dart';
 import 'package:common/arch/di/db_di.dart';
 import 'package:common/util/prefs.dart';
@@ -13,4 +14,5 @@ class LocalSrcDi {
     sharedPref: Prefs.prefs,
   );
   static PregnancyLocalSrc get pregnancySrc => PregnancyLocalSrcImpl(sharedPref: Prefs.prefs);
+  static DataLocalSource get dataSrc => DataLocalSourceImpl(cityDao: DbDi.cityDao);
 }

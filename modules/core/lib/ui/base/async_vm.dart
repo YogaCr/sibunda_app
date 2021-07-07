@@ -99,18 +99,20 @@ abstract class AsyncVm extends ViewModel {
   /// Use this method to [cancelJob] the previous async process with the same [key].
   /// then [doPreAsyncTask] before finally do the [block] process async.
   @nonVirtual
-  void startJob(String key, Future<Fail?> Function(Val<bool> isActive) block) {
+  Future<void> startJob(String key, Future<Fail?> Function(Val<bool> isActive) block) {
     cancelJob(key);
     doPreAsyncTask(key);
+    Future<Fail?> future;
     final isActive = Var(true);
     final pair = Tuple2(CancelableOperation.fromFuture(
-        block(isActive).then((fail) {
+        (future = block(isActive)).then((fail) {
           if(fail != null) {
             doOnFailTask(key, fail);
           }
         })
     ), isActive);
     _jobMap[key] = pair;
+    return future;
   }
 
   @override

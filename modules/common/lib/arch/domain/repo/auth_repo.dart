@@ -188,10 +188,11 @@ class AuthApiRepo with AuthRepo {
 
 
 class AuthDummyRepo with AuthRepo {
-  static AuthDummyRepo? _instance;
+  //static AuthDummyRepo? _instance;
 
-  factory AuthDummyRepo() => _instance ??= AuthDummyRepo._();
+  //factory AuthDummyRepo() => _instance ??= AuthDummyRepo._();
   AuthDummyRepo._();
+  static final obj = AuthDummyRepo._();
 
   @override
   Future<Result<bool>> saveSignupData(SignUpData signup) async => Success(true);

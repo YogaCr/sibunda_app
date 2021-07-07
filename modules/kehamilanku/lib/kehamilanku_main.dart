@@ -1,8 +1,12 @@
 import 'package:common/config/manifest.dart';
+import 'package:common/test/__common_test_const.dart';
 import 'package:flutter/material.dart';
 import 'package:kehamilanku/config/kehamilanku_routes.dart';
 
-void main() => runApp(MyApp());
+void main() async {
+  await ConfigUtil.init();
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   @override
@@ -10,7 +14,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: KehamilankuRoutes.obj.name,
       theme: Manifest.theme.materialData,
-      home: KehamilankuRoutes.kehamilankuHomePage.build(context),
+      home: KehamilankuRoutes.kehamilankuHomePage.build(context), //Scaffold(body: Text("agaignao"),), //
     );
   }
 }

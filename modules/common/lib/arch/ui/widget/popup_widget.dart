@@ -1,4 +1,7 @@
+import 'package:common/arch/domain/model/_model_template.dart';
+import 'package:common/arch/ui/adapter/id_string_adp.dart';
 import 'package:common/arch/ui/widget/_basic_widget.dart';
+import 'package:common/res/string/_string.dart';
 import 'package:common/res/theme/_theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -57,6 +60,38 @@ class PopupSuccess extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+
+class IdStringPopup extends StatelessWidget {
+  final List<IdStringModel> dataList;
+  final void Function(int id, String name)? onItemClick;
+
+  IdStringPopup({
+    required this.dataList,
+    this.onItemClick,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final txtControl = TextEditingController();
+    return Column(
+      children: [
+        TxtInput(
+          label: Strings.search,
+          textController: txtControl,
+        ),
+        SizedBox(height: 15,),
+        Expanded(
+          child: IdStringListView(
+            dataList: dataList,
+            searchTxtControl: txtControl,
+            onItemClick: onItemClick,
+          ),
+        ),
+      ],
     );
   }
 }

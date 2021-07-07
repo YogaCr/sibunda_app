@@ -23,6 +23,9 @@ class KehamilankuVmDi {
     getMotherFormWarningStatus: KehamilankuUseCaseDi.getMotherFormWarningStatus,
     getPregnancyBabySize: KehamilankuUseCaseDi.getPregnancyBabySize,
     getPregnancyCheckForm: KehamilankuUseCaseDi.getPregnancyCheckForm,
+    getMotherHpl: UseCaseDi.getMotherHpl,
+    getMotherHpht: UseCaseDi.getMotherHpht,
+    getMotherNik: UseCaseDi.getMotherNik,
   );
   static PregnancyImmunizationVm get immunizationVm => PregnancyImmunizationVm(
     getMotherImmunizationGroupList: KehamilankuUseCaseDi.getMotherImmunizationGroupList,

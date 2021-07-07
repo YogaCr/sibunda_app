@@ -4,6 +4,7 @@ import 'package:common/arch/domain/usecase/mother_usecase.dart';
 import 'package:core/domain/model/result.dart';
 import 'package:core/ui/base/async_vm.dart';
 import 'package:core/ui/base/live_data.dart';
+import 'package:core/util/_consoles.dart';
 import 'package:core/util/val_util.dart';
 import 'package:kehamilanku/core/domain/usecase/home_usecase.dart';
 
@@ -41,9 +42,13 @@ class KehamilankuHomeVm extends AsyncVm {
   List<LiveData> get liveDatas => [_ageOverview, _trimesterList, _foodRecomList,];
 
   void getAgeOverview(String motherNik, [bool forceLoad = false]) {
+    prind("getAgeOverview() motherNik= $motherNik forceLoad = $forceLoad _ageOverview.value = ${_ageOverview.value}");
     if(!forceLoad && _ageOverview.value != null) return;
+    prind("getAgeOverview() LANJUT =====");
     startJob(getAgeOverviewKey, (isActive) async {
+      prind("getAgeOverview() startJob");
       _getPregnancyAgeOverview(motherNik).then((value){
+        prind("getAgeOverview() startJob then value = $value");
         if(value is Success<MotherPregnancyAgeOverview>) {
           final data = value.data;
           _ageOverview.value = data;
@@ -52,9 +57,12 @@ class KehamilankuHomeVm extends AsyncVm {
     });
   }
   void getTrimesterList([bool forceLoad = false]) {
+    prind("getTrimesterList() forceLoad = $forceLoad _trimesterList.value = ${_trimesterList.value}");
     if(!forceLoad && _trimesterList.value != null) return;
     startJob(getTrimesterListKey, (isActive) async {
+      prind("getTrimesterList() start");
       _getTrimesterList().then((value){
+        prind("getTrimesterList() start then value= $value");
         if(value is Success<List<MotherTrimester>>) {
           final data = value.data;
           _trimesterList.value = data;
@@ -65,8 +73,8 @@ class KehamilankuHomeVm extends AsyncVm {
   void getFoodRecomList([bool forceLoad = false]) {
     if(!forceLoad && _trimesterList.value != null) return;
     startJob(getFoodRecomListKey, (isActive) async {
-      final week = await VarDi.pregnancyWeek.waitForValue();
-      final motherNik = await VarDi.motherNik.waitForValue();
+      final week = VarDi.pregnancyWeek.getOrElse();
+      final motherNik = VarDi.motherNik.getOrElse();
 
       _getMotherFoodRecomList(motherNik, week).then((value) {
         if(value is Success<List<MotherFoodRecom>>) {
