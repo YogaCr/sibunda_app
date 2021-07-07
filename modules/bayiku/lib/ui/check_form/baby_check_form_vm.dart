@@ -19,7 +19,7 @@ class BabyCheckFormVm extends FormVmGroup {
   BabyCheckFormVm({
     required GetBabyNik getBabyNik,
     required GetBabyCheckForm getBabyCheckForm,
-    required GetBabyFromWarningStatus getBabyFromWarningStatus,
+    required GetBabyFormWarningStatus getBabyFromWarningStatus,
     required SaveBabyCheckForm saveBabyCheckForm,
     required GetBabyCheckFormAnswer getBabyCheckFormAnswer,
     //required SaveBabyCheckUpId saveBabyCheckUpId,
@@ -52,7 +52,7 @@ class BabyCheckFormVm extends FormVmGroup {
 
   final GetBabyNik _getBabyNik;
   final GetBabyCheckForm _getBabyCheckForm;
-  final GetBabyFromWarningStatus _getBabyFromWarningStatus;
+  final GetBabyFormWarningStatus _getBabyFromWarningStatus;
   final SaveBabyCheckForm _saveBabyCheckForm;
   final GetBabyCheckFormAnswer _getBabyCheckFormAnswer;
   //final SaveBabyCheckUpId _saveBabyCheckUpId;
@@ -63,6 +63,7 @@ class BabyCheckFormVm extends FormVmGroup {
   LiveData<List<FormWarningStatus>> get warningList => _warningList;
   LiveData<BabyMonthlyFormBody> get formAnswer => _formAnswer;
 
+  late int yearId;
   int currentMonth = 0;
   int _currentMonthForForm = 0;
 
@@ -72,13 +73,15 @@ class BabyCheckFormVm extends FormVmGroup {
     final maps = resps.responseGroups.values.toList(growable: false);
     final growthMap = maps.first;
 
-    final List<BabyMonthlyDevFormBody> devQs = maps.length <= 1
+    final List<Map<String, dynamic>> devQs = maps.length <= 1
         ? []
-        : maps[1].entries.map((e) => BabyMonthlyDevFormBody(
-           q_id: parseInt(e.key),
-           ans: e.value == Strings.yes ? 1 : 0,
-        )).toList(growable: false);
+        : maps[1].entries.map((e) => {
+          "q_id": parseInt(e.key),
+          "ans": e.value == Strings.yes ? 1 : 0,
+        }).toList(growable: false);
     growthMap[Const.KEY_PERKEMBANGAN_ANS] = devQs;
+    growthMap[Const.KEY_YEAR_ID] = yearId;
+    growthMap[Const.KEY_MONTH] = _currentMonthForForm;
 
     final body = BabyMonthlyFormBody.fromJson(growthMap);
     final res = await _saveBabyCheckForm(body);
@@ -102,12 +105,91 @@ class BabyCheckFormVm extends FormVmGroup {
 
   @override
   List<LiveData> get liveDatas => [];
+/*
+
+  id: null,
+  yearId: 1,
+  month: 3,
+  date: "2021-10-10",
+  location: "ITS",
+  checker: "Pak yo",
+  age: 10,
+  weight: 14,
+  height: 12,
+  headCircum: 15,
+  bmi: 10,
+  perkembangan_ans: [],
+ */
+/*
+
+  final int? id; //null if this acts as 'Body', not null if this acts as 'Response'
+  @JsonKey(name: Const.KEY_YEAR_ID)
+  final int yearId;
+  final int month;
+  final String date;
+  final String location;
+  @JsonKey(name: Const.KEY_CHECKER)
+  final String checker;
+  final int age; //in year, I guess
+  @JsonKey(name: Const.KEY_WEIGHT)
+  final num weight;
+  @JsonKey(name: Const.KEY_HEIGHT)
+  final num height;
+  @JsonKey(name: Const.KEY_HEAD_CIRCUM)
+  final num headCircum;
+  @JsonKey(name: Const.KEY_IMT)
+  final num bmi;
+  final List<BabyMonthlyDevFormBody>? perkembangan_ans;
+ */
 
   @override
-  Future<bool> validateField(int groupPosition, String inputKey, response) async =>
-      response is String ? response.isNotEmpty
-        : response is Set<int> ? response.isNotEmpty
-          : false;
+  Set<String>? get mappedKey => {
+    Const.KEY_MONTH,
+    Const.KEY_AGE,
+    Const.KEY_WEIGHT,
+    Const.KEY_HEIGHT,
+    Const.KEY_HEAD_CIRCUM,
+    Const.KEY_IMT,
+  };
+
+  @override
+  mapResponse(int groupPosition, String key, response) {
+    switch(key){
+      case Const.KEY_MONTH:
+      case Const.KEY_AGE: return parseInt(response);
+      case Const.KEY_WEIGHT:
+      case Const.KEY_HEIGHT:
+      case Const.KEY_HEAD_CIRCUM:
+      case Const.KEY_IMT: return parseNum(response);
+    }
+    return response;
+  }
+
+  @override
+  Future<bool> validateField(int groupPosition, String inputKey, response) async {
+    switch(inputKey){
+      case Const.KEY_MONTH:
+      case Const.KEY_AGE: return tryParseInt(response) != null;
+      case Const.KEY_WEIGHT:
+      case Const.KEY_HEIGHT:
+      case Const.KEY_HEAD_CIRCUM:
+      case Const.KEY_IMT: return tryParseNum(response) != null;
+    }
+    return super.validateField(groupPosition, inputKey, response);
+  }
+
+  @override
+  String getInvalidMsg(String inputKey, response) {
+    switch(inputKey){
+      case Const.KEY_MONTH:
+      case Const.KEY_AGE: return Strings.field_must_be_int;
+      case Const.KEY_WEIGHT:
+      case Const.KEY_HEIGHT:
+      case Const.KEY_HEAD_CIRCUM:
+      case Const.KEY_IMT: return Strings.field_must_be_number;
+    }
+    return super.getInvalidMsg(inputKey, response);
+  }
 
   void getWarningList({ bool forceLoad = false}) {
     if(!forceLoad && _warningList.value != null) return;

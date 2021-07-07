@@ -51,7 +51,7 @@ class KehamilankuCheckFormVm extends FormVmGroup {
       } else {
         resetResponses();
       }
-      _isFormEnabled = data == null;
+      //_isFormEnabled = data == null;
     });
     _lateInit();
   }

@@ -14,6 +14,7 @@ class Strings {
   static const email_has_already_registered = "Email sudah terdaftar";
   static const field_can_not_be_empty = "Isian tidak boleh kosong";
   static const field_must_be_number = "Isian harus berupa angka";
+  static const field_must_be_int = "Isian harus berupa angka bulat";
   static const please_check_the_wrong_field = "Mohon cek isian yang salah";
   static const please_type_correct_email = "Mohon masukan email yang benar";
   static const please_enter_your_name = "Mohon masukan nama Anda";

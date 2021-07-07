@@ -7,6 +7,7 @@ import 'package:bayiku/ui/home/baby_home_vm.dart';
 import 'package:bayiku/ui/immunization/baby_immunization_popup_vm.dart';
 import 'package:bayiku/ui/immunization/baby_immunization_vm.dart';
 import 'package:bayiku/ui/neonatal_service/neonatal_service_vm.dart';
+import 'package:common/arch/di/usecase_di.dart';
 import 'package:common/arch/domain/model/immunization.dart';
 
 class BabyVmDi {
@@ -19,6 +20,10 @@ class BabyVmDi {
   );
   static BabyCheckFormVm get babyCheckFormVm => BabyCheckFormVm(
     getBabyCheckForm: BabyUseCaseDi.getBabyCheckForm,
+    getBabyNik: BabyUseCaseDi.getBabyNik,
+    getBabyCheckFormAnswer: BabyUseCaseDi.getBabyCheckFormAnswer,
+    getBabyFromWarningStatus: BabyUseCaseDi.getBabyFormWarningStatus,
+    saveBabyCheckForm: BabyUseCaseDi.saveBabyCheckForm,
   );
   static NeonatalServiceVm get neonatalServiceVm => NeonatalServiceVm(
     getNeonatalFormData: BabyUseCaseDi.getNeonatalFormData,

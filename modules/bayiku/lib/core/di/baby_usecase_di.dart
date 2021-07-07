@@ -18,6 +18,7 @@ class BabyUseCaseDi {
   static GetBabyCheckForm get getBabyCheckForm => GetBabyCheckFormImpl(RepoDi.formFieldRepo);
   static SaveBabyCheckForm get saveBabyCheckForm => SaveBabyCheckFormImpl(RepoDi.myBabyRepo);
   static GetBabyCheckFormAnswer get getBabyCheckFormAnswer => GetBabyCheckFormAnswerImpl(RepoDi.myBabyRepo);
+  static GetBabyFormWarningStatus get getBabyFormWarningStatus => GetBabyFormWarningStatusImpl(RepoDi.myBabyRepo);
 
   static SaveBabyCheckUpId get saveBabyCheckUpId => SaveBabyCheckUpIdImpl(RepoDi.myBabyRepo);
   static GetBabyCheckUpId get getBabyCheckUpId => GetBabyCheckUpIdImpl(RepoDi.myBabyRepo);

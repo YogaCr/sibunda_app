@@ -10,7 +10,7 @@ mixin GetBabyCheckForm {
   Future<Result<List<FormGroupData>>> call(int month);
 }
 
-mixin GetBabyFromWarningStatus {
+mixin GetBabyFormWarningStatus {
   Future<Result<List<FormWarningStatus>>> call(String babyNik, int monthId);
 }
 
@@ -49,9 +49,9 @@ class GetBabyCheckFormImpl with GetBabyCheckForm {
   Future<Result<List<FormGroupData>>> call(int month) async => _repo.getBabyFormGroupData(month);
 }
 
-class GetBabyFromWarningStatusImpl with GetBabyFromWarningStatus {
+class GetBabyFormWarningStatusImpl with GetBabyFormWarningStatus {
   final MyBabyRepo _repo;
-  GetBabyFromWarningStatusImpl(this._repo);
+  GetBabyFormWarningStatusImpl(this._repo);
   @override
   Future<Result<List<FormWarningStatus>>> call(String babyNik, int monthId) => _repo.getBabyWarningStatus(babyNik, monthId);
 }
