@@ -1,4 +1,5 @@
 import 'package:common/arch/domain/dummy_form_field_data.dart';
+import 'package:common/arch/domain/model/_model_template.dart';
 import 'package:common/arch/domain/model/father.dart';
 import 'package:common/arch/ui/model/form_data.dart';
 import 'package:common/arch/ui/vm/form_vm.dart';
@@ -21,9 +22,26 @@ class FatherFormVm extends FormVmGroup {
   List<LiveData> get liveDatas => [];
 
   @override
-  Set<String>? get mappedKey => { Const.KEY_SALARY };
+  Set<String>? get mappedKey => {
+    Const.KEY_BIRTH_PLACE,
+    Const.KEY_BIRTH_DATE,
+  };
   @override
-  mapResponse(int groupPosition, String key, response) => double.parse(response);
+  mapResponse(int groupPosition, String key, response) {
+    switch(key) {
+      case Const.KEY_BIRTH_PLACE:
+        if(response is IdStringModel) {
+          return response.id;
+        }
+        throw "Expected type of response with `key` of '$key' is `IdStringModel`";
+      case Const.KEY_BIRTH_DATE:
+        if(response is DateTime) {
+          return response.toString();
+        }
+        throw "Expected type of response with `key` of '$key' is `DateTime`";
+    }
+    return super.mapResponse(groupPosition, key, response);
+  }
 
   @override
   Future<Result<String>> doSubmitJob() async {
@@ -34,7 +52,7 @@ class FatherFormVm extends FormVmGroup {
 
   @override
   Future<List<FormUiGroupData>> getFieldGroupList() async => formDataListToUi(fatherFormData);
-
+/*
   @override
   Future<bool> validateField(int groupPosition, String inputKey, response) async {
     switch(inputKey) {
@@ -50,6 +68,7 @@ class FatherFormVm extends FormVmGroup {
     }
     return defaultInvalidMsg;
   }
+ */
 }
 
 /*

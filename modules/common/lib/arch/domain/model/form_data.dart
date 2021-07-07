@@ -1,4 +1,8 @@
+import 'package:common/arch/data/remote/model/baby_check_form_api_model.dart';
+import 'package:common/arch/data/remote/model/covid_check_api_model.dart';
+import 'package:common/arch/domain/dummy_form_field_data.dart';
 import 'package:common/arch/domain/model/img_data.dart';
+import 'package:common/res/string/_string.dart';
 import 'package:common/util/collections.dart';
 import 'package:core/ui/base/live_data.dart';
 
@@ -13,6 +17,9 @@ enum FieldInputMethod {
 
   /// Only for [FormType.text]
   pickDate,
+
+  /// Only for [FormType.text]
+  pickTime,
 
   /// User can input by pick provided selection.
   /// Only for [FormType.text]
@@ -39,6 +46,31 @@ class FormData {
     this.input = FieldInputMethod.direct,
     this.isInputEnabled = false,
   });
+
+  factory FormData.fromBabyDevResponse(BabyCheckDevFormDataResponse response) {
+    final imgList = response.img_url != null ? [
+      ImgData(
+        link: response.img_url!,
+        isLocal: false,
+      )
+    ] : null;
+    return FormData(
+      key: response.id.toString(),
+      question: response.question,
+      type: FormType.radio,
+      img: imgList,
+      options: radioBinaryOption_yesNo,
+    );
+  }
+
+  factory FormData.fromCovidResponse(CovidFormDataResponse response) {
+    return FormData(
+      key: response.id.toString(),
+      question: response.question,
+      type: FormType.radio,
+      options: radioBinaryOption_yesNo,
+    );
+  }
 }
 
 class FormOption {
@@ -66,6 +98,15 @@ class FormGroupData {
   }) => FormGroupData._(
     header: header,
     data: distinctList(data, selector: (e) => e.key),  // filter first to assure that `key` is unique.
+  );
+
+  factory FormGroupData.fromBabyDevResponse(List<BabyCheckDevFormDataResponse> responses) => FormGroupData(
+    header: Strings.baby_dev_form,
+    data: responses.map((e) => FormData.fromBabyDevResponse(e)).toList(growable: false),
+  );
+  factory FormGroupData.fromCovidResponse(List<CovidFormDataResponse> responses) => FormGroupData(
+    header: Strings.covid_check_form,
+    data: responses.map((e) => FormData.fromCovidResponse(e)).toList(growable: false),
   );
 }
 

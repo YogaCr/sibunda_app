@@ -1,4 +1,5 @@
 
+import 'package:common/arch/data/remote/model/baby_check_form_api_model.dart';
 import 'package:common/arch/data/remote/model/kehamilanku_overview_api_model.dart';
 import 'package:common/arch/domain/model/_model_template.dart';
 import 'package:common/arch/domain/model/baby_data.dart';
@@ -28,7 +29,7 @@ import 'model/profile_data.dart';
 final faker = Faker();
 
 final idStringList = List<IdStringModel>.generate(20, (index) => IdStringModel(
-  id: index,
+  id: index +1100,
   name: faker.person.name(),
 ));
 
@@ -53,7 +54,7 @@ final dummySessionData1 = SessionData(token: dummyAccessToken, tokenType: dummyA
 final dummyFather = Father(
   name: "Pak Jo",
   nik: "15000",
-  salary: 21000,
+  salary: "Asuransi",
   jkn: "JKN Kis 10",
   faskes1: "Kamar rumah",
   faskesRujukan: "Puskesmas 10",
@@ -69,7 +70,7 @@ final dummyFather = Father(
 final dummyMother = Mother(
   name: "Bu Lan",
   nik: "15001",
-  salary: 0,
+  salary: "Auransi",
   jkn: "JKN Kis 11",
   faskes1: "Kamar rumah",
   faskesRujukan: "Puskesmas 10",
@@ -135,6 +136,21 @@ PregnancyCheck dummyPregnancyCheck(int week) => PregnancyCheck(
   drugAllergy: "-",
   diseaseHistory: "-",
   note: "-",
+);
+
+final babyMonthlyFormBody = BabyMonthlyFormBody(
+  id: null,
+  yearId: 1,
+  month: 3,
+  date: "2021-10-10",
+  location: "ITS",
+  checker: "Pak yo",
+  age: 10,
+  weight: 14,
+  height: 12,
+  headCircum: 15,
+  bmi: 10,
+  perkembangan_ans: [],
 );
 
 final dummyTrimesterList = <MotherTrimester>[

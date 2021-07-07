@@ -13,6 +13,7 @@ class Const {
   static const ENDPOINT_PREGNANCY = "$ENDPOINT_ROOT/kehamilanku";
   static const ENDPOINT_BABY = "$ENDPOINT_ROOT/anaku";
   static const ENDPOINT_DATA = "$ENDPOINT_ROOT/data";
+  static const ENDPOINT_COVID = "$ENDPOINT_ROOT/covid";
 
   static const CLIENT_SECRET = "5xnEHfLiRiyyRGrez97iEmqzTB4h48IWr5DnHEuO";
   static const CLIENT_ID = 2;
@@ -146,6 +147,7 @@ class Const {
   static const KEY_CATATAN_PENTING = "catatan_penting";
 
   static const KEY_INPUT = "input";
+  static const KEY_PERKEMBANGAN_ANS = 'perkembangan_ans';
 
   static const KEY_IMMUNIZATION_DATE = "tanggal_imunisasi";
   static const KEY_IMMUNIZATION_PLACE = "tempat_imunisasi";

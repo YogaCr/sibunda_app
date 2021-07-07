@@ -5,9 +5,13 @@ int parseInt(source, { int radix = 10, int Function(dynamic)? onError }) {
   }
   throw "Unknown type '${source.runtimeType}' to parse to `int`";
 }
-int? tryParseInt(source, { int radix = 10, int Function(dynamic)? onError }) {
+int? tryParseInt(source, {
+  int radix = 10,
+  int Function(dynamic)? onError,
+  bool inclusiveAllNum = true,
+}) {
   if(source is int) return source;
-  if(source is num) return source.toInt();
+  if(inclusiveAllNum && source is num) return source.toInt();
   if(source is String) return int.parse(source, onError: onError);
 
   if(onError != null) {

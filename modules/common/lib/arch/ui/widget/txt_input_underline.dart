@@ -154,6 +154,4 @@ class TxtInputUnderlineState extends State<TxtInputUnderline> {
       ],
     );
   }
-
-
 }

@@ -108,7 +108,19 @@ class BabyChartRepoImpl with BabyChartRepo {
     }
   }
   @override
-  Future<Result<List<BabyDevChartData>>> getBabyDevChartData(String babyNik) async => Success(babyDevChartData);
+  Future<Result<List<BabyDevChartData>>> getBabyDevChartData(String babyNik) async {
+    try {
+      final res = await _accountLocalSrc.getChildId(babyNik);
+      if(res is Success<int>) {
+        final id = res.data;
+        return Success(await _api.getDevChart(id));
+      } else {
+        return Fail();
+      }
+    } catch(e) {
+      return Fail();
+    }
+  }
 
   @override
   Future<Result<List<FormWarningStatus>>> getBabyWeightChartWarning(String babyNik) async => Success(babyWeightWarning);

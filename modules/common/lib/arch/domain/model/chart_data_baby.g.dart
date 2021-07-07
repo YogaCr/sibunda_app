@@ -145,3 +145,20 @@ Map<String, dynamic> _$BabyBmiChartDataToJson(BabyBmiChartData instance) =>
       'plus_3_sd': instance.plus3sd,
       'input': instance.observed,
     };
+
+BabyDevChartData _$BabyDevChartDataFromJson(Map<String, dynamic> json) {
+  return BabyDevChartData(
+    age: json['month'] as int,
+    normalLimit: json['s_threshold'] as int,
+    doubtedLimit: json['m_threshold'] as int,
+    observed: json['input'] as int,
+  );
+}
+
+Map<String, dynamic> _$BabyDevChartDataToJson(BabyDevChartData instance) =>
+    <String, dynamic>{
+      'month': instance.age,
+      's_threshold': instance.normalLimit,
+      'm_threshold': instance.doubtedLimit,
+      'input': instance.observed,
+    };

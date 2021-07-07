@@ -41,7 +41,7 @@ class BabyMonthlyFormBody {
   final num headCircum;
   @JsonKey(name: Const.KEY_IMT)
   final num bmi;
-  final List<BabyMonthlyDevFormBody>? perkembangan_ans;
+  final List<BabyMonthlyDevFormBody>? perkembangan_ans; // For now, this will be null even if this class acts as Response, because that's the format from server.
 
   BabyMonthlyFormBody({
     required this.id,

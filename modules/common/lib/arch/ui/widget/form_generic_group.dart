@@ -123,6 +123,21 @@ class _FormGenericGroupState
                 );
                 responseRepresentator = (resp) => getTextForTextController(resp);
                 break;
+              case FieldInputMethod.pickTime:
+                final timeNow = TimeOfDay.now();
+                suffixIcon = InkWell(
+                  onTap: () async {
+                    final pickedTime = await showTimePicker(
+                      context: context,
+                      initialTime: timeNow,
+                    );
+                    //prind("onTap pickedDate = $pickedDate LUAR");
+                    vmLiveData.value = pickedTime;
+                  },
+                  child: Icon(Icons.access_time),
+                );
+                responseRepresentator = (resp) => getTextForTextController(resp);
+                break;
               case FieldInputMethod.pick:
                 suffixIcon = pickerIconBuilder?.call(groupPosition, key, vmLiveData) ?? InkWell(
                   onTap: () {
@@ -136,7 +151,7 @@ class _FormGenericGroupState
                 //suffixIcon = pickerIconBuilder?.call(groupPosition, key, vmLiveData); //TODO: for now, the direct input method can only be input by texting directly.
             }
 
-            final enabled = this.enabled && itemData.isInputEnabled;
+            final enabled = this.enabled && vm.isFormEnabled && itemData.isInputEnabled;
             if(!enabled && responseRepresentator == null) {
               responseRepresentator = (resp) => vm.getResponseStringRepr(groupPosition, key, resp);
             }
@@ -200,7 +215,7 @@ class _FormGenericGroupState
               invalidMsgGenerator: (response) => vm.getInvalidMsg(key, groupValue.value),
               groupValueLiveData: groupValue,
               imgPosition: imgPosition,
-              enabled: enabled && itemData.isInputEnabled,
+              enabled: enabled && vm.isFormEnabled && itemData.isInputEnabled,
             );
 
             vmLiveData.observe(this, (data) {
@@ -231,7 +246,7 @@ class _FormGenericGroupState
               invalidMsgGenerator: (response) => vm.getInvalidMsg(key, selectedAnswerIndices.value),
               selectedIndicesLiveData: selectedAnswerIndices,
               imgPosition: imgPosition,
-              enabled: enabled && itemData.isInputEnabled,
+              enabled: enabled && vm.isFormEnabled && itemData.isInputEnabled,
             );
 
             vmLiveData.observe(this, (data) {

@@ -44,6 +44,15 @@ class KehamilankuCheckFormVm extends FormVmGroup {
     currentWeek.observe(this, (week) {
       setResponse(0, Const.KEY_WEEK, week);
     });
+    pregnancyCheck.observe(this, (data) {
+      if(data != null) {
+        final map = data.toJson();
+        patchResponse([map]);
+      } else {
+        resetResponses();
+      }
+      _isFormEnabled = data == null;
+    });
     _lateInit();
   }
 
@@ -67,6 +76,10 @@ class KehamilankuCheckFormVm extends FormVmGroup {
 
   MutableLiveData<int> currentWeek = MutableLiveData();
   late int currentTrimesterId;
+
+  bool _isFormEnabled = true;
+  @override
+  bool get isFormEnabled => _isFormEnabled;
 
   void _lateInit() async {
     final res1 = await _getMotherNik();

@@ -43,8 +43,8 @@ final motherFormData = <FormGroupData>[
     FormData(key: Const.KEY_FASKES1, question: Strings.faskes1, type: FormType.text,),
     FormData(key: Const.KEY_FASKES_RUJUKAN, question: Strings.faskes_rujukan, type: FormType.text,),
     FormData(key: Const.KEY_BLOOD_TYPE, question: Strings.blood_type, type: FormType.text,),
-    FormData(key: Const.KEY_BIRTH_PLACE, question: Strings.birth_place, type: FormType.text,),
-    FormData(key: Const.KEY_BIRTH_DATE, question: Strings.birth_date, type: FormType.text,),
+    FormData(key: Const.KEY_BIRTH_PLACE, question: Strings.birth_place, type: FormType.text, input: FieldInputMethod.pick,),
+    FormData(key: Const.KEY_BIRTH_DATE, question: Strings.birth_date, type: FormType.text, input: FieldInputMethod.pickDate,),
     FormData(key: Const.KEY_EDUCATION, question: Strings.education, type: FormType.text,),
     FormData(key: Const.KEY_OCCUPANCY, question: Strings.occupancy, type: FormType.text,),
     FormData(key: Const.KEY_ADDRESS, question: Strings.address, type: FormType.text,),
@@ -63,8 +63,8 @@ final fatherFormData = <FormGroupData>[
     FormData(key: Const.KEY_FASKES1, question: Strings.faskes1, type: FormType.text,),
     FormData(key: Const.KEY_FASKES_RUJUKAN, question: Strings.faskes_rujukan, type: FormType.text,),
     FormData(key: Const.KEY_BLOOD_TYPE, question: Strings.blood_type, type: FormType.text,),
-    FormData(key: Const.KEY_BIRTH_PLACE, question: Strings.birth_place, type: FormType.text,),
-    FormData(key: Const.KEY_BIRTH_DATE, question: Strings.birth_date, type: FormType.text,),
+    FormData(key: Const.KEY_BIRTH_PLACE, question: Strings.birth_place, type: FormType.text, input: FieldInputMethod.pick,),
+    FormData(key: Const.KEY_BIRTH_DATE, question: Strings.birth_date, type: FormType.text, input: FieldInputMethod.pickDate,),
     FormData(key: Const.KEY_EDUCATION, question: Strings.education, type: FormType.text,),
     FormData(key: Const.KEY_OCCUPANCY, question: Strings.occupancy, type: FormType.text,),
     FormData(key: Const.KEY_ADDRESS, question: Strings.address, type: FormType.text,),
@@ -78,10 +78,10 @@ final childFormData = <FormGroupData>[
     FormData(key: Const.KEY_NIK, question: Strings.nik, type: FormType.text,),
     FormData(key: Const.KEY_JKN, question: Strings.jkn, type: FormType.text,),
     FormData(key: Const.KEY_BLOOD_TYPE, question: Strings.blood_type, type: FormType.text,),
-    FormData(key: Const.KEY_BIRTH_PLACE, question: Strings.birth_place, type: FormType.text,),
-    FormData(key: Const.KEY_BIRTH_DATE, question: Strings.birth_date, type: FormType.text,),
+    FormData(key: Const.KEY_BIRTH_PLACE, question: Strings.birth_place, type: FormType.text, input: FieldInputMethod.pick,),
+    FormData(key: Const.KEY_BIRTH_DATE, question: Strings.birth_date, type: FormType.text, input: FieldInputMethod.pickDate,),
     FormData(key: Const.KEY_CHILD_ORDER, question: Strings.child_order, type: FormType.text,),
-    FormData(key: Const.KEY_GENDER, question: Strings.gender, type: FormType.text,),
+    FormData(key: Const.KEY_BABY_GENDER, question: Strings.gender, type: FormType.text,),
     FormData(key: Const.KEY_BIRTH_CERT_NO, question: Strings.birth_cert_no, type: FormType.text,),
     FormData(key: Const.KEY_JKN_START_DATE, question: Strings.jkn_start_date, type: FormType.text,),
     FormData(key: Const.KEY_BABY_COHORT_REG, question: Strings.baby_cohort_no, type: FormType.text,),
@@ -98,7 +98,7 @@ List<FormGroupData> getBabyFormGroupData_dummy(int month) {
 
 final babyFormGroupData_growth = <FormGroupData>[
   FormGroupData(
-    header: "Form Pemeriksaan Pertumbuhan Bayi",
+    header: Strings.baby_growth_form,
     data: [
       FormData(key: Const.KEY_DATE, question: "Tanggal Periksa", type: FormType.text,),
       FormData(key: Const.KEY_PLACE, question: "Tempat Periksa", type: FormType.text,),
@@ -171,31 +171,154 @@ final babyFormGroupData2 = <FormGroupData>[
 final babyNeonatalServicePages = [
   "0-6 Jam", "KN 1", "KN 2", "KN 3",
 ];
-final babyFormGroupData_neonatal = <FormGroupData>[
+
+final radioBinaryOption_haveNot = <FormOption>[
+  FormOption(label: "Sudah", isSelected: false),
+  FormOption(label: "Belum", isSelected: false),
+];
+final radioBinaryOption_yesNo = <FormOption>[
+  FormOption(label: Strings.yes, isSelected: false),
+  FormOption(label: Strings.no, isSelected: false),
+];
+
+List<FormGroupData> getBabyNeonatalService(int page) {
+  switch(page) {
+    case 0: return babyFormGroupData_neonatal_6h;
+    case 1: return babyFormGroupData_neonatal_kn1;
+    case 2: return babyFormGroupData_neonatal_kn2;
+    case 3: return babyFormGroupData_neonatal_kn3;
+  }
+  throw "No such page in neonatal service page '$page'";
+}
+
+final babyFormGroupData_neonatal_6h = <FormGroupData>[
   FormGroupData(
     header: "Kondisi",
     data: [
       FormData(key: Const.KEY_WEIGHT, question: "Berat Badan (kg)", type: FormType.text,),
       FormData(key: Const.KEY_HEIGHT, question: "Panjang/Tinggi Badan (cm)", type: FormType.text,),
       FormData(key: Const.KEY_HEAD_CIRCUM, question: "Lingkar Kepala (cm)", type: FormType.text,),
-      FormData(key: "key1", question: "Inisiasi Menyusui Dini (IMD)", type: FormType.radio,
+      FormData(key: "q_imd", question: "Inisiasi Menyusui Dini (IMD)", type: FormType.radio,
+        options: radioBinaryOption_haveNot,
+      ),
+      FormData(key: "q_vit_k1", question: "Vit K1", type: FormType.radio,
+          options: radioBinaryOption_haveNot
+      ),
+      FormData(key: "q_salep", question: "Salep/Tetes Mata", type: FormType.radio,
+          options: radioBinaryOption_haveNot
+      ),
+      FormData(key: "q_imunisasi_hb", question: "Imunisasi HB", type: FormType.radio,
+          options: radioBinaryOption_haveNot
+      ),
+      FormData(key: Const.KEY_DATE, question: "Tanggal", type: FormType.text, input: FieldInputMethod.pickDate,),
+      FormData(key: Const.KEY_TIME, question: "Jam", type: FormType.text, input: FieldInputMethod.pickTime,),
+      FormData(key: Const.KEY_NO_BATCH, question: "Nomor Batch", type: FormType.text,),
+      FormData(key: "dirujuk_ke", question: "Dirujuk ke", type: FormType.text,),
+      FormData(key: "petugas", question: "Nama Jelas Petugas", type: FormType.text,),
+      FormData(key: "catatan_penting", question: "Catatan Penting", type: FormType.text,),
+    ],
+  ),
+];
+final babyFormGroupData_neonatal_kn1 = <FormGroupData>[
+  FormGroupData(
+    header: "Kondisi",
+    data: [
+      FormData(key: "q_menyusu", question: "Menyusu", type: FormType.radio,
+        options: radioBinaryOption_haveNot,
+      ),
+      FormData(key: "q_tali_pusat", question: "Tali Pusat", type: FormType.radio,
+        options: radioBinaryOption_haveNot,
+      ),
+      FormData(key: "q_vit_k1", question: "Vit K1", type: FormType.radio,
+          options: radioBinaryOption_haveNot
+      ),
+      FormData(key: "q_salep", question: "Salep/Tetes Mata", type: FormType.radio,
+          options: radioBinaryOption_haveNot
+      ),
+      FormData(key: "q_imunisasi_hb", question: "Imunisasi HB", type: FormType.radio,
+          options: radioBinaryOption_haveNot
+      ),
+      FormData(key: Const.KEY_DATE, question: "Tanggal", type: FormType.text, input: FieldInputMethod.pickDate,),
+      FormData(key: Const.KEY_TIME, question: "Jam", type: FormType.text, input: FieldInputMethod.pickTime,),
+      FormData(key: Const.KEY_NO_BATCH, question: "Nomor Batch", type: FormType.text,),
+      FormData(key: Const.KEY_WEIGHT, question: "Berat Badan (kg)", type: FormType.text,),
+      FormData(key: Const.KEY_HEIGHT, question: "Panjang/Tinggi Badan (cm)", type: FormType.text,),
+      FormData(key: Const.KEY_HEAD_CIRCUM, question: "Lingkar Kepala (cm)", type: FormType.text,),
+      FormData(key: "q_skrining_hipotiroid_kongenital", question: "Skrining Hipotiroid Kongenital", type: FormType.radio,
+        options: radioBinaryOption_haveNot,
+      ),
+      FormData(key: "masalah", question: "Masalah", type: FormType.text,),
+      FormData(key: "dirujuk_ke", question: "Dirujuk ke", type: FormType.text,),
+      FormData(key: "petugas", question: "Nama Jelas Petugas", type: FormType.text,),
+      FormData(key: "catatan_penting", question: "Catatan Penting", type: FormType.text,),
+    ],
+  ),
+];
+final babyFormGroupData_neonatal_kn2 = <FormGroupData>[
+  FormGroupData(
+    header: "Kondisi",
+    data: [
+      FormData(key: "q_menyusu", question: "Menyusu", type: FormType.radio,
+        options: radioBinaryOption_haveNot,
+      ),
+      FormData(key: "q_tali_pusat", question: "Tali Pusat", type: FormType.radio,
+        options: radioBinaryOption_haveNot,
+      ),
+      FormData(key: "q_tanda_bahaya", question: "Tanda bahaya", type: FormType.radio,
+          options: radioBinaryOption_haveNot
+      ),
+      FormData(key: "q_identifikasi_kuning", question: "Identifikasi kuning", type: FormType.radio,
+          options: radioBinaryOption_haveNot
+      ),
+      FormData(key: "q_imunisasi_hb", question: "Imunisasi HB", type: FormType.radio,
+          options: radioBinaryOption_haveNot
+      ),
+      FormData(key: Const.KEY_DATE, question: "Tanggal", type: FormType.text, input: FieldInputMethod.pickDate,),
+      FormData(key: Const.KEY_TIME, question: "Jam", type: FormType.text, input: FieldInputMethod.pickTime,),
+      FormData(key: Const.KEY_NO_BATCH, question: "Nomor Batch", type: FormType.text,),
+      FormData(key: Const.KEY_WEIGHT, question: "Berat Badan (kg)", type: FormType.text,),
+      FormData(key: Const.KEY_HEIGHT, question: "Panjang/Tinggi Badan (cm)", type: FormType.text,),
+      FormData(key: Const.KEY_HEAD_CIRCUM, question: "Lingkar Kepala (cm)", type: FormType.text,),
+      FormData(key: "q_skrining_hipotiroid_kongenital", question: "Skrining Hipotiroid Kongenital", type: FormType.radio,
+        options: radioBinaryOption_haveNot,
+      ),
+      FormData(key: "masalah", question: "Masalah", type: FormType.text,),
+      FormData(key: "dirujuk_ke", question: "Dirujuk ke", type: FormType.text,),
+      FormData(key: "petugas", question: "Nama Jelas Petugas", type: FormType.text,),
+      FormData(key: "catatan_penting", question: "Catatan Penting", type: FormType.text,),
+    ],
+  ),
+];
+final babyFormGroupData_neonatal_kn3 = <FormGroupData>[
+  FormGroupData(
+    header: "Kondisi",
+    data: [
+      FormData(key: "q_menyusu", question: "Menyusu", type: FormType.radio,
+        options: radioBinaryOption_haveNot,
+      ),
+      FormData(key: "q_tali_pusat", question: "Tali Pusat", type: FormType.radio,
+        options: radioBinaryOption_haveNot,
+      ),
+      FormData(key: "q_tanda_bahaya", question: "Tanda bahaya", type: FormType.radio,
+          options: radioBinaryOption_haveNot
+      ),
+      FormData(key: "q_identifikasi_kuning", question: "Identifikasi kuning", type: FormType.radio,
+          options: radioBinaryOption_haveNot
+      ),
+      FormData(key: "q_kuning", question: "Berikan tanda pada bagian tubuh mana bayi tampak kuning dengan memilih angka",
+        type: FormType.check,
         options: [
-          FormOption(label: "Sudah", isSelected: false),
-          FormOption(label: "Belum", isSelected: false),
+          FormOption(label: "1", isSelected: false),
+          FormOption(label: "2", isSelected: false),
+          FormOption(label: "3", isSelected: false),
+          FormOption(label: "4", isSelected: false),
+          FormOption(label: "5", isSelected: false),
         ],
       ),
-      FormData(key: "key2", question: "Vit K1", type: FormType.radio,
-        options: [
-          FormOption(label: "Sudah", isSelected: false),
-          FormOption(label: "Belum", isSelected: false),
-        ],
-      ),
-      FormData(key: "key3", question: "Salep/Tetes Mata", type: FormType.radio,
-        options: [
-          FormOption(label: "Sudah", isSelected: false),
-          FormOption(label: "Belum", isSelected: false),
-        ],
-      ),
+      FormData(key: "masalah", question: "Masalah", type: FormType.text,),
+      FormData(key: "dirujuk_ke", question: "Dirujuk ke", type: FormType.text,),
+      FormData(key: "petugas", question: "Nama Jelas Petugas", type: FormType.text,),
+      FormData(key: "catatan_penting", question: "Catatan Penting", type: FormType.text,),
     ],
   ),
 ];
@@ -316,7 +439,7 @@ final babyImmunizationFormGroupData = <FormGroupData>[
 
 final covidMotherCheckFormGroupData = <FormGroupData>[
   FormGroupData(
-    header: "Form Pemeriksaan Gejala Covid-19",
+    header: Strings.covid_check_form,
     data: [
       FormData(key: "key1", question: "Apakah bayi mengalami demam atau ada riwayat demam?", type: FormType.radio,
         options: [

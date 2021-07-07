@@ -1,5 +1,6 @@
 
 
+import 'package:common/arch/data/local/source/check_up_local_source.dart';
 import 'package:common/arch/data/remote/api/kehamilanku_api.dart';
 import 'package:common/arch/data/remote/model/kehamilanku_form_api_model.dart';
 import 'package:common/arch/data/remote/model/kehamilanku_form_warning_api_model.dart';
@@ -37,7 +38,15 @@ mixin PregnancyRepo {
 
 class PregnancyRepoImpl with PregnancyRepo {
   final KehamilankuApi _api;
-  PregnancyRepoImpl(this._api);
+  final CheckUpLocalSrc _checkUpLocalSrc;
+
+  PregnancyRepoImpl({
+    required KehamilankuApi api,
+    required CheckUpLocalSrc checkUpLocalSrc,
+  }):
+    _api = api,
+    _checkUpLocalSrc = checkUpLocalSrc
+  ;
 
   // ====== Home ==========
   /// We only use 1 home data because in endpoint only serve for one.
@@ -89,10 +98,14 @@ class PregnancyRepoImpl with PregnancyRepo {
   PregnancyCheckUpId? _currentCheckUpId;
 
   // ====== Check ==========
-  @override //TODO: dummy in impl
-  Future<Result<int>> getPregnancyCheckId(String motherNik, int week) async => Success(1);
-  @override //TODO: dummy in impl
-  Future<Result<bool>> savePregnancyCheckId(PregnancyCheckUpId checkUpId) async => Success(true);
+  @override
+  Future<Result<int>> getPregnancyCheckId(String motherNik, int week) => _checkUpLocalSrc.getCheckUpId(period: week, nik: motherNik);
+  @override
+  Future<Result<bool>> savePregnancyCheckId(PregnancyCheckUpId checkUpId) => _checkUpLocalSrc.saveCheckUpId(
+    id: checkUpId.id,
+    period: checkUpId.week,
+    nik: checkUpId.motherNik,
+  );
   @override
   Future<Result<PregnancyCheck>> getPregnancyCheck(PregnancyCheckUpId checkUpId) async {
     try {

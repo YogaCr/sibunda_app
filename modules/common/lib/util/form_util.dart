@@ -1,6 +1,7 @@
 import 'package:common/util/times.dart';
 import 'package:core/util/_consoles.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 Future<void> setTextForTextController(
   TextEditingController controller,
@@ -38,18 +39,15 @@ Future<void> setTextForTextController(
   }
 }
 
-String getTextForTextController(any) {
+String getTextForTextController(any, { BuildContext? context }) {
   //prind("setTextForTextController() any= $any any?.runtimeType= ${any?.runtimeType}");
-  String? str;
-  switch(any?.runtimeType) {
-    case String: str = any;
-      break;
-    case DateTime:
-      str = syncFormatTime(any);
-      break;
-    default:
-      str = any?.toString() ?? "";
+  if(any is String) return any;
+  if(any is DateTime) return syncFormatTime(any);
+  if(any is TimeOfDay) {
+    if(context == null) {
+      return any.toString();
+    }
+    return any.format(context);
   }
-  //prind("setTextForTextController() str= $str afterChanged == null => ${afterChanged == null} AKHIR DW");
-  return str ?? "";
+  return any?.toString() ?? "";
 }

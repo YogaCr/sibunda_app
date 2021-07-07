@@ -17,6 +17,7 @@ mixin FormVmGroupMixin implements AsyncVm {
   static const submitFormKey = "submitForm";
 
   LiveData<bool> get isFormReady;
+  bool get isFormEnabled => true;
 
   List<MutableLiveData<FormUiGroupData>> get _fieldGroupList;
   //List<Map<String, MutableLiveData<bool>>> get _isResponseValidList;
@@ -196,6 +197,8 @@ abstract class FormVmGroup extends AsyncVm with FormVmGroupMixin {
   @override
   LiveData<bool> get isFormReady => _isFormReady;
 
+  bool _isReseting = false;
+
   //List<void Function()> _onReadyCallbacks = [];
 
   void _assertFormReady() {
@@ -220,12 +223,16 @@ abstract class FormVmGroup extends AsyncVm with FormVmGroupMixin {
           final isValidData = MutableLiveData<bool>();
           isValidData.observe(this, (isValid) {
             //prind("isValidData.observe() formData.key = ${formData.key} isValid = $isValid");
-            _checkCanProceed();
+            if(!_isReseting) {
+              _checkCanProceed();
+            }
           }, tag: "FormVmGroup ${formData.key}",);
           final responseData = MutableLiveData();
           responseData.observe(this, (response) async {
-            final isValid = await validateField(i2, formData.key, response);
-            isValidData.value = isValid;
+            if(!_isReseting) {
+              final isValid = await validateField(i2, formData.key, response);
+              isValidData.value = isValid;
+            }
             //prind("responseData.observe() validateField() formData.key = ${formData.key} isValid = $isValid");
 /*
             .then((isValid) {
@@ -261,6 +268,19 @@ abstract class FormVmGroup extends AsyncVm with FormVmGroupMixin {
         }
       }
     }
+  }
+  @protected
+  void resetResponses() {
+    _isReseting = true;
+    for(final group in _responseGroupList) {
+      for(final e in group.values) {
+        e.response.value = null;
+        e.isValid.value = null;
+      }
+    }
+    _canProceed.value = null;
+    _onSubmit.value = null;
+    _isReseting = false;
   }
   @protected
   void setResponse(int group, String key, response) {

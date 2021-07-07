@@ -63,9 +63,9 @@ class GetStartedFormMainVm extends AsyncVm {
   ];
 
 
-  void sendData() {
+  Future<void> sendData() {
     prind("sendData()");
-    startJob(sendDataKey, (isActive) async {
+    return startJob(sendDataKey, (isActive) async {
       final signup = _signup.data.value;
       final mother = _saveMotherData.data.value;
       final father = _saveFatherData.data.value;

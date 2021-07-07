@@ -1,7 +1,12 @@
 
-abstract class Result<T> {
+import 'package:equatable/equatable.dart';
+
+abstract class Result<T> extends Equatable {
   final int code;
   Result([this.code = 0]);
+
+  @override
+  List<Object?> get props => [code];
 }
 
 class Success<T> extends Result<T> {
@@ -14,12 +19,15 @@ class Success<T> extends Result<T> {
   [
     this.code = 0,
   ]) : super(code);
+
+  @override
+  List<Object?> get props => [code, data];
 }
 
 class Fail<T> extends Result<T> {
   final String? msg;
-  final dynamic? error;
-  final dynamic? data;
+  final error;
+  final data;
 
   Fail({
     int? code,
@@ -27,6 +35,9 @@ class Fail<T> extends Result<T> {
     this.error,
     this.data,
   }) : super(code ?? 1);
+
+  @override
+  List<Object?> get props => [code, msg, error, data];
 }
 
 /*

@@ -1,11 +1,11 @@
 import 'package:common/arch/data/local/dao/account_dao.dart';
 import 'package:common/arch/data/local/dao/baby_dao.dart';
 import 'package:common/arch/data/local/dao/data_dao.dart';
-import 'package:common/arch/data/local/dao/kehamilanku_dao.dart';
+import 'package:common/arch/data/local/dao/check_up_dao.dart';
 import 'package:common/arch/data/local/entity/account_entity.dart';
 import 'package:common/arch/data/local/entity/baby_entity.dart';
 import 'package:common/arch/data/local/entity/data_entity.dart';
-import 'package:common/arch/data/local/entity/kehamilanku_entity.dart';
+import 'package:common/arch/data/local/entity/check_up_entity.dart';
 import 'package:moor/backends.dart';
 import 'package:moor/moor.dart';
 
@@ -18,7 +18,7 @@ part 'app_db.g.dart';
     ProfileTypeEntities,
     RoleEntities,
     CityEntities,
-    PregnancyCheckUpIdEntities,
+    CheckUpIdEntities,
     BabyCheckUpIdEntities,
   ],
   daos: [
@@ -27,7 +27,7 @@ part 'app_db.g.dart';
     ProfileTypeDao,
     RoleDao,
     CityDao,
-    PregnancyCheckUpIdDao,
+    CheckUpIdDao,
     BabyCheckUpIdDao,
   ],
 )
@@ -36,4 +36,26 @@ class AppDatabase extends _$AppDatabase {
 
   @override
   int get schemaVersion => 1;
+
+  Future<void> deleteAllTable() async {
+    await delete(credentialEntities).go();
+    await delete(profileEntities).go();
+    await delete(profileTypeEntities).go();
+    await delete(roleEntities).go();
+    await delete(cityEntities).go();
+    await delete(checkUpIdEntities).go();
+    await delete(babyCheckUpIdEntities).go();
+  }
+/*
+  Future<void> deleteAllTable() async {
+    executor.
+    await delete(credentialEntities).go();
+    await delete(profileEntities).go();
+    await delete(profileTypeEntities).go();
+    await delete(roleEntities).go();
+    await delete(cityEntities).go();
+    await delete(pregnancyCheckUpIdEntities).go();
+    await delete(babyCheckUpIdEntities).go();
+  }
+ */
 }

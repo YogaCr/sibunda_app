@@ -10,7 +10,7 @@ Mother _$MotherFromJson(Map<String, dynamic> json) {
   return Mother(
     name: json['nama'] as String,
     nik: json['nik'] as String,
-    salary: json['pembiayaan'] as int,
+    salary: json['pembiayaan'] as String,
     jkn: json['no_jkn'] as String,
     faskes1: json['faskes_tk1'] as String,
     faskesRujukan: json['faskes_rujukan'] as String,

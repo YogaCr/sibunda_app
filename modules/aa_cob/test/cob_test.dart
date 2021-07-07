@@ -1,5 +1,18 @@
+import 'dart:io';
+
 import 'package:core/util/_consoles.dart';
 
+main() async {
+  final dir = Directory.current;
+  print("dir = $dir");
+
+  final file = await File("test.txt").writeAsString("halo bro");
+  print("file = $file");
+  final str = file.readAsStringSync();
+  print("str = $str");
+}
+
+/*
 main(){
   prine("This is error");
   prind("This is debug");
@@ -15,3 +28,4 @@ main(){
   list2[1] = 10;
   print(list2);
 }
+ */

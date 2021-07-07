@@ -11,7 +11,7 @@ class Father {
   @JsonKey(name: Const.KEY_NIK)
   final String nik;
   @JsonKey(name: Const.KEY_SALARY)
-  final int salary;
+  final String salary;
   @JsonKey(name: Const.KEY_JKN)
   final String jkn;
   @JsonKey(name: Const.KEY_FASKES1)
@@ -52,7 +52,7 @@ class Father {
   factory Father.from(Map<String, String> map) => Father(
     name: map[Const.KEY_NAME]!,
     nik: map[Const.KEY_NIK]!,
-    salary: int.parse(map[Const.KEY_SALARY]!),
+    salary: map[Const.KEY_SALARY]!,
     jkn: map[Const.KEY_JKN]!,
     faskes1: map[Const.KEY_FASKES1]!,
     faskesRujukan: map[Const.KEY_FASKES_RUJUKAN]!,

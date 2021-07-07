@@ -5,18 +5,21 @@ import 'package:common/arch/data/remote/model/baby_immunization_api_model.dart';
 import 'package:common/arch/data/remote/model/baby_neonatal_form_api_model.dart';
 import 'package:common/arch/domain/dummy_data.dart';
 import 'package:core/util/_consoles.dart';
+import 'package:faker/faker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../util/common_test_const.dart';
 
+final _faker = Faker();
 late BabyApi _api;
 late BabyMonthlyFormBody _growthForm;
-final int _month = 11;
+final int _month = 5;
 late int _yearId;
 late int _growthFormMonth;
 late int _growthFormId;
 late int _childId;
+late List<BabyCheckDevFormDataResponse> _devQuestions;
 
 
 main() async {
@@ -177,15 +180,22 @@ _getHomeData() async {
 }
 
 _getDevFormData() async {
-  final res = await _api.getDevFormData(3);
+  final res = await _api.getDevFormData(_month);
   final resMap = res.map((e) => e.toJson());
   prinr("resMap = $resMap");
-  assert(res.isNotEmpty);
+
+  _devQuestions = res;
+  //assert(res.isNotEmpty);
 }
 
 _sendMonthlyForm() async {
+  final devQ = _devQuestions.map((e) => BabyMonthlyDevFormBody(
+    q_id: e.id,
+    ans: _faker.randomGenerator.integer(2),
+  )).toList(growable: false);
+
   final dummy = babyGrowthCheck;
-  final body = BabyMonthlyFormBody.fromModel(dummy, yearId: _yearId, month: _month);
+  final body = BabyMonthlyFormBody.fromModel(dummy, yearId: _yearId, month: _month, perkembangan_ans: devQ);
   prind("body = ${body.toJson()}");
   final res = await _api.sendMonthlyForm(body);
   prinr("res = $res");

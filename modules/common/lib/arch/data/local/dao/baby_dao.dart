@@ -1,7 +1,7 @@
 
 import 'package:common/arch/data/local/db/app_db.dart';
 import 'package:common/arch/data/local/entity/baby_entity.dart';
-import 'package:common/arch/data/local/entity/kehamilanku_entity.dart';
+import 'package:common/arch/data/local/entity/check_up_entity.dart';
 import 'package:moor/moor.dart';
 
 part 'baby_dao.g.dart';

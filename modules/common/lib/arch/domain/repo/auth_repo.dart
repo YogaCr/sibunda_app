@@ -71,7 +71,7 @@ class AuthRepoImpl with AuthRepo {
       );
       return locRes;
     } catch(e) {
-      return Fail();
+      return Fail(msg: "Something error in this `$runtimeType`.signup()", error: e);
     }
   }
 

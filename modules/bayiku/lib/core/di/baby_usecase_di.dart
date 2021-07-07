@@ -16,6 +16,11 @@ class BabyUseCaseDi {
   static GetBabyAgeOverview get getBabyAgeOverview => GetBabyAgeOverviewImpl(RepoDi.myBabyRepo);
   static GetBabyFormMenuList get getBabyFormMenuList => GetBabyFormMenuListImpl(RepoDi.myBabyRepo);
   static GetBabyCheckForm get getBabyCheckForm => GetBabyCheckFormImpl(RepoDi.formFieldRepo);
+  static SaveBabyCheckForm get saveBabyCheckForm => SaveBabyCheckFormImpl(RepoDi.myBabyRepo);
+  static GetBabyCheckFormAnswer get getBabyCheckFormAnswer => GetBabyCheckFormAnswerImpl(RepoDi.myBabyRepo);
+
+  static SaveBabyCheckUpId get saveBabyCheckUpId => SaveBabyCheckUpIdImpl(RepoDi.myBabyRepo);
+  static GetBabyCheckUpId get getBabyCheckUpId => GetBabyCheckUpIdImpl(RepoDi.myBabyRepo);
 
   static GetNeonatalFormData get getNeonatalFormData => GetNeonatalFormDataImpl(RepoDi.formFieldRepo);
   static SaveNeonatalForm get saveNeonatalForm => SaveNeonatalFormImpl(RepoDi.myBabyRepo);

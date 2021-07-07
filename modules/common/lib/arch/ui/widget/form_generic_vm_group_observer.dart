@@ -173,7 +173,7 @@ class _FormVmGroupObserverState<VM extends FormVmGroup>
           onPreSubmit?.call(ctx, canProceed);
           if(canProceed == true) {
             vm.submit();
-          } else {
+          } else if(vm.isFormEnabled) {
             vm.displayInvalidFields();
           }
         },

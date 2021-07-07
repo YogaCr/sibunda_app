@@ -1139,50 +1139,48 @@ class $CityEntitiesTable extends CityEntities
   }
 }
 
-class PregnancyCheckUpIdEntity extends DataClass
-    implements Insertable<PregnancyCheckUpIdEntity> {
+class CheckUpIdEntity extends DataClass implements Insertable<CheckUpIdEntity> {
   final int id;
-  final int week;
-  final String motherNik;
-  PregnancyCheckUpIdEntity(
-      {required this.id, required this.week, required this.motherNik});
-  factory PregnancyCheckUpIdEntity.fromData(
+  final int period;
+  final String nik;
+  CheckUpIdEntity({required this.id, required this.period, required this.nik});
+  factory CheckUpIdEntity.fromData(
       Map<String, dynamic> data, GeneratedDatabase db,
       {String? prefix}) {
     final effectivePrefix = prefix ?? '';
-    return PregnancyCheckUpIdEntity(
+    return CheckUpIdEntity(
       id: const IntType()
           .mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
-      week: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}week'])!,
-      motherNik: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}mother_nik'])!,
+      period: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}period'])!,
+      nik: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}nik'])!,
     );
   }
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
-    map['week'] = Variable<int>(week);
-    map['mother_nik'] = Variable<String>(motherNik);
+    map['period'] = Variable<int>(period);
+    map['nik'] = Variable<String>(nik);
     return map;
   }
 
-  PregnancyCheckUpIdEntitiesCompanion toCompanion(bool nullToAbsent) {
-    return PregnancyCheckUpIdEntitiesCompanion(
+  CheckUpIdEntitiesCompanion toCompanion(bool nullToAbsent) {
+    return CheckUpIdEntitiesCompanion(
       id: Value(id),
-      week: Value(week),
-      motherNik: Value(motherNik),
+      period: Value(period),
+      nik: Value(nik),
     );
   }
 
-  factory PregnancyCheckUpIdEntity.fromJson(Map<String, dynamic> json,
+  factory CheckUpIdEntity.fromJson(Map<String, dynamic> json,
       {ValueSerializer? serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
-    return PregnancyCheckUpIdEntity(
+    return CheckUpIdEntity(
       id: serializer.fromJson<int>(json['id']),
-      week: serializer.fromJson<int>(json['week']),
-      motherNik: serializer.fromJson<String>(json['motherNik']),
+      period: serializer.fromJson<int>(json['period']),
+      nik: serializer.fromJson<String>(json['nik']),
     );
   }
   @override
@@ -1190,73 +1188,73 @@ class PregnancyCheckUpIdEntity extends DataClass
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
-      'week': serializer.toJson<int>(week),
-      'motherNik': serializer.toJson<String>(motherNik),
+      'period': serializer.toJson<int>(period),
+      'nik': serializer.toJson<String>(nik),
     };
   }
 
-  PregnancyCheckUpIdEntity copyWith({int? id, int? week, String? motherNik}) =>
-      PregnancyCheckUpIdEntity(
+  CheckUpIdEntity copyWith({int? id, int? period, String? nik}) =>
+      CheckUpIdEntity(
         id: id ?? this.id,
-        week: week ?? this.week,
-        motherNik: motherNik ?? this.motherNik,
+        period: period ?? this.period,
+        nik: nik ?? this.nik,
       );
   @override
   String toString() {
-    return (StringBuffer('PregnancyCheckUpIdEntity(')
+    return (StringBuffer('CheckUpIdEntity(')
           ..write('id: $id, ')
-          ..write('week: $week, ')
-          ..write('motherNik: $motherNik')
+          ..write('period: $period, ')
+          ..write('nik: $nik')
           ..write(')'))
         .toString();
   }
 
   @override
   int get hashCode =>
-      $mrjf($mrjc(id.hashCode, $mrjc(week.hashCode, motherNik.hashCode)));
+      $mrjf($mrjc(id.hashCode, $mrjc(period.hashCode, nik.hashCode)));
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is PregnancyCheckUpIdEntity &&
+      (other is CheckUpIdEntity &&
           other.id == this.id &&
-          other.week == this.week &&
-          other.motherNik == this.motherNik);
+          other.period == this.period &&
+          other.nik == this.nik);
 }
 
-class PregnancyCheckUpIdEntitiesCompanion
-    extends UpdateCompanion<PregnancyCheckUpIdEntity> {
+class CheckUpIdEntitiesCompanion extends UpdateCompanion<CheckUpIdEntity> {
   final Value<int> id;
-  final Value<int> week;
-  final Value<String> motherNik;
-  const PregnancyCheckUpIdEntitiesCompanion({
+  final Value<int> period;
+  final Value<String> nik;
+  const CheckUpIdEntitiesCompanion({
     this.id = const Value.absent(),
-    this.week = const Value.absent(),
-    this.motherNik = const Value.absent(),
+    this.period = const Value.absent(),
+    this.nik = const Value.absent(),
   });
-  PregnancyCheckUpIdEntitiesCompanion.insert({
-    this.id = const Value.absent(),
-    required int week,
-    required String motherNik,
-  })  : week = Value(week),
-        motherNik = Value(motherNik);
-  static Insertable<PregnancyCheckUpIdEntity> custom({
+  CheckUpIdEntitiesCompanion.insert({
+    required int id,
+    required int period,
+    required String nik,
+  })  : id = Value(id),
+        period = Value(period),
+        nik = Value(nik);
+  static Insertable<CheckUpIdEntity> custom({
     Expression<int>? id,
-    Expression<int>? week,
-    Expression<String>? motherNik,
+    Expression<int>? period,
+    Expression<String>? nik,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
-      if (week != null) 'week': week,
-      if (motherNik != null) 'mother_nik': motherNik,
+      if (period != null) 'period': period,
+      if (nik != null) 'nik': nik,
     });
   }
 
-  PregnancyCheckUpIdEntitiesCompanion copyWith(
-      {Value<int>? id, Value<int>? week, Value<String>? motherNik}) {
-    return PregnancyCheckUpIdEntitiesCompanion(
+  CheckUpIdEntitiesCompanion copyWith(
+      {Value<int>? id, Value<int>? period, Value<String>? nik}) {
+    return CheckUpIdEntitiesCompanion(
       id: id ?? this.id,
-      week: week ?? this.week,
-      motherNik: motherNik ?? this.motherNik,
+      period: period ?? this.period,
+      nik: nik ?? this.nik,
     );
   }
 
@@ -1266,87 +1264,87 @@ class PregnancyCheckUpIdEntitiesCompanion
     if (id.present) {
       map['id'] = Variable<int>(id.value);
     }
-    if (week.present) {
-      map['week'] = Variable<int>(week.value);
+    if (period.present) {
+      map['period'] = Variable<int>(period.value);
     }
-    if (motherNik.present) {
-      map['mother_nik'] = Variable<String>(motherNik.value);
+    if (nik.present) {
+      map['nik'] = Variable<String>(nik.value);
     }
     return map;
   }
 
   @override
   String toString() {
-    return (StringBuffer('PregnancyCheckUpIdEntitiesCompanion(')
+    return (StringBuffer('CheckUpIdEntitiesCompanion(')
           ..write('id: $id, ')
-          ..write('week: $week, ')
-          ..write('motherNik: $motherNik')
+          ..write('period: $period, ')
+          ..write('nik: $nik')
           ..write(')'))
         .toString();
   }
 }
 
-class $PregnancyCheckUpIdEntitiesTable extends PregnancyCheckUpIdEntities
-    with TableInfo<$PregnancyCheckUpIdEntitiesTable, PregnancyCheckUpIdEntity> {
+class $CheckUpIdEntitiesTable extends CheckUpIdEntities
+    with TableInfo<$CheckUpIdEntitiesTable, CheckUpIdEntity> {
   final GeneratedDatabase _db;
   final String? _alias;
-  $PregnancyCheckUpIdEntitiesTable(this._db, [this._alias]);
+  $CheckUpIdEntitiesTable(this._db, [this._alias]);
   final VerificationMeta _idMeta = const VerificationMeta('id');
   late final GeneratedColumn<int?> id = GeneratedColumn<int?>(
       'id', aliasedName, false,
-      typeName: 'INTEGER', requiredDuringInsert: false);
-  final VerificationMeta _weekMeta = const VerificationMeta('week');
-  late final GeneratedColumn<int?> week = GeneratedColumn<int?>(
-      'week', aliasedName, false,
       typeName: 'INTEGER', requiredDuringInsert: true);
-  final VerificationMeta _motherNikMeta = const VerificationMeta('motherNik');
-  late final GeneratedColumn<String?> motherNik = GeneratedColumn<String?>(
-      'mother_nik', aliasedName, false,
+  final VerificationMeta _periodMeta = const VerificationMeta('period');
+  late final GeneratedColumn<int?> period = GeneratedColumn<int?>(
+      'period', aliasedName, false,
+      typeName: 'INTEGER', requiredDuringInsert: true);
+  final VerificationMeta _nikMeta = const VerificationMeta('nik');
+  late final GeneratedColumn<String?> nik = GeneratedColumn<String?>(
+      'nik', aliasedName, false,
       typeName: 'TEXT',
       requiredDuringInsert: true,
       $customConstraints: 'REFERENCES profiles(nik)');
   @override
-  List<GeneratedColumn> get $columns => [id, week, motherNik];
+  List<GeneratedColumn> get $columns => [id, period, nik];
   @override
-  String get aliasedName => _alias ?? 'pregnancy_check_up_ids';
+  String get aliasedName => _alias ?? 'check_up_ids';
   @override
-  String get actualTableName => 'pregnancy_check_up_ids';
+  String get actualTableName => 'check_up_ids';
   @override
-  VerificationContext validateIntegrity(
-      Insertable<PregnancyCheckUpIdEntity> instance,
+  VerificationContext validateIntegrity(Insertable<CheckUpIdEntity> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
     }
-    if (data.containsKey('week')) {
+    if (data.containsKey('period')) {
+      context.handle(_periodMeta,
+          period.isAcceptableOrUnknown(data['period']!, _periodMeta));
+    } else if (isInserting) {
+      context.missing(_periodMeta);
+    }
+    if (data.containsKey('nik')) {
       context.handle(
-          _weekMeta, week.isAcceptableOrUnknown(data['week']!, _weekMeta));
+          _nikMeta, nik.isAcceptableOrUnknown(data['nik']!, _nikMeta));
     } else if (isInserting) {
-      context.missing(_weekMeta);
-    }
-    if (data.containsKey('mother_nik')) {
-      context.handle(_motherNikMeta,
-          motherNik.isAcceptableOrUnknown(data['mother_nik']!, _motherNikMeta));
-    } else if (isInserting) {
-      context.missing(_motherNikMeta);
+      context.missing(_nikMeta);
     }
     return context;
   }
 
   @override
-  Set<GeneratedColumn> get $primaryKey => {id};
+  Set<GeneratedColumn> get $primaryKey => <GeneratedColumn>{};
   @override
-  PregnancyCheckUpIdEntity map(Map<String, dynamic> data,
-      {String? tablePrefix}) {
-    return PregnancyCheckUpIdEntity.fromData(data, _db,
+  CheckUpIdEntity map(Map<String, dynamic> data, {String? tablePrefix}) {
+    return CheckUpIdEntity.fromData(data, _db,
         prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
-  $PregnancyCheckUpIdEntitiesTable createAlias(String alias) {
-    return $PregnancyCheckUpIdEntitiesTable(_db, alias);
+  $CheckUpIdEntitiesTable createAlias(String alias) {
+    return $CheckUpIdEntitiesTable(_db, alias);
   }
 }
 
@@ -1570,8 +1568,8 @@ abstract class _$AppDatabase extends GeneratedDatabase {
       $ProfileTypeEntitiesTable(this);
   late final $RoleEntitiesTable roleEntities = $RoleEntitiesTable(this);
   late final $CityEntitiesTable cityEntities = $CityEntitiesTable(this);
-  late final $PregnancyCheckUpIdEntitiesTable pregnancyCheckUpIdEntities =
-      $PregnancyCheckUpIdEntitiesTable(this);
+  late final $CheckUpIdEntitiesTable checkUpIdEntities =
+      $CheckUpIdEntitiesTable(this);
   late final $BabyCheckUpIdEntitiesTable babyCheckUpIdEntities =
       $BabyCheckUpIdEntitiesTable(this);
   late final CredentialDao credentialDao = CredentialDao(this as AppDatabase);
@@ -1580,8 +1578,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
       ProfileTypeDao(this as AppDatabase);
   late final RoleDao roleDao = RoleDao(this as AppDatabase);
   late final CityDao cityDao = CityDao(this as AppDatabase);
-  late final PregnancyCheckUpIdDao pregnancyCheckUpIdDao =
-      PregnancyCheckUpIdDao(this as AppDatabase);
+  late final CheckUpIdDao checkUpIdDao = CheckUpIdDao(this as AppDatabase);
   late final BabyCheckUpIdDao babyCheckUpIdDao =
       BabyCheckUpIdDao(this as AppDatabase);
   @override
@@ -1593,7 +1590,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
         profileTypeEntities,
         roleEntities,
         cityEntities,
-        pregnancyCheckUpIdEntities,
+        checkUpIdEntities,
         babyCheckUpIdEntities
       ];
 }

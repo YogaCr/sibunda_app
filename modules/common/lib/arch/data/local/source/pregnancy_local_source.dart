@@ -1,3 +1,5 @@
+import 'package:common/arch/data/local/dao/check_up_dao.dart';
+import 'package:common/arch/data/local/db/app_db.dart';
 import 'package:common/value/const_values.dart';
 import 'package:core/domain/model/result.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -8,10 +10,12 @@ mixin PregnancyLocalSrc {
 
   Future<Result<bool>> saveMotherHpht(DateTime date);
   Future<Result<DateTime>> getCurrentMotherHpht();
+
 }
 
 class PregnancyLocalSrcImpl with PregnancyLocalSrc {
   final SharedPreferences _sharedPref;
+
   PregnancyLocalSrcImpl({
     required SharedPreferences sharedPref,
   }):

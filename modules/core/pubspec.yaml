@@ -29,6 +29,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   tuple: ^2.0.0
   async: ^2.5.0
+  equatable: ^2.0.2
 
 dev_dependencies:
   flutter_test:

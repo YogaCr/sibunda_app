@@ -1,5 +1,6 @@
 import 'package:common/arch/di/api_di.dart';
 import 'package:common/arch/di/data_source_di.dart';
+import 'package:common/arch/di/db_di.dart';
 import 'package:common/arch/domain/repo/_repos.dart';
 import 'package:common/arch/domain/repo/bayiku_repo.dart';
 import 'package:common/arch/domain/repo/chart_baby_repo.dart';
@@ -26,7 +27,10 @@ class RepoDi {
   static EducationRepo get educationRepo => EducationRepoDummy.obj;
   static NotifRepo get notifRepo => NotifRepoDummy.obj;
 
-  static FormFieldRepo get formFieldRepo => FormFieldRepoDummy.obj;
+  static FormFieldRepo get formFieldRepo => FormFieldRepoImpl(
+    babyApi: ApiDi.babyApi,
+    covidApi: ApiDi.covidApi,
+  ); //FormFieldRepoDummy.obj;
 
   //static FamilyRepo getFamilyRepo() => FamilyDummyRepo();
   static MotherRepo get motherRepo => /*MotherRepoImpl(
@@ -35,7 +39,10 @@ class RepoDi {
   );*/ MotherRepoDummy.obj;
   static FatherRepo get fatherRepo => FatherRepoDummy.obj;
   static ChildRepo get childRepo => ChildRepoDummy.obj;
-  static PregnancyRepo get pregnancyRepo => PregnancyRepoImpl(ApiDi.kehamilankuApi); //PregnancyRepoDummy.obj; //
+  static PregnancyRepo get pregnancyRepo => PregnancyRepoImpl(
+    api: ApiDi.kehamilankuApi,
+    checkUpLocalSrc: LocalSrcDi.checkUpSrc,
+  ); //PregnancyRepoDummy.obj; //
   //static MotherFoodRecomRepo get foodRepo => MotherFoodRecomRepoDummy.obj;
   //static MotherHomeRepo get pregnancyRepo => MotherPregnancyRepoDummy.obj;
   //static PregnancyCheckRepo get pregnancyCheckRepo => PregnancyCheckRepoDummy.obj;

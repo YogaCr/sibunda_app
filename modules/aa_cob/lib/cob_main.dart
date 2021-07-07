@@ -47,12 +47,34 @@ class MyApp extends StatelessWidget {
       theme: Manifest.theme.materialData,
       home: Scaffold(
         body: Builder(
+          builder: (ctx) => Column(
+            children: [
+              TextField(controller: txtC,),
+              InkWell(
+                child: Icon(Icons.call),
+                onTap: () async {
+                  final res = await showTimePicker(context: ctx, initialTime: TimeOfDay.now());
+                  if(res != null) {
+
+                    //DateFormat("kk:mm").format(date);
+                    txtC.text = res.format(ctx);
+                  }
+                },
+              ),
+            ],
+          ),
+        ),
+      ),
+/*
+      home: Scaffold(
+        body: Builder(
           builder: (ctx) => IdStringPopup(
             dataList: idStringList,
             onItemClick: (id, name) => showSnackBar(ctx, "id = $id name = $name"),
           ),
         ),
       ),
+ */
 
     //_FormPage(),
       /*

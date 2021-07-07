@@ -25,6 +25,9 @@ class Strings {
   static const form_submission_fail = "Terjadi kesalahan saat mengirim form. Harap ulangi.";
   static const error_occurred_when_saving_data = "Terjadi kesalahan saat menyimpan. Harap ulangi.";
   static const no_data = "Tidak ada data";
+  static const baby_dev_form = "Form Pemeriksaan Perkembangan Bayi";
+  static const baby_growth_form = "Form Pemeriksaan Pertumbuhan Bayi";
+  static const covid_check_form = "Form Pemeriksaan Gejala Covid-19";
 
   static const ready_to_be_mother_assistant = "Siap Jadi Asisten Bunda";
   static const splash_motto_desc = "Dengan aplikasi kami, Bunda akan serasa memiliki asisten untuk merawat buah hati";

@@ -22,6 +22,7 @@ class TestUtil {
 
   static bool isDebug = true;
   //static bool isTest = false;
+  static String testOutputDir = "test/_out/signup_data.txt";
 
   static String? _token;
   static _initToken() async {

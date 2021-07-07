@@ -1,6 +1,7 @@
 
 import 'package:common/arch/domain/usecase/chart_usecase.dart';
 import 'package:common/res/theme/_theme.dart';
+import 'package:common/value/const_values.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
@@ -237,10 +238,15 @@ class BabyBmiChartData {
   Map<String, dynamic> toJson() => _$BabyBmiChartDataToJson(this);
 }
 
+@JsonSerializable()
 class BabyDevChartData {
+  @JsonKey(name: Const.KEY_MONTH)
   final int age;
+  @JsonKey(name: "s_threshold")
   final int normalLimit;
+  @JsonKey(name: "m_threshold")
   final int doubtedLimit;
+  @JsonKey(name: "input")
   final int observed;
 
   BabyDevChartData({
@@ -258,6 +264,9 @@ class BabyDevChartData {
     else
       return "M"; // Meragukan
   }
+
+  factory BabyDevChartData.fromJson(Map<String, dynamic> map) => _$BabyDevChartDataFromJson(map);
+  Map<String, dynamic> toJson() => _$BabyDevChartDataToJson(this);
 }
 
 

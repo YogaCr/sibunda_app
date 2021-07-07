@@ -1,23 +1,89 @@
 import 'package:bayiku/core/domain/usecase/baby_check_usecase.dart';
+import 'package:bayiku/core/domain/usecase/baby_overall_usecase.dart';
+import 'package:common/arch/data/remote/model/baby_check_form_api_model.dart';
 import 'package:common/arch/domain/model/form_data.dart';
+import 'package:common/arch/domain/model/form_warning_status.dart';
 import 'package:common/arch/ui/model/form_data.dart';
 import 'package:common/arch/ui/vm/form_vm_group.dart';
+import 'package:common/res/string/_string.dart';
+import 'package:common/util/type_util.dart';
+import 'package:common/value/const_values.dart';
 import 'package:core/domain/model/result.dart';
 import 'package:core/ui/base/live_data.dart';
+import 'package:flutter/cupertino.dart';
 
 class BabyCheckFormVm extends FormVmGroup {
-  BabyCheckFormVm({
-    required GetBabyCheckForm getBabyCheckForm,
-  }): _getBabyCheckForm = getBabyCheckForm
-  ;
+  static const getWarningListKey = "getWarningList";
+  static const getBabyFormAnswerKey = "getBabyFormAnswer";
 
+  BabyCheckFormVm({
+    required GetBabyNik getBabyNik,
+    required GetBabyCheckForm getBabyCheckForm,
+    required GetBabyFromWarningStatus getBabyFromWarningStatus,
+    required SaveBabyCheckForm saveBabyCheckForm,
+    required GetBabyCheckFormAnswer getBabyCheckFormAnswer,
+    //required SaveBabyCheckUpId saveBabyCheckUpId,
+  }):
+    _getBabyNik = getBabyNik,
+    _getBabyCheckForm = getBabyCheckForm,
+    _getBabyFromWarningStatus = getBabyFromWarningStatus,
+    _saveBabyCheckForm = saveBabyCheckForm,
+    _getBabyCheckFormAnswer = getBabyCheckFormAnswer
+    //_saveBabyCheckUpId = saveBabyCheckUpId
+  {
+    _formAnswer.observe(this, (data) {
+      if(data != null) {
+        final map = data.toJson();
+        final respGroupList = <Map<String, dynamic>>[map];
+        final devList = map[Const.KEY_PERKEMBANGAN_ANS] as List<BabyMonthlyDevFormBody>?;
+        if(devList != null) {
+          final devMap = <String, dynamic>{};
+          respGroupList.add(devMap);
+          for(final ans in devList) {
+            devMap[ans.q_id.toString()] = ans.ans == 1 ? Strings.yes : Strings.no;
+          }
+        }
+        patchResponse(respGroupList);
+      } else {
+        resetResponses();
+      }
+    });
+  }
+
+  final GetBabyNik _getBabyNik;
   final GetBabyCheckForm _getBabyCheckForm;
+  final GetBabyFromWarningStatus _getBabyFromWarningStatus;
+  final SaveBabyCheckForm _saveBabyCheckForm;
+  final GetBabyCheckFormAnswer _getBabyCheckFormAnswer;
+  //final SaveBabyCheckUpId _saveBabyCheckUpId;
+
+  final MutableLiveData<List<FormWarningStatus>> _warningList = MutableLiveData();
+  final MutableLiveData<BabyMonthlyFormBody> _formAnswer = MutableLiveData();
+
+  LiveData<List<FormWarningStatus>> get warningList => _warningList;
+  LiveData<BabyMonthlyFormBody> get formAnswer => _formAnswer;
 
   int currentMonth = 0;
   int _currentMonthForForm = 0;
 
   @override
-  Future<Result<String>> doSubmitJob() async => Success("ok");
+  Future<Result<String>> doSubmitJob() async {
+    final resps = getResponse();
+    final maps = resps.responseGroups.values.toList(growable: false);
+    final growthMap = maps.first;
+
+    final List<BabyMonthlyDevFormBody> devQs = maps.length <= 1
+        ? []
+        : maps[1].entries.map((e) => BabyMonthlyDevFormBody(
+           q_id: parseInt(e.key),
+           ans: e.value == Strings.yes ? 1 : 0,
+        )).toList(growable: false);
+    growthMap[Const.KEY_PERKEMBANGAN_ANS] = devQs;
+
+    final body = BabyMonthlyFormBody.fromJson(growthMap);
+    final res = await _saveBabyCheckForm(body);
+    return res is Success<bool> ? Success("ok") : Fail();
+  }
 
   void initFormDataInMonth(int month) {
     _currentMonthForForm = month;
@@ -26,7 +92,7 @@ class BabyCheckFormVm extends FormVmGroup {
 
   @override
   Future<List<FormUiGroupData>> getFieldGroupList() async {
-    final res = await _getBabyCheckForm(_currentMonthForForm-1);
+    final res = await _getBabyCheckForm(_currentMonthForForm);
     if(res is Success<List<FormGroupData>>) {
       return res.data.map((e) => FormUiGroupData.fromModel(e)).toList(growable: false);
     } else {
@@ -42,6 +108,43 @@ class BabyCheckFormVm extends FormVmGroup {
       response is String ? response.isNotEmpty
         : response is Set<int> ? response.isNotEmpty
           : false;
+
+  void getWarningList({ bool forceLoad = false}) {
+    if(!forceLoad && _warningList.value != null) return;
+    startJob(getWarningListKey, (isActive) async {
+      final res1 = await _getBabyNik();
+      if(res1 is Success<String>) {
+        final babyNik = res1.data;
+        final res2 = await _getBabyFromWarningStatus(babyNik, _currentMonthForForm);
+        if(res2 is Success<List<FormWarningStatus>>) {
+          final data = res2.data;
+          _warningList.value = data;
+          return null;
+        }
+        return res2 as Fail;
+      }
+      return res1 as Fail;
+    });
+  }
+
+  void getBabyFormAnswer({
+    required int yearId,
+    bool forceLoad = false
+  }) {
+    if(!forceLoad && _formAnswer.value != null) return;
+    startJob(getBabyFormAnswerKey, (isActive) async {
+      final res = await _getBabyCheckFormAnswer(
+        yearId : yearId,
+        month: _currentMonthForForm,
+      );
+      if(res is Success<BabyMonthlyFormBody>) {
+        final data = res.data;
+        _formAnswer.value = data;
+        return null;
+      }
+      return res as Fail;
+    });
+  }
 }
 
 

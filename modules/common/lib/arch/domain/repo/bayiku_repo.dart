@@ -1,5 +1,7 @@
 import 'package:common/arch/data/local/source/account_local_source.dart';
+import 'package:common/arch/data/local/source/check_up_local_source.dart';
 import 'package:common/arch/data/remote/api/baby_api.dart';
+import 'package:common/arch/data/remote/model/baby_check_form_api_model.dart';
 import 'package:common/arch/data/remote/model/baby_form_warning_api_model.dart';
 import 'package:common/arch/data/remote/model/baby_neonatal_form_api_model.dart';
 import 'package:common/arch/data/remote/model/baby_overview_api_model.dart';
@@ -15,11 +17,26 @@ import 'package:core/domain/model/result.dart';
 mixin MyBabyRepo {
   Future<Result<String>> getBabyNik();
   Future<Result<BabyAgeOverview>> getBabyAgeOverview(String babyNik);
-  Future<Result<List<FormWarningStatus>>> getBabyWarningStatus(String babyNik, int month);
+  Future<Result<List<FormWarningStatus>>> getBabyWarningStatus(String babyNik, int monthId);
   Future<Result<List<HomeGraphMenu>>> getBabyGraphMenu();
   Future<Result<List<BabyFormMenuData>>> getBabyFormMenu();
   Future<Result<List<BabyChartMenuData>>> getBabyGrowthGraphMenu();
   Future<Result<List<BabyChartMenuData>>> getBabyDevGraphMenu();
+  Future<Result<bool>> saveBabyMonthlyCheck(BabyMonthlyFormBody body);
+  Future<Result<BabyMonthlyFormBody>> getBabyMonthlyCheck({
+    required int yearId,
+    required int month,
+  });
+  Future<Result<bool>> saveBabyCheckUpId({
+    required String babyNik,
+    required int month,
+    required int id,
+  });
+  Future<Result<int>> getBabyCheckUpId({
+    required String babyNik,
+    required int month,
+  });
+  //Future<Result<Map<String, dynamic>>> getBabyMonthlyCheck(BabyMonthlyFormBody body);
   Future<Result<bool>> saveNeonatalServiceForm({
     required int page,
     required Map<String, dynamic> formData,
@@ -30,12 +47,16 @@ mixin MyBabyRepo {
 class MyBabyRepoImpl with MyBabyRepo {
   final BabyApi _api;
   final AccountLocalSrc _accountLocalSrc;
+  final CheckUpLocalSrc _checkUpLocalSrc;
+
   MyBabyRepoImpl({
     required BabyApi api,
     required AccountLocalSrc accountLocalSrc,
+    required CheckUpLocalSrc checkUpLocalSrc,
   }):
     _api = api,
-    _accountLocalSrc = accountLocalSrc
+    _accountLocalSrc = accountLocalSrc,
+    _checkUpLocalSrc = checkUpLocalSrc
   ;
 
   @override
@@ -50,16 +71,16 @@ class MyBabyRepoImpl with MyBabyRepo {
   }
 
   BabyHomeResponse? _homeResponse;
-  int _currentMonth = -1;
+  int _currentMonthId = -1;
   BabyFormWarningResponse? _formWarningResponse;
 
   @override
   Future<Result<BabyAgeOverview>> getBabyAgeOverview(String babyNik) async => Success(dummyBabyAgeOverview);
-  Future<Result<List<FormWarningStatus>>> getBabyWarningStatus(String babyNik, int month) async {
-    if(month != _currentMonth) {
-      final body = BabyFormWarningBody(monthId: month);
+  Future<Result<List<FormWarningStatus>>> getBabyWarningStatus(String babyNik, int monthId) async {
+    if(monthId != _currentMonthId) {
+      final body = BabyFormWarningBody(monthId: monthId);
       _formWarningResponse = await _api.getFormWarning(body);
-      _currentMonth = month;
+      _currentMonthId = monthId;
     }
     final data = _formWarningResponse!.data;
     final list = <FormWarningStatus>[
@@ -88,6 +109,42 @@ class MyBabyRepoImpl with MyBabyRepo {
 
   @override
   Future<Result<List<BabyChartMenuData>>> getBabyDevGraphMenu() async => Success(babyDevGraphMenuList);
+
+  @override
+  Future<Result<bool>> saveBabyMonthlyCheck(BabyMonthlyFormBody body) async { //TODO: blum ada checkup id ne.
+    final res = await _api.sendMonthlyForm(body);
+    if(res.code != 200) {
+      return Fail();
+    }
+    return Success(true);
+  }
+
+  @override
+  Future<Result<BabyMonthlyFormBody>> getBabyMonthlyCheck({
+    required int yearId,
+    required int month,
+  }) async {
+    try {
+      final body = BabyGetMonthlyFormBody(yearId: yearId, month: month);
+      final res = await _api.getMonthlyForm(body);
+      return Success(res);
+    } catch(e) {
+      return Fail(error: e);
+    }
+  }
+
+  @override
+  Future<Result<bool>> saveBabyCheckUpId({
+    required String babyNik,
+    required int month,
+    required int id,
+  }) => _checkUpLocalSrc.saveCheckUpId(id: id, period: month, nik: babyNik);
+
+  @override
+  Future<Result<int>> getBabyCheckUpId({
+    required String babyNik,
+    required int month,
+  }) => _checkUpLocalSrc.getCheckUpId(period: month, nik: babyNik);
 
   @override
   Future<Result<bool>> saveNeonatalServiceForm({
@@ -135,14 +192,33 @@ class MyBabyRepoDummy with MyBabyRepo {
   @override
   Future<Result<List<BabyChartMenuData>>> getBabyDevGraphMenu() async => Success(babyDevGraphMenuList);
   @override
-  Future<Result<List<FormWarningStatus>>> getBabyWarningStatus(String babyNik, int month) async =>
+  Future<Result<List<FormWarningStatus>>> getBabyWarningStatus(String babyNik, int monthId) async =>
       Success(motherWarningStatusList);
-
+  @override
+  Future<Result<bool>> saveBabyMonthlyCheck(BabyMonthlyFormBody body) async => Success(true);
+  @override
+  Future<Result<BabyMonthlyFormBody>> getBabyMonthlyCheck({
+    required int yearId,
+    required int month,
+  }) async => Success(babyMonthlyFormBody);
   @override
   Future<Result<bool>> saveNeonatalServiceForm({
     required int page,
     required Map<String, dynamic> formData,
   }) async => Success(true);
+
+  @override
+  Future<Result<bool>> saveBabyCheckUpId({
+    required String babyNik,
+    required int month,
+    required int id,
+  }) async => Success(true);
+
+  @override
+  Future<Result<int>> getBabyCheckUpId({
+    required String babyNik,
+    required int month,
+  }) async => Success(1);
 }
 
 
