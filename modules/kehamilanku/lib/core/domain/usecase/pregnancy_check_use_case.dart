@@ -15,7 +15,7 @@ mixin GetPregnancyBabySize {
 }
 
 mixin SavePregnancyCheck {
-  Future<Result<bool>> call(String motherNik, PregnancyCheck data, int trimester);
+  Future<Result<bool>> call(String motherNik, PregnancyCheck data, int trimesterId);
 }
 
 mixin GetPregnancyCheck {
@@ -46,8 +46,8 @@ class SavePregnancyCheckImpl with SavePregnancyCheck {
   SavePregnancyCheckImpl(this._repo);
   final PregnancyRepo _repo;
   @override
-  Future<Result<bool>> call(String motherNik, PregnancyCheck data, int trimester) =>
-      _repo.savePregnancyCheck(motherNik, data, trimester);
+  Future<Result<bool>> call(String motherNik, PregnancyCheck data, int trimesterId) =>
+      _repo.savePregnancyCheck(motherNik, data, trimesterId);
 }
 
 class GetPregnancyCheckImpl with GetPregnancyCheck {

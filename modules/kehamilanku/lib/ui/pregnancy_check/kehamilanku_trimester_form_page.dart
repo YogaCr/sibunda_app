@@ -32,14 +32,14 @@ class KehamilankuTrimesterFormPage extends StatelessWidget {
     final vm = ViewModelProvider.of<KehamilankuCheckFormVm>(context)
       ..init();
 
-    vm.currentWeek = startWeek;
-    vm.currentTrimester = trimester.trimester;
+    vm.currentWeek.value = startWeek;
+    vm.currentTrimesterId = trimester.id;
 
     pageController.addListener(() {
       final page = pageController.page?.toInt();
       //prind("pageController page= $page double = ${pageController.page}");
       if(page != null) {
-        vm.currentWeek = page+startWeek;
+        vm.currentWeek.value = page+startWeek;
       }
     });
 
@@ -127,7 +127,7 @@ class _WeeklyFormPage extends StatelessWidget {
  */
             FormVmGroupObserver<KehamilankuCheckFormVm>(
               vm: vm,
-              predicate: () => vm.currentWeek == week || vm.currentWeek == week -1,
+              predicate: () => vm.currentWeek.value == week || vm.currentWeek.value == week -1,
               onPreSubmit: (ctx, canProceed) => canProceed == true
                   ? showSnackBar(ctx, "Submitting", backgroundColor: Colors.green)
                   : showSnackBar(ctx, "There still invalid fields"),

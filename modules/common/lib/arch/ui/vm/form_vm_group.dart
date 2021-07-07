@@ -135,7 +135,11 @@ mixin FormVmGroupMixin implements AsyncVm {
   /// - For [FormType.text] : It can be either [String] or [DateTime].
   /// - For [FormType.radio] : [String] for selected radio value.
   /// - For [FormType.check] : [Set<int>].
-  Future<bool> validateField(int groupPosition, String inputKey, dynamic response);
+  Future<bool> validateField(int groupPosition, String inputKey, dynamic response) async {
+    if(response is String) return response.isNotEmpty;
+    if(response is Set) return response.isNotEmpty;
+    return response != null;
+  }
   String getResponseStringRepr(int groupPosition, String inputKey, dynamic response) =>
       response is String ? response : response?.toString() ?? "";
   String getInvalidMsg(String inputKey, dynamic response) => defaultInvalidMsg;
@@ -218,6 +222,14 @@ abstract class FormVmGroup extends AsyncVm with FormVmGroupMixin {
       _isFormReady.value = true;
       onReady();
     });
+  }
+
+  @protected
+  void setResponse(int group, String key, response) {
+    if(_responseGroupList[group][key] == null) {
+      throw "No such `key` '$key' in group '$group' in this '$runtimeType'";
+    }
+    _responseGroupList[group][key]!.response.value = response;
   }
 
   @override

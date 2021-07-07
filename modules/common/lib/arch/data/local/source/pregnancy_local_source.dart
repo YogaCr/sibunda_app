@@ -5,6 +5,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 mixin PregnancyLocalSrc {
   Future<Result<bool>> saveMotherHpl(DateTime date);
   Future<Result<DateTime>> getCurrentMotherHpl();
+
+  Future<Result<bool>> saveMotherHpht(DateTime date);
+  Future<Result<DateTime>> getCurrentMotherHpht();
 }
 
 class PregnancyLocalSrcImpl with PregnancyLocalSrc {
@@ -24,10 +27,27 @@ class PregnancyLocalSrcImpl with PregnancyLocalSrc {
       return Fail();
     }
   }
-
   @override
   Future<Result<DateTime>> getCurrentMotherHpl() async {
     final hpl = _sharedPref.getString(Const.KEY_HPL);
+    if(hpl == null) {
+      return Fail();
+    }
+    return Success(DateTime.parse(hpl));
+  }
+
+  @override
+  Future<Result<bool>> saveMotherHpht(DateTime date) async {
+    try {
+      final res = await _sharedPref.setString(Const.KEY_HPHT, date.toString());
+      return Success(res);
+    } catch(e) {
+      return Fail();
+    }
+  }
+  @override
+  Future<Result<DateTime>> getCurrentMotherHpht() async {
+    final hpl = _sharedPref.getString(Const.KEY_HPHT);
     if(hpl == null) {
       return Fail();
     }

@@ -24,7 +24,7 @@ mixin PregnancyRepo {
   Future<Result<int>> getPregnancyCheckId(String motherNik, int week);
   Future<Result<bool>> savePregnancyCheckId(PregnancyCheckUpId checkUpId);
   Future<Result<PregnancyCheck>> getPregnancyCheck(PregnancyCheckUpId checkUpId);
-  Future<Result<bool>> savePregnancyCheck(String motherNik, PregnancyCheck data, int trimester);
+  Future<Result<bool>> savePregnancyCheck(String motherNik, PregnancyCheck data, int trimesterId);
   /// Returns null if there's no available [PregnancyBabySize] for [pregnancyWeekAge].
   Future<Result<PregnancyBabySize?>> getPregnancyBabySize(PregnancyCheckUpId checkUpId);
   Future<Result<List<FormWarningStatus>>> getMotherWarningStatus(PregnancyCheckUpId checkUpId);
@@ -106,9 +106,9 @@ class PregnancyRepoImpl with PregnancyRepo {
   }
   @override
   Future<Result<bool>> savePregnancyCheck(
-    String motherNik, PregnancyCheck data, int trimester,
+    String motherNik, PregnancyCheck data, int trimesterId,
   ) async {
-    final body = PregnancyCheckBody.fromModel(model: data, trimesterId: trimester);
+    final body = PregnancyCheckBody.fromModel(model: data, trimesterId: trimesterId);
     try {
       final res = await _api.sendPregnancyCheckForm(body);
       final res2 = await savePregnancyCheckId(PregnancyCheckUpId.fromResponse(

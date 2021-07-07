@@ -9,4 +9,6 @@ class UseCaseDi {
   static GetProfile get getProfile => GetProfileImpl(RepoDi.profileRepo);
   static GetCurrentEmail get getCurrentEmail => GetCurrentEmailImpl(RepoDi.profileRepo);
   static GetPregnancyCheckUpId get getPregnancyCheckUpId => GetPregnancyCheckUpIdImpl(RepoDi.pregnancyRepo);
+  static GetMotherHpl get getMotherHpl => GetMotherHplImpl(RepoDi.motherRepo);
+  static GetMotherHpht get getMotherHpht => GetMotherHphtImpl(RepoDi.motherRepo);
 }

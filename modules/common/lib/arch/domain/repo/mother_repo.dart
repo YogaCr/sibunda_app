@@ -22,6 +22,9 @@ mixin MotherRepo {
 
   Future<Result<bool>> saveMotherHpl(DateTime date);
   Future<Result<DateTime>> getCurrentMotherHpl();
+
+  Future<Result<bool>> saveMotherHpht(DateTime date);
+  Future<Result<DateTime>> getCurrentMotherHpht();
 }
 
 class MotherRepoImpl with MotherRepo {
@@ -70,6 +73,11 @@ class MotherRepoImpl with MotherRepo {
   Future<Result<bool>> saveMotherHpl(DateTime date) => _pregnancyLocalSrc.saveMotherHpl(date);
   @override
   Future<Result<DateTime>> getCurrentMotherHpl() => _pregnancyLocalSrc.getCurrentMotherHpl();
+
+  @override
+  Future<Result<bool>> saveMotherHpht(DateTime date) => _pregnancyLocalSrc.saveMotherHpht(date);
+  @override
+  Future<Result<DateTime>> getCurrentMotherHpht() => _pregnancyLocalSrc.getCurrentMotherHpht();
 }
 
 
@@ -91,4 +99,9 @@ class MotherRepoDummy with MotherRepo {
   Future<Result<bool>> saveMotherHpl(DateTime date) async => Success(true);
   @override
   Future<Result<DateTime>> getCurrentMotherHpl() async => Success(dummyMotherHpl);
+
+  @override
+  Future<Result<bool>> saveMotherHpht(DateTime date) async => Success(true);
+  @override
+  Future<Result<DateTime>> getCurrentMotherHpht() async => Success(dummyMotherHpht);
 }

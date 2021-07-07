@@ -18,16 +18,16 @@ class BabyAgeOverview {
 }
 
 class BabyFormMenuData {
-  final int? id;
+  final int id;
   final int year;
   final int monthStart;
   final int monthEnd;
 
   BabyFormMenuData({
+    required this.id,
     required this.year,
     required this.monthStart,
     required this.monthEnd,
-    this.id,
   });
 
   factory BabyFormMenuData.fromResponse(BabyHomeChildYearFormResponse response) => BabyFormMenuData(

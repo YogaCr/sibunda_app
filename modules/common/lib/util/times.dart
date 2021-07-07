@@ -9,6 +9,7 @@ import 'package:intl/intl.dart';
 
 //HPTH + 1 tahun - 3 bulan + 7 hari
 DateTime getHpl([DateTime? hpht]) => Jiffy(hpht).add(years: 1, days: 7).subtract(months: 3).dateTime;
+DateTime getHpht([DateTime? hpl]) => Jiffy(hpl).subtract(years: 1, days: 7).add(months: 3).dateTime;
 
 Future<String> formatTime(DateTime date, { String localeName = "id_ID" }) async {
   await initializeDateFormatting(localeName);

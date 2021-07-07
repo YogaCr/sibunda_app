@@ -6,6 +6,8 @@ import 'package:common/arch/domain/usecase/mother_usecase.dart';
 import 'package:common/arch/ui/model/form_data.dart';
 import 'package:common/arch/ui/vm/form_vm_group.dart';
 import 'package:common/res/string/_string.dart';
+import 'package:common/util/times.dart';
+import 'package:common/util/type_util.dart';
 import 'package:common/value/const_values.dart';
 import 'package:core/domain/model/result.dart';
 import 'package:core/ui/base/live_data.dart';
@@ -18,6 +20,9 @@ class KehamilankuCheckFormVm extends FormVmGroup {
   static const getPregnancyBabySizeKey = "getPregnancyBabySize";
 
   KehamilankuCheckFormVm({
+    required GetMotherNik getMotherNik,
+    required GetMotherHpl getMotherHpl,
+    required GetMotherHpht getMotherHpht,
     required GetPregnancyCheckUpId getPregnancyCheckUpId,
     required SavePregnancyCheck savePregnancyCheck,
     required GetPregnancyCheck getPregnancyCheck,
@@ -25,12 +30,21 @@ class KehamilankuCheckFormVm extends FormVmGroup {
     required GetPregnancyBabySize getPregnancyBabySize,
     required GetPregnancyCheckForm getPregnancyCheckForm,
   }):
+    _getMotherNik = getMotherNik,
+    _getMotherHpl = getMotherHpl,
+    _getMotherHpht = getMotherHpht,
     _getPregnancyCheckUpId = getPregnancyCheckUpId,
     _savePregnancyCheck = savePregnancyCheck,
     _getPregnancyCheck = getPregnancyCheck,
     _getMotherFormWarningStatus = getMotherFormWarningStatus,
     _getPregnancyBabySize = getPregnancyBabySize,
-    _getPregnancyCheckForm = getPregnancyCheckForm;
+    _getPregnancyCheckForm = getPregnancyCheckForm {
+
+    currentWeek.observe(this, (week) {
+      setResponse(0, Const.KEY_WEEK, week);
+    });
+    _lateInit();
+  }
 
   final GetPregnancyCheckUpId _getPregnancyCheckUpId;
   final SavePregnancyCheck _savePregnancyCheck;
@@ -38,6 +52,9 @@ class KehamilankuCheckFormVm extends FormVmGroup {
   final GetMotherFormWarningStatus _getMotherFormWarningStatus;
   final GetPregnancyBabySize _getPregnancyBabySize;
   final GetPregnancyCheckForm _getPregnancyCheckForm;
+  final GetMotherNik _getMotherNik;
+  final GetMotherHpl _getMotherHpl;
+  final GetMotherHpht _getMotherHpht;
 
   final MutableLiveData<PregnancyCheck> _pregnancyCheck = MutableLiveData();
   final MutableLiveData<List<FormWarningStatus>> _formWarningStatusList = MutableLiveData();
@@ -47,22 +64,39 @@ class KehamilankuCheckFormVm extends FormVmGroup {
   LiveData<List<FormWarningStatus>> get formWarningStatusList => _formWarningStatusList;
   LiveData<PregnancyBabySize> get pregnancyBabySize => _pregnancyBabySize;
 
-  int currentWeek = 0;
-  late int currentTrimester;
+  MutableLiveData<int> currentWeek = MutableLiveData();
+  late int currentTrimesterId;
+
+  void _lateInit() async {
+    final res1 = await _getMotherNik();
+    if(res1 is Success<String>) {
+      final motherNik = res1.data;
+      final res2 = await _getMotherHpl(motherNik);
+      final res3 = await _getMotherHpht(motherNik);
+
+      if(res2 is Success<DateTime> && res3 is Success<DateTime>) {
+        final hpl = res2.data;
+        final hpht = res3.data;
+
+        setResponse(0, Const.KEY_HPL, hpl);
+        setResponse(0, Const.KEY_HPHT, hpht);
+      }
+    }
+  }
 
   @override
   Future<Result<String>> doSubmitJob() async {
     final responseMap = getResponse();
     final data = PregnancyCheck.fromJson(responseMap.responseGroups.values.first);
     final motherNik = await VarDi.motherNik.waitForValue();
-    return _savePregnancyCheck(motherNik, data, currentTrimester).then((value) =>
+    return _savePregnancyCheck(motherNik, data, currentTrimesterId).then((value) =>
       value is Success<bool> ? Success("") : value as Fail<String>
     );
   }
 
   @override
   Set<String>? get mappedKey => {
-    Const.KEY_PREGNANCY_AGE,
+    Const.KEY_WEEK,
     Const.KEY_WEIGHT,
     Const.KEY_WEIGHT_DIFF,
     Const.KEY_HEIGHT,
@@ -74,12 +108,12 @@ class KehamilankuCheckFormVm extends FormVmGroup {
     Const.KEY_MAP,
   };
   @override
-  mapResponse(int groupPosition, String key, response) => int.parse(response);
+  mapResponse(int groupPosition, String key, response) => parseInt(response);
 
   @override
   Future<bool> validateField(int groupPosition, String inputKey, response) async {
     switch(inputKey) {
-      case Const.KEY_PREGNANCY_AGE:
+      case Const.KEY_WEEK:
       case Const.KEY_WEIGHT:
       case Const.KEY_WEIGHT_DIFF:
       case Const.KEY_HEIGHT:
@@ -88,15 +122,23 @@ class KehamilankuCheckFormVm extends FormVmGroup {
       case Const.KEY_DJJ:
       case Const.KEY_SYSTOLIC_PRESSURE:
       case Const.KEY_DIASTOLIC_PRESSURE:
-      case Const.KEY_MAP: return int.tryParse(response) != null;
+      case Const.KEY_MAP: return tryParseInt(response) != null;
     }
-    return (response as String).isNotEmpty;
+    return super.validateField(groupPosition, inputKey, response);
+  }
+
+  @override
+  String getResponseStringRepr(int groupPosition, String inputKey, response) {
+    if(response is DateTime) {
+      return syncFormatTime(response);
+    }
+    return super.getResponseStringRepr(groupPosition, inputKey, response);
   }
 
   @override
   String getInvalidMsg(String inputKey, response) {
     switch(inputKey) {
-      case Const.KEY_PREGNANCY_AGE:
+      case Const.KEY_WEEK:
       case Const.KEY_WEIGHT:
       case Const.KEY_WEIGHT_DIFF:
       case Const.KEY_HEIGHT:
@@ -104,7 +146,7 @@ class KehamilankuCheckFormVm extends FormVmGroup {
       case Const.KEY_DJJ:
       case Const.KEY_SYSTOLIC_PRESSURE:
       case Const.KEY_DIASTOLIC_PRESSURE:
-      case Const.KEY_MAP: return response?.isNotEmpty == true
+      case Const.KEY_MAP: return (response is String) && response.isNotEmpty == true
         ? Strings.field_must_be_number
         : Strings.field_can_not_be_empty;
     }

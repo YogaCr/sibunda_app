@@ -154,12 +154,14 @@ class MotherPregnancyAgeOverview {
 }
 
 class MotherTrimester {
+  final int id;
   final int trimester;
   final int startWeek;
   final int endWeek;
   final ImgData img;
 
   MotherTrimester({
+    required this.id,
     required this.trimester,
     required this.startWeek,
     required this.endWeek,
@@ -170,6 +172,7 @@ class MotherTrimester {
     final startWeek = (response.no -1) *12 +1;
     final endWeek = response.no *12;
     return MotherTrimester(
+      id: response.id,
       trimester: response.no,
       startWeek: startWeek,
       endWeek: endWeek,

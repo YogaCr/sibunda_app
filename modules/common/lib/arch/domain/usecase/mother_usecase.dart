@@ -10,6 +10,14 @@ mixin GetPregnancyCheckUpId {
   Future<Result<PregnancyCheckUpId>> call(String motherNik, int week);
 }
 
+mixin GetMotherHpl {
+  Future<Result<DateTime>> call(String motherNik);
+}
+
+mixin GetMotherHpht {
+  Future<Result<DateTime>> call(String motherNik);
+}
+
 
 class GetMotherNikImpl with GetMotherNik {
   final MotherRepo _repo;
@@ -31,4 +39,18 @@ class GetPregnancyCheckUpIdImpl with GetPregnancyCheckUpId {
       PregnancyCheckUpId(motherNik: motherNik, week: week, id: res.data),
     );
   }
+}
+
+class GetMotherHplImpl with GetMotherHpl {
+  final MotherRepo _repo;
+  GetMotherHplImpl(this._repo);
+  @override
+  Future<Result<DateTime>> call(String motherNik) => _repo.getCurrentMotherHpl();
+}
+
+class GetMotherHphtImpl with GetMotherHpht {
+  final MotherRepo _repo;
+  GetMotherHphtImpl(this._repo);
+  @override
+  Future<Result<DateTime>> call(String motherNik) => _repo.getCurrentMotherHpht();
 }

@@ -136,6 +136,11 @@ class _FormGenericGroupState
                 //suffixIcon = pickerIconBuilder?.call(groupPosition, key, vmLiveData); //TODO: for now, the direct input method can only be input by texting directly.
             }
 
+            final enabled = this.enabled && itemData.isInputEnabled;
+            if(!enabled && responseRepresentator == null) {
+              responseRepresentator = (resp) => vm.getResponseStringRepr(groupPosition, key, resp);
+            }
+
             field = TxtField(
               itemData: itemData as FormUiTxt,
               isValid: groupRespMap[key]!.isValid,
@@ -143,7 +148,7 @@ class _FormGenericGroupState
               responseLiveData: vmLiveData, //txtLiveData,
               imgPosition: imgPosition,
               suffixIcon: suffixIcon,
-              enabled: enabled && itemData.isInputEnabled,
+              enabled: enabled,
               readOnly: itemData.input != FieldInputMethod.direct,
               getResponseRepresentation: responseRepresentator,
             );

@@ -77,6 +77,7 @@ final dummyMother = Mother(
   cohortRegistNo: "12312345",
 );
 final dummyMotherHpl = DateTime(2021);
+final dummyMotherHpht = DateTime(2020);
 
 final dummyChild = Child(
   name: "Anak sinkong",
@@ -130,9 +131,9 @@ PregnancyCheck dummyPregnancyCheck(int week) => PregnancyCheck(
 );
 
 final dummyTrimesterList = <MotherTrimester>[
-  MotherTrimester(trimester: 1, startWeek: 0, endWeek: 12, img: dummyImg,),
-  MotherTrimester(trimester: 2, startWeek: 13, endWeek: 24, img: dummyImg,),
-  MotherTrimester(trimester: 3, startWeek: 25, endWeek: 40, img: dummyImg,),
+  MotherTrimester(id: 1, trimester: 1, startWeek: 0, endWeek: 12, img: dummyImg,),
+  MotherTrimester(id: 2, trimester: 2, startWeek: 13, endWeek: 24, img: dummyImg,),
+  MotherTrimester(id: 3, trimester: 3, startWeek: 25, endWeek: 40, img: dummyImg,),
 ];
 
 List<MotherFoodRecom> dummyFoodRecomList(int week) => [
