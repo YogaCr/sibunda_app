@@ -9,6 +9,7 @@ import 'package:common/arch/domain/model/profile_data.dart';
 import 'package:common/value/const_values.dart';
 import 'package:common/value/db_const.dart';
 import 'package:core/domain/model/result.dart';
+import 'package:core/util/_consoles.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 mixin AccountLocalSrc {
@@ -181,12 +182,19 @@ class AccountLocalSrcImpl with AccountLocalSrc {
   }
   @override
   Future<Result<String>> getChildNik(String email) async {
-    final niks = await _profileDao.getNiksByEmail(email);
-    final nik = niks[DbConst.TYPE_CHILD];
-    if(nik != null) {
-      return Success(nik);
-    } else {
-      return Fail();
+    try {
+      prind("AccountLocalSrcImpl getChildNik() email = $email");
+      final niks = await _profileDao.getNiksByEmail(email);
+      prind("AccountLocalSrcImpl getChildNik() niks = $niks");
+      final nik = niks[DbConst.TYPE_CHILD];
+      if(nik != null) {
+        return Success(nik);
+      } else {
+        return Fail();
+      }
+    } catch(e, stack) {
+      prine(stack);
+      return Fail(error: e);
     }
   }
 

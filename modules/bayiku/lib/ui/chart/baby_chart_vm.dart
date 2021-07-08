@@ -79,10 +79,13 @@ class BabyChartVm extends AsyncVm {
   List<LiveData> get liveDatas => [_seriesList, _warningList,];
 
   void loadChart(BabyChartType type, { bool forceLoad = false }) {
+    prind("MotherChartVm forceLoad = $forceLoad type = $type _currentType = $_currentType");
     if(!forceLoad && type == _currentType) return;
     //prind("MotherChartVm res2 = $res2 \n res3 = $res3");
     startJob(loadChartKey, (isActive) async {
+      prind("BabyChartVm startJob AWAL =====");
       final res1 = await _getBabyNik();
+      prind("BabyChartVm res1 = $res1");
       if(res1 is Success<String>) {
         final babyNik = res1.data;
         Result res2;

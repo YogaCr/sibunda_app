@@ -63,9 +63,13 @@ class MyBabyRepoImpl with MyBabyRepo {
   @override
   Future<Result<String>> getBabyNik() async {
     final res = await _accountLocalSrc.getCurrentEmail();
+    prind("MyBabyRepoImpl.getBabyNik() res = $res");
     if(res is Success<String>) {
       final email = res.data;
-      return await _accountLocalSrc.getChildNik(email);
+      prind("MyBabyRepoImpl.getBabyNik() email = $email");
+      final res2 = await _accountLocalSrc.getChildNik(email);
+      prind("MyBabyRepoImpl.getBabyNik() res2 = $res2");
+      return res2;
     } else {
       return res as Fail<String>;
     }

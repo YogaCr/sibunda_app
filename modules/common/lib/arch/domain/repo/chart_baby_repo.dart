@@ -4,6 +4,7 @@ import 'package:common/arch/domain/dummy_chart_data.dart';
 import 'package:common/arch/domain/model/chart_data_baby.dart';
 import 'package:common/arch/domain/model/form_warning_status.dart';
 import 'package:core/domain/model/result.dart';
+import 'package:core/util/_consoles.dart';
 
 mixin BabyChartRepo {
   Future<Result<List<BabyWeightChartData>>> getBabyWeightChartData(String babyNik);
@@ -39,6 +40,7 @@ class BabyChartRepoImpl with BabyChartRepo {
   Future<Result<List<BabyWeightChartData>>> getBabyWeightChartData(String babyNik) async {
     try {
       final res = await _accountLocalSrc.getChildId(babyNik);
+      prind("getBabyWeightChartData() res = $res");
       if(res is Success<int>) {
         final id = res.data;
         return Success(await _api.getWeightChart(id));
@@ -46,7 +48,7 @@ class BabyChartRepoImpl with BabyChartRepo {
         return Fail();
       }
     } catch(e) {
-      return Fail();
+      return Fail(error: e,);
     }
   }
   @override

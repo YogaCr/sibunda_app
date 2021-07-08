@@ -1,5 +1,6 @@
 import 'package:common/arch/data/local/db/app_db.dart';
 import 'package:common/arch/data/local/entity/account_entity.dart';
+import 'package:core/util/_consoles.dart';
 import 'package:moor/moor.dart';
 
 part 'account_dao.g.dart';
@@ -51,7 +52,9 @@ class ProfileDao extends DatabaseAccessor<AppDatabase> with _$ProfileDaoMixin {
 
   /// It returns [Map]<int, String> that maps [ProfileEntities.type] to [ProfileEntities.nik];
   Future<Map<int, String>> getNiksByEmail(String email, { int? type }) async {
+    prind("ProfileDao getNiksByEmail() email= $email type= $type");
     final credentials = await (select(credentialEntities)..where((it) => it.email.equals(email))).get();
+    prind("ProfileDao getNiksByEmail() credentials = $credentials");
     if(credentials.isEmpty) {
       return Map.unmodifiable({});
     }
