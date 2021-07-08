@@ -27,7 +27,7 @@ class NeonatalServicePage extends StatelessWidget {
     pageController.addListener(() {
       final page = pageController.page?.toInt();
       if(page != null) {
-        vm.currentPage = page;
+        vm.initFormInPage(page); // = page;
       }
     });
 
@@ -68,7 +68,7 @@ class _FormPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    vm.init(isOneShot: false);
+    //vm.initFormInPage(page);
 
     return BelowTopBarScrollContentArea([
       SliverList(delegate: SliverChildListDelegate.fixed([
