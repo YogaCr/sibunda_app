@@ -296,10 +296,21 @@ abstract class FormVmGroup extends AsyncVm with FormVmGroupMixin {
   }
   @protected
   void setResponse(int group, String key, response) {
-    if(_responseGroupList[group][key] == null) {
-      throw "No such `key` '$key' in group '$group' in this '$runtimeType'";
+    if(_isFormReady.value == true) {
+      if(_responseGroupList[group][key] == null) {
+        throw "No such `key` '$key' in group '$group' in this '$runtimeType'";
+      }
+      _responseGroupList[group][key]!.response.value = response;
+    } else {
+      _isFormReady.observeOnce((isReady) {
+        if(isReady == true) {
+          if(_responseGroupList[group][key] == null) {
+            throw "No such `key` '$key' in group '$group' in this '$runtimeType'";
+          }
+          _responseGroupList[group][key]!.response.value = response;
+        }
+      });
     }
-    _responseGroupList[group][key]!.response.value = response;
   }
 
   @override

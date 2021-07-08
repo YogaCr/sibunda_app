@@ -44,7 +44,7 @@ class FormData {
     this.answer,
     this.options,
     this.input = FieldInputMethod.direct,
-    this.isInputEnabled = false,
+    this.isInputEnabled = true,
   });
 
   factory FormData.fromBabyDevResponse(BabyCheckDevFormDataResponse response) {

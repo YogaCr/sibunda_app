@@ -13,7 +13,7 @@ class LiveData<T> implements Expirable {
 
   Map<Tuple2<Expirable, String>, Tuple2<void Function(T?), bool>>? _observers = {};
   List<void Function(T?)>? _foreverObservers;
-  List<void Function(T)>? _getValueObservers;
+  List<void Function(T?)>? _onceObservers;
 
   @override
   bool get isActive => _observers != null;
@@ -60,15 +60,15 @@ class LiveData<T> implements Expirable {
       }
     }
   }
-  void getOrWaitForValue(void Function(T) onGet) {
+  void observeOnce(void Function(T?) onChange) {
     final v = _value;
     if(v is T) {
-      onGet(v);
+      onChange(v);
     } else {
-      if(_getValueObservers == null) {
-        _getValueObservers = [];
+      if(_onceObservers == null) {
+        _onceObservers = [];
       }
-      _getValueObservers!.add(onGet);
+      _onceObservers!.add(onChange);
     }
   }
 
@@ -94,8 +94,8 @@ class LiveData<T> implements Expirable {
     _observers = null;
     _foreverObservers?.clear();
     _foreverObservers = null;
-    _getValueObservers?.clear();
-    _getValueObservers = null;
+    _onceObservers?.clear();
+    _onceObservers = null;
   }
 
   void notifyObservers({T? oldValue, T? newValue}) {
@@ -120,14 +120,11 @@ class LiveData<T> implements Expirable {
         onChange(_value);
       }
     }
-    if(_getValueObservers?.isNotEmpty == true) {
-      final v = _value;
-      if(v is T) {
-        for(final onGet in _getValueObservers!) {
-          onGet(v);
-        }
-        _getValueObservers!.clear();
+    if(_onceObservers?.isNotEmpty == true) {
+      for(final onGet in _onceObservers!) {
+        onGet(_value);
       }
+      _onceObservers!.clear();
     }
   }
 

@@ -54,7 +54,7 @@ abstract class FormUiData extends Equatable {
   });
 
   @override
-  List<Object> get props => [type, key, question, img ?? "<null>"];
+  List<Object> get props => [type, key, question, img ?? "<null>", isInputEnabled];
 }
 
 class FormUiTxt extends FormUiData {

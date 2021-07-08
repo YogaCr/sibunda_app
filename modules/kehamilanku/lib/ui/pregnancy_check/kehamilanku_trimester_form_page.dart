@@ -54,7 +54,7 @@ class KehamilankuTrimesterFormPage extends StatelessWidget {
         child: TopBarItemCenterAlignList(
           dataList: weekList,
           pageController: pageController,
-          onItemClick: (i) => showSnackBar(context, "Dipencet i = $i"),
+          //onItemClick: (i) => showSnackBar(context, "Dipencet i = $i"),
         ),
       ),
       body: Padding(
