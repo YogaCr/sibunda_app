@@ -234,7 +234,7 @@ abstract class FormVmGroup extends AsyncVm with FormVmGroupMixin {
         for(final formData in e.data) {
           final isValidData = MutableLiveData<bool>();
           isValidData.observe(this, (isValid) {
-            //prind("isValidData.observe() formData.key = ${formData.key} isValid = $isValid");
+            prind("isValidData.observe() formData.key = ${formData.key} isValid = $isValid");
             if(!_isReseting) {
               _checkCanProceed();
             }

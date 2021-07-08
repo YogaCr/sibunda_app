@@ -97,7 +97,7 @@ class _FormGenericGroupState
         final itemData = groupData.data[i];
         final vmLiveData = vm.responseGroupList[groupPosition][key]!.response as MutableLiveData; //TODO: probably risky operation.
 
-        prind("FormGenericGroup vm.isFormEnabled = ${vm.isFormEnabled} itemData= $itemData");
+        //prind("FormGenericGroup vm.isFormEnabled = ${vm.isFormEnabled} itemData= $itemData");
         switch(itemData.type) {
           case FormType.text:
             //final txtLiveData = MutableLiveData<String>();

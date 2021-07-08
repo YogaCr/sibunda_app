@@ -78,7 +78,7 @@ class TxtField<D> extends SibFormField {
     );
  */
     _response.observeForever((data) {
-      prind("TxtField responseLiveData.observeForever hasCode= ${hashCode} isChanging = $isChanging data= $data data?.runtimeType = ${data?.runtimeType}");
+      //prind("TxtField responseLiveData.observeForever hasCode= ${hashCode} isChanging = $isChanging data= $data data?.runtimeType = ${data?.runtimeType}");
       if(!isChanging.value) {
         isChanging.value = true;
         _textController.text = getResponseRepresentation?.call(data) ?? data?.toString() ?? "";
@@ -95,7 +95,7 @@ class TxtField<D> extends SibFormField {
             isChanging.value = true;
             if(rawResponseMapper == null) {
               prinw("`rawResponseMapper` == null and this `$runtimeType` is recording raw input from text. This `$runtimeType` is recording if only `D` is String.");
-              if(D is String){
+              if(D == String || D == dynamic){
                 _response.value = _textController.text as D;
               } else {
                 prinw("`rawResponseMapper` == null and `D` ($D) is not String. Raw response from text is ignored!");

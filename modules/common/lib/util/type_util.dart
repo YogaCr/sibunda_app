@@ -14,7 +14,7 @@ int? tryParseInt(source, {
 }) {
   if(source is int) return source;
   if(inclusiveAllNum && source is num) return source.toInt();
-  if(source is String) return int.parse(source, onError: onError);
+  if(source is String) return onError == null ? int.tryParse(source) : int.parse(source, onError: onError);
 
   if(onError != null) {
     return onError(source);
@@ -30,7 +30,7 @@ num parseNum(source, { num Function(dynamic)? onError }) {
 }
 num? tryParseNum(source, { num Function(dynamic)? onError }) {
   if(source is num) return source;
-  if(source is String) return num.parse(source, onError);
+  if(source is String) return onError == null ? num.tryParse(source) : num.parse(source, onError);
 
   if(onError != null) {
     return onError(source);
@@ -48,7 +48,7 @@ double parseDouble(source, { double Function(dynamic)? onError }) {
 double? tryParseDouble(source, { double Function(dynamic)? onError }) {
   if(source is double) return source;
   if(source is num) return source.toDouble();
-  if(source is String) return double.parse(source, onError);
+  if(source is String) return onError == null ? double.tryParse(source) : double.parse(source, onError);
 
   if(onError != null) {
     return onError(source);

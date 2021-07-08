@@ -44,6 +44,9 @@ class KehamilankuCheckFormVm extends FormVmGroup {
     currentWeek.observe(this, (week) {
       setResponse(0, Const.KEY_WEEK, week);
     });
+    if(currentWeek.value != null) {
+      setResponse(0, Const.KEY_WEEK, currentWeek.value);
+    }
     pregnancyCheck.observe(this, (data) {
       if(data != null) {
         final map = data.toJson();
@@ -153,7 +156,7 @@ class KehamilankuCheckFormVm extends FormVmGroup {
 
   @override
   Future<bool> validateField(int groupPosition, String inputKey, response) async {
-    //prind("PregTrimFormVm validateField() group=$groupPosition key=$inputKey resp=$response");
+    prind("PregTrimFormVm validateField() group=$groupPosition key=$inputKey resp=$response");
     switch(inputKey) {
       case Const.KEY_WEEK:
       case Const.KEY_WEIGHT:
