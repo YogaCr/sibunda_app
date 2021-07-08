@@ -47,6 +47,10 @@ class KehamilankuCheckFormVm extends FormVmGroup {
     if(currentWeek.value != null) {
       setResponse(0, Const.KEY_WEEK, currentWeek.value);
     }
+
+    canProceed.observe(this, (v) {
+      prind("KehamilankuCheckFormVm canProceed = $v");
+    });
     pregnancyCheck.observe(this, (data) {
       if(data != null) {
         final map = data.toJson();
