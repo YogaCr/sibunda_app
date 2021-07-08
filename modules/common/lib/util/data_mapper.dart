@@ -6,6 +6,7 @@ import 'package:common/arch/domain/model/chart_data_mother.dart';
 import 'package:common/arch/domain/model/form_data.dart';
 import 'package:common/arch/domain/model/form_warning_status.dart';
 import 'package:common/arch/ui/model/form_data.dart';
+import 'package:common/res/string/_string.dart';
 
 List<FormUiGroupData> formDataListToUi(List<FormGroupData> data) =>
     data.map((e) => FormUiGroupData.fromModel(e)).toList(growable: false);
@@ -88,3 +89,21 @@ String getBabyChartTypeYLabelFormat(BabyChartType type) {
   }
 }
 
+
+String getBinaryAnswerYesNoStr(int i) {
+  if(i > 0) return Strings.yes;
+  return Strings.no;
+}
+int getBinaryAnswerYesNoInt(String answer) {
+  if(answer.toLowerCase() == Strings.yes.toLowerCase()) return 1;
+  return 0;
+}
+
+String getBinaryAnswerHaveNotStr(int i) {
+  if(i > 0) return Strings.have;
+  return Strings.have_not;
+}
+int getBinaryAnswerHaveNotInt(String answer) {
+  if(answer.toLowerCase() == Strings.have.toLowerCase()) return 1;
+  return 0;
+}

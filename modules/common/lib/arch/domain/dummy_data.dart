@@ -429,11 +429,30 @@ final neonatal6HourForm = Neonatal6HourForm(
 );
 
 
-final neonatalKn1n2Form = NeonatalKn1n2Form(
+final neonatalKn1Form = NeonatalKn1Form(
   q_menyusu: 1,
   q_tali_pusat: 0,
   q_vit_k1: 0,
   q_salep: 0,
+  q_imunisasi_hb: 0,
+  q_skrining_hipotiroid_kongenital: 0,
+  date: "1798-03-02",
+  time: "10:11",
+  no_batch: "91037192",
+  weight: 10,
+  height: 10,
+  headCircum: 30,
+  dirujuk_ke: "Rumah bersalin",
+  petugas: "Dia",
+  catatan_penting: "Gakda",
+  masalah: "Banyak",
+);
+
+final neonatalKn2Form = NeonatalKn2Form(
+  q_menyusu: 1,
+  q_tali_pusat: 0,
+  q_tanda_bahaya: 0,
+  q_identifikasi_kuning: 0,
   q_imunisasi_hb: 0,
   q_skrining_hipotiroid_kongenital: 0,
   date: "1798-03-02",

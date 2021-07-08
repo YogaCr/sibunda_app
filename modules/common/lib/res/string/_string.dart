@@ -9,6 +9,8 @@ class Strings {
   static const email = "Email";
   static const yes = "Ya";
   static const no = "Tidak";
+  static const have = "Sudah";
+  static const have_not = "Belum";
   static const skip = "Lewati";
   static const password_re = "Konfirmasi Password";
   static const email_has_already_registered = "Email sudah terdaftar";

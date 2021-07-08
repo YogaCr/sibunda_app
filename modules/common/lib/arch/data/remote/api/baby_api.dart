@@ -37,9 +37,9 @@ abstract class BabyApi {
   @POST("//create-neonatus-6-hours")
   Future<CommonResponse> sendNeo6hForm(@Body() Neonatal6HourFormBody body,);
   @POST("/create-neonatus-kn1")
-  Future<CommonResponse> sendKn1Form(@Body() NeonatalKn1n2FormBody body,);
+  Future<CommonResponse> sendKn1Form(@Body() NeonatalKn1FormBody body,);
   @POST("/create-neonatus-kn2")
-  Future<CommonResponse> sendKn2Form(@Body() NeonatalKn1n2FormBody body,);
+  Future<CommonResponse> sendKn2Form(@Body() NeonatalKn2FormBody body,);
   @POST("/create-neonatus-kn3")
   Future<CommonResponse> sendKn3Form(@Body() NeonatalKn3FormBody body,);
 

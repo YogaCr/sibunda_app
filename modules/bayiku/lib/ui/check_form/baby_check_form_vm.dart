@@ -6,6 +6,7 @@ import 'package:common/arch/domain/model/form_warning_status.dart';
 import 'package:common/arch/ui/model/form_data.dart';
 import 'package:common/arch/ui/vm/form_vm_group.dart';
 import 'package:common/res/string/_string.dart';
+import 'package:common/util/data_mapper.dart';
 import 'package:common/util/type_util.dart';
 import 'package:common/value/const_values.dart';
 import 'package:core/domain/model/result.dart';
@@ -42,7 +43,7 @@ class BabyCheckFormVm extends FormVmGroup {
           final devMap = <String, dynamic>{};
           respGroupList.add(devMap);
           for(final ans in devList) {
-            devMap[ans.q_id.toString()] = ans.ans == 1 ? Strings.yes : Strings.no;
+            devMap[ans.q_id.toString()] = getBinaryAnswerHaveNotStr(ans.ans);
           }
         }
         patchResponse(respGroupList);
@@ -79,7 +80,7 @@ class BabyCheckFormVm extends FormVmGroup {
         ? []
         : maps[1].entries.map((e) => {
           "q_id": parseInt(e.key),
-          "ans": e.value == Strings.yes ? 1 : 0,
+          "ans": getBinaryAnswerYesNoInt(e.value), // == Strings.yes ? 1 : 0,
         }).toList(growable: false);
     growthMap[Const.KEY_PERKEMBANGAN_ANS] = devQs;
     growthMap[Const.KEY_YEAR_ID] = yearId;

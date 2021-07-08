@@ -3,6 +3,7 @@ import 'package:bayiku/ui/check_form/baby_check_form_vm.dart';
 import 'package:common/arch/data/remote/model/baby_check_form_api_model.dart';
 import 'package:common/arch/domain/dummy_data.dart';
 import 'package:common/test/__common_test_const.dart';
+import 'package:common/util/data_mapper.dart';
 import 'package:common/util/type_util.dart';
 import 'package:common/value/const_values.dart';
 import 'package:core/domain/model/result.dart';
@@ -13,7 +14,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 final _faker = Faker();
 late BabyCheckFormVm _vm;
-final int _month = 16;
+final int _month = 17;
 final int _yearId = 8;
 late Map<String, dynamic> _sentResp;
 
@@ -55,7 +56,8 @@ _submitTest() async {
       respsList.add(devMap);
       growthMap.remove(Const.KEY_PERKEMBANGAN_ANS); // = devList;
       for(final e in _vm.responseGroupList[1].entries) {
-        devMap[e.key] = _faker.randomGenerator.integer(2);
+        final i = _faker.randomGenerator.integer(2);
+        devMap[e.key] = getBinaryAnswerYesNoStr(i);
       }
     }
 

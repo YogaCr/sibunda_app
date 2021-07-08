@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 int parseInt(source, { int radix = 10, int Function(dynamic)? onError }) {
   final res = tryParseInt(source, radix: radix, onError: onError);
   if(res != null) {
@@ -73,3 +75,32 @@ DateTime? tryParseDate(source, { DateTime Function(dynamic)? onError }) {
     return onError(source);
   }
 }
+
+TimeOfDay parseTimeOfDay(source, { TimeOfDay Function(dynamic)? onError }) {
+  final res = tryParseTimeOfDay(source, onError: onError);
+  if(res != null) {
+    return res;
+  }
+  throw "Unknown type '${source.runtimeType}' to parse to `TimeOfDay`";
+}
+TimeOfDay? tryParseTimeOfDay(source, { TimeOfDay Function(dynamic)? onError }) {
+  if(source is TimeOfDay) return source;
+  if(source is DateTime) return TimeOfDay.fromDateTime(source);
+  if(source is String) {
+    var res = DateTime.tryParse(source);
+    if (res != null) {
+      return tryParseTimeOfDay(res); //recursive;
+    }
+    final match = RegExp("[0-9]{2}:[0-9]{2}").stringMatch(source);
+    if (match != null) {
+      final intList = match.split(":").map((e) => int.parse(e)).toList(growable: false);
+      return TimeOfDay(hour: intList[0], minute: intList[1]);
+    }
+  }
+
+  if(onError != null) {
+    return onError(source);
+  }
+}
+
+timeOfDayToString(TimeOfDay time) => "${time.hour}:${time.minute}";

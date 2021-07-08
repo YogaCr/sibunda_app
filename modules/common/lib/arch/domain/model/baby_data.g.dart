@@ -66,8 +66,8 @@ Map<String, dynamic> _$Neonatal6HourFormToJson(Neonatal6HourForm instance) =>
       'catatan_penting': instance.catatan_penting,
     };
 
-NeonatalKn1n2Form _$NeonatalKn1n2FormFromJson(Map<String, dynamic> json) {
-  return NeonatalKn1n2Form(
+NeonatalKn1Form _$NeonatalKn1FormFromJson(Map<String, dynamic> json) {
+  return NeonatalKn1Form(
     q_menyusu: json['q_menyusu'] as int,
     q_tali_pusat: json['q_tali_pusat'] as int,
     q_vit_k1: json['q_vit_k1'] as int,
@@ -88,12 +88,55 @@ NeonatalKn1n2Form _$NeonatalKn1n2FormFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$NeonatalKn1n2FormToJson(NeonatalKn1n2Form instance) =>
+Map<String, dynamic> _$NeonatalKn1FormToJson(NeonatalKn1Form instance) =>
     <String, dynamic>{
       'q_menyusu': instance.q_menyusu,
       'q_tali_pusat': instance.q_tali_pusat,
       'q_vit_k1': instance.q_vit_k1,
       'q_salep': instance.q_salep,
+      'q_imunisasi_hb': instance.q_imunisasi_hb,
+      'q_skrining_hipotiroid_kongenital':
+          instance.q_skrining_hipotiroid_kongenital,
+      'date': instance.date,
+      'time': instance.time,
+      'no_batch': instance.no_batch,
+      'bb': instance.weight,
+      'tb': instance.height,
+      'lingkar_kepala': instance.headCircum,
+      'dirujuk_ke': instance.dirujuk_ke,
+      'petugas': instance.petugas,
+      'catatan_penting': instance.catatan_penting,
+      'masalah': instance.masalah,
+    };
+
+NeonatalKn2Form _$NeonatalKn2FormFromJson(Map<String, dynamic> json) {
+  return NeonatalKn2Form(
+    q_menyusu: json['q_menyusu'] as int,
+    q_tali_pusat: json['q_tali_pusat'] as int,
+    q_tanda_bahaya: json['q_tanda_bahaya'] as int,
+    q_identifikasi_kuning: json['q_identifikasi_kuning'] as int,
+    q_imunisasi_hb: json['q_imunisasi_hb'] as int,
+    q_skrining_hipotiroid_kongenital:
+        json['q_skrining_hipotiroid_kongenital'] as int,
+    date: json['date'] as String,
+    time: json['time'] as String,
+    no_batch: json['no_batch'] as String,
+    weight: json['bb'] as num,
+    height: json['tb'] as num,
+    headCircum: json['lingkar_kepala'] as num,
+    dirujuk_ke: json['dirujuk_ke'] as String,
+    petugas: json['petugas'] as String,
+    catatan_penting: json['catatan_penting'] as String,
+    masalah: json['masalah'] as String,
+  );
+}
+
+Map<String, dynamic> _$NeonatalKn2FormToJson(NeonatalKn2Form instance) =>
+    <String, dynamic>{
+      'q_menyusu': instance.q_menyusu,
+      'q_tali_pusat': instance.q_tali_pusat,
+      'q_tanda_bahaya': instance.q_tanda_bahaya,
+      'q_identifikasi_kuning': instance.q_identifikasi_kuning,
       'q_imunisasi_hb': instance.q_imunisasi_hb,
       'q_skrining_hipotiroid_kongenital':
           instance.q_skrining_hipotiroid_kongenital,

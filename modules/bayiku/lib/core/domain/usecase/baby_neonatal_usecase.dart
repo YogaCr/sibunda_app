@@ -14,6 +14,11 @@ mixin SaveNeonatalForm {
   });
 }
 
+//TODO: GetNeonatalFormAnswer: blum ada endpoint
+mixin GetNeonatalFormAnswer {
+  Future<Result<Map<String, dynamic>>> call(int page);
+}
+
 
 class GetNeonatalFormDataImpl with GetNeonatalFormData {
   final FormFieldRepo _repo;

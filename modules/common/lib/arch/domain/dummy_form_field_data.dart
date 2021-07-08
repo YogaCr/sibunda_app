@@ -173,8 +173,8 @@ final babyNeonatalServicePages = [
 ];
 
 final radioBinaryOption_haveNot = <FormOption>[
-  FormOption(label: "Sudah", isSelected: false),
-  FormOption(label: "Belum", isSelected: false),
+  FormOption(label: Strings.have, isSelected: false),
+  FormOption(label: Strings.have_not, isSelected: false),
 ];
 final radioBinaryOption_yesNo = <FormOption>[
   FormOption(label: Strings.yes, isSelected: false),

@@ -54,9 +54,9 @@ class Neonatal6HourFormBody {
   }
 }
 
-/// This is for KN1 and KN2 form.
+
 @JsonSerializable()
-class NeonatalKn1n2FormBody {
+class NeonatalKn1FormBody {
   final int q_menyusu;
   final int q_tali_pusat;
   final int q_vit_k1;
@@ -78,7 +78,7 @@ class NeonatalKn1n2FormBody {
   final String masalah;
   final int monthly_checkup_id;
 
-  NeonatalKn1n2FormBody({
+  NeonatalKn1FormBody({
   required this.q_menyusu,
   required this.q_tali_pusat,
   required this.q_vit_k1,
@@ -98,15 +98,70 @@ class NeonatalKn1n2FormBody {
   required this.monthly_checkup_id,
   });
 
-  factory NeonatalKn1n2FormBody.fromJson(Map<String, dynamic> map) => _$NeonatalKn1n2FormBodyFromJson(map);
-  Map<String, dynamic> toJson() => _$NeonatalKn1n2FormBodyToJson(this);
+  factory NeonatalKn1FormBody.fromJson(Map<String, dynamic> map) => _$NeonatalKn1FormBodyFromJson(map);
+  Map<String, dynamic> toJson() => _$NeonatalKn1FormBodyToJson(this);
 
-  factory NeonatalKn1n2FormBody.fromModel(NeonatalKn1n2Form model, {
+  factory NeonatalKn1FormBody.fromModel(NeonatalKn1Form model, {
     required int monthly_checkup_id,
   }) {
     final map = model.toJson();
     map["monthly_checkup_id"] = monthly_checkup_id;
-    return NeonatalKn1n2FormBody.fromJson(map);
+    return NeonatalKn1FormBody.fromJson(map);
+  }
+}
+
+@JsonSerializable()
+class NeonatalKn2FormBody {
+  final int q_menyusu;
+  final int q_tali_pusat;
+  final int q_tanda_bahaya;
+  final int q_identifikasi_kuning;
+  final int q_imunisasi_hb;
+  final int q_skrining_hipotiroid_kongenital;
+  final String date;
+  final String time;
+  final String no_batch;
+  @JsonKey(name: Const.KEY_WEIGHT)
+  final num weight;
+  @JsonKey(name: Const.KEY_HEIGHT)
+  final num height;
+  @JsonKey(name: Const.KEY_HEAD_CIRCUM)
+  final num headCircum;
+  final String dirujuk_ke;
+  final String petugas;
+  final String catatan_penting;
+  final String masalah;
+  final int monthly_checkup_id;
+
+  NeonatalKn2FormBody({
+  required this.q_menyusu,
+  required this.q_tali_pusat,
+  required this.q_tanda_bahaya,
+  required this.q_identifikasi_kuning,
+  required this.q_imunisasi_hb,
+  required this.q_skrining_hipotiroid_kongenital,
+  required this.date,
+  required this.time,
+  required this.no_batch,
+  required this.weight,
+  required this.height,
+  required this.headCircum,
+  required this.dirujuk_ke,
+  required this.petugas,
+  required this.catatan_penting,
+  required this.masalah,
+  required this.monthly_checkup_id,
+  });
+
+  factory NeonatalKn2FormBody.fromJson(Map<String, dynamic> map) => _$NeonatalKn2FormBodyFromJson(map);
+  Map<String, dynamic> toJson() => _$NeonatalKn2FormBodyToJson(this);
+
+  factory NeonatalKn2FormBody.fromModel(NeonatalKn2Form model, {
+    required int monthly_checkup_id,
+  }) {
+    final map = model.toJson();
+    map["monthly_checkup_id"] = monthly_checkup_id;
+    return NeonatalKn2FormBody.fromJson(map);
   }
 }
 

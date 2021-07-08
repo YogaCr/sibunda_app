@@ -245,16 +245,16 @@ _sendNeo6hForm() async {
   assert(res.code == 200);
 }
 _sendKn1Form() async {
-  final dummy = neonatalKn1n2Form;
-  final body = NeonatalKn1n2FormBody.fromModel(dummy, monthly_checkup_id: _growthFormId);
+  final dummy = neonatalKn1Form;
+  final body = NeonatalKn1FormBody.fromModel(dummy, monthly_checkup_id: _growthFormId);
   prind("body = ${body.toJson()}");
   final res = await _api.sendKn1Form(body);
   prinr("res = $res");
   assert(res.code == 200);
 }
 _sendKn2Form() async {
-  final dummy = neonatalKn1n2Form;
-  final body = NeonatalKn1n2FormBody.fromModel(dummy, monthly_checkup_id: _growthFormId);
+  final dummy = neonatalKn2Form;
+  final body = NeonatalKn2FormBody.fromModel(dummy, monthly_checkup_id: _growthFormId);
   prind("body = ${body.toJson()}");
   final res = await _api.sendKn2Form(body);
   prinr("res = $res");

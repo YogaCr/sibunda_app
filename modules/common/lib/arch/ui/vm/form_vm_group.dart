@@ -55,7 +55,14 @@ mixin FormVmGroupMixin implements AsyncVm {
       final respMap = <String, dynamic>{};
       respGroupList.add(FormResponse(header: header, responses: respMap));
 
-      if(mappedKey?.isNotEmpty == true) {
+      // All responses will not be mapped, `mappedKey` not null and isEmpty
+      if(mappedKey?.isEmpty == true) {
+        for(final entry in respGroup.entries) {
+          respMap[entry.key] = entry.value.response.value;
+        }
+      }
+      // Some responses will be mapped, `mappedKey` not null and isNotEmpty
+      else if(mappedKey != null) {
         for(final entry in respGroup.entries) {
           if(mappedKey!.contains(entry.key)) {
             respMap[entry.key] = mapResponse(i, entry.key, entry.value.response.value);
@@ -64,9 +71,11 @@ mixin FormVmGroupMixin implements AsyncVm {
             respMap[entry.key] = entry.value.response.value;
           }
         }
-      } else {
+      }
+      // All responses will be mapped, `mappedKey` is null
+      else {
         for(final entry in respGroup.entries) {
-          respMap[entry.key] = entry.value.response.value;
+          respMap[entry.key] = mapResponse(i, entry.key, entry.value.response.value);
         }
       }
     }
@@ -75,7 +84,10 @@ mixin FormVmGroupMixin implements AsyncVm {
 
   Map<String, dynamic> getResponseMap() => getResponse().toLinear();
 
-  Set<String>? get mappedKey => null; //TODO: Di sini, key dari field dianggap unik semua, bahkan untuk group lain.
+  /// Responses with these input keys will be mapped before submitted.
+  /// If this `null`, it means all responses will be mapped.
+  /// If this empty, it means all responses will *NOT* be mapped.
+  Set<String>? get mappedKey => {}; //TODO: Di sini, key dari field dianggap unik semua, bahkan untuk group lain.
   dynamic mapResponse(int groupPosition, String key, dynamic response) => response;
 
   void registerField({

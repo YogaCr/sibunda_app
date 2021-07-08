@@ -111,9 +111,8 @@ class Neonatal6HourForm {
 }
 
 
-/// This is for KN1 and KN2 form.
 @JsonSerializable()
-class NeonatalKn1n2Form {
+class NeonatalKn1Form {
   final int q_menyusu;
   final int q_tali_pusat;
   final int q_vit_k1;
@@ -135,7 +134,7 @@ class NeonatalKn1n2Form {
   final String masalah;
   //final int monthly_checkup_id;
 
-  NeonatalKn1n2Form({
+  NeonatalKn1Form({
     required this.q_menyusu,
     required this.q_tali_pusat,
     required this.q_vit_k1,
@@ -155,8 +154,55 @@ class NeonatalKn1n2Form {
     //required this.monthly_checkup_id,
   });
 
-  factory NeonatalKn1n2Form.fromJson(Map<String, dynamic> map) => _$NeonatalKn1n2FormFromJson(map);
-  Map<String, dynamic> toJson() => _$NeonatalKn1n2FormToJson(this);
+  factory NeonatalKn1Form.fromJson(Map<String, dynamic> map) => _$NeonatalKn1FormFromJson(map);
+  Map<String, dynamic> toJson() => _$NeonatalKn1FormToJson(this);
+}
+
+@JsonSerializable()
+class NeonatalKn2Form {
+  final int q_menyusu;
+  final int q_tali_pusat;
+  final int q_tanda_bahaya;
+  final int q_identifikasi_kuning;
+  final int q_imunisasi_hb;
+  final int q_skrining_hipotiroid_kongenital;
+  final String date;
+  final String time;
+  final String no_batch;
+  @JsonKey(name: Const.KEY_WEIGHT)
+  final num weight;
+  @JsonKey(name: Const.KEY_HEIGHT)
+  final num height;
+  @JsonKey(name: Const.KEY_HEAD_CIRCUM)
+  final num headCircum;
+  final String dirujuk_ke;
+  final String petugas;
+  final String catatan_penting;
+  final String masalah;
+  //final int monthly_checkup_id;
+
+  NeonatalKn2Form({
+    required this.q_menyusu,
+    required this.q_tali_pusat,
+    required this.q_tanda_bahaya,
+    required this.q_identifikasi_kuning,
+    required this.q_imunisasi_hb,
+    required this.q_skrining_hipotiroid_kongenital,
+    required this.date,
+    required this.time,
+    required this.no_batch,
+    required this.weight,
+    required this.height,
+    required this.headCircum,
+    required this.dirujuk_ke,
+    required this.petugas,
+    required this.catatan_penting,
+    required this.masalah,
+    //required this.monthly_checkup_id,
+  });
+
+  factory NeonatalKn2Form.fromJson(Map<String, dynamic> map) => _$NeonatalKn2FormFromJson(map);
+  Map<String, dynamic> toJson() => _$NeonatalKn2FormToJson(this);
 }
 
 

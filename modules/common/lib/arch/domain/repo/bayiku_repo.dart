@@ -159,11 +159,11 @@ class MyBabyRepoImpl with MyBabyRepo {
         await _api.sendNeo6hForm(body);
         break;
       case 1: //For KN1
-        final body = NeonatalKn1n2FormBody.fromJson(formData);
+        final body = NeonatalKn1FormBody.fromJson(formData);
         await _api.sendKn1Form(body);
         break;
       case 2: //For KN2
-        final body = NeonatalKn1n2FormBody.fromJson(formData);
+        final body = NeonatalKn2FormBody.fromJson(formData);
         await _api.sendKn2Form(body);
         break;
       case 3: //For KN3
