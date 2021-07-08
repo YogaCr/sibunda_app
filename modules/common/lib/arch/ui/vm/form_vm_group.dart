@@ -282,12 +282,25 @@ abstract class FormVmGroup extends AsyncVm with FormVmGroupMixin {
     }
   }
   @protected
-  void resetResponses() {
+  void resetResponses({ Set<String>? skippedKeys }) {
     _isReseting = true;
-    for(final group in _responseGroupList) {
-      for(final e in group.values) {
-        e.response.value = null;
-        e.isValid.value = null;
+    if(skippedKeys?.isNotEmpty != true) { //null or empty
+      for(final group in _responseGroupList) {
+        for(final e in group.values) {
+          e.response.value = null;
+          e.isValid.value = null;
+        }
+      }
+    } else {
+      for(final group in _responseGroupList) {
+        for(final e in group.entries) {
+          if(skippedKeys!.contains(e.key)) {
+            skippedKeys.remove(e.key);
+            continue;
+          }
+          e.value.response.value = null;
+          e.value.isValid.value = null;
+        }
       }
     }
     _canProceed.value = null;

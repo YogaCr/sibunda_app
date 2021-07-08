@@ -47,13 +47,16 @@ class CheckUpLocalSrcImpl with CheckUpLocalSrc {
     required String nik,
   }) async {
     try {
+      //prind("getCheckUpId() period = $period nik = $nik");
       final e = await _checkUpIdDao.getByNikAndPeriod(nik: nik, period: period);
-      prind("getCheckUpId() e = $e");
+      //prind("getCheckUpId() e = $e");
       if(e == null) {
         return Fail();
       }
       return Success(e.id);
-    } catch(e) {
+    } catch(e, stack) {
+      prine(e);
+      prine(stack);
       return Fail(error: e);
     }
   }

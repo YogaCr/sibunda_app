@@ -64,7 +64,7 @@ class ItemGraphMenu extends StatelessWidget {
           child: Row(
             children: [
               imgChild,
-              txtChild,
+              Expanded(child: txtChild,),
             ],
           ),
         ),

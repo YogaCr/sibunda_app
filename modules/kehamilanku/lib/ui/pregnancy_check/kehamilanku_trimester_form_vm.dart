@@ -41,12 +41,15 @@ class KehamilankuCheckFormVm extends FormVmGroup {
     _getPregnancyBabySize = getPregnancyBabySize,
     _getPregnancyCheckForm = getPregnancyCheckForm {
 
-    currentWeek.observe(this, (week) {
+    _currentWeek.observe(this, (week) {
+      prind("_currentWeek.observe week = $week");
       setResponse(0, Const.KEY_WEEK, week);
     });
+/*
     if(currentWeek.value != null) {
       setResponse(0, Const.KEY_WEEK, currentWeek.value);
     }
+ */
 
     canProceed.observe(this, (v) {
       prind("KehamilankuCheckFormVm canProceed = $v");
@@ -56,7 +59,11 @@ class KehamilankuCheckFormVm extends FormVmGroup {
         final map = data.toJson();
         patchResponse([map]);
       } else {
-        resetResponses();
+        resetResponses(skippedKeys: {
+          Const.KEY_HPL,
+          Const.KEY_HPHT,
+          Const.KEY_WEEK,
+        });
       }
       //_isFormEnabled = data == null;
     });
@@ -81,7 +88,8 @@ class KehamilankuCheckFormVm extends FormVmGroup {
   LiveData<List<FormWarningStatus>> get formWarningStatusList => _formWarningStatusList;
   LiveData<PregnancyBabySize> get pregnancyBabySize => _pregnancyBabySize;
 
-  MutableLiveData<int> currentWeek = MutableLiveData();
+  final MutableLiveData<int> _currentWeek = MutableLiveData();
+  LiveData<int> get currentWeek => _currentWeek;
   late int currentTrimesterId;
 
   bool _isFormEnabled = true;
@@ -107,11 +115,11 @@ class KehamilankuCheckFormVm extends FormVmGroup {
 
   @override
   Future<Result<String>> doSubmitJob() async {
-    prind("KehamilankuCheckFormVm doSubmitJob() ==== AWAL");
+    //prind("KehamilankuCheckFormVm doSubmitJob() ==== AWAL");
     final responseMap = getResponse();
-    prind("KehamilankuCheckFormVm doSubmitJob() ==== responseMap = ${responseMap.responseGroups}");
+    //prind("KehamilankuCheckFormVm doSubmitJob() ==== responseMap = ${responseMap.responseGroups}");
     final data = PregnancyCheck.fromJson(responseMap.responseGroups.values.first);
-    prind("KehamilankuCheckFormVm doSubmitJob() ==== data = ${data.toJson()}");
+    //prind("KehamilankuCheckFormVm doSubmitJob() ==== data = ${data.toJson()}");
     final motherNik = VarDi.motherNik.getOrElse();
     return _savePregnancyCheck(motherNik, data, currentTrimesterId).then((value) =>
       value is Success<bool> ? Success("") : value as Fail<String>
@@ -160,7 +168,7 @@ class KehamilankuCheckFormVm extends FormVmGroup {
 
   @override
   Future<bool> validateField(int groupPosition, String inputKey, response) async {
-    prind("PregTrimFormVm validateField() group=$groupPosition key=$inputKey resp=$response");
+    //prind("PregTrimFormVm validateField() group=$groupPosition key=$inputKey resp=$response");
     switch(inputKey) {
       case Const.KEY_WEEK:
       case Const.KEY_WEIGHT:
@@ -218,6 +226,18 @@ class KehamilankuCheckFormVm extends FormVmGroup {
     _pregnancyCheck, _formWarningStatusList, _pregnancyBabySize,
   ];
 
+  void initPage({
+    required int week,
+    bool forceLoad = false,
+  }) {
+    //prind("KehamilankuCheckFormVm.initPage() week = $week forceLoad = $forceLoad _currentWeek.value = ${_currentWeek.value}");
+    if(!forceLoad && _currentWeek.value == week) return;
+    getPregnancyCheck(week: week, forceLoad: true);
+    getMotherFormWarningStatus(week: week, forceLoad: true);
+    getPregnancyBabySize(week: week, forceLoad: true);
+    _currentWeek.value = week;
+    //prind("KehamilankuCheckFormVm.initPage() AKHIR!!!");
+  }
 
   void getPregnancyCheck({
 //    required String motherNik,
@@ -227,7 +247,9 @@ class KehamilankuCheckFormVm extends FormVmGroup {
     if(!forceLoad && _pregnancyCheck.value != null) return;
     startJob(getPregnancyCheckKey, (isActive) async {
       final motherNik = VarDi.motherNik.getOrElse();
+      prind("getPregnancyCheck() motherNik = $motherNik");
       final res = await _getPregnancyCheckUpId(motherNik, week);
+      prind("getPregnancyCheck() week = $week res = $res");
       final checkUpId = tryGetResultValue(res);
       prind("getPregnancyCheck() checkUpId = $checkUpId motherNik = $motherNik week = $week res = $res");
       if(checkUpId != null) {
@@ -265,15 +287,17 @@ class KehamilankuCheckFormVm extends FormVmGroup {
     });
   }
   void getPregnancyBabySize({
-    required int pregnancyWeekAge,
+    required int week,
     bool forceLoad = false,
   }) {
     if(!forceLoad && _pregnancyBabySize.value != null) return;
     startJob(getPregnancyBabySizeKey, (isActive) async {
       final motherNik = VarDi.motherNik.getOrElse();
-      final checkUpId = tryGetResultValue(await _getPregnancyCheckUpId(motherNik, pregnancyWeekAge));
+      final checkUpId = tryGetResultValue(await _getPregnancyCheckUpId(motherNik, week));
+      prind("KehamilankuCheckFormVm.getPregnancyBabySize() motherNik = $motherNik checkUpId = $checkUpId");
       if(checkUpId != null) {
         _getPregnancyBabySize(checkUpId).then((value) {
+          prind("KehamilankuCheckFormVm.getPregnancyBabySize() _getPregnancyBabySize(checkUpId).then value = $value");
           if(value is Success<PregnancyBabySize>) {
             final data = value.data;
             _pregnancyBabySize.value = data;

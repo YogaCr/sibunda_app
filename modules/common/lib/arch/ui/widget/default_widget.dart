@@ -19,8 +19,8 @@ Widget defaultImg({
 
 Widget defaultLoading({
   String? text = "Loading...",
-  double? width = 80,
-  double? height = 80,
+  double? width, //= 80,
+  double? height, // = 80,
 }) => Container(
   padding: EdgeInsets.all(10),
   width: width,
