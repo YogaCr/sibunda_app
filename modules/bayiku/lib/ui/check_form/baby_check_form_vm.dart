@@ -10,6 +10,7 @@ import 'package:common/util/type_util.dart';
 import 'package:common/value/const_values.dart';
 import 'package:core/domain/model/result.dart';
 import 'package:core/ui/base/live_data.dart';
+import 'package:core/util/_consoles.dart';
 import 'package:flutter/cupertino.dart';
 
 class BabyCheckFormVm extends FormVmGroup {
@@ -32,6 +33,7 @@ class BabyCheckFormVm extends FormVmGroup {
     //_saveBabyCheckUpId = saveBabyCheckUpId
   {
     _formAnswer.observe(this, (data) {
+      prind("_formAnswer.observe data = $data");
       if(data != null) {
         final map = data.toJson();
         final respGroupList = <Map<String, dynamic>>[map];
@@ -85,6 +87,7 @@ class BabyCheckFormVm extends FormVmGroup {
 
     final body = BabyMonthlyFormBody.fromJson(growthMap);
     final res = await _saveBabyCheckForm(body);
+    prind("BabyCheckFormVm res = $res");
     return res is Success<bool> ? Success("ok") : Fail();
   }
 
@@ -219,6 +222,7 @@ class BabyCheckFormVm extends FormVmGroup {
         yearId : yearId,
         month: _currentMonthForForm,
       );
+      prind("getBabyFormAnswer res = $res");
       if(res is Success<BabyMonthlyFormBody>) {
         final data = res.data;
         _formAnswer.value = data;

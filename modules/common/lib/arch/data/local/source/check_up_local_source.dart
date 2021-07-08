@@ -1,6 +1,7 @@
 import 'package:common/arch/data/local/dao/check_up_dao.dart';
 import 'package:common/arch/data/local/db/app_db.dart';
 import 'package:core/domain/model/result.dart';
+import 'package:core/util/_consoles.dart';
 
 mixin CheckUpLocalSrc {
   Future<Result<bool>> saveCheckUpId({
@@ -47,6 +48,7 @@ class CheckUpLocalSrcImpl with CheckUpLocalSrc {
   }) async {
     try {
       final e = await _checkUpIdDao.getByNikAndPeriod(nik: nik, period: period);
+      prind("getCheckUpId() e = $e");
       if(e == null) {
         return Fail();
       }

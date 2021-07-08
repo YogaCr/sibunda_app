@@ -13,6 +13,7 @@ import 'package:common/arch/domain/model/form_warning_status.dart';
 import 'package:common/arch/ui/model/dummy_ui_data.dart';
 import 'package:common/arch/ui/model/home_graph_menu.dart';
 import 'package:core/domain/model/result.dart';
+import 'package:core/util/_consoles.dart';
 
 mixin MyBabyRepo {
   Future<Result<String>> getBabyNik();
@@ -113,6 +114,7 @@ class MyBabyRepoImpl with MyBabyRepo {
   @override
   Future<Result<bool>> saveBabyMonthlyCheck(BabyMonthlyFormBody body) async { //TODO: blum ada checkup id ne.
     final res = await _api.sendMonthlyForm(body);
+    prind("saveBabyMonthlyCheck() res = $res");
     if(res.code != 200) {
       return Fail();
     }

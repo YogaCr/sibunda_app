@@ -220,9 +220,12 @@ class KehamilankuCheckFormVm extends FormVmGroup {
     if(!forceLoad && _pregnancyCheck.value != null) return;
     startJob(getPregnancyCheckKey, (isActive) async {
       final motherNik = VarDi.motherNik.getOrElse();
-      final checkUpId = tryGetResultValue(await _getPregnancyCheckUpId(motherNik, week));
+      final res = await _getPregnancyCheckUpId(motherNik, week);
+      final checkUpId = tryGetResultValue(res);
+      prind("getPregnancyCheck() checkUpId = $checkUpId motherNik = $motherNik week = $week res = $res");
       if(checkUpId != null) {
         _getPregnancyCheck(checkUpId).then((value) {
+          prind("getPregnancyCheck() _getPregnancyCheck() value = $value");
           if(value is Success<PregnancyCheck>) {
             final data = value.data;
             _pregnancyCheck.value = data;

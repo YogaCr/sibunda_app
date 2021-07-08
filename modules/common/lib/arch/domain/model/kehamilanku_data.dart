@@ -3,6 +3,8 @@ import 'package:common/arch/data/remote/model/kehamilanku_form_warning_api_model
 import 'package:common/arch/data/remote/model/kehamilanku_overview_api_model.dart';
 import 'package:common/arch/domain/dummy_data.dart';
 import 'package:common/arch/domain/model/img_data.dart';
+import 'package:common/util/times.dart';
+import 'package:common/util/type_util.dart';
 import 'package:common/value/const_values.dart';
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -107,7 +109,14 @@ class PregnancyCheck {
     note: map[Const.KEY_SPECIAL_NOTE]!,
   );
 
-  factory PregnancyCheck.fromJson(Map<String, dynamic> json) => _$PregnancyCheckFromJson(json);
+  factory PregnancyCheck.fromJson(Map<String, dynamic> json) {
+    if(json[Const.KEY_HPHT] == null) {
+      final hpl = json[Const.KEY_HPL];
+      final hplDate = parseDate(hpl);
+      json[Const.KEY_HPHT] = getHpht(hplDate).toString();
+    }
+    return _$PregnancyCheckFromJson(json);
+  }
   Map<String, dynamic> toJson() => _$PregnancyCheckToJson(this);
 
   factory PregnancyCheck.fromResponse(PregnancyCheckBody response) {

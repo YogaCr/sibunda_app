@@ -33,7 +33,8 @@ class GetPregnancyCheckUpIdImpl with GetPregnancyCheckUpId {
   Future<Result<PregnancyCheckUpId>> call(String motherNik, int week) async {
     final res = await _repo.getPregnancyCheckId(motherNik, week);
     if(res is! Success<int>) {
-      return Fail();
+      res as Fail<int>;
+      return Fail(msg: res.msg, error: res.error, code: res.code);
     }
     return Success(
       PregnancyCheckUpId(motherNik: motherNik, week: week, id: res.data),

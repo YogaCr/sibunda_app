@@ -10,6 +10,7 @@ import 'package:common/arch/domain/model/form_warning_status.dart';
 import 'package:common/arch/domain/model/kehamilanku_data.dart';
 import 'package:common/util/data_mapper.dart';
 import 'package:core/domain/model/result.dart';
+import 'package:core/util/_consoles.dart';
 import 'package:core/util/annotation/data_annotation.dart';
 
 import '../dummy_data.dart';
@@ -113,8 +114,9 @@ class PregnancyRepoImpl with PregnancyRepo {
       final body = PregnancyShowCheckBody(checkId: checkId);
       _checkBody = await _api.getPregnancyCheckForm(body);
       return Success(PregnancyCheck.fromResponse(_checkBody!));
-    } catch(e) {
-      return Fail();
+    } catch(e, stack) {
+      prine(stack);
+      return Fail(msg: "`getPregnancyCheck()` error", error: e);
     }
   }
   @override
@@ -129,6 +131,7 @@ class PregnancyRepoImpl with PregnancyRepo {
         week: data.pregnancyAge,
         response: res.checkupId,
       ));
+      prind("savePregnancyCheck() motherNik= $motherNik res2 = $res2 data.pregnancyAge = ${data.pregnancyAge} res.checkupId = ${res.checkupId}");
       if(res2 is! Success<bool>) {
         return Fail();
       }

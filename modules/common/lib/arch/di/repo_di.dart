@@ -49,9 +49,11 @@ class RepoDi {
   //static FormWarningStatusRepo get formWarningStatusRepo => FormWarningStatusRepoDummy.obj;
   static ImmunizationRepo get immunizationRepo => ImmunizationRepoDummy.obj;
 
-  static MyBabyRepo get myBabyRepo => /*MyBabyRepoImpl(
-    api: ApiDi.babyApi, accountLocalSrc: LocalSrcDi.accountSrc,
-  );*/ MyBabyRepoDummy.obj;
+  static MyBabyRepo get myBabyRepo => MyBabyRepoImpl(
+    api: ApiDi.babyApi,
+    accountLocalSrc: LocalSrcDi.accountSrc,
+    checkUpLocalSrc: LocalSrcDi.checkUpSrc,
+  ); //MyBabyRepoDummy.obj;
 
   static CovidRepo get covidRepo => CovidRepoDummy.obj;
 

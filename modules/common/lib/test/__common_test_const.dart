@@ -1,4 +1,7 @@
 import 'package:common/arch/di/config_di.dart';
+import 'package:common/arch/di/data_source_di.dart';
+import 'package:common/arch/di/db_di.dart';
+import 'package:common/arch/domain/dummy_data.dart';
 import 'package:common/arch/domain/model/auth.dart';
 import 'package:common/util/net.dart';
 import 'package:common/util/prefs.dart';
@@ -13,6 +16,8 @@ class ConfigUtil {
     await initializeDateFormatting("id_ID");
     if(TestUtil.isDebug) {
       await TestUtil.init();
+      await TestUtil.initDummyPrefs();
+      await TestUtil.initDummyDb();
     }
   }
 }
@@ -67,5 +72,31 @@ class TestUtil {
   }
   static initPrefs() async {
     await Prefs.loadPrefs();
+  }
+
+
+  static initDummyPrefs() async {
+    try {
+      await initPrefs();
+      await LocalSrcDi.accountSrc.saveCurrentEmail(dummyEmail);
+      await LocalSrcDi.accountSrc.saveSession(VarDi.session);
+      VarDi.motherNik.value = dummyProfileMother.nik;
+      //LocalSrcDi.accountSrc.saveBatchProfile(userId: userId, userRole: userRole, signup: signup, mother: mother, father: father, child: child)
+    } catch(e) {
+      prinw("Exception is thrown during `initDummyPrefs(). e = $e`");
+    }
+  }
+  static initDummyDb() async {
+    try {
+      await DbDi.cityDao.insertAll(dummyCities);
+      await DbDi.roleDao.insertAll(userRoles);
+      await DbDi.profileTypeDao.insertAll(profileTypes);
+      await DbDi.credentialDao.insertAll([dummyCredential]);
+      await DbDi.profileDao.insertAll([
+        dummyProfileMother, dummyProfileFather, dummyProfileChild,
+      ]);
+    } catch(e) {
+      prinw("Exception is thrown during `initDummyDb(). e = $e`");
+    }
   }
 }

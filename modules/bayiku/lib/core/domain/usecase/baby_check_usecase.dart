@@ -5,6 +5,7 @@ import 'package:common/arch/domain/model/form_warning_status.dart';
 import 'package:common/arch/domain/repo/bayiku_repo.dart';
 import 'package:common/arch/domain/repo/form_field_repo.dart';
 import 'package:core/domain/model/result.dart';
+import 'package:core/util/_consoles.dart';
 
 mixin GetBabyCheckForm {
   Future<Result<List<FormGroupData>>> call(int month);
@@ -97,6 +98,7 @@ class GetBabyCheckFormAnswerImpl with GetBabyCheckFormAnswer {
       final data = res.data;
       final res2 = await _repo.getBabyNik();
       if(res2 is Success<String>) {
+        prind("GetBabyCheckFormAnswerImpl data = ${data.toJson()}");
         final babyNik = res2.data;
         if(data.id == null) {
           throw "Something wrong with `BabyMonthlyFormBody.id`, it's null.";

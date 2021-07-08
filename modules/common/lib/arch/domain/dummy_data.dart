@@ -1,4 +1,5 @@
 
+import 'package:common/arch/data/local/db/app_db.dart';
 import 'package:common/arch/data/remote/model/baby_check_form_api_model.dart';
 import 'package:common/arch/data/remote/model/kehamilanku_overview_api_model.dart';
 import 'package:common/arch/domain/model/_model_template.dart';
@@ -7,6 +8,7 @@ import 'package:common/arch/domain/model/img_data.dart';
 import 'package:common/arch/ui/model/home_graph_menu.dart';
 import 'package:common/config/routes.dart';
 import 'package:common/res/string/_string.dart';
+import 'package:common/value/db_const.dart';
 import 'package:core/domain/model/range.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter/material.dart';
@@ -26,11 +28,11 @@ import 'model/mother.dart';
 import 'model/notif_data.dart';
 import 'model/profile_data.dart';
 
-final faker = Faker();
+final _faker = Faker();
 
 final idStringList = List<IdStringModel>.generate(20, (index) => IdStringModel(
   id: index +1100,
-  name: faker.person.name(),
+  name: _faker.person.name(),
 ));
 
 
@@ -44,6 +46,10 @@ final dummyEmail = "a@a.a";
 final dummyName = "ayu";
 final dummyPswd = "ayu123";
 
+final dummyMotherNik = "21903193183";
+final dummyFatherNik = "82367917";
+final dummyChildNik = "182401247";
+
 final dummyAccessToken = "aagajki1831huhf1i38y13";
 final dummyAccessTokenType = "Bearer";
 final dummySignUpData1 = SignUpData(name: dummyName, email: dummyEmail, password: dummyPswd);
@@ -53,7 +59,7 @@ final dummySessionData1 = SessionData(token: dummyAccessToken, tokenType: dummyA
 
 final dummyFather = Father(
   name: "Pak Jo",
-  nik: "15000",
+  nik: dummyFatherNik,
   salary: "Asuransi",
   jkn: "JKN Kis 10",
   faskes1: "Kamar rumah",
@@ -69,7 +75,7 @@ final dummyFather = Father(
 
 final dummyMother = Mother(
   name: "Bu Lan",
-  nik: "15001",
+  nik: dummyMotherNik,
   salary: "Auransi",
   jkn: "JKN Kis 11",
   faskes1: "Kamar rumah",
@@ -91,7 +97,7 @@ final dummyChild = Child(
   name: "Anak sinkong",
   childOrder: 10,
   gender: "M",
-  nik: "1201902",
+  nik: dummyChildNik,
   bloodType: "O",
   birthCity: 1101, //"Asgard",
   birthDate: "2077-07-12",
@@ -200,7 +206,7 @@ final dummyTipsList = <Tips>[
 
 final List<TipsDetail> dummyTipsDetailList = List.generate(dummyTipsList.length, (i) => TipsDetail(
   tips: dummyTipsList[i],
-  desc: faker.lorem.words(700).join(" "),
+  desc: _faker.lorem.words(700).join(" "),
   date: DateTime.now().add(Duration(days: i)),
 ));
 
@@ -359,7 +365,7 @@ final covidHomeCheckHistory = <CovidCheckHistory>[
 
 final motherHomeData = List<MotherHomeBabyData>.generate(3, (i) => MotherHomeBabyData(
   babyId: i+1,
-  babyName: faker.person.name(),
+  babyName: _faker.person.name(),
   childOrder: i+1,
   pregnancyAge: MotherPregnancyAgeOverview(
     weekAge: i+1,
@@ -457,4 +463,55 @@ final neonatalKn3Form = NeonatalKn3Form(
   petugas: "Kamu",
   catatan_penting: "Itu",
   masalah: "Banyak",
+);
+
+
+// ============ entity ===========
+final userRoles = <RoleEntity>[
+  RoleEntity(id: DbConst.ROLE_ADMIN, name: "Admin"),
+  RoleEntity(id: DbConst.ROLE_USER, name: "User"),
+];
+final profileTypes = <ProfileTypeEntity>[
+  ProfileTypeEntity(id: DbConst.TYPE_MOTHER, name: "Ibu"),
+  ProfileTypeEntity(id: DbConst.TYPE_FATHER, name: "Ayah"),
+  ProfileTypeEntity(id: DbConst.TYPE_CHILD, name: "Anak"),
+];
+final dummyCities = List<CityEntity>.generate(20, (i) => CityEntity(
+  id: i+1,
+  name: _faker.person.name(),
+));
+
+final dummyCredential = CredentialEntity(
+  id: 1,
+  name: _faker.person.name(),
+  email: dummyEmail,
+  role: userRoles[1].id,
+);
+
+final dummyProfileMother = ProfileEntity(
+  userId: dummyCredential.id,
+  type: DbConst.TYPE_MOTHER,
+  serverId: 1,
+  name: dummyCredential.name,
+  birthDate: DateTime.now(),
+  birthPlace: 1,
+  nik: dummyMotherNik,
+);
+final dummyProfileFather = ProfileEntity(
+  userId: dummyCredential.id,
+  type: DbConst.TYPE_FATHER,
+  serverId: 2,
+  name: _faker.person.name(),
+  birthDate: DateTime.now(),
+  birthPlace: 1,
+  nik: dummyFatherNik,
+);
+final dummyProfileChild = ProfileEntity(
+  userId: dummyCredential.id,
+  type: DbConst.TYPE_CHILD,
+  serverId: 3,
+  name: _faker.person.name(),
+  birthDate: DateTime.now(),
+  birthPlace: 1,
+  nik: dummyChildNik,
 );
