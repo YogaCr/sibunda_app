@@ -32,6 +32,9 @@ class Strings {
   static const baby_growth_form = "Form Pemeriksaan Pertumbuhan Bayi";
   static const covid_check_form = "Form Pemeriksaan Gejala Covid-19";
 
+  static const mother = "Bunda";
+  static const baby = "Bayi";
+
   static const ready_to_be_mother_assistant = "Siap Jadi Asisten Bunda";
   static const splash_motto_desc = "Dengan aplikasi kami, Bunda akan serasa memiliki asisten untuk merawat buah hati";
   static const get_started = "Mulai Dari Sekarang";

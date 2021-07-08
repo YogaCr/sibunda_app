@@ -3,11 +3,9 @@ import 'package:common/arch/ui/adapter/home_graph_menu_adp.dart';
 import 'package:common/arch/ui/model/home_graph_menu.dart';
 import 'package:common/arch/ui/page/secondary_frames.dart';
 import 'package:common/arch/ui/widget/_basic_widget.dart';
-import 'package:common/arch/ui/widget/_item_template.dart';
 import 'package:common/arch/ui/widget/_items_covid.dart';
 import 'package:common/res/string/_string.dart';
 import 'package:common/res/theme/_theme.dart';
-import 'package:common/util/ui.dart';
 import 'package:core/ui/base/async_view_model_observer.dart';
 import 'package:core/ui/base/view_model.dart';
 import 'package:covid19/config/covid_routes.dart';
@@ -55,12 +53,9 @@ class CovidHomePage extends StatelessWidget {
                 builder: (ctx, data) => data != null
                     ? HomeGraphMenuList(
                       data,
-                      onItemClick: (i) {
-                        switch(i) {
-                          case 0: CovidRoutes.covidCheckBabyPage.goToPage(context);
-                            break;
-                          default: showSnackBar(context, "Dipencet i = $i");
-                        }
+                      onItemClick: (i) async {
+                        await CovidRoutes.covidCheckPage.go(context, isMother: i == 1); // i == 0 => baby, i == 1 => mother.
+                        vm.getCheckHistory(forceLoad: true);
                       },
                     ) : defaultLoading(),
               ),

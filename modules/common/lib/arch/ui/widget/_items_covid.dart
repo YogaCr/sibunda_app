@@ -3,7 +3,8 @@ import 'package:common/arch/domain/model/covid_data.dart';
 import 'package:common/arch/domain/model/img_data.dart';
 import 'package:common/res/theme/_theme.dart';
 import 'package:common/util/assets.dart';
-import 'package:common/util/covid_util.dart';
+import 'package:common/util/data_mapper.dart';
+import 'package:common/util/times.dart';
 import 'package:flutter/material.dart';
 
 import '_item_template.dart';
@@ -57,7 +58,7 @@ class ItemCovidCheckHistory extends StatelessWidget {
     this.onClick,
   }):
     img = data.img,
-    date = data.date,
+    date = syncFormatTime(data.date),
     title = "Terindikasi ${getCovidCategoryString(data.category)}",
     person = data.person,
     color = getCovidCategoryColor(data.category)

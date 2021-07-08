@@ -1,8 +1,13 @@
+import 'package:common/arch/data/remote/model/covid_check_api_model.dart';
+import 'package:common/arch/domain/dummy_data.dart';
 import 'package:common/arch/domain/model/img_data.dart';
+import 'package:common/util/data_mapper.dart';
+import 'package:common/util/type_util.dart';
 
 enum CovidCategory {
   normal,
   pdp,
+  odp,
 }
 
 class CovidHomeOverview {
@@ -16,7 +21,7 @@ class CovidHomeOverview {
 }
 
 class CovidCheckHistory {
-  final String date;
+  final DateTime date;
   final String person; // mother or baby
   final ImgData img;
   final CovidCategory category;
@@ -27,6 +32,13 @@ class CovidCheckHistory {
     required this.img,
     required this.category,
   });
+
+  factory CovidCheckHistory.fromResponse(CovidCheckFormDataResponse response) => CovidCheckHistory(
+    date: parseDate(response.date),
+    person: getCovidPersonStr(response.is_ibu),
+    img: dummyImg,
+    category: getCovidCategory(response.result_desc),
+  );
 }
 
 class CovidFormOverview {

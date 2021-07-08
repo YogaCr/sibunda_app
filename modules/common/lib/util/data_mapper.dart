@@ -3,10 +3,14 @@ import 'package:common/arch/data/remote/model/kehamilanku_form_warning_api_model
 import 'package:common/arch/domain/dummy_data.dart';
 import 'package:common/arch/domain/model/chart_data_baby.dart';
 import 'package:common/arch/domain/model/chart_data_mother.dart';
+import 'package:common/arch/domain/model/covid_data.dart';
 import 'package:common/arch/domain/model/form_data.dart';
 import 'package:common/arch/domain/model/form_warning_status.dart';
 import 'package:common/arch/ui/model/form_data.dart';
 import 'package:common/res/string/_string.dart';
+import 'package:common/res/theme/_theme.dart';
+import 'package:common/util/text.dart';
+import 'package:flutter/material.dart';
 
 List<FormUiGroupData> formDataListToUi(List<FormGroupData> data) =>
     data.map((e) => FormUiGroupData.fromModel(e)).toList(growable: false);
@@ -106,4 +110,33 @@ String getBinaryAnswerHaveNotStr(int i) {
 int getBinaryAnswerHaveNotInt(String answer) {
   if(answer.toLowerCase() == Strings.have.toLowerCase()) return 1;
   return 0;
+}
+
+// For now, the people involve in covid context are just 2, mother and baby.
+String getCovidPersonStr(bool is_ibu) => is_ibu ? Strings.mother : Strings.baby;
+
+CovidCategory getCovidCategory(String desc) {
+  switch(desc.toLowerCase()) {
+    case "normal": return CovidCategory.normal;
+    case "pdp": return CovidCategory.pdp;
+    case "odp": return CovidCategory.odp;
+  }
+  throw "Unknown category with `desc` of '$desc'";
+}
+
+
+String getCovidCategoryString(CovidCategory category) {
+  final str = category.toString().split(".").last;
+  switch(category) {
+    case CovidCategory.normal: return capitalizeFirst(str);
+    case CovidCategory.pdp: return str.toUpperCase();
+    case CovidCategory.odp: return str.toUpperCase();
+  }
+}
+
+Color getCovidCategoryColor(CovidCategory category) {
+  switch(category) {
+    case CovidCategory.normal: return green_safe;
+    default: return red_warning;
+  }
 }

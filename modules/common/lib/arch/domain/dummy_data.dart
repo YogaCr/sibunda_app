@@ -349,13 +349,13 @@ final covidHomeMenu = <HomeGraphMenu>[
 
 final covidHomeCheckHistory = <CovidCheckHistory>[
   CovidCheckHistory(
-    date: "12 Januari 2020",
+    date: DateTime.parse("2020-01-12"), //"12 Januari 2020",
     person: "Bayi",
     img: dummyImg,
     category: CovidCategory.normal,
   ),
   CovidCheckHistory(
-    date: "12 Januari 2020",
+    date: DateTime.parse("2020-01-12"), //"12 Januari 2020",
     person: "Bunda",
     img: dummyImg,
     category: CovidCategory.pdp,
@@ -484,6 +484,21 @@ final neonatalKn3Form = NeonatalKn3Form(
   masalah: "Banyak",
 );
 
+final dummyWarningAction = "Cari faskes terdekat";
+
+final dummyCovidCheckResult_mother = FormWarningStatus(
+  desc: "Bunda, dari hasil form, bunda masuk kategori Pasien Dalam Pengawasan",
+  action: dummyWarningAction,
+  isSafe: false,
+  img: dummyImg,
+);
+final dummyCovidCheckResult_baby = FormWarningStatus(
+  desc: "Bunda, dari hasil form, bayi bunda masuk kategori Pasien Dalam Pengawasan",
+  action: dummyWarningAction,
+  isSafe: false,
+  img: dummyImg,
+);
+
 
 // ============ entity ===========
 final userRoles = <RoleEntity>[
@@ -534,3 +549,4 @@ final dummyProfileChild = ProfileEntity(
   birthPlace: 1,
   nik: dummyChildNik,
 );
+

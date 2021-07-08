@@ -55,7 +55,10 @@ class RepoDi {
     checkUpLocalSrc: LocalSrcDi.checkUpSrc,
   ); //MyBabyRepoDummy.obj;
 
-  static CovidRepo get covidRepo => CovidRepoDummy.obj;
+  static CovidRepo get covidRepo => CovidRepoImpl(
+    api: ApiDi.covidApi,
+    accountLocalSrc: LocalSrcDi.accountSrc,
+  ); //CovidRepoDummy.obj;
 
   static BabyChartRepo get babyChartRepo => BabyChartRepoImpl(
     api: ApiDi.babyApi,

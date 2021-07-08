@@ -10,7 +10,7 @@ part 'covid_check_api_model.g.dart';
 class CovidCheckFormBody {
   final String date;
   final int is_ibu;
-  final int anak_id;
+  final int? anak_id; // Can be null if `is_ibu` == 1;
   final List<CovidCheckQuestionBody> answers;
 
   CovidCheckFormBody({
@@ -86,7 +86,7 @@ class CovidCheckFormDataResponse extends Equatable {
   final String date;
   final bool is_ibu;
   final int user_id;
-  final int kia_anak_id;
+  final int? kia_anak_id; // null when `is_ibu` is true.
   final int id; // Check up id
   final bool result_is_normal;
   final String result_desc;
@@ -102,7 +102,9 @@ class CovidCheckFormDataResponse extends Equatable {
   });
 
   factory CovidCheckFormDataResponse.fromJson(Map<String, dynamic> map) {
-    map["is_ibu"] = map["is_ibu"] == 1;
+    if(map["is_ibu"] is int) {
+      map["is_ibu"] = map["is_ibu"] == 1;
+    }
     return _$CovidCheckFormDataResponseFromJson(map);
   }
   Map<String, dynamic> toJson() => _$CovidCheckFormDataResponseToJson(this);

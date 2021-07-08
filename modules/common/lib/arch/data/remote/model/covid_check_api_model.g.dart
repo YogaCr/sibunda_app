@@ -10,7 +10,7 @@ CovidCheckFormBody _$CovidCheckFormBodyFromJson(Map<String, dynamic> json) {
   return CovidCheckFormBody(
     date: json['date'] as String,
     is_ibu: json['is_ibu'] as int,
-    anak_id: json['anak_id'] as int,
+    anak_id: json['anak_id'] as int?,
     answers: (json['answers'] as List<dynamic>)
         .map((e) => CovidCheckQuestionBody.fromJson(e as Map<String, dynamic>))
         .toList(),
@@ -88,7 +88,7 @@ CovidCheckFormDataResponse _$CovidCheckFormDataResponseFromJson(
     date: json['date'] as String,
     is_ibu: json['is_ibu'] as bool,
     user_id: json['user_id'] as int,
-    kia_anak_id: json['kia_anak_id'] as int,
+    kia_anak_id: json['kia_anak_id'] as int?,
     id: json['id'] as int,
     result_is_normal: json['result_is_normal'] as bool,
     result_desc: json['result_desc'] as String,

@@ -1,8 +1,12 @@
 import 'package:common/config/_config.dart';
+import 'package:common/test/__common_test_const.dart';
 import 'package:covid19/config/covid_routes.dart';
 import 'package:flutter/material.dart';
 
-void main() => runApp(MyApp());
+void main() async {
+  await ConfigUtil.init();
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.

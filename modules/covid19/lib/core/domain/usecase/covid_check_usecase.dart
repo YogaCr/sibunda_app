@@ -1,5 +1,6 @@
 import 'package:common/arch/domain/model/covid_data.dart';
 import 'package:common/arch/domain/model/form_data.dart';
+import 'package:common/arch/domain/model/form_warning_status.dart';
 import 'package:common/arch/domain/repo/covid_repo.dart';
 import 'package:common/arch/domain/repo/form_field_repo.dart';
 import 'package:core/domain/model/result.dart';
@@ -9,7 +10,11 @@ mixin GetCovidMotherCheckFormData {
 }
 
 mixin SubmitCovidMotherCheckForm {
-  Future<Result<bool>> call(String motherNik, CovidMotherCheckForm data);
+  Future<Result<FormWarningStatus>> call(String motherNik, Map<int, dynamic> data);
+}
+
+mixin SubmitCovidBabyCheckForm {
+  Future<Result<FormWarningStatus>> call(String babyNik, Map<int, dynamic> data);
 }
 
 
@@ -24,5 +29,14 @@ class SubmitCovidMotherCheckFormImpl with SubmitCovidMotherCheckForm {
   final CovidRepo _repo;
   SubmitCovidMotherCheckFormImpl(this._repo);
   @override
-  Future<Result<bool>> call(String motherNik, CovidMotherCheckForm data) => _repo.submitCovidMotherCheck(motherNik, data);
+  Future<Result<FormWarningStatus>> call(String motherNik, Map<int, dynamic> data) =>
+      _repo.submitCovidMotherCheck(motherNik, data);
+}
+
+class SubmitCovidBabyCheckFormImpl with SubmitCovidBabyCheckForm {
+  final CovidRepo _repo;
+  SubmitCovidBabyCheckFormImpl(this._repo);
+  @override
+  Future<Result<FormWarningStatus>> call(String babyNik, Map<int, dynamic> data) =>
+      _repo.submitCovidBabyCheck(babyNik, data);
 }

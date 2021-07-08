@@ -1,5 +1,5 @@
 import 'package:bayiku/core/domain/usecase/baby_chart_usecase.dart';
-import 'package:bayiku/core/domain/usecase/baby_overall_usecase.dart';
+import 'package:common/arch/domain/usecase/baby_usecase.dart';
 import 'package:common/arch/domain/model/chart_data_baby.dart';
 import 'package:common/arch/domain/model/form_warning_status.dart';
 import 'package:core/domain/model/result.dart';

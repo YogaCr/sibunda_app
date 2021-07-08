@@ -12,4 +12,5 @@ class CovidUseCaseDi {
 
   static GetCovidMotherCheckFormData get getCovidMotherCheckFormData => GetCovidMotherCheckFormDataImpl(RepoDi.formFieldRepo);
   static SubmitCovidMotherCheckForm get submitCovidMotherCheckForm => SubmitCovidMotherCheckFormImpl(RepoDi.covidRepo);
+  static SubmitCovidBabyCheckForm get submitCovidBabyCheckForm => SubmitCovidBabyCheckFormImpl(RepoDi.covidRepo);
 }
