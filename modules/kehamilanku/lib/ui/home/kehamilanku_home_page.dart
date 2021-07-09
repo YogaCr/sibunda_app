@@ -2,6 +2,7 @@ import 'package:common/arch/domain/model/chart_data_mother.dart';
 import 'package:common/arch/domain/model/kehamilanku_data.dart';
 import 'package:common/arch/ui/model/dummy_ui_data.dart';
 import 'package:common/arch/ui/page/secondary_frames.dart';
+import 'package:common/arch/ui/widget/_basic_widget.dart';
 import 'package:common/arch/ui/widget/_item_immunization.dart';
 import 'package:common/arch/ui/widget/_item_template.dart';
 import 'package:common/arch/ui/widget/_items_kehamilanku.dart';
@@ -63,7 +64,9 @@ class KehamilankuHomePage extends StatelessWidget {
             AsyncVmObserver<KehamilankuHomeVm, List<MotherTrimester>>(
               vm: vm,
               liveDataGetter: (vm2) => vm2.trimesterList,
-              builder: (ctx, data) => _MotherTrimesterList(data ?? List.empty()),
+              builder: (ctx, data) => data != null
+                  ? _MotherTrimesterList(data)
+                  : SliverToBoxAdapter(child: defaultLoading(),),
             ),
             /*
               buildReactiveBloc<
@@ -150,7 +153,9 @@ class KehamilankuHomePage extends StatelessWidget {
             AsyncVmObserver<KehamilankuHomeVm, List<MotherFoodRecom>>(
               vm: vm,
               liveDataGetter: (vm2) => vm2.foodRecomList,
-              builder: (ctx, data) => _MotherFoodRecomList(data ?? List.empty()),
+              builder: (ctx, data) => data != null
+                  ? _MotherFoodRecomList(data)
+                  : SliverToBoxAdapter(child: defaultLoading(),),
             ),
             /*
               buildReactiveBloc<

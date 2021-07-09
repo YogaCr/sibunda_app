@@ -13,7 +13,7 @@ part 'dimens.dart';
 class MaterialTheme {
   final Brightness brightness;
 
-  final ColorSwatch primarySwatch;
+  final MaterialColor primarySwatch;
 
   final Color textBodyColor;
   final Color textDisplayColor;
@@ -76,6 +76,7 @@ class MaterialTheme {
     buttonColor: colorSecondary,
     errorColor: colorError,
     fontFamily: fontFamily,
+    primarySwatch: primarySwatch,
   );
 }
 
