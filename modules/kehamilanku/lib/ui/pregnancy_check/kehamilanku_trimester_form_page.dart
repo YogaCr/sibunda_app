@@ -8,6 +8,7 @@ import 'package:common/arch/ui/widget/_basic_widget.dart';
 import 'package:common/arch/ui/widget/_items_kehamilanku.dart';
 import 'package:common/arch/ui/widget/form_generic_vm_group_observer.dart';
 import 'package:common/arch/ui/widget/popup_widget.dart';
+import 'package:common/res/string/_string.dart';
 import 'package:common/res/theme/_theme.dart';
 import 'package:common/util/navigations.dart';
 import 'package:common/util/ui.dart';
@@ -49,8 +50,8 @@ class KehamilankuTrimesterFormPage extends StatelessWidget {
         //prind("pageController MASUK ===========");
         int pageInt;
         if(page == (pageInt = page.toInt())) {
-          prind("pageController MASUK =========== INT");
           final week = pageInt +startWeek;
+          prind("pageController MASUK =========== INT page= $page week = $week");
           vm.initPage(week: week);
 /*
           vm..currentWeek.value = week
@@ -94,6 +95,8 @@ class KehamilankuTrimesterFormPage extends StatelessWidget {
 class _WeeklyFormPage extends StatelessWidget {
   final int week;
   final KehamilankuCheckFormVm vm;
+  final scrollControl = ScrollController();
+
   _WeeklyFormPage({
     required this.week,
     required this.vm,
@@ -103,14 +106,18 @@ class _WeeklyFormPage extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return BelowTopBarScrollContentArea(
-      [
+      controller: scrollControl,
+      slivers: [
         SliverList(
           delegate: SliverChildListDelegate.fixed([
             LiveDataObserver<PregnancyBabySize>(
               liveData: vm.pregnancyBabySize,
-              builder: (ctx, data) => data != null
-                  ? ItemMotherBabySizeOverview.fromData(data)
-                  : defaultEmptyWidget(),
+              builder: (ctx, data) {
+                prind("LiveDataObserver<PregnancyBabySize> data= $data");
+                return data != null
+                    ? ItemMotherBabySizeOverview.fromData(data)
+                    : defaultEmptyWidget();
+              },
             ),
             LiveDataObserver<List<FormWarningStatus>>(
               liveData: vm.formWarningStatusList,
@@ -153,15 +160,27 @@ class _WeeklyFormPage extends StatelessWidget {
               onPreSubmit: (ctx, canProceed) => canProceed == true
                   ? showSnackBar(ctx, "Submitting", backgroundColor: Colors.green)
                   : showSnackBar(ctx, "There still invalid fields"),
-              onSubmit: (ctx, success) => success
-                  ? showDialog(context: context, builder: (ctx) => AlertDialog(
+              onSubmit: (ctx, success) async {
+                if(success) {
+                  final res = await showDialog<bool>(context: context, builder: (ctx) => AlertDialog(
                     content: PopupSuccess(
                       msg: "Data Pemeriksaan Bunda berhasil disimpan",
                       actionMsg: "Lihat hasil pemeriksaan",
-                      onActionClick: () => backPage(context, backStep: 2),
+                      onActionClick: () => Navigator.pop(context, true), //() => backPage(context, backStep: 2),
                     ),
-                  )) //showSnackBar(ctx, "Berhasil bro", backgroundColor: Colors.green)
-                  : showSnackBar(ctx, "Gagal bro"),
+                  )); //showSnackBar(ctx, "Berhasil bro", backgroundColor: Colors.green)
+                  if(res == true) {
+                    vm.getMotherFormWarningStatus(week: week, forceLoad: true,);
+                    vm.getPregnancyBabySize(week: week, forceLoad: true,);
+                    scrollControl.animateTo( 0,
+                      duration: Duration(seconds: 1),
+                      curve: Curves.easeOut,
+                    );
+                  }
+                } else {
+                  showSnackBar(ctx, Strings.form_submission_fail);
+                }
+              },
               submitBtnBuilder: (ctx, canProceed) => Container(
                 margin: EdgeInsets.only(bottom: 20),
                 child: TxtBtn(

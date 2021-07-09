@@ -60,10 +60,13 @@ class _TopBarItemCenterAlignListState
     pageController?.addListener(() {
       if(isActive && !_isScrolling) {
         _isScrolling = true;
-        final currentPage = pageController!.page?.toInt();
+        final currentPage = pageController!.page;
         if(currentPage != null) {
-          _globalSelectedPosition.value = currentPage;
-          _scrollTo(currentPage);
+          int currentPageInt;
+          if(currentPage == (currentPageInt = currentPage.toInt())) {
+            _globalSelectedPosition.value = currentPageInt;
+            _scrollTo(currentPageInt);
+          }
         }
         _isScrolling = false;
       }
@@ -102,7 +105,7 @@ class _TopBarItemCenterAlignListState
   void _scrollTo(int selectedPos) {
     scrollController.animateTo(
       ((itemWidth + 10.0) * selectedPos) - (screenWidth/2) + (itemWidth/2) + borderWidgetWidth,
-      duration: Duration(milliseconds: 500,),
+      duration: Duration(milliseconds: 1200,),
       curve: Curves.fastOutSlowIn,
     );
   }
@@ -178,23 +181,23 @@ class _ItemState extends State<_Item> implements Expirable {
 
  */
 
-    return Container(
-      width: itemWidth,
-      height: 40,
-      //key: key,
-      margin: EdgeInsets.all(5),
-      padding: EdgeInsets.all(10),
-      decoration: BoxDecoration(
-        color: globalSelectedPosition.value == position ? pink_highlight : null,
-        borderRadius: BorderRadius.all(Radius.circular(10)),
-      ),
-      child: GestureDetector(
-        onTap: () {
-          final prevPos = globalSelectedPosition.value!;
-          if(prevPos == position) return;
-          globalSelectedPosition.value = position;
-          //print("Dipencet i = $position");
-        },
+    return GestureDetector(
+      onTap: () {
+        final prevPos = globalSelectedPosition.value!;
+        if(prevPos == position) return;
+        globalSelectedPosition.value = position;
+        //print("Dipencet i = $position");
+      },
+      child: Container(
+        width: itemWidth,
+        height: 40,
+        //key: key,
+        margin: EdgeInsets.all(5),
+        padding: EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          color: globalSelectedPosition.value == position ? pink_highlight : null,
+          borderRadius: BorderRadius.all(Radius.circular(10)),
+        ),
         child: Text(
           text,
           textAlign: TextAlign.center,

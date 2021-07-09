@@ -161,31 +161,32 @@ class _FormVmGroupObserverState<VM extends FormVmGroup>
       builder: builder,
     );
 
-
-    final submitBtn = AsyncVmObserver<VM, bool>(
-      vm: vm,
-      liveDataGetter: (vm) => vm.canProceed,
-      distinctUntilChanged: true,
-      builder: (ctx, canProceed) => InkWell(
-        child: submitBtnBuilder(ctx, canProceed),
-        onTap: () {
-          //print("SignUpPage.onTap() submit canProceed= $canProceed");
-          onPreSubmit?.call(ctx, canProceed);
-          if(canProceed == true) {
-            vm.submit();
-          } else if(vm.isFormEnabled) {
-            vm.displayInvalidFields();
-          }
-        },
-      ),
-      preAsyncBuilder: preSubmitBtnBuilder,
-    );
-
     final outerChildren = <Widget>[
       formAreaWidget,
-      Container(
-        margin: EdgeInsets.only(top: 10,),
-        child: submitBtn,
+      LiveDataObserver<bool>(
+        liveData: vm.isFormEnabled,
+        builder: (ctx, enabled) => enabled != false ? Container(
+          margin: EdgeInsets.only(top: 10,),
+          child: AsyncVmObserver<VM, bool>(
+            vm: vm,
+            liveDataGetter: (vm) => vm.canProceed,
+            distinctUntilChanged: true,
+            builder: (ctx, canProceed) => InkWell(
+              child: submitBtnBuilder(ctx, canProceed),
+              onTap: () {
+                //print("SignUpPage.onTap() submit canProceed= $canProceed");
+                onPreSubmit?.call(ctx, canProceed);
+                if(canProceed == true) {
+                  vm.submit();
+                } else if(vm.isFormEnabled.value == true) {
+                  vm.displayInvalidFields();
+                }
+              },
+            ),
+            preAsyncBuilder: preSubmitBtnBuilder ?? (ctx, key) => key == FormVmGroupMixin.submitFormKey
+                ? defaultLoading() : null,
+          ),
+        ) : defaultEmptyWidget(),
       ),
     ];
 

@@ -152,7 +152,7 @@ class _FormGenericGroupState
                 //suffixIcon = pickerIconBuilder?.call(groupPosition, key, vmLiveData); //TODO: for now, the direct input method can only be input by texting directly.
             }
 
-            final enabled = this.enabled && vm.isFormEnabled && itemData.isInputEnabled;
+            final enabled = this.enabled && itemData.isInputEnabled;
             if(!enabled && responseRepresentator == null) {
               responseRepresentator = (resp) => vm.getResponseStringRepr(groupPosition, key, resp);
             }
@@ -160,6 +160,7 @@ class _FormGenericGroupState
             field = TxtField(
               itemData: itemData as FormUiTxt,
               isValid: groupRespMap[key]!.isValid,
+              isEnabledController: vm.isFormEnabled,
               invalidMsgGenerator: (response) => vm.getInvalidMsg(key, vmLiveData.value),
               responseLiveData: vmLiveData, //txtLiveData,
               imgPosition: imgPosition,
@@ -213,10 +214,11 @@ class _FormGenericGroupState
             field = RadioGroup(
               itemData: itemData as FormUiRadio,
               isValid: groupRespMap[key]!.isValid,
+              isEnabledController: vm.isFormEnabled,
               invalidMsgGenerator: (response) => vm.getInvalidMsg(key, groupValue.value),
               groupValueLiveData: groupValue,
               imgPosition: imgPosition,
-              enabled: enabled && vm.isFormEnabled && itemData.isInputEnabled,
+              enabled: enabled && itemData.isInputEnabled,
             );
 
             vmLiveData.observe(this, (data) {
@@ -244,10 +246,11 @@ class _FormGenericGroupState
             field = CheckGroup(
               itemData: itemData as FormUiCheck,
               isValid: groupRespMap[key]!.isValid,
+              isEnabledController: vm.isFormEnabled,
               invalidMsgGenerator: (response) => vm.getInvalidMsg(key, selectedAnswerIndices.value),
               selectedIndicesLiveData: selectedAnswerIndices,
               imgPosition: imgPosition,
-              enabled: enabled && vm.isFormEnabled && itemData.isInputEnabled,
+              enabled: enabled && itemData.isInputEnabled,
             );
 
             vmLiveData.observe(this, (data) {

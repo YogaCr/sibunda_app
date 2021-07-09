@@ -26,7 +26,7 @@ class LiveDataObserver<T> extends StatefulWidget {
     builder: builder,
     liveData: liveData,
     predicate: predicate,
-    distinctUtilChanged: distinctUntilChanged,
+    distinctUntilChanged: distinctUntilChanged,
     isLiveDataOwner: isLiveDataOwner,
   );
 }
@@ -36,7 +36,7 @@ class _LiveDataObserverState<T>
     implements Expirable
 {
   final LiveData<T> liveData;
-  final bool distinctUtilChanged;
+  final bool distinctUntilChanged;
   final Widget? Function(BuildContext, T?) builder;
   final Widget Function(BuildContext)? initBuilder;
   final bool Function(T?)? predicate;
@@ -49,7 +49,7 @@ class _LiveDataObserverState<T>
     required this.liveData,
     required this.isLiveDataOwner,
     this.predicate,
-    this.distinctUtilChanged = false,
+    this.distinctUntilChanged = false,
   }) {
     liveData.observe(this, (data) {
       if(predicate == null || predicate!(data)) {
@@ -87,6 +87,118 @@ class _LiveDataObserverState<T>
     _isActive = false;
     if(isLiveDataOwner) {
       liveData.dispose();
+    }
+    super.dispose();
+  }
+}
+
+
+
+//================ Multi LiveDataObserver ================
+
+class MultiLiveDataObserver<T> extends StatefulWidget {
+  final List<LiveData<T>> liveDataList;
+  final bool distinctUntilChanged;
+
+  /// Its [List<T?>] parameter has the same size as [liveDataList.length].
+  /// Its elements' indices are same as [liveDataList] elements' indices.
+  final Widget? Function(BuildContext, List<T?>) builder;
+  final Widget Function(BuildContext)? initBuilder;
+
+  /// Its [List<T?>] parameter has the same size as [liveDataList.length].
+  /// Its elements' indices are same as [liveDataList] elements' indices.
+  final bool Function(List<T?>)? predicate;
+  final bool isLiveDataOwner;
+
+  MultiLiveDataObserver({
+    this.initBuilder,
+    required this.builder,
+    required this.liveDataList,
+    this.predicate,
+    this.distinctUntilChanged = false,
+    this.isLiveDataOwner = false,
+  });
+
+  @override
+  _MultiLiveDataObserverState<T> createState() => _MultiLiveDataObserverState(
+    initBuilder: initBuilder,
+    builder: builder,
+    liveDataList: liveDataList,
+    predicate: predicate,
+    distinctUntilChanged: distinctUntilChanged,
+    isLiveDataOwner: isLiveDataOwner,
+  );
+}
+
+
+class _MultiLiveDataObserverState<T>
+    extends State<MultiLiveDataObserver<T>>
+    implements Expirable
+{
+  final List<LiveData<T>> liveDataList;
+  final bool distinctUntilChanged;
+
+  /// Its [List<T?>] parameter has the same size as [liveDataList.length].
+  /// Its elements' indices are same as [liveDataList] elements' indices.
+  final Widget? Function(BuildContext, List<T?>) builder;
+  final Widget Function(BuildContext)? initBuilder;
+
+  /// Its [List<T?>] parameter has the same size as [liveDataList.length].
+  /// Its elements' indices are same as [liveDataList] elements' indices.
+  final bool Function(List<T?>)? predicate;
+  final bool isLiveDataOwner;
+
+  bool isInit = true;
+
+  _MultiLiveDataObserverState({
+    this.initBuilder,
+    required this.builder,
+    required this.liveDataList,
+    required this.isLiveDataOwner,
+    this.predicate,
+    this.distinctUntilChanged = false,
+  }) {
+    liveDataList.forEach((ld) {
+      ld.observe(this, (data) {
+        if(predicate == null || predicate!(getLiveDataValues())) {
+          setState(() {});
+        }
+      });
+    });
+  }
+
+  List<T?> getLiveDataValues() => liveDataList.map((e) => e.value)
+      .toList(growable: false);
+
+  @override
+  Widget build(BuildContext context) {
+    _isActive = true;
+    if(isInit) {
+      final initWidget = initBuilder != null
+          ? initBuilder!(context)
+          : builder(context, getLiveDataValues());
+      if(initWidget == null) {
+        throw "Initial widget can't be null. This can happen when programmer doesn't provide `initBuilder` and `builder` returns null when `liveData.value` is null";
+      }
+      isInit = false;
+      return initWidget;
+    }
+    final widget = builder(context, getLiveDataValues());
+    if(widget == null) {
+      throw "`builder` can't return null widget.";
+    }
+    return widget;
+  }
+
+  bool _isActive = false;
+  @override
+  bool get isActive => _isActive;
+
+  @override
+  void dispose() {
+    _isActive = false;
+    if(isLiveDataOwner) {
+      liveDataList.forEach((ld) => ld.dispose());
     }
     super.dispose();
   }

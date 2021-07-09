@@ -25,8 +25,8 @@ class PregnancyImmunizationPage extends StatelessWidget {
     return TopBarTitleAndBackFrame(
       isScroll: true,
       title: "Imunisasi Bunda",
-      body: BelowTopBarScrollContentArea([
-        SliverList(
+      body: BelowTopBarScrollContentArea(
+        slivers: [SliverList(
           delegate: SliverChildListDelegate.fixed([
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 10,),

@@ -12,17 +12,22 @@ const _stdContentAreaTopMargin = _topBarHeight - 20;
 /// Safe area below TopBar with default design of this app for scroll view mode.
 class BelowTopBarScrollContentArea extends StatelessWidget {
   final List<Widget> slivers;
+  final ScrollController? controller;
 
-  BelowTopBarScrollContentArea(this.slivers);
+  BelowTopBarScrollContentArea({
+    required this.slivers,
+    this.controller,
+  });
 
   @override
   Widget build(BuildContext context) {
     final usedSlivers = <Widget>[
       SliverToBoxAdapter(child: SizedBox(height: _stdTopMargin,),),
+      ...slivers,
     ];
-    usedSlivers.addAll(slivers);
     return CustomScrollView(
       slivers: usedSlivers,
+      controller: controller,
     );
   }
 }

@@ -1,5 +1,6 @@
 import 'package:async/async.dart';
 import 'package:core/domain/model/result.dart';
+import 'package:core/util/_consoles.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:tuple/tuple.dart';
@@ -57,12 +58,17 @@ abstract class AsyncVm extends ViewModel {
 
   @nonVirtual
   void doPreAsyncTask(String key) {
+    final removedKeys = <Expirable>{};
     for(final observer in _preAsyncTaskMap.keys) {
       if(observer.isActive) {
         _preAsyncTaskMap[observer]!(key);
       } else {
-        _preAsyncTaskMap.remove(observer);
+        removedKeys.add(observer);
       }
+      //else { _preAsyncTaskMap.remove(observer); }
+    }
+    for(final key in removedKeys) {
+      _preAsyncTaskMap.remove(key);
     }
   }
 
@@ -77,12 +83,17 @@ abstract class AsyncVm extends ViewModel {
 
   @nonVirtual
   void doOnFailTask(String key, Fail failure) {
+    final removedKeys = <Expirable>{};
     for(final observer in _onFailTaskMap.keys) {
       if(observer.isActive) {
         _onFailTaskMap[observer]!(key, failure);
       } else {
-        _onFailTaskMap.remove(observer);
+        removedKeys.add(observer);
+        //_onFailTaskMap.remove(observer);
       }
+    }
+    for(final key in removedKeys) {
+      _preAsyncTaskMap.remove(key);
     }
   }
 
@@ -100,6 +111,7 @@ abstract class AsyncVm extends ViewModel {
   /// then [doPreAsyncTask] before finally do the [block] process async.
   @nonVirtual
   Future<void> startJob(String key, Future<Fail?> Function(Val<bool> isActive) block) {
+    //prind("AsyncVm.startJob() key = $key");
     cancelJob(key);
     doPreAsyncTask(key);
     Future<Fail?> future;

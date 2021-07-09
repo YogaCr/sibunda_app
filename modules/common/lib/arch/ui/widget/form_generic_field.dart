@@ -27,6 +27,7 @@ class TxtField<D> extends SibFormField {
   final FormUiTxt itemData;
   @override
   final LiveData<bool>? isValid;
+  final LiveData<bool>? isEnabledController;
   late final MutableLiveData<D> _response; //TODO: msh blum di dispose.
   final TextEditingController _textController = TextEditingController();
   @override
@@ -42,12 +43,15 @@ class TxtField<D> extends SibFormField {
   //final Future<D?> Function()? dataPicker;
   final Var<bool> isChanging = Var(false);
   final bool readOnly;
+  /// If this is `false`, then this field is forced to be disabled,
+  /// no matter what [isEnabledController.value] is `false` or `true`.
   final bool enabled;
   final Widget? suffixIcon;
 
   TxtField({
     required this.itemData,
     this.isValid,
+    this.isEnabledController,
     this.invalidMsgGenerator,
     this.invalidMsg = Strings.field_can_not_be_empty,
     this.imgPosition = RelativePosition.below,
@@ -89,12 +93,12 @@ class TxtField<D> extends SibFormField {
     if(enabled && !readOnly) {
       _textController.addListener(() {
         if(_response.isActive) {
-          prind("TxtField this.textController.addListener isChanging = $isChanging");
+          //prind("TxtField this.textController.addListener isChanging = $isChanging");
           if(!isChanging.value) {
-            prind("TxtField this.textController.addListener txt = ${_textController.text}");
+            //prind("TxtField this.textController.addListener txt = ${_textController.text}");
             isChanging.value = true;
             if(rawResponseMapper == null) {
-              prinw("`rawResponseMapper` == null and this `$runtimeType` is recording raw input from text. This `$runtimeType` is recording if only `D` is String.");
+              //prinw("`rawResponseMapper` == null and this `$runtimeType` is recording raw input from text. This `$runtimeType` is recording if only `D` is String.");
               if(D == String || D == dynamic){
                 _response.value = _textController.text as D;
               } else {
@@ -117,7 +121,81 @@ class TxtField<D> extends SibFormField {
 
   @override
   Widget build(BuildContext context) {
+    final liveDataList = <LiveData<bool>>[];
+    if(isValid != null) {
+      liveDataList.add(isValid!);
+    }
+    if(isEnabledController != null) {
+      liveDataList.add(isEnabledController!);
+    }
     bool isInit = true;
+    Widget? widget;
+    if(isValid == null && isEnabledController == null) {
+      widget =  TxtInput(
+        readOnly: readOnly,
+        suffixIcon: suffixIcon,
+        textController: _textController,
+        label: itemData.question,
+      );
+    } else if(isValid != null && isEnabledController != null) {
+      widget = MultiLiveDataObserver<bool>(
+        isLiveDataOwner: isLiveDataOwner,
+        liveDataList: [isValid!, isEnabledController!],
+        builder: (ctx, bools) {
+          final txtWidget = TxtInput(
+            enabled: enabled && bools[1] != false,
+            readOnly: readOnly,
+            suffixIcon: suffixIcon,
+            textController: _textController,
+            label: itemData.question,
+            errorText: (bools[0] == false && !isInit)
+                ? invalidMsgGenerator?.call(_textController.text) ?? invalidMsg
+                : null,
+          );
+          if(bools[0] != null) { //if `isValid` still null, then this widget is still init (`isInit` == true)
+            isInit = false;
+          }
+          return txtWidget;
+        },
+      );
+    } else if(isValid != null) {
+      widget = LiveDataObserver<bool>(
+        isLiveDataOwner: isLiveDataOwner,
+        liveData: isValid!,
+        builder: (ctx, isValid) {
+          final txtWidget = TxtInput(
+            enabled: enabled,
+            readOnly: readOnly,
+            suffixIcon: suffixIcon,
+            textController: _textController,
+            label: itemData.question,
+            errorText: (isValid == false && !isInit)
+                ? invalidMsgGenerator?.call(_textController.text) ?? invalidMsg
+                : null,
+          );
+          if(isValid != null) { //if `isValid` still null, then this widget is still init (`isInit` == true)
+            isInit = false;
+          }
+          return txtWidget;
+        },
+      );
+    } else if(isEnabledController != null){
+      widget = LiveDataObserver<bool>(
+        isLiveDataOwner: isLiveDataOwner,
+        liveData: isEnabledController!,
+        builder: (ctx, isEnabled) {
+          final txtWidget = TxtInput(
+            enabled: enabled && isEnabled != false,
+            readOnly: readOnly,
+            suffixIcon: suffixIcon,
+            textController: _textController,
+            label: itemData.question,
+          );
+          return txtWidget;
+        },
+      );
+    }
+/*
     final widget = isValid == null
         ? TxtInput(
           readOnly: readOnly,
@@ -126,7 +204,7 @@ class TxtField<D> extends SibFormField {
           label: itemData.question,
         ) : LiveDataObserver<bool>(
           isLiveDataOwner: isLiveDataOwner,
-          liveData: isValid!,
+          liveDataList: liveDataList,
           builder: (ctx, isValid) {
             final txtWidget = TxtInput(
               enabled: enabled,
@@ -144,11 +222,12 @@ class TxtField<D> extends SibFormField {
             return txtWidget;
           },
         );
+ */
 
     if(isLiveDataOwner && itemData.answer != null) {
       _textController.text = itemData.answer!;
     }
-    final colChildren = <Widget>[widget,];
+    final colChildren = <Widget>[widget!,];
     if(itemData.img?.isNotEmpty == true) {
       if(imgPosition == RelativePosition.above) {
         for(final img in itemData.img!) {
@@ -174,11 +253,15 @@ class RadioGroup extends SibFormField {
   final FormUiRadio itemData;
   @override
   final LiveData<bool>? isValid;
+  final LiveData<bool>? isEnabledController;
   final MutableLiveData<String> groupValueLiveData;
   @override
   LiveData<String> get responseLiveData => groupValueLiveData;
   final bool isLiveDataOwner;
   final RelativePosition imgPosition;
+
+  /// If this is `false`, then this field is forced to be disabled,
+  /// no matter what [isEnabledController.value] is `false` or `true`.
   final bool enabled;
 
   /// This will become default invalid message.
@@ -188,6 +271,7 @@ class RadioGroup extends SibFormField {
   RadioGroup({
     required this.itemData,
     this.isValid,
+    this.isEnabledController,
     this.invalidMsg = Strings.field_can_not_be_empty,
     this.imgPosition = RelativePosition.below,
     this.enabled = true,
@@ -211,6 +295,26 @@ class RadioGroup extends SibFormField {
       groupValueLiveData.value = selectedAnswer;
     }
 
+    Widget? Function(BuildContext, String?) getBuilder(final String option) {
+      if(isEnabledController == null) {
+         return (ctx, data) => Radio<String>(
+          value: option,
+          groupValue: data,
+          onChanged: enabled ? (value) => groupValueLiveData.value = value : null,
+        );
+      } else {
+        return (ctx, data) => LiveDataObserver<bool>(
+          liveData: isEnabledController!,
+          builder: (ctx, enabled) => Radio<String>(
+            value: option,
+            groupValue: data,
+            onChanged: this.enabled && enabled != false
+                ? (value) => groupValueLiveData.value = value : null,
+          ),
+        );
+      }
+    }
+
     for(final option in itemData.answerItems) {
       optionWidgetList.add(
         Flexible(
@@ -219,11 +323,7 @@ class RadioGroup extends SibFormField {
             leading: LiveDataObserver<String>(
               isLiveDataOwner: isLiveDataOwner,
               liveData: groupValueLiveData,
-              builder: (ctx, data) => Radio<String>(
-                value: option,
-                groupValue: data,
-                onChanged: enabled ? (value) => groupValueLiveData.value = value : null,
-              ),
+              builder: getBuilder(option),
             ),
           ),
         ),
@@ -273,16 +373,20 @@ class RadioGroup extends SibFormField {
   }
 }
 
-//TODO: lanjutkan
+
 class CheckGroup extends SibFormField {
   final FormUiCheck itemData;
   @override
   final LiveData<bool>? isValid;
+  final LiveData<bool>? isEnabledController;
   final MutableLiveData<Set<int>> selectedIndicesLiveData;
   @override
   LiveData<Set<int>> get responseLiveData => selectedIndicesLiveData;
   final bool isLiveDataOwner;
   final RelativePosition imgPosition;
+
+  /// If this is `false`, then this field is forced to be disabled,
+  /// no matter what [isEnabledController.value] is `false` or `true`.
   final bool enabled;
 
   /// This will become default invalid message.
@@ -292,6 +396,7 @@ class CheckGroup extends SibFormField {
   CheckGroup({
     required this.itemData,
     this.isValid,
+    this.isEnabledController,
     this.invalidMsg = Strings.field_can_not_be_empty,
     this.imgPosition = RelativePosition.below,
     this.enabled = true,
@@ -312,6 +417,37 @@ class CheckGroup extends SibFormField {
       selectedIndicesLiveData.value = selectedAnswerIndices;
     }
 
+    Widget? Function(BuildContext, Set<int>?) getBuilder(final int index) {
+      if(isEnabledController == null) {
+        return (ctx, data) => Checkbox(
+          value: data?.contains(index) == true,
+          onChanged: enabled && data != null ? (isSelected) {
+            if(isSelected == true) {
+              data.add(index);
+            } else {
+              data.remove(index);
+            }
+            selectedIndicesLiveData.notifyObservers();
+          } : null,
+        );
+      } else {
+        return (ctx, data) => LiveDataObserver<bool>(
+          liveData: isEnabledController!,
+          builder: (ctx, enabled) => Checkbox(
+            value: selectedIndicesLiveData.value!.contains(index),
+            onChanged: this.enabled && enabled != false && data != null ? (isSelected) {
+              if(isSelected == true) {
+                data.add(index);
+              } else {
+                data.remove(index);
+              }
+              selectedIndicesLiveData.notifyObservers();
+            } : null,
+          )
+        );
+      }
+    }
+
     for(int i = 0; i < itemData.answerItems.length; i++) {
       final i2 = i;
       final option = itemData.answerItems[i];
@@ -323,17 +459,7 @@ class CheckGroup extends SibFormField {
             leading: LiveDataObserver<Set<int>>(
               isLiveDataOwner: isLiveDataOwner,
               liveData: selectedIndicesLiveData,
-              builder: (ctx, data) => Checkbox(
-                value: selectedIndicesLiveData.value!.contains(i2),
-                onChanged: enabled ? (isSelected) {
-                  if(isSelected == true) {
-                    selectedIndicesLiveData.value!.add(i2);
-                  } else {
-                    selectedIndicesLiveData.value!.remove(i2);
-                  }
-                  selectedIndicesLiveData.notifyObservers();
-                } : null,
-              ),
+              builder: getBuilder(i2),
             ),
           ),
         ),

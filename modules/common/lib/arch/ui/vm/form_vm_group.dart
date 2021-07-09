@@ -17,7 +17,7 @@ mixin FormVmGroupMixin implements AsyncVm {
   static const submitFormKey = "submitForm";
 
   LiveData<bool> get isFormReady;
-  bool get isFormEnabled => true;
+  LiveData<bool> get isFormEnabled;
 
   List<MutableLiveData<FormUiGroupData>> get _fieldGroupList;
   //List<Map<String, MutableLiveData<bool>>> get _isResponseValidList;
@@ -206,10 +206,19 @@ abstract class FormVmGroup extends AsyncVm with FormVmGroupMixin {
   final String defaultInvalidMsg;
 
   MutableLiveData<bool> _isFormReady = MutableLiveData(false);
+  MutableLiveData<bool> _isFormEnabled = MutableLiveData(true);
+
   @override
   LiveData<bool> get isFormReady => _isFormReady;
+  @override
+  LiveData<bool> get isFormEnabled => _isFormEnabled;
 
   bool _isReseting = false;
+
+  @protected
+  void setFormEnabled({ bool isEnabled = true}) {
+    _isFormEnabled.value = isEnabled;
+  }
 
   //List<void Function()> _onReadyCallbacks = [];
 

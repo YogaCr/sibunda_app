@@ -101,6 +101,7 @@ class LiveData<T> implements Expirable {
   void notifyObservers({T? oldValue, T? newValue}) {
     _assertNotDisposed();
     //prind("notifyObservers() type = $runtimeType oldValue= $oldValue newValue= $newValue _observers= $_observers");
+    final removedKeys = <Tuple2<Expirable, String>>{};
     for(final key in _observers!.keys) {
       //print("notifyObservers() FOR AWAL key= $key");
       final observer = key.item1;
@@ -112,8 +113,12 @@ class LiveData<T> implements Expirable {
           pair.item1(_value);
         }
       } else {
-        _observers!.remove(observer);
+        //_observers!.remove(observer);
+        removedKeys.add(key);
       }
+    }
+    for(final key in removedKeys) {
+      _observers!.remove(key);
     }
     if(_foreverObservers?.isNotEmpty == true) {
       for(final onChange in _foreverObservers!) {

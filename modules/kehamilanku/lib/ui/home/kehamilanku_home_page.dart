@@ -39,7 +39,7 @@ class KehamilankuHomePage extends StatelessWidget {
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 15),
         child: BelowTopBarScrollContentArea(
-          [
+          slivers: [
             SliverList(
               delegate: SliverChildListDelegate.fixed([
                 Container(
