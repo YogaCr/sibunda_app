@@ -6,6 +6,7 @@ import 'package:common/arch/domain/model/chart_data_mother.dart';
 import 'package:common/arch/domain/model/covid_data.dart';
 import 'package:common/arch/domain/model/form_data.dart';
 import 'package:common/arch/domain/model/form_warning_status.dart';
+import 'package:common/arch/domain/model/immunization.dart';
 import 'package:common/arch/ui/model/form_data.dart';
 import 'package:common/res/string/_string.dart';
 import 'package:common/res/theme/_theme.dart';
@@ -139,4 +140,12 @@ Color getCovidCategoryColor(CovidCategory category) {
     case CovidCategory.normal: return green_safe;
     default: return red_warning;
   }
+}
+
+String getBabyImmunizationHeader(int monthType) {
+  switch(monthType) {
+    case 1: return Strings.month_0_until_4;
+    case 2: return Strings.month_5_until_20_plus;
+  }
+  throw "No such `monthType` '$monthType' in baby immunization page, at least for now.";
 }

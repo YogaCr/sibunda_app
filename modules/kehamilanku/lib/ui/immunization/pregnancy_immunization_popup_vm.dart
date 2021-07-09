@@ -28,9 +28,18 @@ class PregnancyImmunizationPopupVm extends FormVmGroup {
 
   final ImmunizationData immunization;
 
+  final MutableLiveData<DateTime> _date = MutableLiveData();
+  LiveData<DateTime> get date => _date;
+
   @override
   List<LiveData> get liveDatas => [];
-
+  @override
+  Set<String>? get mappedKey => null;
+  @override
+  mapResponse(int groupPosition, String key, response) {
+    if(response is DateTime) return response.toString();
+    return super.mapResponse(groupPosition, key, response);
+  }
   @override
   Future<Result<String>> doSubmitJob() async {
     final nikRes = await _getMotherNik();
@@ -47,6 +56,7 @@ class PregnancyImmunizationPopupVm extends FormVmGroup {
 
       final res = await _confirmMotherImmunization(nik, data);
       if(res is Success<bool>) {
+        _date.value = responseGroupList.first[Const.KEY_IMMUNIZATION_DATE]!.response.value;
         return Success("ok");
       }
     }
@@ -63,8 +73,9 @@ class PregnancyImmunizationPopupVm extends FormVmGroup {
       return List.empty();
     }
   }
-
+/*
   @override
   Future<bool> validateField(int groupPosition, String inputKey, response) async =>
       (response as String).isNotEmpty;
+ */
 }

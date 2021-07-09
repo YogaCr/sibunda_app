@@ -267,23 +267,52 @@ final babyWarningStatusList = <FormWarningStatus>[
   ),
 ];
 
+final templateTetanusImmunization = ImmunizationData(
+  name: "Tetanus",
+  immunizationId: 1,
+  occurrenceId: 1,
+);
 
 // ========== Immunization ============
 final motherImmunizationList = <ImmunizationData>[
-  ImmunizationData(name: "Tetanus", date: "2020-12-13", location: "ITS"),
-  ImmunizationData(name: "Tetanus", date: "2020-12-17", location: "ITS"),
-  ImmunizationData(name: "Tetanus",),
-  ImmunizationData(name: "Tetanus",),
-  ImmunizationData(name: "Tetanus", date: "2021-11-14", location: "Your home"),
-  ImmunizationData(name: "Tetanus",),
+  templateTetanusImmunization.copy(date: "2020-12-13", location: "ITS"),
+  templateTetanusImmunization.copy(date: "2020-12-17", location: "ITS"),
+  templateTetanusImmunization,
+  templateTetanusImmunization,
+  templateTetanusImmunization.copy(date: "2020-11-14", location: "Your home"),
+  templateTetanusImmunization,
 ];
 final babyImmunizationList = <ImmunizationData>[
-  ImmunizationData(name: "Hepatitis B (<24 Jam)", date: "2020-12-13", location: "ITS", batchNo: "001"),
-  ImmunizationData(name: "BCG", date: "2020-12-17", location: "ITS", batchNo: "001"),
-  ImmunizationData(name: "Polio Tetes 1",),
-  ImmunizationData(name: "DPT-HB-Hib 1",),
-  ImmunizationData(name: "Polio Tetes 2", date: "2021-11-14", location: "ITS", batchNo: "001"),
-  ImmunizationData(name: "DPT-HB-Hib 2",),
+  ImmunizationData(
+    immunizationId: 2,
+    occurrenceId: 1,
+    name: "Hepatitis B (<24 Jam)", date: "2020-12-13", location: "ITS", batchNo: "001",
+  ),
+  ImmunizationData(
+    immunizationId: 3,
+    occurrenceId: 1,
+    name: "BCG", date: "2020-12-17", location: "ITS", batchNo: "001",
+  ),
+  ImmunizationData(
+    immunizationId: 4,
+    occurrenceId: 1,
+    name: "Polio Tetes 1",
+  ),
+  ImmunizationData(
+    immunizationId: 5,
+    occurrenceId: 1,
+    name: "DPT-HB-Hib 1",
+  ),
+  ImmunizationData(
+    immunizationId: 6,
+    occurrenceId: 1,
+    name: "Polio Tetes 2", date: "2021-11-14", location: "ITS", batchNo: "001",
+  ),
+  ImmunizationData(
+    immunizationId: 7,
+    occurrenceId: 1,
+    name: "DPT-HB-Hib 2",
+  ),
 ];
 
 final motherImmunizationDetailList = motherImmunizationList.map((e) => ImmunizationDetail(

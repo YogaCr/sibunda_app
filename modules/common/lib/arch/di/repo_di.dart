@@ -47,7 +47,11 @@ class RepoDi {
   //static MotherHomeRepo get pregnancyRepo => MotherPregnancyRepoDummy.obj;
   //static PregnancyCheckRepo get pregnancyCheckRepo => PregnancyCheckRepoDummy.obj;
   //static FormWarningStatusRepo get formWarningStatusRepo => FormWarningStatusRepoDummy.obj;
-  static ImmunizationRepo get immunizationRepo => ImmunizationRepoDummy.obj;
+  static ImmunizationRepo get immunizationRepo => ImmunizationRepoImpl(
+    pregnancyApi: ApiDi.kehamilankuApi,
+    babyApi: ApiDi.babyApi,
+    accountLocalSrc: LocalSrcDi.accountSrc,
+  ); //ImmunizationRepoDummy.obj;
 
   static MyBabyRepo get myBabyRepo => MyBabyRepoImpl(
     api: ApiDi.babyApi,

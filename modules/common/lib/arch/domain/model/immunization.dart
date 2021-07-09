@@ -1,4 +1,8 @@
 
+import 'package:common/arch/data/remote/model/baby_immunization_api_model.dart';
+import 'package:common/arch/data/remote/model/kehamilanku_immunization_api_model.dart';
+import 'package:common/res/string/_string.dart';
+import 'package:common/util/data_mapper.dart';
 import 'package:common/value/const_values.dart';
 import 'package:core/domain/model/range.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -10,15 +14,22 @@ class ImmunizationData {
   final String? location; //null if the person hasn't taken it.
   final String? batchNo; //null if the person hasn't taken it.
 
+  final int immunizationId;
+  final int occurrenceId;
+
   ImmunizationData._({
     required this.name,
     required this.date,
     required this.location,
     required this.batchNo,
+    required this.immunizationId,
+    required this.occurrenceId,
   });
 
   factory ImmunizationData({
     required String name,
+    required int immunizationId,
+    required int occurrenceId,
     String? date,
     String? location,
     String? batchNo,
@@ -26,7 +37,11 @@ class ImmunizationData {
     if((date != null && location == null) || (date == null && location != null)) {
       throw "If `date` and `location` can't be either null or not null. Current data (date=$date), (location=$location)";
     }
-    return ImmunizationData._(name: name, date: date, location: location, batchNo: batchNo);
+    return ImmunizationData._(
+      immunizationId: immunizationId,
+      occurrenceId: occurrenceId,
+      name: name, date: date, location: location, batchNo: batchNo,
+    );
   }
 
   ImmunizationData copy({
@@ -34,11 +49,15 @@ class ImmunizationData {
     String? date, //null if the person hasn't taken it.
     String? location, //null if the person hasn't taken it.
     String? batchNo, //null if the person hasn't taken it.
+    int? immunizationId,
+    int? occurrenceId,
   }) => ImmunizationData._(
     name: name ?? this.name,
     date: date ?? this.date,
     location: location ?? this.location,
     batchNo: batchNo ?? this.batchNo,
+    immunizationId: immunizationId ?? this.immunizationId,
+    occurrenceId: occurrenceId ?? this.occurrenceId,
   );
 }
 
@@ -54,6 +73,7 @@ class ImmunizationDetail {
   //final String? batchNo;
   final bool noDetail;
 
+
   ImmunizationDetail({
     required this.immunization,
     this.maxMonthLimit,
@@ -63,10 +83,10 @@ class ImmunizationDetail {
     this.noDetail = false,
   }) {
     if(!noDetail) {
-      if(immunization.date != null //&& batchNo == null
-          || immunization.date == null /*&& batchNo != null*/) {
-        throw "If immunization.date != null then batchNo != null. \n"
-            "If immunization.date == null then batchNo == null. \n"
+      if(immunization.date != null && immunization.batchNo == null
+          || immunization.date == null && immunization.batchNo != null) {
+        throw "If immunization.date != null then immunization.batchNo != null. \n"
+            "If immunization.date == null then immunization.batchNo == null. \n"
             "Current immunization.date = '${immunization.date}'"; //, current batchNo = '$batchNo'
       }
       if(monthExact == null && monthRange == null) {
@@ -85,6 +105,46 @@ class ImmunizationDetailGroup {
     required this.immunizationList,
     required this.header,
   });
+
+  static List<ImmunizationDetailGroup> fromBabyResponse(List<BabyImmunizationItemResponse> responses) {
+    final map = <int, List<ImmunizationDetail>>{};
+    for(final resp in responses) {
+      final list = map[resp.month_type] ??= [];
+      list.add(ImmunizationDetail(
+        immunization: ImmunizationData(
+          name: resp.immunization.name, //For now, the name of immunization is static, cuz the server doesn't serve it.
+          date: resp.date,
+          location: resp.location,
+          immunizationId: resp.immunizationId,
+          occurrenceId: resp.id,
+        ),
+      ));
+    }
+    return map.entries.map((e) => ImmunizationDetailGroup(
+      header: getBabyImmunizationHeader(e.key),
+      immunizationList: e.value,
+    )).toList(growable: false);
+  }
+  static List<ImmunizationDetailGroup> fromPregnancyResponse(List<PregnancyImmunizationResponse> responses) {
+    final map = <int, List<ImmunizationDetail>>{};
+    for(final resp in responses) {
+      final list = map[resp.trimester] ??= [];
+      list.add(ImmunizationDetail(
+        immunization: ImmunizationData(
+          name: Strings.tetanus, //For now, the name of immunization is static, cuz the server doesn't serve it.
+          date: resp.date,
+          location: resp.location,
+          immunizationId: resp.immunizationId,
+          occurrenceId: resp.id,
+        ),
+        noDetail: true,
+      ));
+    }
+    return map.entries.map((e) => ImmunizationDetailGroup(
+      header: "Trimester ${e.key}",
+      immunizationList: e.value,
+    )).toList(growable: false);
+  }
 }
 
 

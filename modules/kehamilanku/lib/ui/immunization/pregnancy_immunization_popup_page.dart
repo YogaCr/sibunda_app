@@ -3,6 +3,7 @@ import 'package:common/arch/ui/widget/form_generic_vm_group_observer.dart';
 import 'package:common/config/_config.dart';
 import 'package:common/res/theme/_theme.dart';
 import 'package:common/util/navigations.dart';
+import 'package:common/util/times.dart';
 import 'package:common/util/ui.dart';
 import 'package:core/ui/base/view_model.dart';
 import 'package:flutter/cupertino.dart';
@@ -25,7 +26,7 @@ class PregnancyImmunizationPopupPage extends StatelessWidget {
       },
       onSubmit: (ctx, success) {
         if(success) {
-          KehamilankuRoutes.immunizationPopup.backPage(ctx, "Now");
+          KehamilankuRoutes.immunizationPopup.backPage(ctx, syncFormatTime(vm.date.value!));
           //showSnackBar(ctx, "Berhasil mengonfirmasi");
         } else {
           showSnackBar(ctx, "Terjadi kesalahan saat mengonfirmasi");

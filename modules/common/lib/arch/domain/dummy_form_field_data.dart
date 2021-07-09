@@ -417,7 +417,7 @@ final pregnancyImmunizationFormGroupData = <FormGroupData>[
   FormGroupData(
     header: "Konfirmasi Imunisasi",
     data: [
-      FormData(key: Const.KEY_IMMUNIZATION_DATE, question: Strings.immunization_date, type: FormType.text,),
+      FormData(key: Const.KEY_IMMUNIZATION_DATE, question: Strings.immunization_date, type: FormType.text, input: FieldInputMethod.pickDate),
       FormData(key: Const.KEY_IMMUNIZATION_PLACE, question: Strings.immunization_place, type: FormType.text,),
       FormData(key: Const.KEY_RESPONSIBLE_NAME, question: Strings.responsible_name, type: FormType.text,),
     ],
@@ -427,7 +427,7 @@ final babyImmunizationFormGroupData = <FormGroupData>[
   FormGroupData(
     header: "Konfirmasi Imunisasi",
     data: [
-      FormData(key: Const.KEY_IMMUNIZATION_DATE, question: Strings.immunization_date, type: FormType.text,),
+      FormData(key: Const.KEY_IMMUNIZATION_DATE, question: Strings.immunization_date, type: FormType.text, input: FieldInputMethod.pickDate),
       FormData(key: Const.KEY_IMMUNIZATION_PLACE, question: Strings.immunization_place, type: FormType.text,),
       FormData(key: Const.KEY_RESPONSIBLE_NAME, question: Strings.responsible_name, type: FormType.text,),
       FormData(key: Const.KEY_NO_BATCH, question: Strings.no_batch, type: FormType.text,),

@@ -4,6 +4,7 @@ import 'package:common/arch/ui/adapter/immunization_adp.dart';
 import 'package:common/arch/ui/model/dummy_ui_data.dart';
 import 'package:common/arch/ui/model/immunization.dart';
 import 'package:common/arch/ui/page/secondary_frames.dart';
+import 'package:common/arch/ui/widget/_basic_widget.dart';
 import 'package:common/arch/ui/widget/_item_immunization.dart';
 import 'package:common/util/ui.dart';
 import 'package:core/ui/base/async_view_model_observer.dart';
@@ -41,11 +42,11 @@ class PregnancyImmunizationPage extends StatelessWidget {
                   LiveDataObserver<List<UiImmunizationListGroup>>(
                     liveData: vm.immunizationGroups,
                     //liveDataGetter: (vm2) => vm2.immunizationGroups,
-                    builder: (ctx, data) => ImmunizationListGroupView(
-                      data ?? List.empty(),
+                    builder: (ctx, data) => data != null ? ImmunizationListGroupView(
+                      data,
                       onBtnClick: (group, child) async {
                         //showSnackBar(ctx, "group= $group child= $child");
-                        final immData = data![group].immunizationList[child].core;
+                        final immData = data[group].immunizationList[child].core;
                         if(immData.date != null) {
                           showSnackBar(ctx, "Immunisasi sudah dilakukan", backgroundColor: Colors.green);
                           return;
@@ -56,7 +57,7 @@ class PregnancyImmunizationPage extends StatelessWidget {
                           showSnackBar(ctx, "Berhasil mengonfirmasi", backgroundColor: Colors.green);
                         }
                       },
-                    ),
+                    ) : defaultLoading(),
                   ),
                 ],
               ),

@@ -113,6 +113,10 @@ class Strings {
   static const over_limit = "Batas Over";
   static const obese_limit = "Batas Obesitas";
 
+  static const tetanus = "Tetanus";
+  static const month_0_until_4 = "Bulan ke 0 - 4";
+  static const month_5_until_20_plus = "Bulan ke 5 - 20++";
+
   static const search = "Cari";
 
   static const year =  "Tahun";
