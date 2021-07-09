@@ -284,7 +284,7 @@ class KehamilankuCheckFormVm extends FormVmGroup {
           }
         });
       } else {
-        _formWarningStatusList.value = null;
+        _formWarningStatusList.value = List.empty();
       }
     });
   }

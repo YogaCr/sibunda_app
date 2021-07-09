@@ -252,9 +252,9 @@ abstract class FormVmGroup extends AsyncVm with FormVmGroupMixin {
           responseData.observe(this, (response) async {
             if(!_isReseting) {
               final isValid = await validateField(i2, formData.key, response);
+              prind("responseData.observe() validateField() formData.key = ${formData.key} isValid = $isValid");
               isValidData.value = isValid;
             }
-            //prind("responseData.observe() validateField() formData.key = ${formData.key} isValid = $isValid");
 /*
             .then((isValid) {
               isValidData.value = isValid;

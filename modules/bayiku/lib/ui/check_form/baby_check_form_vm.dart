@@ -32,6 +32,7 @@ class BabyCheckFormVm extends FormVmGroup {
     _getBabyCheckFormAnswer = getBabyCheckFormAnswer
     //_saveBabyCheckUpId = saveBabyCheckUpId
   {
+    canProceed.observe(this, (canProceed) { prind("BabyCheckFormVm canProceed = $canProceed _currentMonth= $_currentMonth"); });
     _currentMonth.observe(this, (month) {
       prind("BabyCheckFormVm _currentMonth.observe() month = $month isFormReady= $isFormReady");
       setResponse(0, Const.KEY_AGE, month);
@@ -197,6 +198,7 @@ class BabyCheckFormVm extends FormVmGroup {
 
   @override
   Future<bool> validateField(int groupPosition, String inputKey, response) async {
+    prind("BabyCheckFormVm.validateField() groupPosition = $groupPosition inputKey = $inputKey response = $response");
     switch(inputKey){
       case Const.KEY_MONTH:
       case Const.KEY_AGE: return tryParseInt(response) != null;
@@ -228,6 +230,7 @@ class BabyCheckFormVm extends FormVmGroup {
       if(res1 is Success<String>) {
         final babyNik = res1.data;
         final res2 = await _getBabyFromWarningStatus(babyNik, _currentMonth.value!);
+        prind("getWarningList res2 = $res2 _currentMonth = $_currentMonth");
         if(res2 is Success<List<FormWarningStatus>>) {
           final data = res2.data;
           _warningList.value = data;
@@ -251,7 +254,7 @@ class BabyCheckFormVm extends FormVmGroup {
         yearId : yearId,
         month: _currentMonth.value!,
       );
-      prind("getBabyFormAnswer res = $res");
+      prind("getBabyFormAnswer res = $res _currentMonth = $_currentMonth");
       if(res is Success<BabyMonthlyFormBody>) {
         final data = res.data;
         _formAnswer.value = data;

@@ -1,17 +1,22 @@
 import 'package:bayiku/config/baby_routes.dart';
 import 'package:common/arch/domain/dummy_data.dart';
 import 'package:common/arch/domain/model/baby_data.dart';
+import 'package:common/arch/domain/model/form_warning_status.dart';
+import 'package:common/arch/ui/adapter/form_warning_adp.dart';
 import 'package:common/arch/ui/adapter/top_bar_item_list_adp.dart';
 import 'package:common/arch/ui/page/secondary_frames.dart';
 import 'package:common/arch/ui/widget/_basic_widget.dart';
 import 'package:common/arch/ui/widget/_item_template.dart';
 import 'package:common/arch/ui/widget/form_generic_vm_group_observer.dart';
+import 'package:common/arch/ui/widget/popup_widget.dart';
 import 'package:common/config/_config.dart';
 import 'package:common/res/string/_string.dart';
+import 'package:common/res/theme/_theme.dart';
 import 'package:common/util/navigations.dart';
 import 'package:common/util/ui.dart';
 import 'package:common/value/const_values.dart';
 import 'package:common/value/enums.dart';
+import 'package:core/ui/base/live_data_observer.dart';
 import 'package:core/ui/base/view_model.dart';
 import 'package:core/util/_consoles.dart';
 import 'package:flutter/material.dart';
@@ -87,6 +92,7 @@ class BabyCheckFormPage extends StatelessWidget {
 class _MonthlyCheckFormPage extends StatelessWidget {
   final int month;
   final BabyCheckFormVm vm;
+  final scrollControl = ScrollController();
 
   _MonthlyCheckFormPage({
     required this.month,
@@ -97,8 +103,27 @@ class _MonthlyCheckFormPage extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return BelowTopBarScrollContentArea(
+      controller: scrollControl,
       slivers: [SliverList(delegate: SliverChildListDelegate.fixed([
         month == 0 ? _NeonatalServicePanel() : SizedBox(),
+        LiveDataObserver<List<FormWarningStatus>>(
+          liveData: vm.warningList,
+          builder: (ctx, data) => Container(
+            margin: EdgeInsets.only(top: 20, bottom: 5,),
+            child: data?.isNotEmpty == true ? Text(
+              "Informasi Hasil Pemeriksaan Pertumbuhan",
+              style: SibTextStyles.size_0_bold,
+            ) : null,
+          ),
+        ),
+      ])),
+      LiveDataObserver<List<FormWarningStatus>>(
+        liveData: vm.warningList,
+        builder: (ctx, data) => data != null
+            ? FormWarningSliverList(data)
+            : SliverToBoxAdapter(child: defaultLoading(),),
+      ),
+      SliverList(delegate: SliverChildListDelegate.fixed([
         Container(
           margin: EdgeInsets.only(bottom: 15),
           child: FormVmGroupObserver<BabyCheckFormVm>(
@@ -108,11 +133,28 @@ class _MonthlyCheckFormPage extends StatelessWidget {
                 || vm.currentMonth.value == month -1
                 || vm.currentMonth.value == month +1,
             onPreSubmit: (ctx, valid) => valid == true
-                ? showSnackBar(ctx, "Submitting",backgroundColor: Colors.green)
+                ? showSnackBar(ctx, "Submitting", backgroundColor: Colors.green)
                 : showSnackBar(ctx, "There still invalid fields"),
-            onSubmit: (ctx, success) => success
-                ? showSnackBar(ctx, "Sukses",backgroundColor: Colors.green)
-                : showSnackBar(ctx, "Gagal"),
+            onSubmit: (ctx, success) async {
+              if(success) {
+                final res = await showDialog<bool>(context: context, builder: (ctx) => AlertDialog(
+                  content: PopupSuccess(
+                    msg: "Data Pemeriksaan Bayi berhasil disimpan",
+                    actionMsg: "Lihat hasil pemeriksaan",
+                    onActionClick: () => Navigator.pop(context, true), //() => backPage(context, backStep: 2),
+                  ),
+                )); //showSnackBar(ctx, "Berhasil bro", backgroundColor: Colors.green)
+                if(res == true) {
+                  vm.getWarningList(forceLoad: true,);
+                  scrollControl.animateTo( 0,
+                    duration: Duration(seconds: 1),
+                    curve: Curves.easeOut,
+                  );
+                }
+              } else {
+                showSnackBar(ctx, Strings.form_submission_fail);
+              }
+            },
             submitBtnBuilder: (ctx, canProceed) => TxtBtn(
               Strings.submit_check_form,
               color: canProceed == true ? Manifest.theme.colorPrimary : Colors.grey,

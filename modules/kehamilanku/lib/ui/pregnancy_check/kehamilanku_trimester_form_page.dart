@@ -131,10 +131,11 @@ class _WeeklyFormPage extends StatelessWidget {
             ),
           ]),
         ),
-        AsyncVmObserver<KehamilankuCheckFormVm, List<FormWarningStatus>>(
-          vm: vm,
-          liveDataGetter: (vm2) => vm2.formWarningStatusList,
-          builder: (ctx, data) => FormWarningSliverList(data ?? List.empty()),
+        LiveDataObserver<List<FormWarningStatus>>(
+          liveData: vm.formWarningStatusList,
+          builder: (ctx, data) => data != null
+              ? FormWarningSliverList(data)
+              : SliverToBoxAdapter(child: defaultLoading(),),
         ),
         //FormWarningSliverList(warningStatusList),
         SliverList(
