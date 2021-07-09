@@ -44,7 +44,7 @@ _group1() {
 }
 
 _submitTest() async {
-  _vm.initFormDataInMonth(_month);
+  _vm.initFormDataInMonth(month: _month);
 
   await Future.delayed(Duration(seconds: 3), () async {
     prind("AWAL _vm.responseGroupList = ${_vm.responseGroupList}");
@@ -84,7 +84,7 @@ _getAnswerTest() async {
   //prind("_vm.getResponseMap() after reset = ${_vm.getResponseMap()}");
   assert(allNull);
 
-  _vm.getBabyFormAnswer(yearId: _yearId);
+  _vm.getBabyFormAnswer();
 
   await Future.delayed(Duration(seconds: 3), () async {
     prind("_vm.responseGroupList = ${_vm.responseGroupList}");

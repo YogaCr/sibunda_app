@@ -3,9 +3,11 @@ import 'package:common/arch/domain/dummy_data.dart';
 import 'package:common/arch/domain/model/baby_data.dart';
 import 'package:common/arch/ui/adapter/top_bar_item_list_adp.dart';
 import 'package:common/arch/ui/page/secondary_frames.dart';
+import 'package:common/arch/ui/widget/_basic_widget.dart';
 import 'package:common/arch/ui/widget/_item_template.dart';
 import 'package:common/arch/ui/widget/form_generic_vm_group_observer.dart';
 import 'package:common/config/_config.dart';
+import 'package:common/res/string/_string.dart';
 import 'package:common/util/navigations.dart';
 import 'package:common/util/ui.dart';
 import 'package:common/value/const_values.dart';
@@ -29,14 +31,31 @@ class BabyCheckFormPage extends StatelessWidget {
     final monthList = List.generate(monthCount, (index) => "Bulan ${index + monthStart}");
 
     final vm = ViewModelProvider.of<BabyCheckFormVm>(context)
-      ..init();
+      ..yearId = formMenu.id;
 
-    vm.currentMonth = monthStart;
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
+      await Future.delayed(Duration(milliseconds: 500));
+      pageController.jumpToPage(0);
+      pageController.notifyListeners();
+    });
+
+    //vm.currentMonth = monthStart;
+
+    //vm.currentWeek.value = startWeek;
+    //vm.initPage(week: startWeek);
+    //vm.currentTrimesterId = trimester.id;
 
     pageController.addListener(() {
-      final page = pageController.page?.toInt();
+      final page = pageController.page;
+      //prind("pageController page= $page double = ${pageController.page}");
       if(page != null) {
-        vm.currentMonth = page+monthStart;
+        //prind("pageController MASUK ===========");
+        int pageInt;
+        if(page == (pageInt = page.toInt())) {
+          final month = pageInt +monthStart;
+          prind("pageController MASUK =========== INT page= $page month = $month");
+          vm.initFormDataInMonth(month: month);
+        }
       }
     });
 
@@ -57,7 +76,7 @@ class BabyCheckFormPage extends StatelessWidget {
           controller: pageController,
           children: List.generate(monthCount, (index) => _MonthlyCheckFormPage(
             vm: vm,
-            month: index+monthStart,
+            month: index +monthStart,
           )),
         ),
       ),
@@ -76,25 +95,28 @@ class _MonthlyCheckFormPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    vm.initFormDataInMonth(month);
 
-    return BelowTopBarScrollContentArea([
-      SliverList(delegate: SliverChildListDelegate.fixed([
-        month == 1 ? _NeonatalServicePanel() : SizedBox(),
-        FormVmGroupObserver<BabyCheckFormVm>(
-          vm: vm,
-          imgPosition: RelativePosition.below,
-          predicate: () => vm.currentMonth == month || vm.currentMonth == month-1,
-          onPreSubmit: (ctx, valid) => valid == true
-              ? showSnackBar(ctx, "Submitting",backgroundColor: Colors.green)
-              : showSnackBar(ctx, "There still invalid fields"),
-          onSubmit: (ctx, success) => success
-              ? showSnackBar(ctx, "Sukses",backgroundColor: Colors.green)
-              : showSnackBar(ctx, "Gagal"),
-          submitBtnBuilder: (ctx, canProceed) => Container(
-            padding: EdgeInsets.all(10),
-            color: canProceed == true ? Manifest.theme.colorPrimary : Colors.grey,
-            child: Text("submit"),
+    return BelowTopBarScrollContentArea(
+      slivers: [SliverList(delegate: SliverChildListDelegate.fixed([
+        month == 0 ? _NeonatalServicePanel() : SizedBox(),
+        Container(
+          margin: EdgeInsets.only(bottom: 15),
+          child: FormVmGroupObserver<BabyCheckFormVm>(
+            vm: vm,
+            imgPosition: RelativePosition.below,
+            predicate: () => vm.currentMonth.value == month
+                || vm.currentMonth.value == month -1
+                || vm.currentMonth.value == month +1,
+            onPreSubmit: (ctx, valid) => valid == true
+                ? showSnackBar(ctx, "Submitting",backgroundColor: Colors.green)
+                : showSnackBar(ctx, "There still invalid fields"),
+            onSubmit: (ctx, success) => success
+                ? showSnackBar(ctx, "Sukses",backgroundColor: Colors.green)
+                : showSnackBar(ctx, "Gagal"),
+            submitBtnBuilder: (ctx, canProceed) => TxtBtn(
+              Strings.submit_check_form,
+              color: canProceed == true ? Manifest.theme.colorPrimary : Colors.grey,
+            ),
           ),
         ),
       ])),

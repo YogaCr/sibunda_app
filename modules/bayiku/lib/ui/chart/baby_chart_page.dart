@@ -34,8 +34,8 @@ class BabyChartPage extends StatelessWidget {
       title: chartTitle,
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 10,),
-        child: BelowTopBarScrollContentArea([
-          SliverList(
+        child: BelowTopBarScrollContentArea(
+          slivers: [SliverList(
             delegate: SliverChildListDelegate.fixed([
               LiveDataObserver<List<LineSeries<dynamic, num>>>(
                 liveData: vm.seriesList,

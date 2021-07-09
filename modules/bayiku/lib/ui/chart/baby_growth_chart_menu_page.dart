@@ -21,8 +21,8 @@ class BabyGrowthChartMenuPage extends StatelessWidget {
       title: "Grafik Evaluasi Kehamilan",
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 10,),
-        child: BelowTopBarScrollContentArea([
-          SliverList(
+        child: BelowTopBarScrollContentArea(
+          slivers: [SliverList(
             delegate: SliverChildListDelegate.fixed([
               Text(
                 "Silahkan pilih grafiknya dulu ya Bun",

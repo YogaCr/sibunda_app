@@ -60,9 +60,9 @@ class LiveData<T> implements Expirable {
       }
     }
   }
-  void observeOnce(void Function(T?) onChange) {
+  void observeOnce(void Function(T?) onChange, { bool immediatelyGet = true }) {
     final v = _value;
-    if(v is T) {
+    if(immediatelyGet && v is T) {
       onChange(v);
     } else {
       if(_onceObservers == null) {

@@ -12,7 +12,6 @@ import 'package:common/value/const_values.dart';
 import 'package:core/domain/model/result.dart';
 import 'package:core/ui/base/live_data.dart';
 import 'package:core/util/_consoles.dart';
-import 'package:flutter/cupertino.dart';
 
 class BabyCheckFormVm extends FormVmGroup {
   static const getWarningListKey = "getWarningList";
@@ -33,8 +32,17 @@ class BabyCheckFormVm extends FormVmGroup {
     _getBabyCheckFormAnswer = getBabyCheckFormAnswer
     //_saveBabyCheckUpId = saveBabyCheckUpId
   {
+    _currentMonth.observe(this, (month) {
+      prind("BabyCheckFormVm _currentMonth.observe() month = $month isFormReady= $isFormReady");
+      setResponse(0, Const.KEY_AGE, month);
+    });
+    onSubmit.observe(this, (success) {
+      if(success is Success<String>) {
+        setFormEnabled(isEnabled: false);
+      }
+    });
     _formAnswer.observe(this, (data) {
-      prind("_formAnswer.observe data = $data");
+      prind("_formAnswer.observe data = $data _currentMonth = $_currentMonth");
       if(data != null) {
         final map = data.toJson();
         final respGroupList = <Map<String, dynamic>>[map];
@@ -50,6 +58,8 @@ class BabyCheckFormVm extends FormVmGroup {
       } else {
         resetResponses();
       }
+      prind("_formAnswer.observe AKHIR!!!! data = $data _currentMonth = $_currentMonth");
+      setFormEnabled(isEnabled: data == null);
     });
   }
 
@@ -67,8 +77,9 @@ class BabyCheckFormVm extends FormVmGroup {
   LiveData<BabyMonthlyFormBody> get formAnswer => _formAnswer;
 
   late int yearId;
-  int currentMonth = 0;
-  int _currentMonthForForm = 0;
+  final MutableLiveData<int> _currentMonth = MutableLiveData();
+  LiveData<int> get currentMonth => _currentMonth;
+  //int _currentMonthForForm = 0;
 
   @override
   Future<Result<String>> doSubmitJob() async {
@@ -84,7 +95,7 @@ class BabyCheckFormVm extends FormVmGroup {
         }).toList(growable: false);
     growthMap[Const.KEY_PERKEMBANGAN_ANS] = devQs;
     growthMap[Const.KEY_YEAR_ID] = yearId;
-    growthMap[Const.KEY_MONTH] = _currentMonthForForm;
+    growthMap[Const.KEY_MONTH] = _currentMonth.value!;
 
     final body = BabyMonthlyFormBody.fromJson(growthMap);
     final res = await _saveBabyCheckForm(body);
@@ -92,14 +103,27 @@ class BabyCheckFormVm extends FormVmGroup {
     return res is Success<bool> ? Success("ok") : Fail();
   }
 
-  void initFormDataInMonth(int month) {
-    _currentMonthForForm = month;
+  void initFormDataInMonth({
+    required int month,
+    bool forceLoad = false
+  }) {
+    prind("BabyCheckFormVm initFormDataInMonth() month = $month forceLoad = $forceLoad _currentMonth = $_currentMonth");
+    if(!forceLoad && _currentMonth.value == month) return;
+    _currentMonth.value = month;
     init(isOneShot: false);
+    isFormReady.observeOnce((isReady) {
+      if(isReady == true) {
+        getBabyFormAnswer(forceLoad: true);
+        getWarningList(forceLoad: true);
+      }
+    }, immediatelyGet: false,);
   }
 
   @override
   Future<List<FormUiGroupData>> getFieldGroupList() async {
-    final res = await _getBabyCheckForm(_currentMonthForForm);
+    prind("BabyCheckFormVm getFieldGroupList() AWAL _currentMonth = $_currentMonth");
+    final res = await _getBabyCheckForm(_currentMonth.value!);
+    prind("BabyCheckFormVm getFieldGroupList() _currentMonth = $_currentMonth res = $res");
     if(res is Success<List<FormGroupData>>) {
       return res.data.map((e) => FormUiGroupData.fromModel(e)).toList(growable: false);
     } else {
@@ -148,6 +172,7 @@ class BabyCheckFormVm extends FormVmGroup {
 
   @override
   Set<String>? get mappedKey => {
+    Const.KEY_DATE,
     Const.KEY_MONTH,
     Const.KEY_AGE,
     Const.KEY_WEIGHT,
@@ -159,6 +184,7 @@ class BabyCheckFormVm extends FormVmGroup {
   @override
   mapResponse(int groupPosition, String key, response) {
     switch(key){
+      case Const.KEY_DATE: return response?.toString();
       case Const.KEY_MONTH:
       case Const.KEY_AGE: return parseInt(response);
       case Const.KEY_WEIGHT:
@@ -201,11 +227,13 @@ class BabyCheckFormVm extends FormVmGroup {
       final res1 = await _getBabyNik();
       if(res1 is Success<String>) {
         final babyNik = res1.data;
-        final res2 = await _getBabyFromWarningStatus(babyNik, _currentMonthForForm);
+        final res2 = await _getBabyFromWarningStatus(babyNik, _currentMonth.value!);
         if(res2 is Success<List<FormWarningStatus>>) {
           final data = res2.data;
           _warningList.value = data;
           return null;
+        } else {
+          _warningList.value = List.empty();
         }
         return res2 as Fail;
       }
@@ -214,20 +242,22 @@ class BabyCheckFormVm extends FormVmGroup {
   }
 
   void getBabyFormAnswer({
-    required int yearId,
+    //required int yearId,
     bool forceLoad = false
   }) {
     if(!forceLoad && _formAnswer.value != null) return;
     startJob(getBabyFormAnswerKey, (isActive) async {
       final res = await _getBabyCheckFormAnswer(
         yearId : yearId,
-        month: _currentMonthForForm,
+        month: _currentMonth.value!,
       );
       prind("getBabyFormAnswer res = $res");
       if(res is Success<BabyMonthlyFormBody>) {
         final data = res.data;
         _formAnswer.value = data;
         return null;
+      } else {
+        _formAnswer.value = null;
       }
       return res as Fail;
     });

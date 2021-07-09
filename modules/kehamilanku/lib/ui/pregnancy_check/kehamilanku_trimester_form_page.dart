@@ -184,7 +184,7 @@ class _WeeklyFormPage extends StatelessWidget {
               submitBtnBuilder: (ctx, canProceed) => Container(
                 margin: EdgeInsets.only(bottom: 20),
                 child: TxtBtn(
-                  "Simpan Data Pemeriksaan",
+                  Strings.form_submission_fail,
                   color: canProceed == true ? pink_300 : grey,
                 ),
               ),

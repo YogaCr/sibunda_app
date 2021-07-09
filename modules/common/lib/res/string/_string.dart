@@ -32,6 +32,8 @@ class Strings {
   static const baby_growth_form = "Form Pemeriksaan Pertumbuhan Bayi";
   static const covid_check_form = "Form Pemeriksaan Gejala Covid-19";
 
+  static const submit_check_form = "Simpan Data Pemeriksaan";
+
   static const mother = "Bunda";
   static const baby = "Bayi";
 

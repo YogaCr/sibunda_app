@@ -100,10 +100,10 @@ final babyFormGroupData_growth = <FormGroupData>[
   FormGroupData(
     header: Strings.baby_growth_form,
     data: [
-      FormData(key: Const.KEY_DATE, question: "Tanggal Periksa", type: FormType.text,),
+      FormData(key: Const.KEY_DATE, question: "Tanggal Periksa", type: FormType.text, input: FieldInputMethod.pickDate),
       FormData(key: Const.KEY_PLACE, question: "Tempat Periksa", type: FormType.text,),
       FormData(key: Const.KEY_CHECKER, question: "Nama Pemeriksa", type: FormType.text,),
-      FormData(key: Const.KEY_AGE, question: "Usia Bayi", type: FormType.text,),
+      FormData(key: Const.KEY_AGE, question: "Usia Bayi", type: FormType.text, isInputEnabled: false),
       FormData(key: Const.KEY_WEIGHT, question: "Berat Badan (kg)", type: FormType.text,),
       FormData(key: Const.KEY_HEIGHT, question: "Panjang/Tinggi Badan (cm)", type: FormType.text,),
       FormData(key: Const.KEY_HEAD_CIRCUM, question: "Lingkar Kepala (cm)", type: FormType.text,),

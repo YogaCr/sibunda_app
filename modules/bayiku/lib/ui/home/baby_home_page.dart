@@ -4,6 +4,7 @@ import 'package:common/arch/domain/model/baby_data.dart';
 import 'package:common/arch/domain/model/chart_data_baby.dart';
 import 'package:common/arch/ui/model/dummy_ui_data.dart';
 import 'package:common/arch/ui/page/secondary_frames.dart';
+import 'package:common/arch/ui/widget/_basic_widget.dart';
 import 'package:common/arch/ui/widget/_item_immunization.dart';
 import 'package:common/arch/ui/widget/_item_template.dart';
 import 'package:common/arch/ui/widget/_items_bayiku.dart';
@@ -28,8 +29,8 @@ class BabyHomePage extends StatelessWidget {
       title: Strings.my_baby,
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 10),
-        child: BelowTopBarScrollContentArea([
-          SliverList(
+        child: BelowTopBarScrollContentArea(
+          slivers: [SliverList(
             delegate: SliverChildListDelegate.fixed([
               Container(
                 margin: EdgeInsets.symmetric(vertical: 15).copyWith(top: 20),
@@ -80,7 +81,9 @@ class BabyHomePage extends StatelessWidget {
               AsyncVmObserver<BabyHomeVm, List<BabyFormMenuData>>(
                 vm: vm,
                 liveDataGetter: (vm2) => vm2.formMenuList,
-                builder: (ctx, data) => _BabyFormMenuList(data ?? List.empty()),
+                builder: (ctx, data) => data != null
+                    ? _BabyFormMenuList(data)
+                    : defaultLoading(),
               ),
               Container(
                 margin: EdgeInsets.only(top: 5),

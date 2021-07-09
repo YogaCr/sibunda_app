@@ -70,8 +70,8 @@ class _FormPage extends StatelessWidget {
   Widget build(BuildContext context) {
     //vm.initFormInPage(page);
 
-    return BelowTopBarScrollContentArea([
-      SliverList(delegate: SliverChildListDelegate.fixed([
+    return BelowTopBarScrollContentArea(
+      slivers: [SliverList(delegate: SliverChildListDelegate.fixed([
         FormVmGroupObserver<NeonatalServiceVm>(
           vm: vm,
           imgPosition: RelativePosition.above,

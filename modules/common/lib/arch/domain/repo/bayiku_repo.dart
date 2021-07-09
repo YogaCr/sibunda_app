@@ -62,16 +62,21 @@ class MyBabyRepoImpl with MyBabyRepo {
 
   @override
   Future<Result<String>> getBabyNik() async {
-    final res = await _accountLocalSrc.getCurrentEmail();
-    prind("MyBabyRepoImpl.getBabyNik() res = $res");
-    if(res is Success<String>) {
-      final email = res.data;
-      prind("MyBabyRepoImpl.getBabyNik() email = $email");
-      final res2 = await _accountLocalSrc.getChildNik(email);
-      prind("MyBabyRepoImpl.getBabyNik() res2 = $res2");
-      return res2;
-    } else {
-      return res as Fail<String>;
+    try {
+      final res = await _accountLocalSrc.getCurrentEmail();
+      prind("MyBabyRepoImpl.getBabyNik() res = $res");
+      if(res is Success<String>) {
+        final email = res.data;
+        prind("MyBabyRepoImpl.getBabyNik() email = $email");
+        final res2 = await _accountLocalSrc.getChildNik(email);
+        prind("MyBabyRepoImpl.getBabyNik() res2 = $res2");
+        return res2;
+      } else {
+        return res as Fail<String>;
+      }
+    } catch(e, stack) {
+      prine(stack);
+      return Fail(msg: "Error calling `getBabyNik()`", error: e);
     }
   }
 
@@ -82,20 +87,25 @@ class MyBabyRepoImpl with MyBabyRepo {
   @override
   Future<Result<BabyAgeOverview>> getBabyAgeOverview(String babyNik) async => Success(dummyBabyAgeOverview);
   Future<Result<List<FormWarningStatus>>> getBabyWarningStatus(String babyNik, int monthId) async {
-    if(monthId != _currentMonthId) {
-      final body = BabyFormWarningBody(monthId: monthId);
-      _formWarningResponse = await _api.getFormWarning(body);
-      _currentMonthId = monthId;
+    try {
+      if(monthId != _currentMonthId) {
+        final body = BabyFormWarningBody(monthId: monthId);
+        _formWarningResponse = await _api.getFormWarning(body);
+        _currentMonthId = monthId;
+      }
+      final data = _formWarningResponse!.data;
+      final list = <FormWarningStatus>[
+        FormWarningStatus.fromBabyResponse(data.weight),
+        FormWarningStatus.fromBabyResponse(data.len),
+        FormWarningStatus.fromBabyResponse(data.weightToLen),
+        FormWarningStatus.fromBabyResponse(data.headCircum),
+        FormWarningStatus.fromBabyResponse(data.imt),
+      ];
+      return Success(list);
+    } catch(e, stack) {
+      prine(stack);
+      return Fail(msg: "Error calling `getBabyWarningStatus()`", error: e);
     }
-    final data = _formWarningResponse!.data;
-    final list = <FormWarningStatus>[
-      FormWarningStatus.fromBabyResponse(data.weight),
-      FormWarningStatus.fromBabyResponse(data.len),
-      FormWarningStatus.fromBabyResponse(data.weightToLen),
-      FormWarningStatus.fromBabyResponse(data.headCircum),
-      FormWarningStatus.fromBabyResponse(data.imt),
-    ];
-    return Success(list);
   }
 
   @override
@@ -103,10 +113,15 @@ class MyBabyRepoImpl with MyBabyRepo {
 
   @override
   Future<Result<List<BabyFormMenuData>>> getBabyFormMenu() async {
-    final data = _homeResponse = await _api.getHomeData();
-    final rawYears = data.data.first.years;
-    final years = rawYears.map((e) => BabyFormMenuData.fromResponse(e)).toList(growable: false);
-    return Success(years);
+    try {
+      final data = _homeResponse = await _api.getHomeData();
+      final rawYears = data.data.first.years;
+      final years = rawYears.map((e) => BabyFormMenuData.fromResponse(e)).toList(growable: false);
+      return Success(years);
+    } catch(e, stack) {
+      prine(stack);
+      return Fail(msg: "Error calling `getBabyFormMenu()`", error: e);
+    }
   }
 
   @override
@@ -117,12 +132,17 @@ class MyBabyRepoImpl with MyBabyRepo {
 
   @override
   Future<Result<bool>> saveBabyMonthlyCheck(BabyMonthlyFormBody body) async { //TODO: blum ada checkup id ne.
-    final res = await _api.sendMonthlyForm(body);
-    prind("saveBabyMonthlyCheck() res = $res");
-    if(res.code != 200) {
-      return Fail();
+    try {
+      final res = await _api.sendMonthlyForm(body);
+      prind("saveBabyMonthlyCheck() res = $res");
+      if(res.code != 200) {
+        return Fail();
+      }
+      return Success(true);
+    } catch(e, stack) {
+      prine(stack);
+      return Fail(msg: "Error calling `saveBabyMonthlyCheck()`", error: e,);
     }
-    return Success(true);
   }
 
   @override
@@ -157,27 +177,32 @@ class MyBabyRepoImpl with MyBabyRepo {
     required int page,
     required Map<String, dynamic> formData,
   }) async {
-    switch(page) {
-      case 0: //For 6 hours
-        final body = Neonatal6HourFormBody.fromJson(formData);
-        await _api.sendNeo6hForm(body);
-        break;
-      case 1: //For KN1
-        final body = NeonatalKn1FormBody.fromJson(formData);
-        await _api.sendKn1Form(body);
-        break;
-      case 2: //For KN2
-        final body = NeonatalKn2FormBody.fromJson(formData);
-        await _api.sendKn2Form(body);
-        break;
-      case 3: //For KN3
-        final body = NeonatalKn3FormBody.fromJson(formData);
-        await _api.sendKn3Form(body);
-        break;
-      default:
-        throw "No such page '$page' in neonatal service page";
+    try {
+      switch(page) {
+        case 0: //For 6 hours
+          final body = Neonatal6HourFormBody.fromJson(formData);
+          await _api.sendNeo6hForm(body);
+          break;
+        case 1: //For KN1
+          final body = NeonatalKn1FormBody.fromJson(formData);
+          await _api.sendKn1Form(body);
+          break;
+        case 2: //For KN2
+          final body = NeonatalKn2FormBody.fromJson(formData);
+          await _api.sendKn2Form(body);
+          break;
+        case 3: //For KN3
+          final body = NeonatalKn3FormBody.fromJson(formData);
+          await _api.sendKn3Form(body);
+          break;
+        default:
+          throw "No such page '$page' in neonatal service page";
+      }
+      return Success(true);
+    } catch(e, stack) {
+      prine(stack);
+      return Fail(msg: "Error calling `saveNeonatalServiceForm()`", error: e,);
     }
-    return Success(true);
   }
 }
 
