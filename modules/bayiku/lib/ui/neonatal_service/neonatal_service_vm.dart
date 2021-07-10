@@ -1,4 +1,5 @@
 import 'package:bayiku/core/domain/usecase/baby_neonatal_usecase.dart';
+import 'package:common/arch/domain/dummy_data.dart';
 import 'package:common/arch/domain/model/form_data.dart';
 import 'package:common/arch/ui/model/form_data.dart';
 import 'package:common/arch/ui/vm/form_vm_group.dart';
@@ -6,6 +7,7 @@ import 'package:common/util/data_mapper.dart';
 import 'package:common/util/type_util.dart';
 import 'package:core/domain/model/result.dart';
 import 'package:core/ui/base/live_data.dart';
+import 'package:core/util/_consoles.dart';
 import 'package:flutter/material.dart';
 
 class NeonatalServiceVm extends FormVmGroup {
@@ -56,16 +58,20 @@ class NeonatalServiceVm extends FormVmGroup {
 
   final MutableLiveData<Map<String, dynamic>> _formAnswer = MutableLiveData();
 
-  int _currentPage = 0;
-  int get currentPage => _currentPage;
+  final MutableLiveData<int> _currentPage = MutableLiveData();
+  LiveData<int> get currentPage => _currentPage;
   late int monthlyCheckUpId;
 
   @override
   List<LiveData> get liveDatas => [];
 
 
-  void initFormInPage(int page) {
-    _currentPage = page;
+  void initFormInPage({
+    required int page,
+    bool forceLoad = false,
+  }) {
+    if(!forceLoad && _currentPage.value == page) return;
+    _currentPage.value = page;
     init(isOneShot: false);
   }
 
@@ -73,7 +79,7 @@ class NeonatalServiceVm extends FormVmGroup {
   Set<String>? get mappedKey => null;
   @override
   mapResponse(int groupPosition, String key, response) {
-    if(key.startsWith("q_")) {
+    if(key.startsWith("q_") && key != "q_kuning") {
       return getBinaryAnswerHaveNotInt(response as String);
     }
     if(response is DateTime) return response.toString();
@@ -87,13 +93,14 @@ class NeonatalServiceVm extends FormVmGroup {
     if(map.containsKey("q_kuning")) {
       final kuningSet = map["q_kuning"] as Set<int>;
       for(int i = 0; i < 5; i++) { //For now, 'kuning' until 5.
-        map["q_kuning${i+1}"] = kuningSet.contains(i);
+        map["q_kuning${i+1}"] = kuningSet.contains(i) ? 1 : 0;
       }
       map.remove("q_kuning");
     }
     map["monthly_checkup_id"] = monthlyCheckUpId;
+    prind("NeonatalServiceVm.doSubmitJob() map = $map");
     final res = await _saveNeonatalForm(
-      page: currentPage,
+      page: _currentPage.value!,
       formData: map,
     );
     if(res is Success<bool>) {
@@ -107,12 +114,23 @@ class NeonatalServiceVm extends FormVmGroup {
 
   @override
   Future<List<FormUiGroupData>> getFieldGroupList() async {
-    final res = await _getNeonatalFormData(currentPage);
+    final res = await _getNeonatalFormData(_currentPage.value!);
     if(res is Success<List<FormGroupData>>) {
       final data = res.data;
       return formDataListToUi(data);
     }
     return List.empty();
+  }
+
+  @override
+  Future<bool> validateField(int groupPosition, String inputKey, response) {
+    switch(_currentPage.value) {
+      case 0: return neonatal6HourFormValidator(defaultValidator: super.validateField)(groupPosition, inputKey, response);
+      case 1: return neonatalKn1FormValidator(defaultValidator: super.validateField)(groupPosition, inputKey, response);
+      case 2: return neonatalKn2FormValidator(defaultValidator: super.validateField)(groupPosition, inputKey, response);
+      case 3: return neonatalKn3FormValidator(defaultValidator: super.validateField)(groupPosition, inputKey, response);
+    }
+    return super.validateField(groupPosition, inputKey, response);
   }
 
 /*

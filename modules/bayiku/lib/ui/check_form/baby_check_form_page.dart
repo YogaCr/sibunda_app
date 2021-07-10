@@ -16,6 +16,7 @@ import 'package:common/util/navigations.dart';
 import 'package:common/util/ui.dart';
 import 'package:common/value/const_values.dart';
 import 'package:common/value/enums.dart';
+import 'package:core/domain/model/result.dart';
 import 'package:core/ui/base/live_data_observer.dart';
 import 'package:core/ui/base/view_model.dart';
 import 'package:core/util/_consoles.dart';
@@ -82,6 +83,7 @@ class BabyCheckFormPage extends StatelessWidget {
           children: List.generate(monthCount, (index) => _MonthlyCheckFormPage(
             vm: vm,
             month: index +monthStart,
+            year: formMenu.year,
           )),
         ),
       ),
@@ -91,11 +93,13 @@ class BabyCheckFormPage extends StatelessWidget {
 
 class _MonthlyCheckFormPage extends StatelessWidget {
   final int month;
+  final int year;
   final BabyCheckFormVm vm;
   final scrollControl = ScrollController();
 
   _MonthlyCheckFormPage({
     required this.month,
+    required this.year,
     required this.vm,
   });
 
@@ -105,7 +109,12 @@ class _MonthlyCheckFormPage extends StatelessWidget {
     return BelowTopBarScrollContentArea(
       controller: scrollControl,
       slivers: [SliverList(delegate: SliverChildListDelegate.fixed([
-        month == 0 ? _NeonatalServicePanel() : SizedBox(),
+        year == 1 && month == 0 ? MultiLiveDataObserver(
+          liveDataList: [vm.formAnswer, vm.onSubmit,],
+          builder: (ctx, dataList) => dataList[0] != null || dataList[1] is Success<String>
+              ? _NeonatalServicePanel()
+              : defaultEmptyWidget(),
+        ) : defaultEmptyWidget(),
         LiveDataObserver<List<FormWarningStatus>>(
           liveData: vm.warningList,
           predicate: (data) => vm.currentMonth.value == month,

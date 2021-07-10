@@ -2,7 +2,10 @@ import 'package:common/arch/domain/dummy_form_field_data.dart';
 import 'package:common/arch/ui/adapter/top_bar_item_list_adp.dart';
 import 'package:common/arch/ui/page/secondary_frames.dart';
 import 'package:common/arch/ui/widget/form_generic_vm_group_observer.dart';
+import 'package:common/arch/ui/widget/popup_widget.dart';
+import 'package:common/arch/ui/widget/txt_btn.dart';
 import 'package:common/config/manifest.dart';
+import 'package:common/res/string/_string.dart';
 import 'package:common/util/ui.dart';
 import 'package:common/value/enums.dart';
 import 'package:core/ui/base/view_model.dart';
@@ -21,13 +24,21 @@ class NeonatalServicePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final pageList = babyNeonatalServicePages;
 
-    final vm = ViewModelProvider.of<NeonatalServiceVm>(context)
-      ..init();
+    final vm = ViewModelProvider.of<NeonatalServiceVm>(context);
+
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
+      await Future.delayed(Duration(milliseconds: 500));
+      pageController.jumpToPage(0);
+      pageController.notifyListeners();
+    });
 
     pageController.addListener(() {
-      final page = pageController.page?.toInt();
+      final page = pageController.page;
       if(page != null) {
-        vm.initFormInPage(page); // = page;
+        int pageInt;
+        if(page == (pageInt = page.toInt())) {
+          vm.initFormInPage(page: pageInt); // = page;
+        }
       }
     });
 
@@ -72,20 +83,32 @@ class _FormPage extends StatelessWidget {
 
     return BelowTopBarScrollContentArea(
       slivers: [SliverList(delegate: SliverChildListDelegate.fixed([
-        FormVmGroupObserver<NeonatalServiceVm>(
-          vm: vm,
-          imgPosition: RelativePosition.above,
-          predicate: () => vm.currentPage == page || vm.currentPage == page-1,
-          onPreSubmit: (ctx, valid) => valid == true
-              ? showSnackBar(ctx, "Submitting",backgroundColor: Colors.green)
-              : showSnackBar(ctx, "There still invalid fields"),
-          onSubmit: (ctx, success) => success
-              ? showSnackBar(ctx, "Sukses",backgroundColor: Colors.green)
-              : showSnackBar(ctx, "Gagal"),
-          submitBtnBuilder: (ctx, canProceed) => Container(
-            padding: EdgeInsets.all(10),
-            color: canProceed == true ? Manifest.theme.colorPrimary : Colors.grey,
-            child: Text("submit"),
+        Container(
+          margin: EdgeInsets.only(bottom: 15,),
+          child: FormVmGroupObserver<NeonatalServiceVm>(
+            vm: vm,
+            imgPosition: RelativePosition.above,
+            predicate: () => vm.currentPage.value == page, //|| vm.currentPage == page-1,
+            onPreSubmit: (ctx, valid) => valid == true
+                ? showSnackBar(ctx, "Submitting",backgroundColor: Colors.green)
+                : showSnackBar(ctx, "There still invalid fields"),
+            onSubmit: (ctx, success)  async {
+              if(success) {
+                final res = await showDialog<bool>(context: context, builder: (ctx) => AlertDialog(
+                  content: PopupSuccess(
+                    msg: "Data Pemeriksaan Bayi berhasil disimpan",
+                    actionMsg: "Lihat hasil pemeriksaan",
+                    onActionClick: () => Navigator.pop(context, true), //() => backPage(context, backStep: 2),
+                  ),
+                )); //showSnackBar(ctx, "Berhasil bro", backgroundColor: Colors.green)
+              } else {
+                showSnackBar(ctx, Strings.form_submission_fail);
+              }
+            },
+            submitBtnBuilder: (ctx, canProceed) => TxtBtn(
+              Strings.submit_check_form,
+              color: canProceed == true ? Manifest.theme.colorPrimary : Colors.grey,
+            ),
           ),
         ),
       ])),

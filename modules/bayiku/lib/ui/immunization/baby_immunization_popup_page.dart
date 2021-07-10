@@ -4,6 +4,8 @@ import 'package:common/arch/ui/widget/_basic_widget.dart';
 import 'package:common/arch/ui/widget/form_generic_vm_group_observer.dart';
 import 'package:common/config/_config.dart';
 import 'package:common/res/theme/_theme.dart';
+import 'package:common/util/times.dart';
+import 'package:common/util/type_util.dart';
 import 'package:common/util/ui.dart';
 import 'package:common/value/const_values.dart';
 import 'package:core/ui/base/view_model.dart';
@@ -27,10 +29,13 @@ class BabyImmunizationPopupPage extends StatelessWidget {
       },
       onSubmit: (ctx, success) async {
         if(success) {
-          final resp = vm.getResponse().responseGroups.values.first;
+          //final resp = vm.getResponse().responseGroups.values.first;
+          final date = vm.responseGroupList[0][Const.KEY_IMMUNIZATION_DATE]!.response.value! as DateTime;
+          final noBatch = parseInt(vm.responseGroupList[0][Const.KEY_NO_BATCH]!.response.value);
+
           final res = BabyImmunizationPopupResult(
-            date: resp[Const.KEY_IMMUNIZATION_DATE],
-            noBatch: resp[Const.KEY_NO_BATCH]
+            date: syncFormatTime(date),
+            noBatch: noBatch,
           );
           BabyRoutes.immunizationPopup.backPage(ctx, res);
           //showSnackBar(ctx, "Berhasil mengonfirmasi");

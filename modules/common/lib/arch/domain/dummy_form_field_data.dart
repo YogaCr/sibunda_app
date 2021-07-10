@@ -1,3 +1,4 @@
+import 'package:common/arch/domain/dummy_data.dart';
 import 'package:common/arch/domain/model/form_data.dart';
 import 'package:common/arch/domain/model/img_data.dart';
 import 'package:common/arch/ui/model/form_data.dart';
@@ -314,6 +315,7 @@ final babyFormGroupData_neonatal_kn3 = <FormGroupData>[
           FormOption(label: "4", isSelected: false),
           FormOption(label: "5", isSelected: false),
         ],
+        img: [dummyImg_babyYellow],
       ),
       FormData(key: "masalah", question: "Masalah", type: FormType.text,),
       FormData(key: "dirujuk_ke", question: "Dirujuk ke", type: FormType.text,),

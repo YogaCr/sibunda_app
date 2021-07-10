@@ -11,12 +11,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 late NeonatalServiceVm _vm;
-final _page = 0;
+//final _page = 0;
 
 main() async {
   await ConfigUtil.init();
   _vm = BabyVmDi.neonatalServiceVm
-    ..monthlyCheckUpId = 2;
+    ..monthlyCheckUpId = 6;
 
   _group1();
   print("");
@@ -60,7 +60,7 @@ _group1() {
 
 
 _submitTest_h6() async {
-  _vm.initFormInPage(0);
+  _vm.initFormInPage(page: 0);
 
   await Future.delayed(Duration(milliseconds: 500), () async {
     final map = neonatal6HourForm.toJson();
@@ -75,7 +75,7 @@ _submitTest_h6() async {
     _vm.patchResponse([map]);
 
     await Future.delayed(Duration(milliseconds: 500), () async {
-      prind("_vm.responseGroupList = ${_vm.responseGroupList}");
+      prind("_vm.responseGroupList = ${_vm.responseGroupList} _vm.currentPage = ${_vm.currentPage}");
       assert(_vm.canProceed.value == true);
 
       await _vm.submit();
@@ -84,7 +84,7 @@ _submitTest_h6() async {
   });
 }
 _submitTest_kn1() async {
-  _vm.initFormInPage(1);
+  _vm.initFormInPage(page: 1);
 
   await Future.delayed(Duration(milliseconds: 500), () async {
     final map = neonatalKn1Form.toJson();
@@ -108,7 +108,7 @@ _submitTest_kn1() async {
   });
 }
 _submitTest_kn2() async {
-  _vm.initFormInPage(2);
+  _vm.initFormInPage(page: 2);
 
   await Future.delayed(Duration(milliseconds: 500), () async {
     final map = neonatalKn2Form.toJson();
@@ -132,20 +132,21 @@ _submitTest_kn2() async {
   });
 }
 _submitTest_kn3() async {
-  _vm.initFormInPage(3);
+  _vm.initFormInPage(page: 3);
 
   await Future.delayed(Duration(milliseconds: 500), () async {
     final map = neonatalKn3Form.toJson();
+    prind("map AWAL = $map");
     for(final e in map.entries) {
       if(e.key.startsWith("q_") && !e.key.startsWith("q_kuning")) {
         map[e.key] = getBinaryAnswerHaveNotStr(e.value);
       }
     }
+    prind("map TENGAH = $map");
     //final map = <String, dynamic>{};
     if(map.keys.any((k) => k.startsWith("q_kuning"))) {
       final qKuningKeys = <String>{};
       final checkSet = <int>{};
-      map["q_kuning"] = checkSet;
       int i = 0;
       for(final e in map.entries) {
         if(e.key.startsWith("q_kuning")) {
@@ -159,9 +160,13 @@ _submitTest_kn3() async {
       for(final kuningKey in qKuningKeys) {
         map.remove(kuningKey);
       }
+      map["q_kuning"] = checkSet;
+      prind("map HAMPIR AKHIR = $map");
     }
     //map[Const.KEY_DATE] = parseDate(map[Const.KEY_DATE]);
     //map[Const.KEY_TIME] = parseTimeOfDay(map[Const.KEY_TIME]);
+
+    prind("map AKHIR = $map");
 
     _vm.patchResponse([map]);
 

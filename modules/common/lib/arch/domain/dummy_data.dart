@@ -8,6 +8,8 @@ import 'package:common/arch/domain/model/img_data.dart';
 import 'package:common/arch/ui/model/home_graph_menu.dart';
 import 'package:common/config/routes.dart';
 import 'package:common/res/string/_string.dart';
+import 'package:common/util/type_util.dart';
+import 'package:common/value/const_values.dart';
 import 'package:common/value/db_const.dart';
 import 'package:core/domain/model/range.dart';
 import 'package:faker/faker.dart';
@@ -41,6 +43,7 @@ final dummyImg_smillingCat = ImgData(link: "_smiling_cat.jpg", package: GlobalRo
 final dummyImg_profile_sm = ImgData(link: "pic_profile_example.png", package: GlobalRoutes.common, isLocal: true);
 final dummyImg_pick = ImgData(link: "ic_plus_color.png", package: GlobalRoutes.common, isLocal: true);
 final dummyImg_profile = ImgData(link: "ic_profile.png", package: GlobalRoutes.common, isLocal: true);
+final dummyImg_babyYellow = ImgData(link: "pic_baby_yellow_part.png", package: GlobalRoutes.bayiku, isLocal: true);
 
 final dummyEmail = "a@a.a";
 final dummyName = "ayu";
@@ -456,6 +459,24 @@ final neonatal6HourForm = Neonatal6HourForm(
   petugas: "Perawat",
   catatan_penting: "Gakda",
 );
+Future<bool> Function(int groupPosition, String inputKey, dynamic response) neonatal6HourFormValidator({
+  Future<bool> Function(int groupPosition, String inputKey, dynamic response)? defaultValidator,
+}) => (groupPosition, inputKey, response) async {
+  switch(inputKey) {
+    case Const.KEY_WEIGHT:
+    case Const.KEY_HEIGHT:
+    case Const.KEY_HEAD_CIRCUM: return tryParseNum(response) != null;
+/*
+    case "q_imd":
+    case "q_vit_k1":
+    case "q_salep":
+    case "q_imunisasi_hb": return tryParseInt(response) != null;
+ */
+  }
+  return await defaultValidator?.call(groupPosition, inputKey, response) ?? true;
+};
+
+//Future<bool> validateField(int groupPosition, String inputKey, response)
 
 
 final neonatalKn1Form = NeonatalKn1Form(
@@ -476,6 +497,24 @@ final neonatalKn1Form = NeonatalKn1Form(
   catatan_penting: "Gakda",
   masalah: "Banyak",
 );
+Future<bool> Function(int groupPosition, String inputKey, dynamic response) neonatalKn1FormValidator({
+  Future<bool> Function(int groupPosition, String inputKey, dynamic response)? defaultValidator,
+}) => (groupPosition, inputKey, response) async {
+  switch(inputKey) {
+    case Const.KEY_WEIGHT:
+    case Const.KEY_HEIGHT:
+    case Const.KEY_HEAD_CIRCUM: return tryParseNum(response) != null;
+/*
+    case "q_menyusu":
+    case "q_tali_pusat":
+    case "q_vit_k1":
+    case "q_salep":
+    case "q_imunisasi_hb":
+    case "q_skrining_hipotiroid_kongenital": return tryParseInt(response) != null;
+ */
+  }
+  return await defaultValidator?.call(groupPosition, inputKey, response) ?? true;
+};
 
 final neonatalKn2Form = NeonatalKn2Form(
   q_menyusu: 1,
@@ -495,12 +534,30 @@ final neonatalKn2Form = NeonatalKn2Form(
   catatan_penting: "Gakda",
   masalah: "Banyak",
 );
+Future<bool> Function(int groupPosition, String inputKey, dynamic response) neonatalKn2FormValidator({
+  Future<bool> Function(int groupPosition, String inputKey, dynamic response)? defaultValidator,
+}) => (groupPosition, inputKey, response) async {
+  switch(inputKey) {
+    case Const.KEY_WEIGHT:
+    case Const.KEY_HEIGHT:
+    case Const.KEY_HEAD_CIRCUM: return tryParseNum(response) != null;
+/*
+    case "q_menyusu":
+    case "q_tali_pusat":
+    case "q_tanda_bahaya":
+    case "q_identifikasi_kuning":
+    case "q_imunisasi_hb":
+    case "q_skrining_hipotiroid_kongenital": return tryParseInt(response) != null;
+ */
+  }
+  return await defaultValidator?.call(groupPosition, inputKey, response) ?? true;
+};
 
 final neonatalKn3Form = NeonatalKn3Form(
   q_menyusu: 1,
   q_tali_pusat: 0,
-  q_vit_k1: 0,
-  q_salep: 0,
+  q_tanda_bahaya: 0,
+  q_identifikasi_kuning: 0,
   q_imunisasi_hb: 0,
   q_kuning1: 1,
   q_kuning2: 1,
@@ -512,6 +569,20 @@ final neonatalKn3Form = NeonatalKn3Form(
   catatan_penting: "Itu",
   masalah: "Banyak",
 );
+Future<bool> Function(int groupPosition, String inputKey, dynamic response) neonatalKn3FormValidator({
+  Future<bool> Function(int groupPosition, String inputKey, dynamic response)? defaultValidator,
+}) => (groupPosition, inputKey, response) async {
+/*
+  switch(inputKey) {
+    case "q_menyusu":
+    case "q_tali_pusat":
+    case "q_tanda_bahaya":
+    case "q_identifikasi_kuning":
+    case "q_imunisasi_hb": return tryParseInt(response) != null;
+  }
+ */
+  return await defaultValidator?.call(groupPosition, inputKey, response) ?? true;
+};
 
 final dummyWarningAction = "Cari faskes terdekat";
 

@@ -210,8 +210,8 @@ class NeonatalKn2Form {
 class NeonatalKn3Form {
   final int q_menyusu;
   final int q_tali_pusat;
-  final int q_vit_k1;
-  final int q_salep;
+  final int q_tanda_bahaya;
+  final int q_identifikasi_kuning;
   final int q_imunisasi_hb;
   final int q_kuning1;
   final int q_kuning2;
@@ -227,8 +227,8 @@ class NeonatalKn3Form {
   NeonatalKn3Form({
     required this.q_menyusu,
     required this.q_tali_pusat,
-    required this.q_vit_k1,
-    required this.q_salep,
+    required this.q_tanda_bahaya,
+    required this.q_identifikasi_kuning,
     required this.q_imunisasi_hb,
     required this.q_kuning1,
     required this.q_kuning2,

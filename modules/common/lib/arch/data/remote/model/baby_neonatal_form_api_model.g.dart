@@ -141,9 +141,8 @@ NeonatalKn3FormBody _$NeonatalKn3FormBodyFromJson(Map<String, dynamic> json) {
   return NeonatalKn3FormBody(
     q_menyusu: json['q_menyusu'] as int,
     q_tali_pusat: json['q_tali_pusat'] as int,
-    q_vit_k1: json['q_vit_k1'] as int,
-    q_salep: json['q_salep'] as int,
-    q_imunisasi_hb: json['q_imunisasi_hb'] as int,
+    q_tanda_bahaya: json['q_tanda_bahaya'] as int,
+    q_identifikasi_kuning: json['q_identifikasi_kuning'] as int,
     q_kuning1: json['q_kuning1'] as int,
     q_kuning2: json['q_kuning2'] as int,
     q_kuning3: json['q_kuning3'] as int,
@@ -162,9 +161,8 @@ Map<String, dynamic> _$NeonatalKn3FormBodyToJson(
     <String, dynamic>{
       'q_menyusu': instance.q_menyusu,
       'q_tali_pusat': instance.q_tali_pusat,
-      'q_vit_k1': instance.q_vit_k1,
-      'q_salep': instance.q_salep,
-      'q_imunisasi_hb': instance.q_imunisasi_hb,
+      'q_tanda_bahaya': instance.q_tanda_bahaya,
+      'q_identifikasi_kuning': instance.q_identifikasi_kuning,
       'q_kuning1': instance.q_kuning1,
       'q_kuning2': instance.q_kuning2,
       'q_kuning3': instance.q_kuning3,
