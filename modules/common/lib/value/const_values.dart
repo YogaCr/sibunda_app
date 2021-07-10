@@ -14,6 +14,7 @@ class Const {
   static const ENDPOINT_BABY = "$ENDPOINT_ROOT/anaku";
   static const ENDPOINT_DATA = "$ENDPOINT_ROOT/data";
   static const ENDPOINT_COVID = "$ENDPOINT_ROOT/covid";
+  static const ENDPOINT_HOME = "$ENDPOINT_ROOT/dashboard";
 
   static const CLIENT_SECRET = "5xnEHfLiRiyyRGrez97iEmqzTB4h48IWr5DnHEuO";
   static const CLIENT_ID = 2;
