@@ -1,4 +1,5 @@
 import 'package:core/ui/base/expirable.dart';
+import 'package:core/util/_consoles.dart';
 import 'package:flutter/cupertino.dart';
 
 import 'live_data.dart';
@@ -59,6 +60,7 @@ class _LiveDataObserverState<T>
     required this.distinctUntilChanged,
   }) {
     liveData.observe(this, (data) {
+      //prind("liveData.observe data = $data");
       if(predicate == null || predicate!(data)) {
         setState(() {});
       }
@@ -97,6 +99,7 @@ class _LiveDataObserverState<T>
 
   @override
   void dispose() {
+    prind("LiveDataObser '$runtimeType' is disposed");
     _isActive = false;
     if(isLiveDataOwner) {
       liveData.dispose();

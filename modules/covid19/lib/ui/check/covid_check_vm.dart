@@ -25,7 +25,13 @@ class CovidCheckVm extends FormVmGroup {
     _submitCovidBabyCheckForm = submitCovidBabyCheckForm,
     _getMotherNik = getMotherNik,
     _getBabyNik = getBabyNik
-  ;
+  {
+    onSubmit.observe(this, (success) {
+      if(success is Success<String>) {
+        setFormEnabled(isEnabled: false);
+      }
+    });
+  }
   final GetCovidMotherCheckFormData _getCovidMotherCheckFormData;
   final SubmitCovidMotherCheckForm _submitCovidMotherCheckForm;
   final SubmitCovidBabyCheckForm _submitCovidBabyCheckForm;

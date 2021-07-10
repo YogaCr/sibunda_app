@@ -26,7 +26,7 @@ class CovidHomePage extends StatelessWidget {
       title: Strings.covid_19,
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 10),
-        child: BelowTopBarScrollContentArea([
+        child: BelowTopBarScrollContentArea(slivers: [
           SliverList(
             delegate: SliverChildListDelegate.fixed([
               Container(

@@ -281,7 +281,11 @@ class RadioGroup extends SibFormField {
   }):
     this.groupValueLiveData = groupValueLiveData ?? MutableLiveData(),
     this.isLiveDataOwner = isLiveDataOwner ?? groupValueLiveData == null
-  ;
+  {
+    this.groupValueLiveData.observeForever((data) {
+      prind("RadioGroup this.groupValueLiveData.observeForever data = $data");
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -296,22 +300,43 @@ class RadioGroup extends SibFormField {
     }
 
     Widget? Function(BuildContext, String?) getBuilder(final String option) {
+      //prind("RadioGroup getBuilder() isEnabledController == null => ${isEnabledController == null}");
+
       if(isEnabledController == null) {
-         return (ctx, data) => Radio<String>(
-          value: option,
-          groupValue: data,
-          onChanged: enabled ? (value) => groupValueLiveData.value = value : null,
-        );
+         return (ctx, data) {
+           prind("RadioGroup isEnabledController == null data= $data");
+           return Radio<String>(
+             value: option,
+             groupValue: data,
+             onChanged: enabled ? (value) => groupValueLiveData.value = value : null,
+           );
+         };
       } else {
-        return (ctx, data) => LiveDataObserver<bool>(
-          liveData: isEnabledController!,
-          builder: (ctx, enabled) => Radio<String>(
-            value: option,
-            groupValue: data,
-            onChanged: this.enabled && enabled != false
-                ? (value) => groupValueLiveData.value = value : null,
-          ),
-        );
+        String? data2; // I don't know why but Dart seems unable to capture
+          // parameter `data` new reference. So, the value of `data` stays the same like the old one.
+        return (ctx, data) {
+          //prind("RadioGroup isEnabledController != null data= $data");
+          data2 = data;
+          return LiveDataObserver<bool>(
+            liveData: isEnabledController!,
+            builder: (ctx, enabled) {
+              //prind("RadioGroup isEnabledController != null INNER builder data= $data data2= $data2 enabled = $enabled");
+              return Radio<String>(
+                value: option,
+                groupValue: data2, //If I use parameter `data` here, then the value won't change.
+                    // although the outer lambda gets called whenever `groupValueLiveData.value` change
+                    // and this inner lambda gets new parameter `data` with new value.
+                    // It seems it has something to do with Flutter `State` class.
+                onChanged: this.enabled && enabled != false
+                    ? (value) {
+                  //prind("RadioGroup onChange groupValueLiveData.value = ${groupValueLiveData.value} value = $value groupValue = $data option = $option this.enabled = ${this.enabled} enabled = $enabled");
+                  groupValueLiveData.value = value;
+                  //data = value;
+                } : null,
+              );
+            },
+          );
+        };
       }
     }
 

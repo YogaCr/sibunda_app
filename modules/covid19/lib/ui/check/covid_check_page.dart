@@ -4,6 +4,7 @@ import 'package:common/arch/ui/page/secondary_frames.dart';
 import 'package:common/arch/ui/widget/_basic_widget.dart';
 import 'package:common/arch/ui/widget/_item_template.dart';
 import 'package:common/arch/ui/widget/form_generic_vm_group_observer.dart';
+import 'package:common/arch/ui/widget/popup_widget.dart';
 import 'package:common/config/_config.dart';
 import 'package:common/res/string/_string.dart';
 import 'package:common/res/theme/_theme.dart';
@@ -19,6 +20,7 @@ import 'package:flutter/material.dart';
 import 'covid_check_vm.dart';
 
 class CovidCheckPage extends StatelessWidget {
+  final scrollControl = ScrollController();
 
   @override
   Widget build(BuildContext context) {
@@ -32,11 +34,12 @@ class CovidCheckPage extends StatelessWidget {
 
     return TopBarTitleAndBackFrame(
       isScroll: true,
-      title: "Menu Cek Covid-19 Untuk Bayi",
+      title: "Menu Cek Covid-19 Untuk ${isMother ? Strings.mother : Strings.baby}",
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 10,),
-        child: BelowTopBarScrollContentArea([
-          SliverList(
+        child: BelowTopBarScrollContentArea(
+          controller: scrollControl,
+          slivers: [SliverList(
             delegate: SliverChildListDelegate.fixed([
               Container(
                 margin: EdgeInsets.symmetric(vertical: 10,),
@@ -68,19 +71,38 @@ class CovidCheckPage extends StatelessWidget {
                   ),
                 ) : defaultEmptyWidget(),
               ),
-              FormVmGroupObserver<CovidCheckVm>(
-                vm: vm,
-                onPreSubmit: (ctx, canProceed) {
-                  if(canProceed != true) {
-                    showSnackBar(ctx, Strings.there_still_invalid_fields);
-                  }
-                },
-                onSubmit: (ctx, success) => success
-                    ? showSnackBar(ctx, Strings.form_submission_success, backgroundColor: Colors.green)
-                    : showSnackBar(ctx, Strings.form_submission_fail),
-                submitBtnBuilder: (ctx, canProceed) => TxtBtn(
-                  "Simpan Data Pemeriksaan",
-                  color: canProceed == true ? Manifest.theme.colorPrimary : grey,
+              Container(
+                margin: EdgeInsets.only(bottom: 15,),
+                child: FormVmGroupObserver<CovidCheckVm>(
+                  vm: vm,
+                  onPreSubmit: (ctx, canProceed) {
+                    if(canProceed != true) {
+                      showSnackBar(ctx, Strings.there_still_invalid_fields);
+                    }
+                  },
+                  onSubmit: (ctx, success) async {
+                    if(success) {
+                      final res = await showDialog<bool>(context: context, builder: (ctx) => AlertDialog(
+                        content: PopupSuccess(
+                          msg: "Data Pemeriksaan Covid berhasil disimpan",
+                          actionMsg: "Lihat hasil pemeriksaan",
+                          onActionClick: () => Navigator.pop(context, true), //() => backPage(context, backStep: 2),
+                        ),
+                      )); //showSnackBar(ctx, "Berhasil bro", backgroundColor: Colors.green)
+                      if(res == true) {
+                        scrollControl.animateTo( 0,
+                          duration: Duration(seconds: 1),
+                          curve: Curves.easeOut,
+                        );
+                      }
+                    } else {
+                      showSnackBar(ctx, Strings.form_submission_fail);
+                    }
+                  },
+                  submitBtnBuilder: (ctx, canProceed) => TxtBtn(
+                    "Simpan Data Pemeriksaan",
+                    color: canProceed == true ? Manifest.theme.colorPrimary : grey,
+                  ),
                 ),
               ),
             ]),
