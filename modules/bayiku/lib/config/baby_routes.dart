@@ -31,7 +31,7 @@ class BabyRoutes extends ModuleRoute {
   Set<SibRoute> get routes => {
     babyHomePage,
     babyCheckPage._route,
-    babyImmunizationPage,
+    babyImmunizationPage._route,
     chartPageRoute._route,
   };
 
@@ -47,11 +47,7 @@ class BabyRoutes extends ModuleRoute {
     ]),
   ));
 
-  static final babyImmunizationPage = SibRoute("BabyImmunizationPage", BabyImmunizationPage, (ctx) => MainFrame(
-    body: BabyImmunizationPage().inVmProvider([
-          (ctx) => BabyVmDi.babyImmunizationVm,
-    ]),
-  ));
+  static final babyImmunizationPage = _BabyImmunizationPageRoute.obj;
   static final growthChartMenuVm = SibRoute("BabyGrowthChartMenuVm", BabyGrowthChartMenuPage, (ctx) => MainFrame(
     body: BabyGrowthChartMenuPage().inVmProvider([
           (ctx) => BabyVmDi.growthChartMenuVm,
@@ -118,5 +114,19 @@ class _BabyChartPageRoute {
 
   void go(BuildContext context, BabyChartType type) {
     _route.goToPage(context, args: { Const.KEY_DATA: type });
+  }
+}
+
+class _BabyImmunizationPageRoute {
+  _BabyImmunizationPageRoute._();
+  static final obj = _BabyImmunizationPageRoute._();
+
+  final _route = SibRoute("BabyImmunizationPage", BabyImmunizationPage, (ctx) => MainFrame(
+    body: BabyImmunizationPage().inVmProvider([
+          (ctx) => BabyVmDi.babyImmunizationVm,
+    ]),
+  ));
+  void go(BuildContext context, String babyNik) {
+    _route.goToPage(context, args: { Const.KEY_DATA: babyNik });
   }
 }

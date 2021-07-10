@@ -5,10 +5,11 @@ import 'package:common/res/string/_string.dart';
 import 'package:common/util/data_mapper.dart';
 import 'package:common/value/const_values.dart';
 import 'package:core/domain/model/range.dart';
+import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 
-class ImmunizationData {
+class ImmunizationData extends Equatable {
   final String name;
   final String? date; //null if the person hasn't taken it.
   final String? location; //null if the person hasn't taken it.
@@ -59,6 +60,9 @@ class ImmunizationData {
     immunizationId: immunizationId ?? this.immunizationId,
     occurrenceId: occurrenceId ?? this.occurrenceId,
   );
+
+  @override
+  List<Object?> get props => [name, date, location, batchNo, immunizationId, occurrenceId];
 }
 
 
@@ -87,11 +91,14 @@ class ImmunizationDetail {
           || immunization.date == null && immunization.batchNo != null) {
         throw "If immunization.date != null then immunization.batchNo != null. \n"
             "If immunization.date == null then immunization.batchNo == null. \n"
-            "Current immunization.date = '${immunization.date}'"; //, current batchNo = '$batchNo'
+            "Current immunization.date = '${immunization.date}' \n" //, current batchNo = '$batchNo'
+            "For immunization = $immunization";
       }
+/*
       if(monthExact == null && monthRange == null) {
         throw "both `monthExact` and `monthExact` can't be null";
       }
+ */
     }
   }
 }
@@ -117,6 +124,7 @@ class ImmunizationDetailGroup {
           location: resp.location,
           immunizationId: resp.immunizationId,
           occurrenceId: resp.id,
+          batchNo: resp.noBatch,
         ),
       ));
     }

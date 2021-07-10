@@ -1,4 +1,5 @@
 import 'package:bayiku/core/domain/usecase/baby_home_usecase.dart';
+import 'package:common/arch/domain/dummy_data.dart';
 import 'package:common/arch/domain/model/baby_data.dart';
 import 'package:core/domain/model/result.dart';
 import 'package:core/ui/base/async_vm.dart';
@@ -23,11 +24,13 @@ class BabyHomeVm extends AsyncVm {
   LiveData<List<BabyFormMenuData>> get formMenuList => _formMenuList;
   LiveData<BabyAgeOverview> get ageOverview => _ageOverview;
 
+  String get babyNik => dummyProfileChild.nik; //TODO: babyNik: tuk smtr ini kyk gini.
+
   @override
   List<LiveData> get liveDatas => [_formMenuList, _ageOverview];
 
   void getBabyAgeOverview({
-    required String babyNik,
+    //required String babyNik,
     bool forceLoad = false
   }) {
     if(!forceLoad && _ageOverview.value != null) return;

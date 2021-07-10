@@ -21,7 +21,7 @@ class BabyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final vm = ViewModelProvider.of<BabyHomeVm>(context)
-      ..getBabyAgeOverview(babyNik: "")
+      ..getBabyAgeOverview()
       ..getBabyFormMenuList();
 
     return TopBarTitleAndBackFrame(
@@ -89,7 +89,7 @@ class BabyHomePage extends StatelessWidget {
                 margin: EdgeInsets.only(top: 5),
                 child: ItemHomeImmunization.fromData(
                   babyHomeImmunization_ui,
-                  onBtnClick: () => BabyRoutes.babyImmunizationPage.goToPage(context),
+                  onBtnClick: () => BabyRoutes.babyImmunizationPage.go(context, vm.babyNik),
                 ),
               ),
             ]),

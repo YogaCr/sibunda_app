@@ -7,6 +7,7 @@ import 'package:common/arch/ui/vm/form_vm_group.dart';
 import 'package:common/value/const_values.dart';
 import 'package:core/domain/model/result.dart';
 import 'package:core/ui/base/live_data.dart';
+import 'package:core/util/_consoles.dart';
 
 class BabyImmunizationPopupVm extends FormVmGroup {
   //static const confirmImmunizationKey = "confirmImmunization";
@@ -38,7 +39,11 @@ class BabyImmunizationPopupVm extends FormVmGroup {
       final nik = nikRes.data;
       final respMap = getResponse().responseGroups.values.first;
       final data = ImmunizationConfirmData(
-        immunization: immunization,
+        immunization: immunization.copy(
+          date: respMap[Const.KEY_IMMUNIZATION_DATE],
+          location: respMap[Const.KEY_IMMUNIZATION_PLACE],
+          batchNo: respMap[Const.KEY_NO_BATCH]?.toString(),
+        ),
         responsibleName: respMap[Const.KEY_RESPONSIBLE_NAME],
         date: respMap[Const.KEY_IMMUNIZATION_DATE],
         place: respMap[Const.KEY_IMMUNIZATION_PLACE],
@@ -46,6 +51,7 @@ class BabyImmunizationPopupVm extends FormVmGroup {
       );
 
       final res = await _confirmBabyImmunization(nik, data);
+      prind("BabyImmunizationPopupVm `doSubmit()` res= $res");
       if(res is Success<bool>) {
         return Success("ok");
       }
@@ -69,13 +75,17 @@ class BabyImmunizationPopupVm extends FormVmGroup {
     switch(inputKey) {
       case Const.KEY_NO_BATCH: return int.tryParse(response) != null;
     }
-    return (response as String).isNotEmpty;
+    return super.validateField(groupPosition, inputKey, response);
   }
   
   @override
   Set<String>? get mappedKey => {
     Const.KEY_NO_BATCH,
+    Const.KEY_IMMUNIZATION_DATE,
   };
   @override
-  dynamic mapResponse(int groupPosition, String key, dynamic response) => int.parse(response);
+  dynamic mapResponse(int groupPosition, String key, dynamic response) {
+    if(key == Const.KEY_NO_BATCH) return int.parse(response);
+    if(response is DateTime) return response.toString();
+  }
 }

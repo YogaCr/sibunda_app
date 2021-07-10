@@ -71,8 +71,10 @@ class ImmunizationRepoImpl with ImmunizationRepo {
   }
   @override
   Future<Result<List<ImmunizationDetailGroup>>> getBabyImmunizationGroupList(String babyNik) async {
+    prind("Repo . getBabyImmunizationGroupList() babyNik = $babyNik");
     try {
       final res1 = await _accountLocalSrc.getChildId(babyNik);
+      prind("Repo . getBabyImmunizationGroupList() res1 = $res1 babyNik = $babyNik");
       if(res1 is Success<int>) {
         final childId = res1.data;
         final res2 = await _babyApi.getImmunization(childId);

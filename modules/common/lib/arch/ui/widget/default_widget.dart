@@ -1,5 +1,6 @@
 
 import 'package:common/config/manifest.dart';
+import 'package:common/res/string/_string.dart';
 import 'package:common/res/theme/_theme.dart';
 import 'package:common/util/assets.dart';
 import 'package:flutter/material.dart';
@@ -50,6 +51,22 @@ Widget defaultError({
   child: Text(
     text ?? "Error",
     textAlign: TextAlign.center,
+  ),
+);
+
+Widget defaultNoData({
+  String? text = Strings.no_data,
+  double? width, // = 80,
+  double? height, // = 80,
+}) => Container(
+  padding: EdgeInsets.all(10),
+  width: width,
+  height: height,
+  //color: red,
+  child: Text(
+    text ?? Strings.no_data,
+    textAlign: TextAlign.center,
+    style: SibTextStyles.size_min_1_grey.copyWith(fontStyle: FontStyle.italic),
   ),
 );
 

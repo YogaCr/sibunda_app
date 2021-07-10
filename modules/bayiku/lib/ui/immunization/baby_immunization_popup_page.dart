@@ -27,10 +27,10 @@ class BabyImmunizationPopupPage extends StatelessWidget {
       },
       onSubmit: (ctx, success) async {
         if(success) {
-          final resp = vm.getResponse();
+          final resp = vm.getResponse().responseGroups.values.first;
           final res = BabyImmunizationPopupResult(
-            date: "Now",
-            noBatch: resp.responseGroups.values.first[Const.KEY_NO_BATCH]
+            date: resp[Const.KEY_IMMUNIZATION_DATE],
+            noBatch: resp[Const.KEY_NO_BATCH]
           );
           BabyRoutes.immunizationPopup.backPage(ctx, res);
           //showSnackBar(ctx, "Berhasil mengonfirmasi");

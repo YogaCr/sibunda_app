@@ -30,21 +30,25 @@ class BabyImmunizationVm extends AsyncVm {
   LiveData<ImmunizationOverview> get overview => _overview;
   //LiveData<Tuple2<Expirable, bool>> get onConfirm => _onConfirm;
 
+  final MutableLiveData<String> babyNik = MutableLiveData();
+
   @override
   List<LiveData> get liveDatas => [_immunizationGroups, _overview];
 
   void getImmunizationGroups({
-    required String babyNik,
+    //required String babyNik,
     bool forceLoad = false,
   }) {
     if(!forceLoad && _immunizationGroups.value != null) return;
     startJob(getImmunizationGroupsKey, (isActive) async {
-      _getBabyImmunizationGroupList(babyNik).then((value) {
-        if(value is Success<List<ImmunizationDetailGroup>>) {
-          final data = value.data.map((e) => UiImmunizationListGroup.fromDomainModel(e)).toList(growable: false);
-          _immunizationGroups.value = data;
-        }
-      });
+      final res = await _getBabyImmunizationGroupList(babyNik.value!);
+      prind("getImmunizationGroups() res = $res");
+      if(res is Success<List<ImmunizationDetailGroup>>) {
+        final data = res.data.map((e) => UiImmunizationListGroup.fromDomainModel(e)).toList(growable: false);
+        _immunizationGroups.value = data;
+        return null;
+      }
+      return res as Fail;
     });
   }
   void getImmunizationOverview({

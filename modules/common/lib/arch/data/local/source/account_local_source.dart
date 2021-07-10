@@ -225,7 +225,7 @@ class AccountLocalSrcImpl with AccountLocalSrc {
     if(id != null) {
       return Success(id);
     } else {
-      return Fail();
+      return Fail(msg: "`getChildId()` Can't get child id with nik = $nik");
     }
   }
 

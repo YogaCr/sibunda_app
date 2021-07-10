@@ -4,8 +4,12 @@ import 'package:common/arch/ui/adapter/immunization_adp.dart';
 import 'package:common/arch/ui/model/dummy_ui_data.dart';
 import 'package:common/arch/ui/model/immunization.dart';
 import 'package:common/arch/ui/page/secondary_frames.dart';
+import 'package:common/arch/ui/widget/_basic_widget.dart';
 import 'package:common/arch/ui/widget/_item_immunization.dart';
+import 'package:common/util/navigations.dart';
 import 'package:common/util/ui.dart';
+import 'package:common/value/const_values.dart';
+import 'package:core/ui/base/async_view_model_observer.dart';
 import 'package:core/ui/base/live_data_observer.dart';
 import 'package:core/ui/base/view_model.dart';
 import 'package:flutter/cupertino.dart';
@@ -17,9 +21,14 @@ class BabyImmunizationPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final babyNik = getArgs<String>(context, Const.KEY_DATA);
+    if(babyNik == null) {
+      throw "`BabyImmunizationPage` needs `babyNik` arg";
+    }
     final vm = ViewModelProvider.of<BabyImmunizationVm>(context)
+      ..babyNik.value = babyNik
       ..getImmunizationOverview()
-      ..getImmunizationGroups(babyNik: "");
+      ..getImmunizationGroups();
 
     return TopBarTitleAndBackFrame(
       isScroll: true,
@@ -37,14 +46,16 @@ class BabyImmunizationPage extends StatelessWidget {
                         ? ImmunizationOverviewView.fromData(data)
                         : SizedBox(),
                   ),
-                  LiveDataObserver<List<UiImmunizationListGroup>>(
-                    liveData: vm.immunizationGroups,
+                  AsyncVmObserver<BabyImmunizationVm, List<UiImmunizationListGroup>>(
+                    liveDataGetter: (vm) => vm.immunizationGroups,
                     //liveDataGetter: (vm2) => vm2.immunizationGroups,
-                    builder: (ctx, data) => ImmunizationListGroupView(
-                      data ?? List.empty(),
+                    onFailBuilder: (ctx, key, fail) => key == BabyImmunizationVm.getImmunizationGroupsKey
+                        ? defaultError() : null,
+                    builder: (ctx, data) => data != null ? ImmunizationListGroupView(
+                      data,
                       onBtnClick: (group, child) async {
                         //showSnackBar(ctx, "group= $group child= $child");
-                        final immData = data![group].immunizationList[child].core;
+                        final immData = data[group].immunizationList[child].core;
                         if(immData.date != null) {
                           showSnackBar(ctx, "Immunisasi sudah dilakukan", backgroundColor: Colors.green);
                           return;
@@ -55,7 +66,7 @@ class BabyImmunizationPage extends StatelessWidget {
                           showSnackBar(ctx, "Berhasil mengonfirmasi", backgroundColor: Colors.green);
                         }
                       },
-                    ),
+                    ) : defaultLoading(),
                   ),
                 ],
               ),

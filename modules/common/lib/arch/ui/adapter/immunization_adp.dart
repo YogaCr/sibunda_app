@@ -1,5 +1,6 @@
 import 'package:common/arch/domain/model/immunization.dart';
 import 'package:common/arch/ui/model/immunization.dart';
+import 'package:common/arch/ui/widget/_basic_widget.dart';
 import 'package:common/arch/ui/widget/_item_immunization.dart';
 import 'package:common/arch/ui/widget/_item_template.dart';
 import 'package:common/res/theme/_theme.dart';
@@ -38,6 +39,9 @@ class ImmunizationListGroupView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if(dataList.isEmpty) {
+      return defaultNoData();
+    }
     final colChildren = <Widget>[];
     int groupIndex = -1;
     for(final group in dataList) {
