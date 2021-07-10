@@ -2,6 +2,7 @@ import 'package:common/arch/ui/model/form_data.dart';
 import 'package:common/arch/ui/vm/form_vm_group.dart';
 import 'package:common/arch/ui/widget/_basic_widget.dart';
 import 'package:common/arch/ui/widget/form_generic_group.dart';
+import 'package:common/util/type_util.dart';
 import 'package:common/value/enums.dart';
 import 'package:core/domain/model/result.dart';
 import 'package:core/ui/base/async_view_model_observer.dart';
@@ -163,9 +164,10 @@ class _FormVmGroupObserverState<VM extends FormVmGroup>
 
     final outerChildren = <Widget>[
       formAreaWidget,
-      LiveDataObserver<bool>(
-        liveData: vm.isFormEnabled,
-        builder: (ctx, enabled) => enabled != false ? Container(
+      MultiLiveDataObserver<bool>(
+        liveDataList: [vm.isFormReady, vm.isFormEnabled,],
+        predicate: predicate == null ? null : (bools) => predicate!.call(),
+        builder: (ctx, bools) => boolAll(bools) ? Container(
           margin: EdgeInsets.only(top: 10,),
           child: AsyncVmObserver<VM, bool>(
             vm: vm,

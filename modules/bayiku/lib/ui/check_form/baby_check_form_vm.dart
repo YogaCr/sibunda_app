@@ -32,9 +32,9 @@ class BabyCheckFormVm extends FormVmGroup {
     _getBabyCheckFormAnswer = getBabyCheckFormAnswer
     //_saveBabyCheckUpId = saveBabyCheckUpId
   {
-    canProceed.observe(this, (canProceed) { prind("BabyCheckFormVm canProceed = $canProceed _currentMonth= $_currentMonth"); });
+    //canProceed.observe(this, (canProceed) { prind("BabyCheckFormVm canProceed = $canProceed _currentMonth= $_currentMonth"); });
     _currentMonth.observe(this, (month) {
-      prind("BabyCheckFormVm _currentMonth.observe() month = $month isFormReady= $isFormReady");
+      //prind("BabyCheckFormVm _currentMonth.observe() month = $month isFormReady= $isFormReady");
       setResponse(0, Const.KEY_AGE, month);
     });
     onSubmit.observe(this, (success) {
@@ -43,7 +43,7 @@ class BabyCheckFormVm extends FormVmGroup {
       }
     });
     _formAnswer.observe(this, (data) {
-      prind("_formAnswer.observe data = $data _currentMonth = $_currentMonth");
+      //prind("_formAnswer.observe data = $data _currentMonth = $_currentMonth");
       if(data != null) {
         final map = data.toJson();
         final respGroupList = <Map<String, dynamic>>[map];
@@ -54,12 +54,14 @@ class BabyCheckFormVm extends FormVmGroup {
           for(final ans in devList) {
             devMap[ans.q_id.toString()] = getBinaryAnswerHaveNotStr(ans.ans);
           }
+          map.remove(Const.KEY_PERKEMBANGAN_ANS);
         }
         patchResponse(respGroupList);
+        //prind("_formAnswer.observe patchResponse responseGroupList = $responseGroupList data = $data _currentMonth = $_currentMonth");
       } else {
-        resetResponses();
+        resetResponses(skippedKeys: { Const.KEY_AGE, });
       }
-      prind("_formAnswer.observe AKHIR!!!! data = $data _currentMonth = $_currentMonth");
+      //prind("_formAnswer.observe AKHIR!!!! data = $data _currentMonth = $_currentMonth");
       setFormEnabled(isEnabled: data == null);
     });
   }
@@ -100,7 +102,7 @@ class BabyCheckFormVm extends FormVmGroup {
 
     final body = BabyMonthlyFormBody.fromJson(growthMap);
     final res = await _saveBabyCheckForm(body);
-    prind("BabyCheckFormVm res = $res");
+    //prind("BabyCheckFormVm res = $res");
     return res is Success<bool> ? Success("ok") : Fail();
   }
 
@@ -108,23 +110,25 @@ class BabyCheckFormVm extends FormVmGroup {
     required int month,
     bool forceLoad = false
   }) {
-    prind("BabyCheckFormVm initFormDataInMonth() month = $month forceLoad = $forceLoad _currentMonth = $_currentMonth");
+    //prind("BabyCheckFormVm initFormDataInMonth() month = $month forceLoad = $forceLoad _currentMonth = $_currentMonth");
     if(!forceLoad && _currentMonth.value == month) return;
     _currentMonth.value = month;
     init(isOneShot: false);
     isFormReady.observeOnce((isReady) {
+      //prind("BabyCheckFormVm initFormDataInMonth() isFormReady.observeOnce isReady= $isReady month = $month forceLoad = $forceLoad _currentMonth = $_currentMonth");
       if(isReady == true) {
         getBabyFormAnswer(forceLoad: true);
         getWarningList(forceLoad: true);
+        _currentMonth.notifyObservers();
       }
     }, immediatelyGet: false,);
   }
 
   @override
   Future<List<FormUiGroupData>> getFieldGroupList() async {
-    prind("BabyCheckFormVm getFieldGroupList() AWAL _currentMonth = $_currentMonth");
+    //prind("BabyCheckFormVm getFieldGroupList() AWAL _currentMonth = $_currentMonth");
     final res = await _getBabyCheckForm(_currentMonth.value!);
-    prind("BabyCheckFormVm getFieldGroupList() _currentMonth = $_currentMonth res = $res");
+    //prind("BabyCheckFormVm getFieldGroupList() _currentMonth = $_currentMonth res = $res");
     if(res is Success<List<FormGroupData>>) {
       return res.data.map((e) => FormUiGroupData.fromModel(e)).toList(growable: false);
     } else {
@@ -198,7 +202,7 @@ class BabyCheckFormVm extends FormVmGroup {
 
   @override
   Future<bool> validateField(int groupPosition, String inputKey, response) async {
-    prind("BabyCheckFormVm.validateField() groupPosition = $groupPosition inputKey = $inputKey response = $response");
+    //prind("BabyCheckFormVm.validateField() groupPosition = $groupPosition inputKey = $inputKey response = $response");
     switch(inputKey){
       case Const.KEY_MONTH:
       case Const.KEY_AGE: return tryParseInt(response) != null;
@@ -230,7 +234,7 @@ class BabyCheckFormVm extends FormVmGroup {
       if(res1 is Success<String>) {
         final babyNik = res1.data;
         final res2 = await _getBabyFromWarningStatus(babyNik, _currentMonth.value!);
-        prind("getWarningList res2 = $res2 _currentMonth = $_currentMonth");
+        //prind("getWarningList res2 = $res2 _currentMonth = $_currentMonth");
         if(res2 is Success<List<FormWarningStatus>>) {
           final data = res2.data;
           _warningList.value = data;
@@ -254,7 +258,7 @@ class BabyCheckFormVm extends FormVmGroup {
         yearId : yearId,
         month: _currentMonth.value!,
       );
-      prind("getBabyFormAnswer res = $res _currentMonth = $_currentMonth");
+      //prind("getBabyFormAnswer res = $res _currentMonth = $_currentMonth");
       if(res is Success<BabyMonthlyFormBody>) {
         final data = res.data;
         _formAnswer.value = data;

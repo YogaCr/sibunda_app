@@ -116,11 +116,12 @@ mixin FormVmGroupMixin implements AsyncVm {
   }
   void _checkCanProceed() {
     for(int i = 0; i < _responseGroupList.length ; i++) {
-      final isResponseValidMap = _responseGroupList[i];
-      for(final isResponseValid in isResponseValidMap.values) {
-        //prind("_checkCanProceed() isResponseValid= $isResponseValid");
+      final responseMap = _responseGroupList[i];
+      for(final responsePair in responseMap.entries) {
+        final response = responsePair.value;
+        //prind("_checkCanProceed() group = $i _responseGroupList.length = ${_responseGroupList.length} responsePair= $responsePair");
         //final isResponseInit = _isResponseInitList[i];
-        if(isResponseValid.isValid.value != true) {
+        if(response.isValid.value != true) {
           _canProceed.value = false;
           return;
         }
@@ -233,8 +234,14 @@ abstract class FormVmGroup extends AsyncVm with FormVmGroupMixin {
 
   @override
   void init({bool isOneShot = true}){
-    if(isOneShot && isFormReady.value == true) return;
-    getFieldGroupList().then((fieldGroupList) {
+    if(isOneShot && _isFormReady.value == true) return;
+    final isFormReadyBefore = _isFormReady.value;
+    _isFormReady.value = false;
+    getFieldGroupList().catchError((e, stack) {
+      prine("Error in $runtimeType.init(): msg = $e");
+      prine(stack);
+      _isFormReady.value = isFormReadyBefore;
+    }).then((fieldGroupList) {
       _fieldGroupList = fieldGroupList.map((e) => MutableLiveData(e)).toList(growable: false);
       int i = 0;
       _responseGroupList = fieldGroupList.map((e) {
@@ -243,7 +250,7 @@ abstract class FormVmGroup extends AsyncVm with FormVmGroupMixin {
         for(final formData in e.data) {
           final isValidData = MutableLiveData<bool>();
           isValidData.observe(this, (isValid) {
-            prind("isValidData.observe() formData.key = ${formData.key} isValid = $isValid");
+            //prind("isValidData.observe() formData.key = ${formData.key} isValid = $isValid");
             if(!_isReseting) {
               _checkCanProceed();
             }
@@ -252,7 +259,7 @@ abstract class FormVmGroup extends AsyncVm with FormVmGroupMixin {
           responseData.observe(this, (response) async {
             if(!_isReseting) {
               final isValid = await validateField(i2, formData.key, response);
-              prind("responseData.observe() validateField() formData.key = ${formData.key} isValid = $isValid");
+              //prind("responseData.observe() validateField() formData.key = ${formData.key} isValid = $isValid");
               isValidData.value = isValid;
             }
 /*
@@ -294,6 +301,7 @@ abstract class FormVmGroup extends AsyncVm with FormVmGroupMixin {
   void resetResponses({ Set<String>? skippedKeys }) {
     _isReseting = true;
     if(skippedKeys?.isNotEmpty != true) { //null or empty
+      //prind("resetResponses() skippedKeys= $skippedKeys _responseGroupList = $_responseGroupList");
       for(final group in _responseGroupList) {
         for(final e in group.values) {
           e.response.value = null;
@@ -325,7 +333,7 @@ abstract class FormVmGroup extends AsyncVm with FormVmGroupMixin {
       _responseGroupList[group][key]!.response.value = response;
     } else {
       _isFormReady.observeOnce((isReady) {
-        prind("FormVmGroup setResponse() NOT READY group= $group key= $key response= $response isReady = $isReady");
+        //prind("FormVmGroup setResponse() NOT READY group= $group key= $key response= $response isReady = $isReady");
         if(isReady == true) {
           if(_responseGroupList[group][key] == null) {
             throw "No such `key` '$key' in group '$group' in this '$runtimeType'";

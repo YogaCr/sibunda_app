@@ -108,17 +108,22 @@ class _MonthlyCheckFormPage extends StatelessWidget {
         month == 0 ? _NeonatalServicePanel() : SizedBox(),
         LiveDataObserver<List<FormWarningStatus>>(
           liveData: vm.warningList,
+          predicate: (data) => vm.currentMonth.value == month,
+          initBuilder: (ctx) => defaultEmptyWidget(),
           builder: (ctx, data) => Container(
             margin: EdgeInsets.only(top: 20, bottom: 5,),
             child: data?.isNotEmpty == true ? Text(
               "Informasi Hasil Pemeriksaan Pertumbuhan",
               style: SibTextStyles.size_0_bold,
+              textAlign: TextAlign.center,
             ) : null,
           ),
         ),
       ])),
       LiveDataObserver<List<FormWarningStatus>>(
         liveData: vm.warningList,
+        predicate: (data) => vm.currentMonth.value == month,
+        initBuilder: (ctx) => SliverToBoxAdapter(child: defaultLoading(),),
         builder: (ctx, data) => data != null
             ? FormWarningSliverList(data)
             : SliverToBoxAdapter(child: defaultLoading(),),
@@ -129,9 +134,9 @@ class _MonthlyCheckFormPage extends StatelessWidget {
           child: FormVmGroupObserver<BabyCheckFormVm>(
             vm: vm,
             imgPosition: RelativePosition.below,
-            predicate: () => vm.currentMonth.value == month
-                || vm.currentMonth.value == month -1
-                || vm.currentMonth.value == month +1,
+            predicate: () => vm.currentMonth.value == month,
+                //|| vm.currentMonth.value == month -1
+                //|| vm.currentMonth.value == month +1,
             onPreSubmit: (ctx, valid) => valid == true
                 ? showSnackBar(ctx, "Submitting", backgroundColor: Colors.green)
                 : showSnackBar(ctx, "There still invalid fields"),

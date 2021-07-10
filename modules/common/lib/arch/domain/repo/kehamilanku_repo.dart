@@ -149,8 +149,10 @@ class PregnancyRepoImpl with PregnancyRepo {
         final body = PregnancyShowCheckBody(checkId: checkId);
         _checkUpAnalysis = (await _api.getPregnancyCheckWarning(body)).data;
         //_checkBody = await _api.getPregnancyCheckWarning(body);
-      } catch(e) {
-        return Fail();
+      } catch(e, stack) {
+        prine(e);
+        prine(stack);
+        return Fail(msg: "Error calling `getPregnancyBabySize()`", error: e);
       }
       _currentCheckUpId = checkUpId;
     }

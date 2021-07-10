@@ -10,6 +10,8 @@ class LiveDataObserver<T> extends StatefulWidget {
   final Widget Function(BuildContext)? initBuilder;
   final bool Function(T?)? predicate;
   final bool isLiveDataOwner;
+  /// If `true`, then when [liveData.value] is [T], [initBuilder] will be ignored even in initState.
+  final bool immediatelyBuildState;
 
   LiveDataObserver({
     this.initBuilder,
@@ -18,6 +20,7 @@ class LiveDataObserver<T> extends StatefulWidget {
     this.predicate,
     this.distinctUntilChanged = false,
     this.isLiveDataOwner = false,
+    this.immediatelyBuildState = false,
   });
 
   @override
@@ -28,6 +31,7 @@ class LiveDataObserver<T> extends StatefulWidget {
     predicate: predicate,
     distinctUntilChanged: distinctUntilChanged,
     isLiveDataOwner: isLiveDataOwner,
+    immediatelyBuildState: immediatelyBuildState,
   );
 }
 
@@ -42,14 +46,17 @@ class _LiveDataObserverState<T>
   final bool Function(T?)? predicate;
   bool isInit = true;
   final bool isLiveDataOwner;
+  /// If `true`, then when [liveData.value] is [T], [initBuilder] will be ignored even in initState.
+  final bool immediatelyBuildState;
 
   _LiveDataObserverState({
-    this.initBuilder,
+    required this.initBuilder,
     required this.builder,
     required this.liveData,
     required this.isLiveDataOwner,
-    this.predicate,
-    this.distinctUntilChanged = false,
+    required this.immediatelyBuildState,
+    required this.predicate,
+    required this.distinctUntilChanged,
   }) {
     liveData.observe(this, (data) {
       if(predicate == null || predicate!(data)) {
@@ -62,9 +69,15 @@ class _LiveDataObserverState<T>
   Widget build(BuildContext context) {
     _isActive = true;
     if(isInit) {
-      final initWidget = initBuilder != null
-          ? initBuilder!(context)
-          : builder(context, liveData.value);
+      Widget? initWidget;
+      if(immediatelyBuildState && liveData.value is T) {
+        initWidget = builder(context, liveData.value)
+          ?? initBuilder?.call(context);
+      } else {
+        initWidget = initBuilder != null
+            ? initBuilder!(context)
+            : builder(context, liveData.value);
+      }
       if(initWidget == null) {
         throw "Initial widget can't be null. This can happen when programmer doesn't provide `initBuilder` and `builder` returns null when `liveData.value` is null";
       }

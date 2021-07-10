@@ -110,17 +110,29 @@ class _WeeklyFormPage extends StatelessWidget {
       slivers: [
         SliverList(
           delegate: SliverChildListDelegate.fixed([
-            LiveDataObserver<PregnancyBabySize>(
-              liveData: vm.pregnancyBabySize,
-              builder: (ctx, data) {
-                prind("LiveDataObserver<PregnancyBabySize> data= $data");
-                return data != null
-                    ? ItemMotherBabySizeOverview.fromData(data)
-                    : defaultEmptyWidget();
-              },
+            MultiLiveDataObserver(
+              liveDataList: [vm.currentWeek, vm.isBabySizeInit],
+              builder: (ctx, dataList) => LiveDataObserver<PregnancyBabySize>(
+                liveData: vm.pregnancyBabySize,
+                immediatelyBuildState: dataList[0] == week
+                    && dataList[1] == true,
+                //distinctUntilChanged: false,
+                predicate: (data) => vm.currentWeek.value == week,
+                initBuilder: (ctx) => vm.isBabySizeInit.value != true
+                    ? defaultLoading()
+                    : defaultEmptyWidget(),
+                builder: (ctx, data) {
+                  prind("LiveDataObserver<PregnancyBabySize> data= $data week = $week");
+                  return data != null
+                      ? ItemMotherBabySizeOverview.fromData(data)
+                      : defaultEmptyWidget();
+                },
+              ),
             ),
             LiveDataObserver<List<FormWarningStatus>>(
               liveData: vm.formWarningStatusList,
+              predicate: (data) => vm.currentWeek.value == week,
+              initBuilder: (ctx) => defaultLoading(),
               builder: (ctx, data) => Container(
                 margin: EdgeInsets.only(top: 20, bottom: 5,),
                 child: data?.isNotEmpty == true ? Text(
@@ -133,6 +145,8 @@ class _WeeklyFormPage extends StatelessWidget {
         ),
         LiveDataObserver<List<FormWarningStatus>>(
           liveData: vm.formWarningStatusList,
+          predicate: (data) => vm.currentWeek.value == week,
+          initBuilder: (ctx) => SliverToBoxAdapter(child: defaultLoading(),),
           builder: (ctx, data) => data != null
               ? FormWarningSliverList(data)
               : SliverToBoxAdapter(child: defaultLoading(),),
@@ -153,10 +167,10 @@ class _WeeklyFormPage extends StatelessWidget {
               vm: vm,
               predicate: () {
                 //prind("_WeeklyFormPage FormVmGroupObserver<KehamilankuCheckFormVm>.predicate() week = $week vm.currentWeek.value = ${vm.currentWeek.value}");
-                return vm.currentWeek.value == null
-                    || vm.currentWeek.value == week
-                    || vm.currentWeek.value == week -1
-                    || vm.currentWeek.value == week +1;
+                return vm.currentWeek.value == week;
+                    //|| vm.currentWeek.value == week;
+                    //|| vm.currentWeek.value == week -1
+                    //|| vm.currentWeek.value == week +1;
               },
               onPreSubmit: (ctx, canProceed) => canProceed == true
                   ? showSnackBar(ctx, "Submitting", backgroundColor: Colors.green)
@@ -185,7 +199,7 @@ class _WeeklyFormPage extends StatelessWidget {
               submitBtnBuilder: (ctx, canProceed) => Container(
                 margin: EdgeInsets.only(bottom: 20),
                 child: TxtBtn(
-                  Strings.form_submission_fail,
+                  Strings.submit_check_form,
                   color: canProceed == true ? pink_300 : grey,
                 ),
               ),

@@ -75,6 +75,9 @@ class KehamilankuCheckFormVm extends FormVmGroup {
       //Future.sync(() async {});
       //_isFormEnabled = data == null;
     });
+    _pregnancyBabySize.observe(this, (data) {
+      _isBabySizeInit.value = true;
+    });
     _lateInit();
   }
 
@@ -96,7 +99,10 @@ class KehamilankuCheckFormVm extends FormVmGroup {
   LiveData<List<FormWarningStatus>> get formWarningStatusList => _formWarningStatusList;
   LiveData<PregnancyBabySize> get pregnancyBabySize => _pregnancyBabySize;
 
+  final MutableLiveData<bool> _isBabySizeInit = MutableLiveData(false);
   final MutableLiveData<int> _currentWeek = MutableLiveData();
+
+  LiveData<bool> get isBabySizeInit => _isBabySizeInit;
   LiveData<int> get currentWeek => _currentWeek;
   late int currentTrimesterId;
 
@@ -236,10 +242,18 @@ class KehamilankuCheckFormVm extends FormVmGroup {
   }) {
     //prind("KehamilankuCheckFormVm.initPage() week = $week forceLoad = $forceLoad _currentWeek.value = ${_currentWeek.value}");
     if(!forceLoad && _currentWeek.value == week) return;
-    getPregnancyCheck(week: week, forceLoad: true);
-    getMotherFormWarningStatus(week: week, forceLoad: true);
-    getPregnancyBabySize(week: week, forceLoad: true);
+    _isBabySizeInit.value = false;
     _currentWeek.value = week;
+    init(isOneShot: false);
+    isFormReady.observeOnce((isReady) {
+      if(isReady == true) {
+        getPregnancyCheck(week: week, forceLoad: true);
+        getMotherFormWarningStatus(week: week, forceLoad: true);
+        getPregnancyBabySize(week: week, forceLoad: true);
+        _lateInit();
+        _currentWeek.notifyObservers();
+      }
+    }, immediatelyGet: false,);
     //prind("KehamilankuCheckFormVm.initPage() AKHIR!!! week = $week forceLoad = $forceLoad _currentWeek.value = ${_currentWeek.value}");
   }
 

@@ -104,3 +104,17 @@ TimeOfDay? tryParseTimeOfDay(source, { TimeOfDay Function(dynamic)? onError }) {
 }
 
 timeOfDayToString(TimeOfDay time) => "${time.hour}:${time.minute}";
+
+
+bool boolAll(Iterable<bool?> bools) {
+  for(final b in bools) {
+    if(b != true) return false;
+  }
+  return true;
+}
+bool boolAny(Iterable<bool?> bools) {
+  for(final b in bools) {
+    if(b == true) return true;
+  }
+  return false;
+}

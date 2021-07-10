@@ -1,3 +1,4 @@
+import 'package:common/util/type_util.dart';
 import 'package:common/value/const_values.dart';
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -69,7 +70,11 @@ class PregnancyCheckFetusGrowthWarningResponse extends Equatable  {
     required this.desc,
     required this.imgLink,
   });
-  factory PregnancyCheckFetusGrowthWarningResponse.fromJson(Map<String, dynamic> map) => _$PregnancyCheckFetusGrowthWarningResponseFromJson(map);
+  factory PregnancyCheckFetusGrowthWarningResponse.fromJson(Map<String, dynamic> map) {
+    map["length"] = tryParseNum(map["length"]);
+    map["weight"] = tryParseNum(map["weight"]);
+    return _$PregnancyCheckFetusGrowthWarningResponseFromJson(map);
+  }
 
   @override
   List<Object?> get props => [week, length, weight, desc, imgLink];
