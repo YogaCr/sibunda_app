@@ -68,7 +68,7 @@ class EducationDetailPage extends StatelessWidget {
       title: "Artikel",
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 10,),
-        child: BelowTopBarScrollContentArea([
+        child: BelowTopBarScrollContentArea(slivers: [
           SliverList(
             delegate: SliverChildListDelegate.fixed([
               imageChild,

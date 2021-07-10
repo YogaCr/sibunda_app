@@ -190,8 +190,8 @@ final dummyProfile = Profile(
 );
 
 final dummyStatusList = <HomeStatus>[
-  HomeStatus(desc: "Selamat Berat Badan Bunda Normal", imgLink: "", color: Colors.green,),
-  HomeStatus(desc: "Gerakan Anak Bunda Kurang Nih Bun!", imgLink: "", color: Colors.red,),
+  HomeStatus(desc: "Selamat Berat Badan Bunda Normal", img: dummyImg, color: Colors.green,),
+  HomeStatus(desc: "Gerakan Anak Bunda Kurang Nih Bun!", img: dummyImg, color: Colors.red,),
 ];
 
 final dummyMenuList = <HomeMenu>[
@@ -214,15 +214,15 @@ final List<TipsDetail> dummyTipsDetailList = List.generate(dummyTipsList.length,
 ));
 
 final dummyNotifList = <HomeNotifMsg>[
-  HomeNotifMsg(title: "Selamat Datang di SiBunda", desc: "Satu aplikasi untuk semua tahap kehamilan dan kesehatan bayi bunda, mulai dari usia 0 - 6 tahun", time: "12.00 - 11/05/2021", imgLink: "",),
-  HomeNotifMsg(title: "Sudahkah Anda Mandi?", desc: "Mandi dapat menyegarkan badan", time: "12.00 - 11/05/2021", imgLink: "",),
-  HomeNotifMsg(title: "Tahu kah Anda?", desc: "Minum air 1 liter per hari dapat menghilangkan rasa haus", time: "12.00 - 11/05/2021", imgLink: "",),
+  HomeNotifMsg(title: "Selamat Datang di SiBunda", desc: "Satu aplikasi untuk semua tahap kehamilan dan kesehatan bayi bunda, mulai dari usia 0 - 6 tahun", time: "12.00 - 11/05/2021", img: dummyImg,),
+  HomeNotifMsg(title: "Sudahkah Anda Mandi?", desc: "Mandi dapat menyegarkan badan", time: "12.00 - 11/05/2021", img: dummyImg,),
+  HomeNotifMsg(title: "Tahu kah Anda?", desc: "Minum air 1 liter per hari dapat menghilangkan rasa haus", time: "12.00 - 11/05/2021", img: dummyImg,),
 ];
 
 final dummyMessageList = <HomeNotifMsg>[
-  HomeNotifMsg(title: "Bunda, Pastikan Kehamilan Bunda Sehat Ya", desc: "Jangan lupa untuk periksa rutin ya, serta selalu isikan data perkembangan bunda dan calon buah hati di aplikasi ya.", time: "12.00 - 11/05/2021", imgLink: "",),
-  HomeNotifMsg(title: "Sudahkah Anda Mandi?", desc: "Mandi dapat menyegarkan badan", time: "12.00 - 11/05/2021", imgLink: "",),
-  HomeNotifMsg(title: "Tahu kah Anda?", desc: "Minum air 1 liter per hari dapat menghilangkan rasa haus", time: "12.00 - 11/05/2021", imgLink: "",),
+  HomeNotifMsg(title: "Bunda, Pastikan Kehamilan Bunda Sehat Ya", desc: "Jangan lupa untuk periksa rutin ya, serta selalu isikan data perkembangan bunda dan calon buah hati di aplikasi ya.", time: "12.00 - 11/05/2021", img: dummyImg,),
+  HomeNotifMsg(title: "Sudahkah Anda Mandi?", desc: "Mandi dapat menyegarkan badan", time: "12.00 - 11/05/2021", img: dummyImg,),
+  HomeNotifMsg(title: "Tahu kah Anda?", desc: "Minum air 1 liter per hari dapat menghilangkan rasa haus", time: "12.00 - 11/05/2021", img: dummyImg,),
 ];
 
 
@@ -617,7 +617,7 @@ final dummyCities = List<CityEntity>.generate(20, (i) => CityEntity(
 
 final dummyCredential = CredentialEntity(
   id: 1,
-  name: _faker.person.name(),
+  name: "Ayu", //_faker.person.name(),
   email: dummyEmail,
   role: userRoles[1].id,
 );

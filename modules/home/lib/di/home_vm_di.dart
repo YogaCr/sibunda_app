@@ -36,6 +36,7 @@ class HomeVmDi {
     getProfile: UseCaseDi.getProfile,
   );
   static NotifAndMessageVm get notifAndMessageVm => NotifAndMessageVm(
+    getCurrentEmail: UseCaseDi.getCurrentEmail,
     getMessageList: HomeUseCaseDi.getMessageList,
     getNotifList: HomeUseCaseDi.getNotifList,
   );

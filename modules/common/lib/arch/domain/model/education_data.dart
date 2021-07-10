@@ -1,4 +1,7 @@
 
+import 'package:common/arch/data/remote/model/home_dashboard_api_model.dart';
+import 'package:common/arch/domain/dummy_data.dart';
+
 import 'img_data.dart';
 
 class Tips {
@@ -11,6 +14,14 @@ class Tips {
     required this.kind,
     required this.img,
   });
+
+  factory Tips.fromResponse(HomeDashboardDataTipsResponse response) => Tips(
+    title: response.desc,
+    kind: "", //For now, it's the alternative, cuz serve doesn't serve it.
+    img: response.img_url != null
+        ? ImgData(link: response.img_url!, isLocal: false)
+        : dummyImg,
+  );
 }
 
 

@@ -67,7 +67,7 @@ class HomePage extends StatelessWidget {
           ),
         ),
       ],
-      body: BelowTopBarScrollContentArea([
+      body: BelowTopBarScrollContentArea(slivers: [
         SliverList(
           delegate: SliverChildListDelegate.fixed([
             Container(

@@ -1,3 +1,5 @@
+import 'package:common/arch/data/remote/model/home_dashboard_api_model.dart';
+import 'package:common/arch/domain/dummy_data.dart';
 import 'package:core/domain/model/range.dart';
 import 'package:flutter/material.dart';
 
@@ -5,14 +7,22 @@ import 'img_data.dart';
 
 class HomeStatus {
   final String desc;
-  final String imgLink;
+  final ImgData img;
   final Color color;
 
   HomeStatus({
     required this.desc,
-    required this.imgLink,
+    required this.img,
     required this.color,
   });
+
+  factory HomeStatus.fromResponse(HomeDashboardDataWarningResponse response) => HomeStatus(
+    desc: response.desc,
+    img: response.img_url != null
+        ? ImgData(link: response.img_url!, isLocal: false)
+        : dummyImg,
+    color: Colors.white, //For now, it's white, cuz the server doesn't serve it.
+  );
 }
 
 class HomeMenu {

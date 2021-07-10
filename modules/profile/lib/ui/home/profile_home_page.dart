@@ -23,7 +23,7 @@ class ProfileHomePage extends StatelessWidget {
       title: "Profile",
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 10),
-        child: BelowTopBarScrollContentArea([
+        child: BelowTopBarScrollContentArea(slivers: [
           SliverList(
             delegate: SliverChildListDelegate.fixed([
               LiveDataObserver<Profile>(

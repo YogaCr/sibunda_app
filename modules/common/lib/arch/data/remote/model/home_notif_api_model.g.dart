@@ -37,6 +37,8 @@ HomeNotifMsgDataResponse _$HomeNotifMsgDataResponseFromJson(
     desc: json['desc'] as String,
     img_url: json['img_url'] as String?,
     url: json['url'] as String,
+    created_at: json['created_at'] as String,
+    updated_at: json['updated_at'] as String,
   );
 }
 
@@ -50,4 +52,6 @@ Map<String, dynamic> _$HomeNotifMsgDataResponseToJson(
       'desc': instance.desc,
       'img_url': instance.img_url,
       'url': instance.url,
+      'created_at': instance.created_at,
+      'updated_at': instance.updated_at,
     };

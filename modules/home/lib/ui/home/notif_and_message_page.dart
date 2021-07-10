@@ -36,7 +36,7 @@ class HomeNotifPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return AsyncVmObserver<NotifAndMessageVm, List<HomeNotifMsg>>(
       liveDataGetter: (vm2) => vm2.notifList,
-      builder: (ctx, data) => BelowTopBarScrollContentArea([
+      builder: (ctx, data) => BelowTopBarScrollContentArea(slivers: [
         _notifMsgList(data ?? List.empty(), (data) => ItemNotif.fromData(data)),
       ]),
     );
@@ -48,7 +48,7 @@ class HomeMessagePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return AsyncVmObserver<NotifAndMessageVm, List<HomeNotifMsg>>(
       liveDataGetter: (vm2) => vm2.msgList,
-      builder: (ctx, data) => BelowTopBarScrollContentArea([
+      builder: (ctx, data) => BelowTopBarScrollContentArea(slivers: [
         _notifMsgList(data ?? List.empty(), (data) => ItemMessage.fromData(data)),
       ]),
     );

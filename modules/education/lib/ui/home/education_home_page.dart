@@ -21,7 +21,7 @@ class EducationHomePage extends StatelessWidget {
     return TopBarTitleAndBackFrame(
       isScroll: true,
       title: "Info dan Tips",
-      body: BelowTopBarScrollContentArea([
+      body: BelowTopBarScrollContentArea(slivers: [
         SliverList(
           delegate: SliverChildListDelegate.fixed([
             LiveDataObserver<List<Tips>>(

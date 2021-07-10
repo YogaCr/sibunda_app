@@ -20,12 +20,12 @@ class RepoDi {
 
   static AuthRepo get authRepo => AuthRepoImpl(api: ApiDi.authApi, localSrc: LocalSrcDi.accountSrc); //AuthDummyRepo.obj; //
 
-  static ProfileRepo get profileRepo => ProfileRepoDummy.obj; //ProfileRepoImpl(localSrc: LocalSrcDi.accountSrc); //
-  static HomeStatusRepo get homeStatusRepo => HomeStatusRepoDummy.obj;
+  static ProfileRepo get profileRepo => ProfileRepoImpl(localSrc: LocalSrcDi.accountSrc); //ProfileRepoDummy.obj; //ProfileRepoImpl(localSrc: LocalSrcDi.accountSrc); //
+  static HomeStatusRepo get homeStatusRepo => HomeStatusRepoImpl(homeApi: ApiDi.homeApi); //HomeStatusRepoDummy.obj;
   static HomeMenuRepo get homeMenuRepo => HomeMenuRepoDummy.obj;
   //static TipsRepo get tipsRepo => TipsRepoDummy.obj;
-  static EducationRepo get educationRepo => EducationRepoDummy.obj;
-  static NotifRepo get notifRepo => NotifRepoDummy.obj;
+  static EducationRepo get educationRepo => EducationRepoImpl(homeApi: ApiDi.homeApi); //EducationRepoDummy.obj;
+  static NotifRepo get notifRepo => NotifRepoImpl(api: ApiDi.homeApi); //NotifRepoDummy.obj;
 
   static FormFieldRepo get formFieldRepo => FormFieldRepoImpl(
     babyApi: ApiDi.babyApi,

@@ -1,7 +1,9 @@
 import 'package:common/arch/domain/model/home_data.dart';
+import 'package:common/arch/domain/model/img_data.dart';
 import 'package:common/arch/domain/model/notif_data.dart';
 import 'package:common/config/_config.dart';
 import 'package:common/res/theme/_theme.dart';
+import 'package:common/util/assets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -21,18 +23,18 @@ final _cornerRadius = 10.0;
 final _paddingSmall = 10.0;
 
 class ItemDashboardStatus extends StatelessWidget {
-  final Widget image;
+  final ImgData img;
   final String content;
   final Color bgColor;
 
   ItemDashboardStatus({
-    required this.image,
+    required this.img,
     required this.content,
     this.bgColor = green_safe,
   });
 
   ItemDashboardStatus.fromData(HomeStatus data):
-      image = Container(color: Manifest.theme.colorPrimary,), //TODO img
+      img = data.img,
       content = data.desc,
       bgColor = data.color
   ;
@@ -40,6 +42,8 @@ class ItemDashboardStatus extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final image = SibImages.resolve(img);
+
     final imgChild = Container(
       margin: EdgeInsets.only(right: _paddingSmall),
       child: ClipRRect(
@@ -129,14 +133,14 @@ class ItemDashboardMenu extends StatelessWidget {
 
 
 class ItemNotif extends StatelessWidget {
-  final Widget image;
+  final ImgData img;
   final String title;
   final String timestamp;
   final String content;
   final Color bgColor;
 
   ItemNotif({
-    required this.image,
+    required this.img,
     required this.title,
     required this.content,
     required this.timestamp,
@@ -147,11 +151,12 @@ class ItemNotif extends StatelessWidget {
      title = data.title,
      content = data.desc,
      timestamp = data.time,
-     image = Container(color: Manifest.theme.colorPrimary,) // TODO: img
+     img = data.img
   ;
 
   @override
   Widget build(BuildContext context) {
+    final image = SibImages.resolve(img);
     final imgChild = Container(
       margin: EdgeInsets.only(right: _paddingSmall),
       child: Column(
@@ -241,13 +246,13 @@ class ItemNotif extends StatelessWidget {
 
 
 class ItemMessage extends StatelessWidget {
-  final Widget image;
+  final ImgData img;
   final String title;
   final String content;
   final String timestamp;
 
   ItemMessage({
-    required this.image,
+    required this.img,
     required this.title,
     required this.content,
     required this.timestamp,
@@ -257,11 +262,12 @@ class ItemMessage extends StatelessWidget {
       title = data.title,
       content = data.desc,
       timestamp = data.time,
-      image = Container(color: Manifest.theme.colorPrimary,) // TODO: img
+      img = data.img
   ;
 
   @override
   Widget build(BuildContext context) {
+    final image = SibImages.resolve(img);
     final imgChild = Flexible(
       flex: 1,
       fit: FlexFit.tight,

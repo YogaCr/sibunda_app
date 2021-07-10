@@ -29,6 +29,8 @@ class HomeNotifMsgDataResponse {
   final String desc;
   final String? img_url;
   final String url;
+  final String created_at;
+  final String updated_at;
 
   HomeNotifMsgDataResponse({
     required this.id,
@@ -38,6 +40,8 @@ class HomeNotifMsgDataResponse {
     required this.desc,
     required this.img_url,
     required this.url,
+    required this.created_at,
+    required this.updated_at,
   });
 
   factory HomeNotifMsgDataResponse.fromJson(Map<String, dynamic> map) => _$HomeNotifMsgDataResponseFromJson(map);

@@ -1,5 +1,6 @@
 import 'package:common/res/string/_string.dart';
 import 'package:common/res/theme/_theme.dart';
+import 'package:common/test/__common_test_const.dart';
 import 'package:flutter/material.dart';
 
 import 'package:common/config/manifest.dart';
@@ -8,7 +9,10 @@ import 'package:home/config/home_routes.dart';
 
 import 'config/app_routes.dart';
 
-void main() => runApp(MyApp());
+void main() async {
+  await ConfigUtil.init();
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.

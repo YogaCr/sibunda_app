@@ -6,6 +6,7 @@ import 'package:common/arch/domain/usecase/profile_usecase.dart';
 import 'package:core/domain/model/result.dart';
 import 'package:core/ui/base/async_vm.dart';
 import 'package:core/ui/base/live_data.dart';
+import 'package:core/util/_consoles.dart';
 import 'package:home/core/domain/usecase/home_page_use_case.dart';
 
 class HomeVm extends AsyncVm {
@@ -55,9 +56,11 @@ class HomeVm extends AsyncVm {
     if(!forceLoad && _profile.value != null) return;
     startJob(getProfileKey, (isActive) async {
       final res1 = await _getCurrentEmail();
+      prind("getProfile() res1 = $res1");
       if(res1 is Success<String>) {
         final email = res1.data;
         final res2 = await _getProfile(email);
+        prind("getProfile() res2 = $res2");
         if(res2 is Success<Profile>) {
           final data = res2.data;
           _profile.value = data;
