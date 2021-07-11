@@ -15,6 +15,9 @@ class MaterialTheme {
 
   final MaterialColor primarySwatch;
 
+  final Color splashColor;
+  final Color hoverColor;
+
   final Color textBodyColor;
   final Color textDisplayColor;
 
@@ -46,6 +49,8 @@ class MaterialTheme {
     this.colorOnPrimary = white,
     this.colorPrimaryRipple = pink_300_ripple,
     this.colorOnPrimaryRipple = white_ripple,
+    this.splashColor = pink_300_ripple,
+    this.hoverColor = black_trans_most2,
     this.colorSecondary = pink_300,
     this.colorSecondaryVariant = pink_400,
     this.colorOnSecondary = white,
@@ -77,6 +82,8 @@ class MaterialTheme {
     errorColor: colorError,
     fontFamily: fontFamily,
     primarySwatch: primarySwatch,
+    splashColor: splashColor,
+    hoverColor: hoverColor,
   );
 }
 

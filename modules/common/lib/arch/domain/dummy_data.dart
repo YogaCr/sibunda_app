@@ -52,6 +52,8 @@ final dummyPswd = "ayu123";
 final dummyMotherNik = "21903193183";
 final dummyFatherNik = "82367917";
 final dummyChildNik = "182401247";
+final dummyChildNik2 = "12081398102";
+final dummyChildNik3 = "9018391398";
 
 final dummyAccessToken = "aagajki1831huhf1i38y13";
 final dummyAccessTokenType = "Bearer";
@@ -98,12 +100,57 @@ final dummyMotherHpht = DateTime(2020);
 
 final dummyChild = Child(
   name: "Anak sinkong",
-  childOrder: 10,
+  childOrder: 1,
   gender: "M",
   nik: dummyChildNik,
   bloodType: "O",
   birthCity: 1101, //"Asgard",
-  birthDate: "2077-07-12",
+  birthDate: "1999-07-12",
+  jkn: "JKN a",
+  jknStartDate: "2021-10-10",
+  babyCohortRegistNo: "12381927921",
+  toddlerCohortRegistNo: "123121424",
+  hospitalMedicalNumber: "12312412412412",
+  birthCertificateNo: "12123124",
+);
+final dummyChild2 = Child(
+  name: "Anak jagung",
+  childOrder: 2,
+  gender: "M",
+  nik: dummyChildNik2,
+  bloodType: "O",
+  birthCity: 1101, //"Asgard",
+  birthDate: "2002-07-12",
+  jkn: "JKN a",
+  jknStartDate: "2021-10-10",
+  babyCohortRegistNo: "12381927921",
+  toddlerCohortRegistNo: "123121424",
+  hospitalMedicalNumber: "12312412412412",
+  birthCertificateNo: "12123124",
+);
+final dummyChild3 = Child(
+  name: "Anak pohong",
+  childOrder: 3,
+  gender: "M",
+  nik: dummyChildNik3,
+  bloodType: "O",
+  birthCity: 1101, //"Asgard",
+  birthDate: "2020-07-12",
+  jkn: "JKN a",
+  jknStartDate: "2021-10-10",
+  babyCohortRegistNo: "12381927921",
+  toddlerCohortRegistNo: "123121424",
+  hospitalMedicalNumber: "12312412412412",
+  birthCertificateNo: "12123124",
+);
+final dummyChild4 = Child(
+  name: "Msh bayi",
+  childOrder: 3,
+  gender: "M",
+  nik: '',
+  bloodType: "O",
+  birthCity: 1101, //"Asgard",
+  birthDate: "2021-07-12",
   jkn: "JKN a",
   jknStartDate: "2021-10-10",
   babyCohortRegistNo: "12381927921",
@@ -600,6 +647,7 @@ final dummyCovidCheckResult_baby = FormWarningStatus(
 );
 
 
+
 // ============ entity ===========
 final userRoles = <RoleEntity>[
   RoleEntity(id: DbConst.ROLE_ADMIN, name: "Admin"),
@@ -644,9 +692,74 @@ final dummyProfileChild = ProfileEntity(
   userId: dummyCredential.id,
   type: DbConst.TYPE_CHILD,
   serverId: 3,
-  name: _faker.person.name(),
-  birthDate: DateTime.now(),
+  name: dummyChild.name,
+  birthDate: parseDate(dummyChild.birthDate),
   birthPlace: 1,
-  nik: dummyChildNik,
+  nik: dummyChild.nik,
+);
+final dummyProfileChild2 = ProfileEntity(
+  userId: dummyCredential.id,
+  type: DbConst.TYPE_CHILD,
+  serverId: 4,
+  name: dummyChild2.name,
+  birthDate: parseDate(dummyChild2.birthDate),
+  birthPlace: 1,
+  nik: dummyChild2.nik,
+);
+final dummyProfileChild3 = ProfileEntity(
+  userId: dummyCredential.id,
+  type: DbConst.TYPE_CHILD,
+  serverId: 5,
+  name: dummyChild3.name,
+  birthDate: parseDate(dummyChild3.birthDate),
+  birthPlace: 1,
+  nik: dummyChild3.nik,
+);
+final dummyProfileChild4 = ProfileEntity(
+  userId: dummyCredential.id,
+  type: DbConst.TYPE_CHILD,
+  serverId: 6,
+  name: dummyChild4.name,
+  birthDate: parseDate(dummyChild4.birthDate),
+  birthPlace: 1,
+  nik: dummyChild4.nik,
 );
 
+
+//============== For UI =============
+final dummyChildOverlayData1 = BabyOverlayData(
+  id: dummyProfileChild.serverId,
+  name: dummyProfileChild.name,
+  date: dummyProfileChild.birthDate,
+  img: dummyImg,
+);
+final dummyChildOverlayData2 = BabyOverlayData(
+  id: dummyProfileChild2.serverId,
+  name: dummyProfileChild2.name,
+  date: dummyProfileChild2.birthDate,
+  img: dummyImg,
+);
+final dummyChildOverlayData3 = BabyOverlayData(
+  id: dummyProfileChild3.serverId,
+  name: dummyProfileChild3.name,
+  date: dummyProfileChild3.birthDate,
+  img: dummyImg,
+);
+final dummyChildOverlayData4 = BabyOverlayData(
+  id: dummyProfileChild4.serverId,
+  name: dummyProfileChild4.name,
+  date: dummyProfileChild4.birthDate,
+  img: dummyImg,
+);
+
+final dummyBabyOverlayDataList_baby = <BabyOverlayData>[
+  dummyChildOverlayData1, dummyChildOverlayData2, dummyChildOverlayData3,
+];
+final dummyBabyOverlayDataList_pregnancy = <BabyOverlayData>[
+  dummyChildOverlayData4,
+];
+
+final dummyBabyOverlayDataList_all = <BabyOverlayData>[
+  ...dummyBabyOverlayDataList_baby,
+  ...dummyBabyOverlayDataList_pregnancy,
+];

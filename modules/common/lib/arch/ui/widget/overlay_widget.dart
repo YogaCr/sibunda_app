@@ -31,6 +31,7 @@ class BelowTopBarOverlay extends StatelessWidget {
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
     final horizontalMargin = screenSize.width *0.8 / 10;
+    final mostHeight = (screenSize.height - stdTopMargin) - (screenSize.height *0.8 / 10);
 
     return LiveDataObserver<bool>(
       immediatelyBuildState: true,
@@ -54,16 +55,19 @@ class BelowTopBarOverlay extends StatelessWidget {
                     prind("`autoCancel` cancelled");
                   }, //to cancel the autoCancel GestureDetector's onTap.
                   child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
                     constraints: BoxConstraints(
                       minHeight: 10,
+                      maxHeight: mostHeight,
                     ),
                     margin: EdgeInsets.symmetric(horizontal: horizontalMargin,)
                         .copyWith(bottom: 20, top: stdTopMargin),
-                    child: child,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: Container(
+                        color: Colors.white,
+                        child: child,
+                      ),
+                    ),
                   ),
                 ),
               ],

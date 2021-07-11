@@ -51,22 +51,22 @@ class PregnancyRepoImpl with PregnancyRepo {
 
   // ====== Home ==========
   /// We only use 1 home data because in endpoint only serve for one.
-  MotherHomeBabyData? _homeData;
+  List<MotherHomeBabyData>? _homeDataList;
 
   @override
   Future<Result<List<MotherHomeBabyData>>> getMotherHomeData(@notUsedYet String motherNik) async {
     try {
       final res = await _api.getHomeData();
-      final rawHomeData = res.data.first;
-      _homeData = MotherHomeBabyData.fromResponse(rawHomeData);
-      return Success([_homeData!]);
+      final rawHomeData = res.data;
+      _homeDataList = rawHomeData.map((e) => MotherHomeBabyData.fromResponse(e)).toList(growable: false);
+      return Success(_homeDataList!);
     } catch(e) {
       return Fail();
     }
   }
   @override
   Future<Result<List<MotherTrimester>>> getMotherTrimester() async {
-    if(_homeData == null) {
+    if(_homeDataList == null) {
       @mayChangeInFuture
       final motherNik = "";
       final res = await getMotherHomeData(motherNik);
@@ -74,7 +74,7 @@ class PregnancyRepoImpl with PregnancyRepo {
         return Fail();
       }
     }
-    return Success(_homeData!.trimesterList);
+    return Success(_homeDataList!.first.trimesterList); //For now, we only use the first one.
   }
   @override
   Future<Result<List<MotherFoodRecom>>> getMotherFoodRecoms(String motherNik, int pregnancyWeekAge) async {
@@ -82,7 +82,7 @@ class PregnancyRepoImpl with PregnancyRepo {
     if(res is Fail<List<MotherHomeBabyData>>) {
       return Fail();
     }
-    return Success(_homeData!.foodRecomList);
+    return Success(_homeDataList!.first.foodRecomList); //For now, we only use the first one.
   }
   @override
   Future<Result<MotherPregnancyAgeOverview>> getMotherPregnancyAgeOverview(String motherNik) async {
@@ -90,8 +90,8 @@ class PregnancyRepoImpl with PregnancyRepo {
     if(res is Fail<List<MotherHomeBabyData>>) {
       return Fail();
     }
-    VarDi.pregnancyWeek.value = _homeData!.pregnancyAge.weekAge;
-    return Success(_homeData!.pregnancyAge);
+    VarDi.pregnancyWeek.value = _homeDataList!.first.pregnancyAge.weekAge; //For now, we only use the first one.
+    return Success(_homeDataList!.first.pregnancyAge);
   }
 
   PregnancyCheckBody? _checkBody;

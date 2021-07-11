@@ -5,6 +5,7 @@ import 'package:common/arch/data/remote/api/data_api.dart';
 import 'package:common/arch/domain/dummy_data.dart';
 import 'package:common/arch/domain/model/form_data.dart';
 import 'package:common/arch/domain/model/img_data.dart';
+import 'package:common/arch/ui/adapter/child_overlay_adp.dart';
 import 'package:common/arch/ui/model/form_data.dart';
 import 'package:common/arch/ui/page/secondary_frames.dart';
 import 'package:common/arch/ui/vm/form_vm_group.dart';
@@ -59,25 +60,20 @@ class MyApp extends StatelessWidget {
                 BelowTopBarOverlay(
                   visibilityController: visibility,
                   onCancel: () => showSnackBar(ctx, "Cancel overlay"),
-                  child: Column(
-                    children: [
-                      Container(
-                        height: 30,
-                        margin: EdgeInsets.symmetric(horizontal: 30),
-                        color: Manifest.theme.colorPrimary,
-                      ),
-                      Container(
-                        height: 30,
-                        margin: EdgeInsets.symmetric(horizontal: 30),
-                        color: Colors.green,
-                      ),
-                      Container(
-                        height: 30,
-                        margin: EdgeInsets.symmetric(horizontal: 30),
-                        color: Colors.blue,
-                      ),
-                    ],
-                  ),
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 10,),
+                    child: ChildrenListOverlay(
+                      bornBabyList: [
+                        ...dummyBabyOverlayDataList_baby,
+                        ...dummyBabyOverlayDataList_baby,
+                      ],
+                      unbornBabyList: [
+                        ...dummyBabyOverlayDataList_pregnancy,
+                        //...dummyBabyOverlayDataList_pregnancy
+                      ],
+                      onItemClick: (data) => showSnackBar(ctx, "Bayi = ${data.name}"),
+                    ),
+                  )
                 ),
                 Align(
                   alignment: Alignment.bottomRight,

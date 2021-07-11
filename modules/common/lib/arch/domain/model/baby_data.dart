@@ -1,6 +1,7 @@
 import 'package:common/arch/data/remote/model/baby_overview_api_model.dart';
 import 'package:common/arch/domain/model/img_data.dart';
 import 'package:common/value/const_values.dart';
+import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'baby_data.g.dart';
@@ -36,6 +37,24 @@ class BabyFormMenuData {
     monthEnd: response.year *12,
     id: response.id,
   );
+}
+
+class BabyOverlayData extends Equatable {
+  final int id;
+  final String name;
+  final DateTime date; //can be either date of birth or HPL.
+      // BTW, if `date` is still in future, it means that the `date` is for HPL.
+  final ImgData img;
+
+  BabyOverlayData({
+    required this.id,
+    required this.name,
+    required this.date,
+    required this.img,
+  });
+
+  @override
+  List<Object?> get props => [id, name, date, img];
 }
 
 @JsonSerializable()
