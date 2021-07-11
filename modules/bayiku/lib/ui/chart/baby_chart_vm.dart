@@ -119,7 +119,7 @@ class BabyChartVm extends AsyncVm {
         prind("MotherChartVm res2 = $res2 \n res3 = $res3");
 
         if(res3 is! Success<List<FormWarningStatus>>) {
-          return res3 as Fail; //TODO: Cek apakah operator is! itu benar
+          return res3 as Fail;
         }
 
         if(res2 is Success) {

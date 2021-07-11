@@ -6,11 +6,13 @@ import 'package:common/arch/domain/dummy_data.dart';
 import 'package:common/arch/domain/model/form_data.dart';
 import 'package:common/arch/domain/model/img_data.dart';
 import 'package:common/arch/ui/model/form_data.dart';
+import 'package:common/arch/ui/page/secondary_frames.dart';
 import 'package:common/arch/ui/vm/form_vm_group.dart';
 import 'package:common/arch/ui/widget/_basic_widget.dart';
 import 'package:common/arch/ui/widget/_items_education.dart';
 import 'package:common/arch/ui/widget/form_generic_group.dart';
 import 'package:common/arch/ui/widget/form_generic_vm_group_observer.dart';
+import 'package:common/arch/ui/widget/overlay_widget.dart';
 import 'package:common/arch/ui/widget/popup_widget.dart';
 import 'package:common/arch/ui/widget/splash_widget.dart';
 import 'package:common/config/_config.dart';
@@ -34,6 +36,8 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
+  final visibility = MutableLiveData(true);
+
   @override
   Widget build(BuildContext context) {
     //final db = constructDb();
@@ -47,21 +51,56 @@ class MyApp extends StatelessWidget {
       theme: Manifest.theme.materialData,
       home: Scaffold(
         body: Builder(
-          builder: (ctx) => Column(
-            children: [
-              TextField(controller: txtC,),
-              InkWell(
-                child: Icon(Icons.call),
-                onTap: () async {
-                  final res = await showTimePicker(context: ctx, initialTime: TimeOfDay.now());
-                  if(res != null) {
-
-                    //DateFormat("kk:mm").format(date);
-                    txtC.text = res.format(ctx);
-                  }
-                },
-              ),
-            ],
+          builder: (ctx) => TopBarTitleAndBackFrame(
+            withTopOffset: true,
+            title: "Haloa",
+            contentOverlay: Stack(
+              children: [
+                BelowTopBarOverlay(
+                  visibilityController: visibility,
+                  onCancel: () => showSnackBar(ctx, "Cancel overlay"),
+                  child: Column(
+                    children: [
+                      Container(
+                        height: 30,
+                        margin: EdgeInsets.symmetric(horizontal: 30),
+                        color: Manifest.theme.colorPrimary,
+                      ),
+                      Container(
+                        height: 30,
+                        margin: EdgeInsets.symmetric(horizontal: 30),
+                        color: Colors.green,
+                      ),
+                      Container(
+                        height: 30,
+                        margin: EdgeInsets.symmetric(horizontal: 30),
+                        color: Colors.blue,
+                      ),
+                    ],
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.bottomRight,
+                  child: FloatingActionButton(
+                    onPressed: () => visibility.value = visibility.value != true,
+                    child: Text("Tekan"),
+                  ),
+                ),
+              ],
+            ),
+            body: BelowTopBarScrollContentArea(
+              slivers: [
+                SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                      (ctx, i) => ListTile(
+                        title: Text("Halio $i"),
+                        subtitle: Text("Sub $i", style: SibTextStyles.size_0_colorPrimary,),
+                      ),
+                    childCount: 30,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
