@@ -16,6 +16,7 @@ import 'package:common/arch/ui/widget/form_generic_vm_group_observer.dart';
 import 'package:common/arch/ui/widget/overlay_widget.dart';
 import 'package:common/arch/ui/widget/popup_widget.dart';
 import 'package:common/arch/ui/widget/splash_widget.dart';
+import 'package:common/arch/ui/widget/txt_suffix_icon.dart';
 import 'package:common/config/_config.dart';
 import 'package:common/res/theme/_theme.dart';
 import 'package:common/test/__common_test_const.dart';
@@ -23,6 +24,7 @@ import 'package:common/util/navigations.dart';
 import 'package:common/util/ui.dart';
 import 'package:core/domain/model/result.dart';
 import 'package:core/ui/base/live_data.dart';
+import 'package:core/ui/base/live_data_observer.dart';
 import 'package:core/ui/base/view_model.dart';
 import 'package:core/util/_consoles.dart';
 import 'package:flutter/material.dart';
@@ -55,6 +57,25 @@ class MyApp extends StatelessWidget {
           builder: (ctx) => TopBarTitleAndBackFrame(
             withTopOffset: true,
             title: "Haloa",
+            topBarChild: LiveDataObserver<bool>(
+              liveData: visibility,
+              builder: (ctx, vis) => Container(
+                margin: EdgeInsets.only(bottom: 10,),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    TxtSuffixIcon(
+                      color: Manifest.theme.primaryHighlightColor,
+                      txt: "Tekan aku",
+                      onClick: () => visibility.value = visibility.value != true,
+                      suffix: vis == true
+                          ? Icon(Icons.keyboard_arrow_up_rounded, color: white,)
+                          : Icon(Icons.keyboard_arrow_down_rounded, color: white,),
+                    ),
+                  ],
+                ),
+              ),
+            ),
             contentOverlay: Stack(
               children: [
                 BelowTopBarOverlay(
@@ -75,6 +96,7 @@ class MyApp extends StatelessWidget {
                     ),
                   )
                 ),
+/*
                 Align(
                   alignment: Alignment.bottomRight,
                   child: FloatingActionButton(
@@ -82,6 +104,7 @@ class MyApp extends StatelessWidget {
                     child: Text("Tekan"),
                   ),
                 ),
+ */
               ],
             ),
             body: BelowTopBarScrollContentArea(

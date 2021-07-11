@@ -28,12 +28,14 @@ class ChildrenListOverlay extends StatelessWidget {
           ChildrenSingleListOverlay(
             header: Strings.my_pregnancy,
             dataList: unbornBabyList,
+            datePrefix: "${Strings.hpl}: ",
             onItemClick: onItemClick,
           ),
           SizedBox(height: 10,),
           ChildrenSingleListOverlay(
             header: Strings.my_baby,
             dataList: bornBabyList,
+            datePrefix: "${Strings.born}: ",
             onItemClick: onItemClick,
           ),
           SizedBox(height: 10,),
@@ -93,9 +95,12 @@ class ChildrenSingleListOverlay extends StatelessWidget {
               e.name,
               style: SibTextStyles.size_0_bold,
             ),
-            subtitle: Text(
-              _getDateStr(e.date),
-              style: SibTextStyles.size_min_1_grey,
+            subtitle: Container(
+              margin: EdgeInsets.only(top: 5),
+              child: Text(
+                _getDateStr(e.date),
+                style: SibTextStyles.size_min_1_grey,
+              ),
             ),
           ),
         ),
@@ -112,6 +117,6 @@ class ChildrenSingleListOverlay extends StatelessWidget {
   }
 
   String _getDateStr(DateTime date) => datePrefix.isNotEmpty
-      ? "$datePrefix ${syncFormatTime(date)}"
+      ? "$datePrefix${syncFormatTime(date)}"
       : syncFormatTime(date);
 }

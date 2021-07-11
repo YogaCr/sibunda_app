@@ -1,3 +1,4 @@
+import 'package:common/config/manifest.dart';
 import 'package:common/res/theme/_theme.dart';
 import 'package:common/util/ui.dart';
 import 'package:core/ui/base/expirable.dart';
@@ -195,7 +196,7 @@ class _ItemState extends State<_Item> implements Expirable {
         margin: EdgeInsets.all(5),
         padding: EdgeInsets.all(10),
         decoration: BoxDecoration(
-          color: globalSelectedPosition.value == position ? pink_highlight : null,
+          color: globalSelectedPosition.value == position ? Manifest.theme.primaryHighlightColor : null,
           borderRadius: BorderRadius.all(Radius.circular(10)),
         ),
         child: Text(

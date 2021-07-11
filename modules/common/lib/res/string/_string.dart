@@ -87,6 +87,7 @@ class Strings {
   static const future_visit_date =  "Tanggal Periksa Kembali";
   static const hpht =  "HPHT";
   static const hpl =  "HPL";
+  static const born =  "Lahir";
   static const mother_weight =  "Berat Badan Bunda";
   static const mother_weight_diff =  "Kenaikan Berat Badan Bunda";
   static const mother_height =  "Tinggi Badan Bunda";
