@@ -14,7 +14,7 @@ mixin SignUpAndRegisterOtherData {
     required SignUpData signup,
     required Mother mother,
     required Father father,
-    required Child child,
+    required List<Child> children,
   });
 }
 
@@ -34,6 +34,6 @@ class SignUpAndRegisterOtherDataImpl with SignUpAndRegisterOtherData {
     required SignUpData signup,
     required Mother mother,
     required Father father,
-    required Child child,
-  }) => _repo.signup(signup: signup, mother: mother, father: father, child: child,);
+    required List<Child> children,
+  }) => _repo.signup(signup: signup, mother: mother, father: father, children: children,);
 }

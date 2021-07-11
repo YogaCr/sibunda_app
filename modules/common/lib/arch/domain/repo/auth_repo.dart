@@ -21,7 +21,7 @@ mixin AuthRepo {
     required SignUpData signup,
     required Mother mother,
     required Father father,
-    required Child child,
+    required List<Child> children,
   });
   Future<Result<SessionData>> login(LoginData data);
   Future<Result<bool>> logout(SessionData data);
@@ -49,13 +49,13 @@ class AuthRepoImpl with AuthRepo {
     required SignUpData signup,
     required Mother mother,
     required Father father,
-    required Child child,
+    required List<Child> children,
   }) async {
     final body = RegisterBody(
       signup: signup,
       mother: mother,
       father: father,
-      child: child,
+      children: children,
     );
     try {
       final res = await _api.register(body);
@@ -67,7 +67,7 @@ class AuthRepoImpl with AuthRepo {
 
       final locRes = await _localSrc.saveBatchProfile(
         userId: userId, userRole: userRole, signup: signup,
-        mother: mother, father: father, child: child,
+        mother: mother, father: father, children: children,
       );
       return locRes;
     } catch(e) {
@@ -205,7 +205,7 @@ class AuthDummyRepo with AuthRepo {
     required SignUpData signup,
     required Mother mother,
     required Father father,
-    required Child child,
+    required List<Child> children,
   }) async => Success(true, 200);
 
   Future<Result<bool>> logout(SessionData data) async => Success(true, 200);

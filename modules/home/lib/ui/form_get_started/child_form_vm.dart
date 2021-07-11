@@ -20,6 +20,9 @@ class ChildFormVm extends FormVmGroup {
   }
   final SaveChildData _useCase;
 
+  //TODO: <tag>ChildFromVM</tag>
+  final MutableLiveData<int> currentPage = MutableLiveData();
+
   @override
   List<LiveData> get liveDatas => [];
 
@@ -55,7 +58,10 @@ class ChildFormVm extends FormVmGroup {
   Future<Result<String>> doSubmitJob() async {
     final txtMap = getResponseMap();
     final data = Child.fromJson(txtMap);
-    return await _useCase(data).then<Result<String>>((value) => value is Success<bool> ? Success("") : value as Fail<String>);
+    final res = await _useCase(data, currentPage.value!); //.then<Result<String>>((value) => );
+    return res is Success<bool>
+        ? Success("ok")
+        : (res as Fail<bool>).copy();
   }
 
   @override

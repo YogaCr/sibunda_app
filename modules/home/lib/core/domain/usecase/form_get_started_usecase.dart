@@ -5,7 +5,7 @@ import 'package:common/arch/domain/repo/_repos.dart';
 import 'package:core/domain/model/result.dart';
 
 mixin SaveChildData {
-  Future<Result<bool>> call(Child data);
+  Future<Result<bool>> call(Child data, int page);
 }
 
 mixin SaveFatherData {
@@ -35,7 +35,7 @@ class SaveChildDataImpl with SaveChildData {
   SaveChildDataImpl(this.repo);
   final ChildRepo repo;
   @override
-  Future<Result<bool>> call(Child data) => repo.saveChildData(data);
+  Future<Result<bool>> call(Child data, int page) => repo.saveChildData(data);
 }
 
 class SaveFatherDataImpl with SaveFatherData {

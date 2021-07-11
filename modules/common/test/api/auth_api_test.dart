@@ -76,7 +76,7 @@ getStartedFormApiTest_usingRetrofit() async {
 
   final body = RegisterBody(
     signup: _signupData,
-    child: child,
+    children: [child],
     father: father,
     mother: mother,
   );

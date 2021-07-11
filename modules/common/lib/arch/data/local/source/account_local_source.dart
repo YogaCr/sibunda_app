@@ -20,7 +20,7 @@ mixin AccountLocalSrc {
     required SignUpData signup,
     required Mother mother,
     required Father father,
-    required Child child,
+    required List<Child> children,
   });
   Future<Result<bool>> saveSession(SessionData data);
   Future<Result<bool>> deleteSession();
@@ -69,7 +69,7 @@ class AccountLocalSrcImpl with AccountLocalSrc {
     required SignUpData signup,
     required Mother mother,
     required Father father,
-    required Child child,
+    required List<Child> children,
   }) async {
     final credential = CredentialEntity(
       id: userId,
@@ -98,7 +98,7 @@ class AccountLocalSrcImpl with AccountLocalSrc {
       birthPlace: father.birthCity,
       serverId: dummyId,
     );
-    final childProf = ProfileEntity(
+    final childProfs = children.map((child) => ProfileEntity(
       userId: userId,
       type: DbConst.TYPE_CHILD,
       name: child.name,
@@ -106,8 +106,8 @@ class AccountLocalSrcImpl with AccountLocalSrc {
       birthDate: DateTime.parse(child.birthDate),
       birthPlace: child.birthCity,
       serverId: dummyId,
-    );
-    final profiles = [motherProf, fatherProf, childProf];
+    ));
+    final profiles = [motherProf, fatherProf, ...childProfs];
 
     final credRowId = await _credentialDao.insert(credential);
     if(credRowId < 0) {

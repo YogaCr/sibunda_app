@@ -69,17 +69,17 @@ class GetStartedFormMainVm extends AsyncVm {
       final signup = _signup.data.value;
       final mother = _saveMotherData.data.value;
       final father = _saveFatherData.data.value;
-      final child = _saveChildData.data.value;
-      prind("sendData() Current data (signup=$signup), (mother=$mother), (father=$father), (child=$child)");
+      final children = _saveChildData.data.value;
+      prind("sendData() Current data (signup=$signup), (mother=$mother), (father=$father), (children=$children)");
 
-      if(signup == null || mother == null || father == null || child == null) {
-        throw "`signup`, `mother`, `father`, `child` are both non-nullable.\n Current data (signup=$signup), (mother=$mother), (father=$father), (child=$child)";
+      if(signup == null || mother == null || father == null || children == null) {
+        throw "`signup`, `mother`, `father`, `child` are both non-nullable.\n Current data (signup=$signup), (mother=$mother), (father=$father), (children=$children)";
       }
       final res = await _signUpAndRegisterOtherData(
         signup: signup,
         mother: mother,
         father: father,
-        child: child,
+        children: children,
       );
       prind("sendData() res= $res");
 
@@ -119,11 +119,16 @@ class _SignupImpl with SaveSignUpData {
   
 }
 class _SaveChildDataImpl with SaveChildData {
-  final MutableLiveData<Child> _data = MutableLiveData();
-  LiveData<Child> get data => _data;
+  final MutableLiveData<List<Child>> _data = MutableLiveData();
+  LiveData<List<Child>> get data => _data;
   @override
-  Future<Result<bool>> call(Child data) async {
-    _data.value = data;
+  Future<Result<bool>> call(Child data, int page) async {
+    final list = _data.value ??= [];
+    if(page <= list.length) {
+      list.insert(page, data);
+    } else {
+      list.add(data);
+    }
     return Success(true); // We return `Success` in intention cuz, in this context, the 'save' means save locally before collective submission in the end of get started related forms.
   }
 }

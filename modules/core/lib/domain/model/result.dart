@@ -38,6 +38,18 @@ class Fail<T> extends Result<T> {
 
   @override
   List<Object?> get props => [code, msg, error, data];
+
+  Fail<O> copy<O>({
+    int? code,
+    String? msg,
+    error,
+    data,
+  }) => Fail(
+    code: code ?? this.code,
+    msg: msg ?? this.msg,
+    error: error ?? this.error,
+    data: data ?? this.data,
+  );
 }
 
 /*

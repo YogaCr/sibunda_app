@@ -15,13 +15,13 @@ class RegisterBody {
   final SignUpData signup;
   final Mother mother;
   final Father father;
-  final Child child;
+  final List<Child> children;
 
   RegisterBody({
     required this.signup,
     required this.mother,
     required this.father,
-    required this.child,
+    required this.children,
   });
 
   /// This method is a signature that be used by retrofit library to convert it to JSON body.
@@ -29,15 +29,15 @@ class RegisterBody {
     var signupMap = signup.toJson;
     var motherMap = mother.toJson;
     var fatherMap = father.toJson;
-    var childMap = child.toJson;
-
+    var childMaps = children.map((e) => e.toJson);
+/*
     motherMap[Const.KEY_SALARY] = motherMap[Const.KEY_SALARY].toString();
     fatherMap[Const.KEY_SALARY] = fatherMap[Const.KEY_SALARY].toString();
-
-    //TODO: Hilangi dummy
+    //T ODO: Hilangi dummy
     motherMap[Const.KEY_BIRTH_PLACE] = 1104;
     fatherMap[Const.KEY_BIRTH_PLACE] = 1104;
     childMap[Const.KEY_BIRTH_PLACE] = 1104;
+ */
 
     motherMap = addPrefixToMapKeys(motherMap, "bunda_");
     fatherMap = addPrefixToMapKeys(fatherMap, "ayah_");
@@ -47,9 +47,12 @@ class RegisterBody {
       Const.KEY_RE_PSWD: signup.password,
       ...motherMap,
       ...fatherMap,
+      Const.KEY_CHILD: childMaps,
+/*
       Const.KEY_CHILD : [
         childMap,
       ],
+ */
     };
   }
 }
