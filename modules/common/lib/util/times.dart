@@ -2,6 +2,7 @@
 import 'dart:io';
 import 'dart:ui';
 
+import 'package:common/util/type_util.dart';
 import 'package:core/util/_consoles.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -16,6 +17,8 @@ Future<String> formatTime(DateTime date, { String localeName = "id_ID" }) async 
   return DateFormat.yMMMMd(localeName).format(date);
 }
 
+String syncFormatTimeFromStr(String datestr, { String localeName = "id_ID" }) =>
+  syncFormatTime(parseDate(datestr), localeName: localeName);
 String syncFormatTime(DateTime date, { String localeName = "id_ID" }) {
   //initializeDateFormatting("id_ID");
   try {

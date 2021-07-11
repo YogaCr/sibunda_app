@@ -4,6 +4,7 @@ import 'package:common/arch/domain/model/notif_data.dart';
 import 'package:common/config/_config.dart';
 import 'package:common/res/theme/_theme.dart';
 import 'package:common/util/assets.dart';
+import 'package:common/util/times.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -150,7 +151,7 @@ class ItemNotif extends StatelessWidget {
   ItemNotif.fromData(HomeNotifMsg data, {this.bgColor = grey_calm}):
      title = data.title,
      content = data.desc,
-     timestamp = data.time,
+     timestamp = syncFormatTime(data.time),
      img = data.img
   ;
 
@@ -261,7 +262,7 @@ class ItemMessage extends StatelessWidget {
   ItemMessage.fromData(HomeNotifMsg data):
       title = data.title,
       content = data.desc,
-      timestamp = data.time,
+      timestamp = syncFormatTime(data.time),
       img = data.img
   ;
 
@@ -271,7 +272,10 @@ class ItemMessage extends StatelessWidget {
     final imgChild = Flexible(
       flex: 1,
       fit: FlexFit.tight,
-      child: image
+      child: Container(
+        width: double.infinity,
+        child: image,
+      )
     );
 
     final txtChild = Flexible(

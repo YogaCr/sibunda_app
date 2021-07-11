@@ -1,6 +1,7 @@
 
 import 'package:common/arch/domain/model/notif_data.dart';
 import 'package:common/arch/ui/page/secondary_frames.dart';
+import 'package:common/arch/ui/widget/_basic_widget.dart';
 import 'package:common/arch/ui/widget/_items_home.dart';
 import 'package:common/res/theme/_theme.dart';
 import 'package:core/ui/base/async_view_model_observer.dart';
@@ -15,6 +16,7 @@ class HomeNotifAndMessagePage extends StatelessWidget {
     ViewModelProvider.of<NotifAndMessageVm>(context)
       ..getNotifList()
       ..getMessageList();
+
     return TopBarTabFrame(
       withTopOffset: true,
       title: "Notifikasi",
@@ -37,7 +39,7 @@ class HomeNotifPage extends StatelessWidget {
     return AsyncVmObserver<NotifAndMessageVm, List<HomeNotifMsg>>(
       liveDataGetter: (vm2) => vm2.notifList,
       builder: (ctx, data) => BelowTopBarScrollContentArea(slivers: [
-        _notifMsgList(data ?? List.empty(), (data) => ItemNotif.fromData(data)),
+        _notifMsgList(data, (data) => ItemNotif.fromData(data)),
       ]),
     );
   }
@@ -48,25 +50,29 @@ class HomeMessagePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return AsyncVmObserver<NotifAndMessageVm, List<HomeNotifMsg>>(
       liveDataGetter: (vm2) => vm2.msgList,
-      builder: (ctx, data) => BelowTopBarScrollContentArea(slivers: [
-        _notifMsgList(data ?? List.empty(), (data) => ItemMessage.fromData(data)),
-      ]),
+      builder: (ctx, data) => BelowTopBarScrollContentArea(
+        slivers: [
+          _notifMsgList(data, (data) => ItemMessage.fromData(data)),
+        ],
+      ),
     );
   }
 }
 
 
 Widget _notifMsgList(
-    List<HomeNotifMsg> dataList,
+    List<HomeNotifMsg>? dataList,
     Widget Function(HomeNotifMsg) builder,
 ) {
   return SliverList(
-    delegate: SliverChildBuilderDelegate(
+    delegate: dataList != null ? SliverChildBuilderDelegate(
         (ctx, i) => Container(
           margin: EdgeInsets.all(10),
           child: builder(dataList[i]),
         ),
       childCount: dataList.length,
-    ),
+    ) : SliverChildListDelegate.fixed([
+      defaultLoading()
+    ]),
   );
 }
