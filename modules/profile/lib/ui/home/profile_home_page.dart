@@ -19,7 +19,7 @@ class ProfileHomePage extends StatelessWidget {
         ..getProfile();
 
     return TopBarTitleAndBackFrame(
-      isScroll: true,
+      withTopOffset: true,
       title: "Profile",
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 10),

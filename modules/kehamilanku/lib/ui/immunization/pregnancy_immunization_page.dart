@@ -24,7 +24,7 @@ class PregnancyImmunizationPage extends StatelessWidget {
       ..getImmunizationGroups(motherNik: "");
 
     return TopBarTitleAndBackFrame(
-      isScroll: true,
+      withTopOffset: true,
       title: "Imunisasi Bunda",
       body: BelowTopBarScrollContentArea(
         slivers: [SliverList(

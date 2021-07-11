@@ -16,7 +16,7 @@ class HomeNotifAndMessagePage extends StatelessWidget {
       ..getNotifList()
       ..getMessageList();
     return TopBarTabFrame(
-      isScroll: true,
+      withTopOffset: true,
       title: "Notifikasi",
       indicatorColor: yellow,
       tabs: [

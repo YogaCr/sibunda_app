@@ -66,7 +66,7 @@ class BabyCheckFormPage extends StatelessWidget {
     });
 
     return TopBarTitleAndBackFrame(
-      isScroll: true,
+      withTopOffset: true,
       title: "Form Bayiku",
       topBarChild: SizedBox(
         height: 50,
@@ -221,7 +221,7 @@ class KehamilankuTrimesterFormPage extends StatelessWidget {
  */
 
     return TopBarTitleAndBackFrame(
-      isScroll: true,
+      withTopOffset: true,
       title: "Trimester ${trimester.trimester}",
 
       topBarChild: SizedBox(

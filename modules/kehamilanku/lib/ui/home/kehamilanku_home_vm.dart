@@ -1,5 +1,7 @@
 import 'package:common/arch/di/config_di.dart';
+import 'package:common/arch/domain/model/baby_data.dart';
 import 'package:common/arch/domain/model/kehamilanku_data.dart';
+import 'package:common/arch/domain/usecase/baby_usecase.dart';
 import 'package:common/arch/domain/usecase/mother_usecase.dart';
 import 'package:core/domain/model/result.dart';
 import 'package:core/ui/base/async_vm.dart';
@@ -12,31 +14,42 @@ class KehamilankuHomeVm extends AsyncVm {
   static const getAgeOverviewKey = "getAgeOverview";
   static const getTrimesterListKey = "getTrimesterList";
   static const getFoodRecomListKey = "getFoodRecomList";
+  static const getBabyOverlayKey = "getBabyOverlay";
 
   KehamilankuHomeVm({
     //required GetMotherNik getMotherNik,
     required GetPregnancyAgeOverview getPregnancyAgeOverview,
     required GetTrimesterList getTrimesterList,
     required GetMotherFoodRecomList  getMotherFoodRecomList,
+    required GetBornBabyList getBornBabyList,
+    required GetUnbornBabyList getUnbornBabyList,
   }):
       //_getMotherNik = getMotherNik,
       _getPregnancyAgeOverview = getPregnancyAgeOverview,
       _getTrimesterList = getTrimesterList,
-      _getMotherFoodRecomList = getMotherFoodRecomList
+      _getMotherFoodRecomList = getMotherFoodRecomList,
+      _getBornBabyList = getBornBabyList,
+      _getUnbornBabyList = getUnbornBabyList
   ;
 
   //final GetMotherNik _getMotherNik;
   final GetPregnancyAgeOverview _getPregnancyAgeOverview;
   final GetTrimesterList _getTrimesterList;
-  final GetMotherFoodRecomList  _getMotherFoodRecomList;
+  final GetMotherFoodRecomList _getMotherFoodRecomList;
+  final GetBornBabyList _getBornBabyList;
+  final GetUnbornBabyList _getUnbornBabyList;
 
   final MutableLiveData<MotherPregnancyAgeOverview> _ageOverview = MutableLiveData();
   final MutableLiveData<List<MotherTrimester>> _trimesterList = MutableLiveData();
   final MutableLiveData<List<MotherFoodRecom>> _foodRecomList = MutableLiveData();
+  final MutableLiveData<List<BabyOverlayData>> _bornBabyList = MutableLiveData();
+  final MutableLiveData<List<BabyOverlayData>> _unbornBabyList = MutableLiveData();
 
   LiveData<MotherPregnancyAgeOverview> get ageOverview => _ageOverview;
   LiveData<List<MotherTrimester>> get trimesterList => _trimesterList;
   LiveData<List<MotherFoodRecom>> get foodRecomList => _foodRecomList;
+  LiveData<List<BabyOverlayData>> get bornBabyList => _bornBabyList;
+  LiveData<List<BabyOverlayData>> get unbornBabyList => _unbornBabyList;
 
   @override
   List<LiveData> get liveDatas => [_ageOverview, _trimesterList, _foodRecomList,];
@@ -82,6 +95,32 @@ class KehamilankuHomeVm extends AsyncVm {
           _foodRecomList.value = data;
         }
       });
+    });
+  }
+  void getBabyOverlay([bool forceLoad = false]) {
+    if(!forceLoad
+        && _bornBabyList.value != null
+        && _unbornBabyList.value != null) return;
+    startJob(getBabyOverlayKey, (isActive) async {
+      final motherNik = VarDi.motherNik.getOrElse();
+      final res1 = await _getBornBabyList(motherNik);
+      final res2 = await _getUnbornBabyList(motherNik);
+
+      if(res1 is Success<List<BabyOverlayData>>
+        && res2 is Success<List<BabyOverlayData>>) {
+        final born = res1.data;
+        final unborn = res2.data;
+
+        _bornBabyList.value = born;
+        _unbornBabyList.value = unborn;
+        return null;
+      }
+      if(res1 is Fail<List<BabyOverlayData>>) {
+        return res1;
+      }
+      if(res2 is Fail<List<BabyOverlayData>>) {
+        return res2;
+      }
     });
   }
 }

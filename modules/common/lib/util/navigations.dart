@@ -10,17 +10,23 @@ Future<T?> goToPage<T>(
   String? name,
   Map<String, dynamic>? args,
   bool clearPrevs = false,
+  bool replaceCurrent = false,
 }) {
   RouteSettings settings = RouteSettings(name: name, arguments: args);
   return !clearPrevs
-      ? Navigator.push<T>(
-      context,
-      MaterialPageRoute(builder: builder, settings: settings)
-  ) : Navigator.pushAndRemoveUntil<T>(
-      context,
-      MaterialPageRoute(builder: builder, settings: settings),
-      ModalRoute.withName("/Home")
-  );
+      ? !replaceCurrent
+        ? Navigator.push<T>(
+          context,
+          MaterialPageRoute(builder: builder, settings: settings)
+        ) : Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: builder, settings: settings)
+        )
+      : Navigator.pushAndRemoveUntil<T>(
+        context,
+        MaterialPageRoute(builder: builder, settings: settings),
+        ModalRoute.withName("/Home"),
+      );
 }
 
 Future<T?> showPopup<T>(

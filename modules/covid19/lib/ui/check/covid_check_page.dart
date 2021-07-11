@@ -33,7 +33,7 @@ class CovidCheckPage extends StatelessWidget {
       ..isMother = isMother;
 
     return TopBarTitleAndBackFrame(
-      isScroll: true,
+      withTopOffset: true,
       title: "Menu Cek Covid-19 Untuk ${isMother ? Strings.mother : Strings.baby}",
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 10,),

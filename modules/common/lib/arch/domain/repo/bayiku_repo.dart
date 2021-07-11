@@ -17,8 +17,8 @@ import 'package:core/util/_consoles.dart';
 
 mixin MyBabyRepo {
   Future<Result<String>> getBabyNik();
-  Future<Result<List<BabyOverlayData>>> getBornBabyOverlayData();
-  Future<Result<List<BabyOverlayData>>> getUnbornBabyOverlayData();
+  Future<Result<List<BabyOverlayData>>> getBornBabyOverlayData(String motherNik);
+  Future<Result<List<BabyOverlayData>>> getUnbornBabyOverlayData(String motherNik);
   Future<Result<BabyAgeOverview>> getBabyAgeOverview(String babyNik);
   Future<Result<List<FormWarningStatus>>> getBabyWarningStatus(String babyNik, int monthId);
   Future<Result<List<HomeGraphMenu>>> getBabyGraphMenu();
@@ -82,10 +82,11 @@ class MyBabyRepoImpl with MyBabyRepo {
     }
   }
 
+  //TODO: getBornBabyOverlayData(): Dummy;
   @override
-  Future<Result<List<BabyOverlayData>>> getBornBabyOverlayData() async => Success(dummyBabyOverlayDataList_baby);
+  Future<Result<List<BabyOverlayData>>> getBornBabyOverlayData(String motherNik) async => Success(dummyBabyOverlayDataList_baby);
   @override
-  Future<Result<List<BabyOverlayData>>> getUnbornBabyOverlayData() async => Success(dummyBabyOverlayDataList_pregnancy);
+  Future<Result<List<BabyOverlayData>>> getUnbornBabyOverlayData(String motherNik) async => Success(dummyBabyOverlayDataList_pregnancy);
 
   BabyHomeResponse? _homeResponse;
   int _currentMonthId = -1;
@@ -220,9 +221,9 @@ class MyBabyRepoDummy with MyBabyRepo {
   @override
   Future<Result<String>> getBabyNik() async => Success("");
   @override
-  Future<Result<List<BabyOverlayData>>> getBornBabyOverlayData() async => Success(dummyBabyOverlayDataList_baby);
+  Future<Result<List<BabyOverlayData>>> getBornBabyOverlayData(String motherNik) async => Success(dummyBabyOverlayDataList_baby);
   @override
-  Future<Result<List<BabyOverlayData>>> getUnbornBabyOverlayData() async => Success(dummyBabyOverlayDataList_pregnancy);
+  Future<Result<List<BabyOverlayData>>> getUnbornBabyOverlayData(String motherNik) async => Success(dummyBabyOverlayDataList_pregnancy);
   @override
   Future<Result<BabyAgeOverview>> getBabyAgeOverview(String babyNik) async => Success(dummyBabyAgeOverview);
   @override

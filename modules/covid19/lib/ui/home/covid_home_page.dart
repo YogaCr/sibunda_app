@@ -22,7 +22,7 @@ class CovidHomePage extends StatelessWidget {
       ..getCheckHistory();
 
     return TopBarTitleAndBackFrame(
-      isScroll: true,
+      withTopOffset: true,
       title: Strings.covid_19,
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 10),

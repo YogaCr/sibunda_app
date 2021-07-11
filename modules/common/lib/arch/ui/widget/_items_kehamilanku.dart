@@ -1,15 +1,22 @@
+import 'package:common/arch/domain/model/baby_data.dart';
 import 'package:common/arch/domain/model/img_data.dart';
 import 'package:common/arch/domain/model/kehamilanku_data.dart';
+import 'package:common/arch/ui/adapter/child_overlay_adp.dart';
 import 'package:common/arch/ui/model/immunization.dart';
+import 'package:common/arch/ui/widget/_basic_widget.dart';
+import 'package:common/arch/ui/widget/txt_suffix_icon.dart';
 import 'package:common/config/manifest.dart';
 import 'package:common/res/theme/_theme.dart';
 import 'package:common/arch/ui/widget/_item_template.dart';
 import 'package:common/util/assets.dart';
+import 'package:core/ui/base/live_data.dart';
+import 'package:core/ui/base/live_data_observer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
 import '_item_immunization.dart';
+import 'overlay_widget.dart';
 
 final _cornerRadius = 10.0;
 final _paddingSmall = 10.0;
@@ -381,6 +388,84 @@ class ItemMotherBabySizeOverview extends StatelessWidget {
     );
   }
 }
+
+
+class BabyOverlayControlBtn extends StatelessWidget {
+  final String text;
+  final MutableLiveData<bool> visibilityController;
+  final void Function(bool isVisible)? onClick;
+
+  BabyOverlayControlBtn({
+    required this.text,
+    required this.visibilityController,
+    this.onClick,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return LiveDataObserver<bool>(
+      liveData: visibilityController,
+      builder: (ctx, vis) => Container(
+        margin: EdgeInsets.only(bottom: 10,),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            TxtSuffixIcon(
+              color: Manifest.theme.primaryHighlightColor,
+              txt: text,
+              onClick: () {
+                visibilityController.value = visibilityController.value != true;
+                onClick?.call(visibilityController.value == true);
+              },
+              suffix: vis == true
+                  ? Icon(Icons.keyboard_arrow_up_rounded, color: white,)
+                  : Icon(Icons.keyboard_arrow_down_rounded, color: white,),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class BabySelectionOverlay extends StatelessWidget {
+  final MutableLiveData<bool> visibilityController;
+  final LiveData<List<BabyOverlayData>> bornBabyList;
+  final LiveData<List<BabyOverlayData>> unbornBabyList;
+  final void Function()? onCancel;
+  final void Function(BabyOverlayData, bool isBorn)? onItemClick;
+
+  BabySelectionOverlay({
+    required this.visibilityController,
+    required this.bornBabyList,
+    required this.unbornBabyList,
+    this.onCancel,
+    this.onItemClick,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    //final key = UniqueKey();
+    return BelowTopBarOverlay(
+        visibilityController: visibilityController,
+        onCancel: onCancel,
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 10,),
+          child: MultiLiveDataObserver<List<BabyOverlayData>>(
+            //key: key,
+            liveDataList: [unbornBabyList, bornBabyList],
+            builder: (ctx, lists) => !lists.any((e) => e == null)
+                ? ChildrenListOverlay(
+                  unbornBabyList: lists[0]!,
+                  bornBabyList: lists[1]!,
+                  onItemClick: onItemClick,
+                ) : defaultLoading(height: double.infinity),
+          ),
+        )
+    );
+  }
+}
+
 // */
 /*
 class ItemMotherImmunizationFill extends StatelessWidget {
@@ -406,3 +491,5 @@ class ItemMotherImmunizationFill extends StatelessWidget {
   }
 }
  */
+
+

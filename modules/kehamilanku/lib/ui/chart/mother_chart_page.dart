@@ -28,7 +28,7 @@ class MotherChartPage extends StatelessWidget {
       ..loadChart(chartType);
 
     return TopBarTitleAndBackFrame(
-      isScroll: true,
+      withTopOffset: true,
       title: chartTitle,
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 10,),

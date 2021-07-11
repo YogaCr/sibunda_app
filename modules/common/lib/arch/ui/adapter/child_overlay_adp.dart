@@ -1,5 +1,5 @@
 import 'package:common/arch/domain/model/baby_data.dart';
-import 'package:common/config/_config.dart';
+import 'package:common/arch/ui/widget/_basic_widget.dart';
 import 'package:common/res/string/_string.dart';
 import 'package:common/res/theme/_theme.dart';
 import 'package:common/util/assets.dart';
@@ -11,7 +11,7 @@ import 'package:flutter/material.dart';
 class ChildrenListOverlay extends StatelessWidget {
   final List<BabyOverlayData> bornBabyList;
   final List<BabyOverlayData> unbornBabyList;
-  final void Function(BabyOverlayData)? onItemClick;
+  final void Function(BabyOverlayData, bool isBorn)? onItemClick;
 
   ChildrenListOverlay({
     required this.bornBabyList,
@@ -29,14 +29,18 @@ class ChildrenListOverlay extends StatelessWidget {
             header: Strings.my_pregnancy,
             dataList: unbornBabyList,
             datePrefix: "${Strings.hpl}: ",
-            onItemClick: onItemClick,
+            onItemClick: onItemClick != null
+                ? (data) => onItemClick!.call(data, false)
+                : null,
           ),
           SizedBox(height: 10,),
           ChildrenSingleListOverlay(
             header: Strings.my_baby,
             dataList: bornBabyList,
             datePrefix: "${Strings.born}: ",
-            onItemClick: onItemClick,
+            onItemClick:  onItemClick != null
+                ? (data) => onItemClick!.call(data, true)
+                : null,
           ),
           SizedBox(height: 10,),
         ],
@@ -66,7 +70,7 @@ class ChildrenSingleListOverlay extends StatelessWidget {
       textAlign: TextAlign.center,
     );
 
-    final listWidget = dataList.map((e) => Container(
+    final listWidget = dataList.isNotEmpty ? dataList.map<Widget>((e) => Container(
       decoration: BoxDecoration(
         color: grey_calm,
         borderRadius: BorderRadius.circular(10),
@@ -105,7 +109,7 @@ class ChildrenSingleListOverlay extends StatelessWidget {
           ),
         ),
       ),
-    ));
+    )) : <Widget>[defaultNoData()];
 
     return Column(
       children: [

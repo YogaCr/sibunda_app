@@ -64,7 +64,7 @@ class EducationDetailPage extends StatelessWidget {
     );
 
     return TopBarTitleAndBackFrame(
-      isScroll: true,
+      withTopOffset: true,
       title: "Artikel",
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 10,),

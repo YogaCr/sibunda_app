@@ -36,15 +36,32 @@ class SibRoute {
   const SibRoute(this.name, this.klass, this.builder);
 
 
-  Future<T?> goToPage<T>(BuildContext context, {Map<String, dynamic>? args, bool clearPrevs = false, bool post = true})  {
+  Future<T?> goToPage<T>(BuildContext context, {
+    Map<String, dynamic>? args,
+    bool clearPrevs = false,
+    bool replaceCurrent = false,
+    bool post = true
+  })  {
     if(post) {
       return Future(() {
-        final future = Future(() => NavExt.goToPage<T>(context, builder, name: name, clearPrevs: clearPrevs, args: args));
+        final future = Future(() => NavExt.goToPage<T>(
+          context, builder,
+          name: name,
+          clearPrevs: clearPrevs,
+          replaceCurrent: replaceCurrent,
+          args: args,
+        ));
         WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async => await future);
         return future;
       });
     } else {
-      return NavExt.goToPage<T>(context, builder, name: name, clearPrevs: clearPrevs, args: args);
+      return NavExt.goToPage<T>(
+        context, builder,
+        name: name,
+        clearPrevs: clearPrevs,
+        replaceCurrent: replaceCurrent,
+        args: args,
+      );
     }
   }
 
@@ -91,10 +108,13 @@ abstract class ModuleRoute {
     String moduleName, {
     Map<String, dynamic>? args,
     bool clearPrevs = false,
+    bool replaceCurrent = false,
     bool post = true
   }) => _manager.getModuleEntryPoint(moduleName).goToPage(
     context, args: args,
-    clearPrevs: clearPrevs, post: post,
+    clearPrevs: clearPrevs,
+    replaceCurrent: replaceCurrent,
+    post: post,
   );
 
   Future<T?> goToExternalRoute<T>(

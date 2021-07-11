@@ -3,6 +3,7 @@ import 'package:common/config/manifest.dart';
 import 'package:common/res/string/_string.dart';
 import 'package:common/res/theme/_theme.dart';
 import 'package:common/util/assets.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'img_widget.dart';
@@ -28,6 +29,7 @@ Widget defaultLoading({
   height: height,
   //color: Manifest.theme.colorPrimary,
   child: Column(
+    mainAxisAlignment: MainAxisAlignment.center,
     children: [
       CircularProgressIndicator(),
       SizedBox(height: 10,),

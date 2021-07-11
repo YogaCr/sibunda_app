@@ -18,7 +18,7 @@ class MotherPregEvalChartMenuPage extends StatelessWidget {
       ..getMenuList();
 
     return TopBarTitleAndBackFrame(
-      isScroll: true,
+      withTopOffset: true,
       title: "Grafik Evaluasi Kehamilan",
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 10,),

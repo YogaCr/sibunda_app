@@ -31,7 +31,7 @@ class BabyImmunizationPage extends StatelessWidget {
       ..getImmunizationGroups();
 
     return TopBarTitleAndBackFrame(
-      isScroll: true,
+      withTopOffset: true,
       title: "Imunisasi Bayi",
       body: BelowTopBarScrollContentArea(
         slivers: [SliverList(

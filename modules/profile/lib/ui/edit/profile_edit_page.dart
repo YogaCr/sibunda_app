@@ -35,7 +35,7 @@ class ProfileEditPage extends StatelessWidget {
     vm.init();
 
     return TopBarTitleAndBackFrame(
-      isScroll: true,
+      withTopOffset: true,
       title: "Edit Profil Bunda",
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 10,),

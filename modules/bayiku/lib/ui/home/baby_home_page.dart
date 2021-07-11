@@ -8,25 +8,52 @@ import 'package:common/arch/ui/widget/_basic_widget.dart';
 import 'package:common/arch/ui/widget/_item_immunization.dart';
 import 'package:common/arch/ui/widget/_item_template.dart';
 import 'package:common/arch/ui/widget/_items_bayiku.dart';
+import 'package:common/arch/ui/widget/_items_kehamilanku.dart';
+import 'package:common/config/_config.dart';
 import 'package:common/config/manifest.dart';
 import 'package:common/res/string/_string.dart';
 import 'package:common/res/theme/_theme.dart';
+import 'package:common/util/navigations.dart';
 import 'package:common/util/ui.dart';
 import 'package:core/ui/base/async_view_model_observer.dart';
+import 'package:core/ui/base/live_data.dart';
 import 'package:core/ui/base/view_model.dart';
 import 'package:flutter/cupertino.dart';
 
 class BabyHomePage extends StatelessWidget {
+  final overlayVisibility = MutableLiveData(false);
 
   @override
   Widget build(BuildContext context) {
     final vm = ViewModelProvider.of<BabyHomeVm>(context)
       ..getBabyAgeOverview()
-      ..getBabyFormMenuList();
+      ..getBabyFormMenuList()
+      ..getBabyOverlay();
 
     return TopBarTitleAndBackFrame(
-      isScroll: true,
+      withTopOffset: true,
       title: Strings.my_baby,
+      topBarChild: BabyOverlayControlBtn(
+        text: Strings.my_baby,
+        visibilityController: overlayVisibility,
+      ),
+      contentOverlay: BabySelectionOverlay(
+        visibilityController: overlayVisibility,
+        bornBabyList: vm.bornBabyList,
+        unbornBabyList: vm.unbornBabyList,
+        onItemClick: (baby, isBorn) {
+          if(!isBorn) { // unborn baby must always be 1. Off course though.
+            //backPage(context);
+            BabyRoutes.obj.goToModule(context, GlobalRoutes.kehamilanku, replaceCurrent: true);
+            /*
+            Future.delayed(Duration(milliseconds: 700), () {
+              BabyRoutes.obj.goToModule(context, GlobalRoutes.kehamilanku);
+            });
+             */
+          }
+          showSnackBar(context, "Nama= ${baby.name} isBorn= $isBorn");
+        },
+      ),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 10),
         child: BelowTopBarScrollContentArea(

@@ -19,7 +19,7 @@ class EducationHomePage extends StatelessWidget {
         ..getTipsList();
 
     return TopBarTitleAndBackFrame(
-      isScroll: true,
+      withTopOffset: true,
       title: "Info dan Tips",
       body: BelowTopBarScrollContentArea(slivers: [
         SliverList(

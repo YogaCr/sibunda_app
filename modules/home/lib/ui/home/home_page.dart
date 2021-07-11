@@ -51,7 +51,7 @@ class HomePage extends StatelessWidget {
     );
 
     return TopBarPlainFrame(
-      isScroll: true,
+      withTopOffset: true,
       bgColor: grey_calmer,
       topBarChildren: [
         profileWidget,

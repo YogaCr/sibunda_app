@@ -21,7 +21,7 @@ class BabyGrowthGraphMenuPage extends StatelessWidget {
       ..getMenu();
 
     return TopBarTitleAndBackFrame(
-      isScroll: true,
+      withTopOffset: true,
       title: "Grafik Pertumbuhan",
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 10),

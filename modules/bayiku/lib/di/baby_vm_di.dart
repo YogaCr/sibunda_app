@@ -16,6 +16,8 @@ class BabyVmDi {
   static BabyHomeVm get babyHomeVm => BabyHomeVm(
     getBabyAgeOverview: BabyUseCaseDi.getBabyAgeOverview,
     getBabyFormMenuList: BabyUseCaseDi.getBabyFormMenuList,
+    getBornBabyList: UseCaseDi.getBornBabyList,
+    getUnbornBabyList: UseCaseDi.getUnbornBabyList,
   );
   static BabyCheckFormVm get babyCheckFormVm => BabyCheckFormVm(
     getBabyCheckForm: BabyUseCaseDi.getBabyCheckForm,

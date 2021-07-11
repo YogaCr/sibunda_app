@@ -17,6 +17,7 @@ class BelowTopBarOverlay extends StatelessWidget {
   final bool autoCancel;
   final MutableLiveData<bool> visibilityController;
   final void Function()? onCancel;
+  late double mostHeight;
 
   BelowTopBarOverlay({
     required this.child,
@@ -29,9 +30,6 @@ class BelowTopBarOverlay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final screenSize = MediaQuery.of(context).size;
-    final horizontalMargin = screenSize.width *0.8 / 10;
-    final mostHeight = (screenSize.height - stdTopMargin) - (screenSize.height *0.8 / 10);
 
     return LiveDataObserver<bool>(
       immediatelyBuildState: true,
@@ -46,28 +44,40 @@ class BelowTopBarOverlay extends StatelessWidget {
             onCancel?.call();
           },
           child: Container(
+            width: double.infinity,
             color: black_trans_more,
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
               //mainAxisSize: MainAxisSize.min,
               children: [
                 GestureDetector(
                   onTap: () {
                     prind("`autoCancel` cancelled");
                   }, //to cancel the autoCancel GestureDetector's onTap.
-                  child: Container(
-                    constraints: BoxConstraints(
-                      minHeight: 10,
-                      maxHeight: mostHeight,
-                    ),
-                    margin: EdgeInsets.symmetric(horizontal: horizontalMargin,)
-                        .copyWith(bottom: 20, top: stdTopMargin),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(10),
-                      child: Container(
-                        color: Colors.white,
-                        child: child,
-                      ),
-                    ),
+                  child: Builder(
+                    builder: (ctx) {
+                      final screenSize = MediaQuery.of(ctx).size;
+                      final horizontalMargin = screenSize.width *0.8 / 10;
+                      final mostHeight = (screenSize.height - stdTopMargin) - (screenSize.height *0.8 / 10);
+                      //prind("mostHeight = $mostHeight");
+
+                      return Container(
+                        width: double.infinity,
+                        constraints: BoxConstraints(
+                          minHeight: 10,
+                          maxHeight: mostHeight,
+                        ),
+                        margin: EdgeInsets.symmetric(horizontal: horizontalMargin,)
+                            .copyWith(bottom: 20, top: stdTopMargin),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: Container(
+                            color: Colors.white,
+                            child: child,
+                          ),
+                        ),
+                      );
+                    },
                   ),
                 ),
               ],

@@ -12,6 +12,7 @@ import 'package:common/res/theme/_theme.dart';
 import 'package:common/util/ui.dart';
 import 'package:common/value/const_values.dart';
 import 'package:core/ui/base/async_view_model_observer.dart';
+import 'package:core/ui/base/live_data.dart';
 import 'package:core/ui/base/view_model.dart';
 import 'package:core/util/_consoles.dart';
 import 'package:flutter/cupertino.dart';
@@ -24,6 +25,7 @@ import 'package:kehamilanku/ui/home/kehamilanku_home_vm.dart';
 
 
 class KehamilankuHomePage extends StatelessWidget {
+  final overlayVisibility = MutableLiveData(false);
 
   @override
   Widget build(BuildContext context) {
@@ -31,12 +33,28 @@ class KehamilankuHomePage extends StatelessWidget {
     final vm = ViewModelProvider.of<KehamilankuHomeVm>(context)
       ..getAgeOverview("")
       ..getTrimesterList()
-      ..getFoodRecomList();
+      ..getFoodRecomList()
+      ..getBabyOverlay();
     prind("KehamilankuHomePage build() 2");
 
     return TopBarTitleAndBackFrame(
       title: Strings.my_pregnancy,
-      isScroll: true,
+      withTopOffset: true,
+      topBarChild: BabyOverlayControlBtn(
+        text: Strings.my_pregnancy,
+        visibilityController: overlayVisibility,
+      ),
+      contentOverlay: BabySelectionOverlay(
+        visibilityController: overlayVisibility,
+        bornBabyList: vm.bornBabyList,
+        unbornBabyList: vm.unbornBabyList,
+        onItemClick: (baby, isBorn) {
+          if(!isBorn) { // unborn baby must always be 1. Off course though.
+            overlayVisibility.value = false;
+          }
+          showSnackBar(context, "Nama= ${baby.name} isBorn= $isBorn");
+        },
+      ),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 15),
         child: BelowTopBarScrollContentArea(

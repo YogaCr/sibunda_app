@@ -66,7 +66,7 @@ class KehamilankuTrimesterFormPage extends StatelessWidget {
     final weekList = List.generate(weekCount, (index) => "Minggu ${index + startWeek}");
 
     return TopBarTitleAndBackFrame(
-      isScroll: true,
+      withTopOffset: true,
       title: "Trimester ${trimester.trimester}",
 
       topBarChild: SizedBox(

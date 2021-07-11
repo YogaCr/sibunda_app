@@ -43,7 +43,7 @@ class NeonatalServicePage extends StatelessWidget {
     });
 
     return TopBarTitleAndBackFrame(
-      isScroll: true,
+      withTopOffset: true,
       title: "Form Bayiku",
       topBarChild: SizedBox(
         height: 50,

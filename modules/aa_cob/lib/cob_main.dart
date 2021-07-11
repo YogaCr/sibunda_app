@@ -3,6 +3,7 @@ import 'package:common/arch/data/local/db/app_db.dart';
 import 'package:common/arch/data/local/db/executor/shared.dart';
 import 'package:common/arch/data/remote/api/data_api.dart';
 import 'package:common/arch/domain/dummy_data.dart';
+import 'package:common/arch/domain/model/baby_data.dart';
 import 'package:common/arch/domain/model/form_data.dart';
 import 'package:common/arch/domain/model/img_data.dart';
 import 'package:common/arch/ui/adapter/child_overlay_adp.dart';
@@ -11,6 +12,7 @@ import 'package:common/arch/ui/page/secondary_frames.dart';
 import 'package:common/arch/ui/vm/form_vm_group.dart';
 import 'package:common/arch/ui/widget/_basic_widget.dart';
 import 'package:common/arch/ui/widget/_items_education.dart';
+import 'package:common/arch/ui/widget/_items_kehamilanku.dart';
 import 'package:common/arch/ui/widget/form_generic_group.dart';
 import 'package:common/arch/ui/widget/form_generic_vm_group_observer.dart';
 import 'package:common/arch/ui/widget/overlay_widget.dart';
@@ -40,6 +42,8 @@ void main() async {
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   final visibility = MutableLiveData(true);
+  final bornBabyList = MutableLiveData<List<BabyOverlayData>>();
+  final unbornBabyList = MutableLiveData<List<BabyOverlayData>>();
 
   @override
   Widget build(BuildContext context) {
@@ -49,6 +53,8 @@ class MyApp extends StatelessWidget {
 
     final txtC = TextEditingController();
 
+    _resetBabyOverlayData();
+
     return MaterialApp(
       title: 'Flutter Cob',
       theme: Manifest.theme.materialData,
@@ -57,44 +63,23 @@ class MyApp extends StatelessWidget {
           builder: (ctx) => TopBarTitleAndBackFrame(
             withTopOffset: true,
             title: "Haloa",
-            topBarChild: LiveDataObserver<bool>(
-              liveData: visibility,
-              builder: (ctx, vis) => Container(
-                margin: EdgeInsets.only(bottom: 10,),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    TxtSuffixIcon(
-                      color: Manifest.theme.primaryHighlightColor,
-                      txt: "Tekan aku",
-                      onClick: () => visibility.value = visibility.value != true,
-                      suffix: vis == true
-                          ? Icon(Icons.keyboard_arrow_up_rounded, color: white,)
-                          : Icon(Icons.keyboard_arrow_down_rounded, color: white,),
-                    ),
-                  ],
-                ),
-              ),
+            topBarChild: BabyOverlayControlBtn(
+              text: "Tekan aku",
+              visibilityController: visibility,
+              onClick: (isVisible) {
+                if(isVisible) {
+                  _resetBabyOverlayData();
+                }
+              },
             ),
             contentOverlay: Stack(
               children: [
-                BelowTopBarOverlay(
+                BabySelectionOverlay(
                   visibilityController: visibility,
                   onCancel: () => showSnackBar(ctx, "Cancel overlay"),
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 10,),
-                    child: ChildrenListOverlay(
-                      bornBabyList: [
-                        ...dummyBabyOverlayDataList_baby,
-                        ...dummyBabyOverlayDataList_baby,
-                      ],
-                      unbornBabyList: [
-                        ...dummyBabyOverlayDataList_pregnancy,
-                        //...dummyBabyOverlayDataList_pregnancy
-                      ],
-                      onItemClick: (data) => showSnackBar(ctx, "Bayi = ${data.name}"),
-                    ),
-                  )
+                  onItemClick: (data, isBorn) => showSnackBar(ctx, "Bayi = ${data.name} isBorn = $isBorn"),
+                  bornBabyList:  bornBabyList,
+                  unbornBabyList: unbornBabyList,
                 ),
 /*
                 Align(
@@ -170,6 +155,21 @@ class MyApp extends StatelessWidget {
       ),
        */
     );
+  }
+
+  void _resetBabyOverlayData() {
+    bornBabyList.value = null;
+    unbornBabyList.value = null;
+    Future.delayed(Duration(seconds: 5), () {
+      bornBabyList.value = [
+        ...dummyBabyOverlayDataList_baby,
+        ...dummyBabyOverlayDataList_baby,
+      ];
+      unbornBabyList.value = [
+        ...dummyBabyOverlayDataList_pregnancy,
+        //...dummyBabyOverlayDataList_pregnancy
+      ];
+    });
   }
 }
 

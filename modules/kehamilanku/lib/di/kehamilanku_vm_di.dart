@@ -15,6 +15,8 @@ class KehamilankuVmDi {
     getPregnancyAgeOverview: KehamilankuUseCaseDi.getPregnancyAgeOverview,
     getTrimesterList: KehamilankuUseCaseDi.getTrimesterList,
     getMotherFoodRecomList: KehamilankuUseCaseDi.getMotherFoodRecomList,
+    getBornBabyList: UseCaseDi.getBornBabyList,
+    getUnbornBabyList: UseCaseDi.getUnbornBabyList,
   );
   static KehamilankuCheckFormVm get checkFormVm => KehamilankuCheckFormVm(
     getPregnancyCheckUpId: UseCaseDi.getPregnancyCheckUpId,
