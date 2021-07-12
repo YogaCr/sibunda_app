@@ -54,3 +54,8 @@ String capitalizeEach(String str) {
   buffer.write("${capitalizeFirst(list.last)}");
   return buffer.toString();
 }
+
+String toIntDuoStr(int i) {
+  var res = i.toString();
+  return res.length < 2 ? "0$res" : res;
+}

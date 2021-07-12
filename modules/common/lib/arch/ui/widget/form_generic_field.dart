@@ -1,4 +1,5 @@
 import 'package:common/arch/ui/model/form_data.dart';
+import 'package:common/arch/ui/widget/form_controller.dart';
 import 'package:common/arch/ui/widget/img_widget.dart';
 import 'package:common/arch/ui/widget/txt_input.dart';
 import 'package:common/res/string/_string.dart';
@@ -29,6 +30,10 @@ class TxtField<D> extends SibFormField {
   final LiveData<bool>? isValid;
   final LiveData<bool>? isEnabledController;
   late final MutableLiveData<D> _response; //TODO: msh blum di dispose.
+
+  /// This is just for input. It means, if [_response.value] changes,
+  /// [_controller] won't be notified.
+  final FieldController<D>? _controller;
   final TextEditingController _textController = TextEditingController();
   @override
   LiveData<D> get responseLiveData => _response;
@@ -63,8 +68,11 @@ class TxtField<D> extends SibFormField {
     this.rawResponseMapper,
     bool? isLiveDataOwner,
     //TextEditingController? textController,
-    MutableLiveData<D>? responseLiveData
-  }): this.isLiveDataOwner = isLiveDataOwner ?? responseLiveData == null
+    MutableLiveData<D>? responseLiveData,
+    FieldController<D>? controller,
+  }):
+    this.isLiveDataOwner = isLiveDataOwner ?? responseLiveData == null,
+    _controller = controller
   //  this.textController = textController ?? TextEditingController()
   {
     _response = responseLiveData ?? MutableLiveData();
@@ -89,6 +97,16 @@ class TxtField<D> extends SibFormField {
         isChanging.value = false;
       }
     });
+
+    if(_controller != null) {
+      _controller!.observe(_response, (data) {
+        //if(!isChanging.value) {
+          //isChanging.value = true;
+          _response.value = data;
+          //isChanging.value = false;
+        //}
+      });
+    }
 
     if(enabled && !readOnly) {
       _textController.addListener(() {
@@ -255,6 +273,10 @@ class RadioGroup extends SibFormField {
   final LiveData<bool>? isValid;
   final LiveData<bool>? isEnabledController;
   final MutableLiveData<String> groupValueLiveData;
+
+  /// This is just for input. It means, if [_response.value] changes,
+  /// [_controller] won't be notified.
+  final FieldController<String>? _controller;
   @override
   LiveData<String> get responseLiveData => groupValueLiveData;
   final bool isLiveDataOwner;
@@ -277,14 +299,23 @@ class RadioGroup extends SibFormField {
     this.enabled = true,
     this.invalidMsgGenerator,
     MutableLiveData<String>? groupValueLiveData,
+    FieldController<String>? controller,
     bool? isLiveDataOwner,
   }):
     this.groupValueLiveData = groupValueLiveData ?? MutableLiveData(),
-    this.isLiveDataOwner = isLiveDataOwner ?? groupValueLiveData == null
+    this.isLiveDataOwner = isLiveDataOwner ?? groupValueLiveData == null,
+    _controller = controller
   {
+/*
     this.groupValueLiveData.observeForever((data) {
       prind("RadioGroup this.groupValueLiveData.observeForever data = $data");
     });
+ */
+    if(_controller != null) {
+      _controller!.observe(this.groupValueLiveData, (data) {
+        this.groupValueLiveData.value = data;
+      });
+    }
   }
 
   @override
@@ -405,6 +436,11 @@ class CheckGroup extends SibFormField {
   final LiveData<bool>? isValid;
   final LiveData<bool>? isEnabledController;
   final MutableLiveData<Set<int>> selectedIndicesLiveData;
+
+  /// This is just for input. It means, if [_response.value] changes,
+  /// [_controller] won't be notified.
+  final FieldController<Set<int>>? _controller;
+
   @override
   LiveData<Set<int>> get responseLiveData => selectedIndicesLiveData;
   final bool isLiveDataOwner;
@@ -427,11 +463,19 @@ class CheckGroup extends SibFormField {
     this.enabled = true,
     this.invalidMsgGenerator,
     MutableLiveData<Set<int>>? selectedIndicesLiveData,
+    FieldController<Set<int>>? controller,
     bool? isLiveDataOwner,
   }):
     this.selectedIndicesLiveData = selectedIndicesLiveData ?? MutableLiveData(),
-    this.isLiveDataOwner = isLiveDataOwner ?? selectedIndicesLiveData == null
-  ;
+    this.isLiveDataOwner = isLiveDataOwner ?? selectedIndicesLiveData == null,
+    _controller = controller
+  {
+    if(_controller != null) {
+      _controller!.observe(this.selectedIndicesLiveData, (data) {
+        this.selectedIndicesLiveData.value = data;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -7,6 +7,8 @@ import 'package:common/arch/ui/adapter/top_bar_item_list_adp.dart';
 import 'package:common/arch/ui/page/secondary_frames.dart';
 import 'package:common/arch/ui/widget/_basic_widget.dart';
 import 'package:common/arch/ui/widget/_item_template.dart';
+import 'package:common/arch/ui/widget/form_controller.dart';
+import 'package:common/arch/ui/widget/form_faker.dart';
 import 'package:common/arch/ui/widget/form_generic_vm_group_observer.dart';
 import 'package:common/arch/ui/widget/popup_widget.dart';
 import 'package:common/config/_config.dart';
@@ -27,6 +29,11 @@ import 'baby_check_form_vm.dart';
 class BabyCheckFormPage extends StatelessWidget {
   //final scrollCtrl = ScrollController();
   final pageController = PageController();
+  final FormGroupInterceptor? interceptor;
+
+  BabyCheckFormPage({
+    this.interceptor,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -81,6 +88,7 @@ class BabyCheckFormPage extends StatelessWidget {
         child: PageView(
           controller: pageController,
           children: List.generate(monthCount, (index) => _MonthlyCheckFormPage(
+            interceptor: interceptor,
             vm: vm,
             month: index +monthStart,
             year: formMenu.year,
@@ -96,11 +104,13 @@ class _MonthlyCheckFormPage extends StatelessWidget {
   final int year;
   final BabyCheckFormVm vm;
   final scrollControl = ScrollController();
+  final FormGroupInterceptor? interceptor;
 
   _MonthlyCheckFormPage({
     required this.month,
     required this.year,
     required this.vm,
+    this.interceptor,
   });
 
   @override
@@ -142,6 +152,7 @@ class _MonthlyCheckFormPage extends StatelessWidget {
           margin: EdgeInsets.only(bottom: 15),
           child: FormVmGroupObserver<BabyCheckFormVm>(
             vm: vm,
+            interceptor: interceptor,
             imgPosition: RelativePosition.below,
             predicate: () => vm.currentMonth.value == month,
                 //|| vm.currentMonth.value == month -1

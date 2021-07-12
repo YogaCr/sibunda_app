@@ -242,6 +242,7 @@ abstract class FormVmGroup extends AsyncVm with FormVmGroupMixin {
       prine(stack);
       _isFormReady.value = isFormReadyBefore;
     }).then((fieldGroupList) {
+      prind("FormVmGroupMixin.init().getFieldGroupList().then() fieldGroupList = $fieldGroupList");
       _fieldGroupList = fieldGroupList.map((e) => MutableLiveData(e)).toList(growable: false);
       int i = 0;
       _responseGroupList = fieldGroupList.map((e) {

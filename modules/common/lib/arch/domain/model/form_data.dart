@@ -2,6 +2,7 @@ import 'package:common/arch/data/remote/model/baby_check_form_api_model.dart';
 import 'package:common/arch/data/remote/model/covid_check_api_model.dart';
 import 'package:common/arch/domain/dummy_form_field_data.dart';
 import 'package:common/arch/domain/model/img_data.dart';
+import 'package:common/arch/ui/widget/form_faker.dart';
 import 'package:common/res/string/_string.dart';
 import 'package:common/util/collections.dart';
 import 'package:core/ui/base/live_data.dart';
@@ -26,6 +27,25 @@ enum FieldInputMethod {
   pick,
 }
 
+/// This is just help for [FormFaker].
+enum InputType {
+  // ==== For FieldInputMethod.text =====
+  text,
+  number,
+  int,
+  email,
+  password,
+  person,
+  char,
+
+  // ==== For any FieldInputMethod =====
+  selection,
+
+  /// No constraint of input.
+  any,
+}
+
+
 class FormData {
   final String key;
   final String question;
@@ -34,6 +54,7 @@ class FormData {
   final List<ImgData>? img;
   final FormType type;
   final FieldInputMethod input;
+  final InputType inputType;
   final bool isInputEnabled;
 
   FormData({
@@ -44,6 +65,7 @@ class FormData {
     this.answer,
     this.options,
     this.input = FieldInputMethod.direct,
+    this.inputType = InputType.any,
     this.isInputEnabled = true,
   });
 

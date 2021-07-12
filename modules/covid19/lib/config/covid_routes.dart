@@ -1,4 +1,6 @@
 import 'package:common/arch/ui/page/_page.dart';
+import 'package:common/arch/ui/widget/form_controller.dart';
+import 'package:common/arch/ui/widget/form_faker.dart';
 import 'package:common/config/_config.dart';
 import 'package:common/util/providers.dart';
 import 'package:common/value/const_values.dart';
@@ -35,11 +37,17 @@ class _CovidCheckPageRoute {
   _CovidCheckPageRoute._();
   static final obj = _CovidCheckPageRoute._();
 
-  final _route = SibRoute("CovidCheckPage", CovidCheckPage, (ctx) => MainFrame(
-    body: CovidCheckPage().inVmProvider([
-          (ctx) => CovidVmDi.checkVm,
-    ]),
-  ));
+  final _route = SibRoute("CovidCheckPage", CovidCheckPage, (ctx) {
+    final FormGroupInterceptor? interceptor = FormGroupInterceptor();
+    return MainFrame(
+      body: FormFaker(
+        interceptor: interceptor,
+        child: CovidCheckPage(interceptor: interceptor,).inVmProvider([
+              (ctx) => CovidVmDi.checkVm,
+        ]),
+      ),
+    );
+  });
 
   Future<void> go(BuildContext context, { required bool isMother }) {
     return _route.goToPage(context, args: { Const.KEY_DATA : isMother });

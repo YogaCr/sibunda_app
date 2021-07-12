@@ -2,6 +2,7 @@ import 'package:common/arch/domain/model/form_data.dart';
 import 'package:common/arch/ui/model/form_data.dart';
 import 'package:common/arch/ui/vm/form_vm.dart';
 import 'package:common/arch/ui/vm/form_vm_group.dart';
+import 'package:common/arch/ui/widget/form_controller.dart';
 import 'package:common/config/manifest.dart';
 import 'package:common/res/string/_string.dart';
 import 'package:common/res/theme/_theme.dart';
@@ -28,6 +29,7 @@ class FormGenericGroup extends StatefulWidget {
   /// Flag whether 'all' fields in this [FormGenericGroup] is enabled or not.
   final bool enabled;
   final Widget? Function(int group, String key, MutableLiveData data)? pickerIconBuilder;
+  final FormInterceptor? interceptor;
   //final String Function(int group, String key, dynamic data)? pickedDataRepresentator;
 
   FormGenericGroup({
@@ -38,6 +40,7 @@ class FormGenericGroup extends StatefulWidget {
     this.showHeader = true,
     this.enabled = true,
     this.pickerIconBuilder,
+    this.interceptor,
     //this.pickedDataRepresentator,
   });
 
@@ -50,6 +53,7 @@ class FormGenericGroup extends StatefulWidget {
     showHeader: showHeader,
     enabled: enabled,
     pickerIconBuilder: pickerIconBuilder,
+    interceptor: interceptor,
     //pickedDataRepresentator: pickedDataRepresentator,
   );
 }
@@ -69,6 +73,8 @@ class _FormGenericGroupState
   final Widget? Function(int group, String key, MutableLiveData data)? pickerIconBuilder;
   //final String Function(int group, String key, dynamic data)? pickedDataRepresentator;
 
+  final FormInterceptor? interceptor;
+
   /// Its keys are keys of [FormGenericVm.keyLabelList].
   final Map<String, MutableLiveData> itemLiveData = {};
 
@@ -81,6 +87,7 @@ class _FormGenericGroupState
     required this.enabled,
     //required this.dataPicker,
     required this.pickerIconBuilder,
+    required this.interceptor,
     //required this.pickedDataRepresentator,
   });
 
@@ -92,6 +99,18 @@ class _FormGenericGroupState
       groupData.data.length,
           (i) {
         final key = groupData.data[i].key;
+        final interceptor = this.interceptor?[key];
+        if(interceptor != null) {
+          vm.isFormEnabled.observe(interceptor, (isEnable) {
+            interceptor.isEnabled = isEnable == true;
+          });
+        }
+        /*
+        interceptor?.observe(this, (fieldData) {
+          prind("interceptor?.observe fieldData = $fieldData");
+        });
+         */
+
         Widget field;
         //Widget Function(BuildContext, bool?)? fieldBuilder_old;
         final itemData = groupData.data[i];
@@ -102,7 +121,6 @@ class _FormGenericGroupState
           case FormType.text:
             //final txtLiveData = MutableLiveData<String>();
             //itemLiveData[key] = txtLiveData;
-
             Widget? suffixIcon;
             String Function(dynamic)? responseRepresentator;
 
@@ -153,6 +171,7 @@ class _FormGenericGroupState
             }
 
             final enabled = this.enabled && itemData.isInputEnabled;
+            interceptor?.isEnabled = enabled;
             if(!enabled && responseRepresentator == null) {
               responseRepresentator = (resp) => vm.getResponseStringRepr(groupPosition, key, resp);
             }
@@ -168,6 +187,7 @@ class _FormGenericGroupState
               enabled: enabled,
               readOnly: itemData.input != FieldInputMethod.direct,
               getResponseRepresentation: responseRepresentator,
+              controller: interceptor,
             );
 /*
             txtControl = (field as TxtField).textController;
@@ -211,6 +231,9 @@ class _FormGenericGroupState
             final groupValue = MutableLiveData<String>();
             itemLiveData[key] = groupValue;
 
+            final enabled = this.enabled && itemData.isInputEnabled;
+            interceptor?.isEnabled = enabled;
+
             field = RadioGroup(
               itemData: itemData as FormUiRadio,
               isValid: groupRespMap[key]!.isValid,
@@ -218,7 +241,8 @@ class _FormGenericGroupState
               invalidMsgGenerator: (response) => vm.getInvalidMsg(key, groupValue.value),
               groupValueLiveData: groupValue,
               imgPosition: imgPosition,
-              enabled: enabled && itemData.isInputEnabled,
+              enabled: enabled,
+              controller: interceptor as FieldController<String>?,
             );
 
             vmLiveData.observe(this, (data) {
@@ -243,6 +267,9 @@ class _FormGenericGroupState
             final selectedAnswerIndices = MutableLiveData<Set<int>>({});
             itemLiveData[key] = selectedAnswerIndices;
 
+            final enabled = this.enabled && itemData.isInputEnabled;
+            interceptor?.isEnabled = enabled;
+
             field = CheckGroup(
               itemData: itemData as FormUiCheck,
               isValid: groupRespMap[key]!.isValid,
@@ -250,7 +277,8 @@ class _FormGenericGroupState
               invalidMsgGenerator: (response) => vm.getInvalidMsg(key, selectedAnswerIndices.value),
               selectedIndicesLiveData: selectedAnswerIndices,
               imgPosition: imgPosition,
-              enabled: enabled && itemData.isInputEnabled,
+              enabled: enabled,
+              controller: interceptor as FieldController<Set<int>>?,
             );
 
             vmLiveData.observe(this, (data) {

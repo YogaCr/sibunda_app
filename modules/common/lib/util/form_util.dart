@@ -1,3 +1,4 @@
+import 'package:common/util/text.dart';
 import 'package:common/util/times.dart';
 import 'package:core/util/_consoles.dart';
 import 'package:flutter/cupertino.dart';
@@ -45,7 +46,7 @@ String getTextForTextController(any, { BuildContext? context }) {
   if(any is DateTime) return syncFormatTime(any);
   if(any is TimeOfDay) {
     if(context == null) {
-      return any.toString();
+      return "${toIntDuoStr(any.hour)}:${toIntDuoStr(any.minute)}";
     }
     return any.format(context);
   }

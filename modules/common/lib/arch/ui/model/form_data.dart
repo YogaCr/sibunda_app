@@ -59,10 +59,12 @@ abstract class FormUiData extends Equatable {
 
 class FormUiTxt extends FormUiData {
   final String? answer;
+  final InputType inputType;
 
   FormUiTxt({
     required String key,
     required String question,
+    required this.inputType,
     this.answer,
     bool isInputEnabled = true,
     FieldInputMethod input = FieldInputMethod.direct,
@@ -78,7 +80,8 @@ class FormUiTxt extends FormUiData {
 
   factory FormUiTxt.fromModel(FormData data) => FormUiTxt(
     key: data.key, question: data.question, answer: data.answer, img: data.img,
-    input: data.input, isInputEnabled: data.isInputEnabled,
+    input: data.input, inputType: data.inputType,
+    isInputEnabled: data.isInputEnabled,
   );
 }
 

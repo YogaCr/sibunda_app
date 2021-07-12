@@ -57,10 +57,10 @@ class DoubleRange with NumRange {
 
 /// [end] is exclusive.
 /// If [end] is null, then [startOrStep] act as exclusive end.
-IntRange range(int startOrStep, {
+IntRange range(int end, {
   int start = 0,
-  int? end,
 }) {
-  int inclusiveEnd = end != null ? end - 1 : startOrStep;
-  return IntRange(start, inclusiveEnd);
+  //final usedStart = end != null ? start :
+  //int inclusiveEnd = end != null ? end - 1 : startOrStep -1;
+  return IntRange(start, end-1);
 }

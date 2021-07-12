@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:core/domain/model/range.dart';
 import 'package:core/util/_consoles.dart';
 
 main() async {
@@ -10,6 +11,10 @@ main() async {
   print("file = $file");
   final str = file.readAsStringSync();
   print("str = $str");
+
+  for(final i in range(10, start: 8)) {
+    prind("for i = $i");
+  }
 }
 
 /*

@@ -11,6 +11,8 @@ import 'package:common/arch/domain/model/chart_data_baby.dart';
 import 'package:common/arch/domain/model/immunization.dart';
 import 'package:common/arch/ui/model/immunization_data.dart';
 import 'package:common/arch/ui/page/_page.dart';
+import 'package:common/arch/ui/widget/form_controller.dart';
+import 'package:common/arch/ui/widget/form_faker.dart';
 import 'package:common/config/_config.dart';
 import 'package:common/util/providers.dart';
 import 'package:common/util/navigations.dart' as nav_ext;
@@ -41,11 +43,17 @@ class BabyRoutes extends ModuleRoute {
     ]),
   ));
   static final babyCheckPage = _BabyCheckFormPage.obj;
-  static final neonatalServicePage = SibRoute("NeonatalServicePage", NeonatalServicePage, (ctx) => MainFrame(
-    body: NeonatalServicePage().inVmProvider([
-      (ctx) => BabyVmDi.neonatalServiceVm,
-    ]),
-  ));
+  static final neonatalServicePage = SibRoute("NeonatalServicePage", NeonatalServicePage, (ctx) {
+    final FormGroupInterceptor? interceptor = FormGroupInterceptor();
+    return MainFrame(
+      body: FormFaker(
+        interceptor: interceptor,
+        child: NeonatalServicePage(interceptor: interceptor,).inVmProvider([
+              (ctx) => BabyVmDi.neonatalServiceVm,
+        ]),
+      ),
+    );
+  });
 
   static final babyImmunizationPage = _BabyImmunizationPageRoute.obj;
   static final growthChartMenuVm = SibRoute("BabyGrowthChartMenuVm", BabyGrowthChartMenuPage, (ctx) => MainFrame(
@@ -64,11 +72,17 @@ class _BabyCheckFormPage {
   _BabyCheckFormPage._();
   static final obj = _BabyCheckFormPage._();
 
-  final SibRoute _route = SibRoute("BabyCheckFormPage", BabyCheckFormPage, (ctx) => MainFrame(
-    body: BabyCheckFormPage().inVmProvider([
-          (ctx) => BabyVmDi.babyCheckFormVm,
-    ]),
-  ));
+  final SibRoute _route = SibRoute("BabyCheckFormPage", BabyCheckFormPage, (ctx) {
+    final FormGroupInterceptor? interceptor = FormGroupInterceptor();
+    return MainFrame(
+      body: FormFaker(
+        interceptor: interceptor,
+        child: BabyCheckFormPage(interceptor: interceptor,).inVmProvider([
+              (ctx) => BabyVmDi.babyCheckFormVm,
+        ]),
+      )
+    );
+  });
 
   void go(BuildContext context, BabyFormMenuData formData) {
     _route.goToPage(context, args: { Const.KEY_DATA: formData });

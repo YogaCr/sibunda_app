@@ -3,6 +3,7 @@ import 'package:common/arch/domain/model/form_warning_status.dart';
 import 'package:common/arch/ui/page/secondary_frames.dart';
 import 'package:common/arch/ui/widget/_basic_widget.dart';
 import 'package:common/arch/ui/widget/_item_template.dart';
+import 'package:common/arch/ui/widget/form_controller.dart';
 import 'package:common/arch/ui/widget/form_generic_vm_group_observer.dart';
 import 'package:common/arch/ui/widget/popup_widget.dart';
 import 'package:common/config/_config.dart';
@@ -21,6 +22,11 @@ import 'covid_check_vm.dart';
 
 class CovidCheckPage extends StatelessWidget {
   final scrollControl = ScrollController();
+  final FormGroupInterceptor? interceptor;
+
+  CovidCheckPage({
+    this.interceptor,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -75,6 +81,7 @@ class CovidCheckPage extends StatelessWidget {
                 margin: EdgeInsets.only(bottom: 15,),
                 child: FormVmGroupObserver<CovidCheckVm>(
                   vm: vm,
+                  interceptor: interceptor,
                   onPreSubmit: (ctx, canProceed) {
                     if(canProceed != true) {
                       showSnackBar(ctx, Strings.there_still_invalid_fields);

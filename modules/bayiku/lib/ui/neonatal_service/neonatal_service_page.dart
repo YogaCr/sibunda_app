@@ -1,6 +1,8 @@
 import 'package:common/arch/domain/dummy_form_field_data.dart';
 import 'package:common/arch/ui/adapter/top_bar_item_list_adp.dart';
 import 'package:common/arch/ui/page/secondary_frames.dart';
+import 'package:common/arch/ui/widget/form_controller.dart';
+import 'package:common/arch/ui/widget/form_faker.dart';
 import 'package:common/arch/ui/widget/form_generic_vm_group_observer.dart';
 import 'package:common/arch/ui/widget/popup_widget.dart';
 import 'package:common/arch/ui/widget/txt_btn.dart';
@@ -19,6 +21,11 @@ import 'neonatal_service_vm.dart';
 class NeonatalServicePage extends StatelessWidget {
   //final scrollCtrl = ScrollController();
   final pageController = PageController();
+  final FormGroupInterceptor? interceptor;
+
+  NeonatalServicePage({
+    this.interceptor,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -58,6 +65,7 @@ class NeonatalServicePage extends StatelessWidget {
         child: PageView(
           controller: pageController,
           children: List.generate(pageList.length, (index) => _FormPage(
+            interceptor: interceptor,
             vm: vm,
             page: index,
           )),
@@ -71,10 +79,12 @@ class NeonatalServicePage extends StatelessWidget {
 class _FormPage extends StatelessWidget {
   final int page;
   final NeonatalServiceVm vm;
+  final FormGroupInterceptor? interceptor;
 
   _FormPage({
     required this.page,
     required this.vm,
+    this.interceptor,
   });
 
   @override
@@ -87,6 +97,7 @@ class _FormPage extends StatelessWidget {
           margin: EdgeInsets.only(bottom: 15,),
           child: FormVmGroupObserver<NeonatalServiceVm>(
             vm: vm,
+            interceptor: interceptor,
             imgPosition: RelativePosition.above,
             predicate: () => vm.currentPage.value == page, //|| vm.currentPage == page-1,
             onPreSubmit: (ctx, valid) => valid == true

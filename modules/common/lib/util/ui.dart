@@ -112,8 +112,19 @@ extension GlobalKeyExt on GlobalKey {
   }
 }
 
+/*
 void afaf(){
   final a = GlobalKey();
   final b = a.globalPaintBounds;
 
+}
+
+
+ */
+
+void visitNestedChildren(BuildContext context, void Function(Element) visitor) {
+  context.visitChildElements((child) {
+    visitor(child);
+    visitNestedChildren(child, visitor);
+  });
 }

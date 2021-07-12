@@ -6,6 +6,8 @@ import 'package:common/arch/ui/adapter/top_bar_item_list_adp.dart';
 import 'package:common/arch/ui/page/secondary_frames.dart';
 import 'package:common/arch/ui/widget/_basic_widget.dart';
 import 'package:common/arch/ui/widget/_items_kehamilanku.dart';
+import 'package:common/arch/ui/widget/form_controller.dart';
+import 'package:common/arch/ui/widget/form_faker.dart';
 import 'package:common/arch/ui/widget/form_generic_vm_group_observer.dart';
 import 'package:common/arch/ui/widget/popup_widget.dart';
 import 'package:common/res/string/_string.dart';
@@ -24,6 +26,11 @@ import 'package:kehamilanku/ui/pregnancy_check/kehamilanku_trimester_form_vm.dar
 class KehamilankuTrimesterFormPage extends StatelessWidget {
   //final scrollCtrl = ScrollController();
   final pageController = PageController();
+  final FormGroupInterceptor? interceptor;
+
+  KehamilankuTrimesterFormPage({
+    this.interceptor,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -83,6 +90,7 @@ class KehamilankuTrimesterFormPage extends StatelessWidget {
           controller: pageController,
           children: List.generate(weekCount, (index) => _WeeklyFormPage(
             vm: vm,
+            interceptor: interceptor,
             week: index +startWeek,
           )),
         ),
@@ -95,11 +103,13 @@ class KehamilankuTrimesterFormPage extends StatelessWidget {
 class _WeeklyFormPage extends StatelessWidget {
   final int week;
   final KehamilankuCheckFormVm vm;
+  final FormGroupInterceptor? interceptor;
   final scrollControl = ScrollController();
 
   _WeeklyFormPage({
     required this.week,
     required this.vm,
+    this.interceptor,
   });
 
   @override
@@ -165,6 +175,7 @@ class _WeeklyFormPage extends StatelessWidget {
  */
             FormVmGroupObserver<KehamilankuCheckFormVm>(
               vm: vm,
+              interceptor: interceptor,
               predicate: () {
                 //prind("_WeeklyFormPage FormVmGroupObserver<KehamilankuCheckFormVm>.predicate() week = $week vm.currentWeek.value = ${vm.currentWeek.value}");
                 return vm.currentWeek.value == week;

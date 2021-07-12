@@ -1,3 +1,5 @@
+import 'package:aa_cob/cob_fields.dart';
+import 'package:aa_cob/cob_widget.dart';
 import 'package:common/arch/data/local/dao/data_dao.dart';
 import 'package:common/arch/data/local/db/app_db.dart';
 import 'package:common/arch/data/local/db/executor/shared.dart';
@@ -22,6 +24,7 @@ import 'package:common/arch/ui/widget/txt_suffix_icon.dart';
 import 'package:common/config/_config.dart';
 import 'package:common/res/theme/_theme.dart';
 import 'package:common/test/__common_test_const.dart';
+import 'package:common/util/assets.dart';
 import 'package:common/util/navigations.dart';
 import 'package:common/util/ui.dart';
 import 'package:core/domain/model/result.dart';
@@ -47,6 +50,13 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+/*
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+      context.visitChildElements((e) {
+        prind("context.visitChildElements e= $e type= ${e.runtimeType}");
+      });
+    });
+ */
     //final db = constructDb();
 
     //final cityDao = db.cityDao;
@@ -58,6 +68,20 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Cob',
       theme: Manifest.theme.materialData,
+      home: Scaffold(
+        body: Builder(
+          builder: (ctx) => CobFieldFaker(
+            child: Column(
+              children: [
+                CobField(),
+                SibImages.resolve(dummyImg_smillingCat),
+                CobField(),
+              ],
+            ),
+          ),
+        ),
+      ),
+/*
       home: Scaffold(
         body: Builder(
           builder: (ctx) => TopBarTitleAndBackFrame(
@@ -108,6 +132,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
+// */
 /*
       home: Scaffold(
         body: Builder(
@@ -221,9 +246,9 @@ class _CityList extends StatelessWidget {
         if(snapshot.hasData) {
           final cities = snapshot.data;
           return ListView.builder(
-            itemCount: cities.length,
+            itemCount: cities?.length ?? 0,
             itemBuilder: (ctx, i) => ListTile(
-              title: Text(cities[i].name),
+              title: Text(cities![i].name),
               subtitle: Text(cities[i].id.toString()),
             ),
           );

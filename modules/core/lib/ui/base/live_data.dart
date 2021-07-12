@@ -89,8 +89,9 @@ class LiveData<T> implements Expirable {
 
   @mustCallSuper
   void dispose() {
-    _assertNotDisposed();
-    _observers!.clear();
+    //prind("LiveData of `$runtimeType` is disposed");
+    //_assertNotDisposed();
+    _observers?.clear();
     _observers = null;
     _foreverObservers?.clear();
     _foreverObservers = null;
@@ -155,6 +156,13 @@ class MutableLiveData<T> extends LiveData<T> {
   bool _isChanging = false;
 
   bool get isChanging => _isChanging;
+
+
+  void observeOther(LiveData<T> liveData) {
+    liveData.observe(this, (data) {
+      value = data;
+    });
+  }
 }
 
 
@@ -234,6 +242,13 @@ class MutableChangeNotifLiveData<T>
       notifyObservers(oldValue: old, newValue: v);
       _isChanging = false;
     }
+  }
+
+  @override
+  void observeOther(LiveData<T> liveData) {
+    liveData.observe(this, (data) {
+      value = data;
+    });
   }
 
   final void Function(ChangeNotifier p1, T? value) setNotif;

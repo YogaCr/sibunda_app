@@ -2,6 +2,8 @@ import 'package:common/arch/domain/model/chart_data_mother.dart';
 import 'package:common/arch/domain/model/immunization.dart';
 import 'package:common/arch/domain/model/kehamilanku_data.dart';
 import 'package:common/arch/ui/page/_page.dart';
+import 'package:common/arch/ui/widget/form_controller.dart';
+import 'package:common/arch/ui/widget/form_faker.dart';
 import 'package:common/config/_config.dart';
 import 'package:common/util/providers.dart';
 import 'package:common/util/navigations.dart' as nav_ext;
@@ -64,11 +66,17 @@ class _PregnancyCheckPageRoute {
   _PregnancyCheckPageRoute._();
   static final obj = _PregnancyCheckPageRoute._();
 
-  final SibRoute _route = SibRoute("PregnancyCheckPage", KehamilankuTrimesterFormPage, (ctx) => MainFrame(
-    body: KehamilankuTrimesterFormPage().inVmProvider([
-          (ctx) => KehamilankuVmDi.checkFormVm,
-    ]),
-  ));
+  final SibRoute _route = SibRoute("PregnancyCheckPage", KehamilankuTrimesterFormPage, (ctx) {
+    final FormGroupInterceptor? interceptor = FormGroupInterceptor();
+    return MainFrame(
+      body: FormFaker(
+        interceptor: interceptor,
+        child: KehamilankuTrimesterFormPage(interceptor: interceptor,).inVmProvider([
+              (ctx) => KehamilankuVmDi.checkFormVm,
+        ]),
+      ),
+    );
+  });
 
   void go(BuildContext context, MotherTrimester data) {
     _route.goToPage(context, args: {Const.KEY_TRIMESTER : data});

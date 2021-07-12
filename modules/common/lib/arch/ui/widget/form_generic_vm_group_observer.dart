@@ -13,6 +13,8 @@ import 'package:core/util/_consoles.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import 'form_controller.dart';
+
 class FormVmGroupObserver<VM extends FormVmGroup> extends StatefulWidget {
   /// The [bool] in its parameter is for representation of [FormTxtVm.canProceed].
   final Widget Function(BuildContext, bool?) submitBtnBuilder;
@@ -39,6 +41,7 @@ class FormVmGroupObserver<VM extends FormVmGroup> extends StatefulWidget {
   final bool enabled;
 
   final VM? vm;
+  final FormGroupInterceptor? interceptor;
   final RelativePosition imgPosition;
 
   FormVmGroupObserver({
@@ -51,6 +54,7 @@ class FormVmGroupObserver<VM extends FormVmGroup> extends StatefulWidget {
     this.imgPosition = RelativePosition.below,
     this.showHeader = true,
     this.enabled = true,
+    this.interceptor,
   });
 
   @override
@@ -64,6 +68,7 @@ class FormVmGroupObserver<VM extends FormVmGroup> extends StatefulWidget {
     imgPosition: imgPosition,
     showHeader: showHeader,
     enabled: enabled,
+    interceptor: interceptor,
   );
 }
 
@@ -96,6 +101,7 @@ class _FormVmGroupObserverState<VM extends FormVmGroup>
   final bool enabled;
 
   VM? vm;
+  final FormGroupInterceptor? interceptor;
   final RelativePosition imgPosition;
 
   _FormVmGroupObserverState({
@@ -108,6 +114,7 @@ class _FormVmGroupObserverState<VM extends FormVmGroup>
     required this.imgPosition,
     required this.showHeader,
     required this.enabled,
+    required this.interceptor,
   });
 
   @override
@@ -118,6 +125,7 @@ class _FormVmGroupObserverState<VM extends FormVmGroup>
       //prind("$runtimeType builder  vm.isFormReady = ${vm.isFormReady.value}");
       if(isReady == true) {
         final fieldGroupDataList = vm.fieldGroupList;
+        interceptor?.value = fieldGroupDataList;
         final formGroupList = List<Widget>.generate(fieldGroupDataList.length, (i) {
           return Container(
             child: LiveDataObserver<FormUiGroupData>(
@@ -130,6 +138,7 @@ class _FormVmGroupObserverState<VM extends FormVmGroup>
                 imgPosition: imgPosition,
                 showHeader: showHeader,
                 enabled: enabled,
+                interceptor: interceptor?[i],
               ): defaultLoading(),
             ),
           );
@@ -143,6 +152,17 @@ class _FormVmGroupObserverState<VM extends FormVmGroup>
         return defaultLoading();
       }
     };
+/*
+    if(interceptor != null) {
+      vm.isFormReady.observe(interceptor!, (isReady) {
+        prind("vm.isFormReady.observe(interceptor!) isReady = $isReady");
+        if(isReady == true) {
+          interceptor!.value = vm.fieldGroupList;
+        }
+        //else { interceptor!.disposeAllControllers(); }
+      });
+    }
+ */
 
     final formAreaWidget = LiveDataObserver<bool>(
       liveData: vm.isFormReady,
