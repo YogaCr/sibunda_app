@@ -4,14 +4,95 @@ import 'package:common/arch/ui/widget/form_generic_vm_group_observer.dart';
 import 'package:common/arch/ui/widget/form_vm_observer.dart';
 import 'package:common/res/string/_string.dart';
 import 'package:common/res/theme/_theme.dart';
+import 'package:common/util/navigations.dart';
 import 'package:common/util/ui.dart';
+import 'package:common/value/const_values.dart';
+import 'package:core/ui/base/live_data.dart';
+import 'package:core/ui/base/view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:home/config/home_routes.dart';
 import 'package:home/ui/form_get_started/child_form_vm.dart';
 
 class ChildFormPage extends StatelessWidget {
   final PageController? pageControll;
-  ChildFormPage({ this.pageControll });
+  final PageController innerPageControll = PageController();
+  final LiveData<int>? childCount;
+  final int defaultChildCount = 1;
+
+  ChildFormPage({
+    this.pageControll,
+    this.childCount,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    /*
+    final childCount = getArgs<int>(context, Const.KEY_DATA) ?? 1;
+    if(childCount < 0) {
+      throw "Can't have list with negative int, `childCount` = '$childCount'";
+    }
+     */
+
+    final vm = ViewModelProvider.of<ChildFormVm>(context)
+      //..childCount.value = childCount
+      ..onSaveBatch.observeForever((canProceed) {
+        if(canProceed == true) {
+          if(pageControll != null) {
+            pageControll!.jumpToPage(pageControll!.page!.toInt() +1);
+          } else {
+            HomeRoutes.newAccountConfirmPage.goToPage(context);
+          }
+        }
+      });
+
+    if(childCount != null) {
+      childCount!.observe(vm.childCount, (count) {
+        vm.childCount.value = count;
+      });
+      if(childCount!.value != null) {
+        vm.childCount.value = childCount!.value;
+      }
+    } else {
+      vm.childCount.value = defaultChildCount;
+    }
+
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+      innerPageControll.jumpToPage(0);
+      innerPageControll.notifyListeners();
+    });
+
+    innerPageControll.addListener(() {
+      final page = innerPageControll.page;
+      if(page != null) {
+        int pageInt;
+        if(page == (pageInt = page.toInt())) {
+          vm.currentPage.value = pageInt;
+        }
+      }
+    });
+
+    return PageView(
+      physics: NeverScrollableScrollPhysics(),
+      controller: innerPageControll,
+      children: List.generate(
+        childCount?.value ?? defaultChildCount,
+        (index) => _ChildSingleFormPage(
+          page: index,
+          pageControll: innerPageControll,
+        ),
+      ),
+    );
+  }
+}
+
+class _ChildSingleFormPage extends StatelessWidget {
+  final PageController pageControll;
+  final int page;
+
+  _ChildSingleFormPage({
+    required this.page,
+    required this.pageControll,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -36,11 +117,11 @@ class ChildFormPage extends StatelessWidget {
           onSubmit: (ctx, success) {
             if(success) {
               //showSnackBar(context, "Berhasil", backgroundColor: Colors.green);
-              if(pageControll != null) {
-                pageControll!.jumpToPage(pageControll!.page!.toInt() +1);
-              } else {
-                HomeRoutes.newAccountConfirmPage.goToPage(ctx);
-              }
+              pageControll.animateToPage(
+                pageControll.page!.toInt() +1,
+                duration: Duration(milliseconds: 600,),
+                curve: Curves.easeOut,
+              );
             } else {
               showSnackBar(context, "Terjadi kesalahan",);
             }
@@ -51,60 +132,6 @@ class ChildFormPage extends StatelessWidget {
             onPressed: null, //canProceed == true ? null : () => showSnackBar(context, "Masih ada yg blum valid",),
           ),
         ),
-        //BlocMultiFieldFormBuilder<ChildFormBloc>.defaultInputField(),
-        //BlocFormBuilder<ChildFormBloc>(builders: formBuilders,),
-        /*
-        BlocBuilder<ChildFormBloc, BlocFormState>(
-          builder: (ctx, formState) {
-            return FloatingActionButton(
-                child: Icon(
-                  Icons.arrow_forward_rounded,
-                ),
-                backgroundColor: bloc.canProceed ? pink_300 : grey,
-                onPressed: () async {
-                  if(bloc.canProceed) {
-                    bloc.submitForm();
-                  } else {
-                    showSnackBar(context, Strings.please_check_the_wrong_field);
-                  }
-/*
-                  if(bloc.canProceed){
-                    final response = await AuthService.signUp(nameTextController.text, emailTextController.text, pswdTextController.text);
-                    var errorMsg = "Ada error bro!";
-                    if(response.statusCode == 200){
-                      final response2 = await AuthService.login(emailTextController.text, pswdTextController.text);
-                      if(response2.statusCode == 200){
-                        SibRoutes.homePage.goToPage(context, clearPrevs: true);
-                        return;
-                      } else {
-                        errorMsg = "$errorMsg \nDi login, msg= ${response2.message}";
-                      }
-                    } else {
-                      if(response.statusCode == 500){
-                        final data = response.data.toString();
-                        if(data.contains("duplicate key value violates unique constraint")){
-                          errorMsg = "Email ${emailTextController.text} sudah ada.";
-                          setState(() {
-                            isEmailValid = false;
-                            isEmailAvailable = false;
-                            existingPrevEmail = emailTextController.text;
-                          });
-                        } else {
-                          errorMsg = "code= ${response.statusCode} message= ${response.message}";
-                        }
-                      }
-                      //errorMsg = "$errorMsg \nDi signup, msg= ${response.message}";
-                    }
-                    showSnackBar(context, errorMsg);
-                  } else {
-                    showSnackBar(context, "Mohon cek isian yang salah.");
-                  }
- */
-                }
-            ).withMargin(EdgeInsets.only(top: 30));
-          },
-        ),
-         */
       ],
     ).insideScroll();
   }

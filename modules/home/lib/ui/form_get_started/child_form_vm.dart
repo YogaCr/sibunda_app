@@ -8,23 +8,82 @@ import 'package:common/res/string/_string.dart';
 import 'package:common/util/data_mapper.dart';
 import 'package:common/util/type_util.dart';
 import 'package:common/value/const_values.dart';
+import 'package:core/domain/model/range.dart';
 import 'package:core/domain/model/result.dart';
 import 'package:core/ui/base/live_data.dart';
+import 'package:core/util/_consoles.dart';
 import 'package:home/core/domain/usecase/form_get_started_usecase.dart';
 import 'package:tuple/tuple.dart';
 
 
 class ChildFormVm extends FormVmGroup {
-  ChildFormVm(this._useCase) {
+  static const saveBatchChildrenKey = "saveBatchChildren";
+
+  ChildFormVm({
+    //required SaveChildData saveChildData,
+    required SaveChildrenData saveChildrenData,
+  }):
+    //_saveChildData = saveChildData,
+    _saveChildrenData = saveChildrenData
+  {
+    currentPage.observe(this, (page) {
+      resetResponses();
+    }, distinctUntilChanged: true,);
+    childCount.observe(this, (count) {
+      if(count != null) {
+        if(count < 0) {
+          throw "Can't have negative `count`";
+        }
+        final list = _children.value ??= [];
+        if(count > list.length) {
+          for(final i in range(count - list.length)){
+            list.add(null);
+          }
+        } else if(count < list.length) {
+          for(final i in range(count - list.length)){
+            list.removeLast();
+          }
+        }
+      }
+    });
+    if(childCount.value != null) {
+      childCount.notifyObservers();
+    }
     init();
   }
-  final SaveChildData _useCase;
+  //final SaveChildData _saveChildData; //Now, we use `SaveChildrenData` for batch saving
+  final SaveChildrenData _saveChildrenData;
+/*
+  int? _childCount;
+  int get childCount {
+    if(_childCount == null) {
+      throw "`childCount` is not initialized";
+    }
+    return _childCount!;
+  }
+  set childCount(v) {
+    if(_childCount != null) {
+      throw "`childCount` can only be initialized once";
+    }
+    _children = MutableLiveData(List.generate(v, (index) => null));
+    _childCount = v;
+  }
+ */
+
+  final MutableLiveData<int> childCount = MutableLiveData();
 
   //TODO: <tag>ChildFromVM</tag>
   final MutableLiveData<int> currentPage = MutableLiveData();
 
+  final MutableLiveData<List<Child?>> _children = MutableLiveData();
+
+  final MutableLiveData<bool> _onSaveBatch = MutableLiveData(false);
+  LiveData<bool> get onSaveBatch => _onSaveBatch;
+
+  //LiveData<List<Child>> get children => _children;
+
   @override
-  List<LiveData> get liveDatas => [];
+  List<LiveData> get liveDatas => [currentPage, _children, _onSaveBatch,];
 
   @override
   Set<String>? get mappedKey => {
@@ -56,12 +115,16 @@ class ChildFormVm extends FormVmGroup {
 
   @override
   Future<Result<String>> doSubmitJob() async {
-    final txtMap = getResponseMap();
-    final data = Child.fromJson(txtMap);
-    final res = await _useCase(data, currentPage.value!); //.then<Result<String>>((value) => );
-    return res is Success<bool>
-        ? Success("ok")
-        : (res as Fail<bool>).copy();
+    try {
+      final txtMap = getResponseMap();
+      final data = Child.fromJson(txtMap);
+      _children.value![currentPage.value!] = data;
+      //final res = await _saveChildData(data, currentPage.value!); //.then<Result<String>>((value) => );
+      return Success("ok");
+    } catch(e, stack) {
+      prine(stack);
+      return Fail(msg: "Error submitting in `$runtimeType`", error: e);
+    }
   }
 
   @override
@@ -81,6 +144,26 @@ class ChildFormVm extends FormVmGroup {
       case Const.KEY_CHILD_ORDER: return Strings.field_must_be_number;
     }
     return defaultInvalidMsg;
+  }
+
+  void saveBatchChildren() {
+    if(currentPage.value != childCount.value! -1) {
+      throw "`currentPage` is '${currentPage.value}' and total children count (`pageCount`) is '$childCount'.\n"
+            "There are still some `Child`s with no data.\n"
+            "Thus, can't save batch all `Child`s";
+    }
+    if(_children.value!.any((e) => e == null)) {
+      throw "`_children.value` can't have any null value";
+    }
+    startJob(saveBatchChildrenKey, (isActive) async {
+      final newList = _children.value!.map<Child>((e) => e!).toList(growable: false);
+      final res = await _saveChildrenData(newList);
+      if(res is Success<bool>) {
+        _onSaveBatch.value = res.data;
+        return null;
+      }
+      return res as Fail;
+    });
   }
 }
 

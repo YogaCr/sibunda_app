@@ -8,6 +8,7 @@ import '../dummy_data.dart';
 mixin ChildRepo {
   Future<Result<Child>> getChildData(String nik);
   Future<Result<bool>> saveChildData(Child data);
+  Future<Result<bool>> saveChildrenData(List<Child> data);
   Future<Result<bool>> saveLastChildBirthDate(DateTime date);
   Future<Result<bool>> saveChildrenCount(int count);
 }
@@ -21,6 +22,8 @@ class ChildRepoDummy with ChildRepo {
   Future<Result<Child>> getChildData(String nik) async => Success(dummyChild);
   @override
   Future<Result<bool>> saveChildData(Child data) async => Success(true);
+  @override
+  Future<Result<bool>> saveChildrenData(List<Child> data) async => Success(true);
   @override
   Future<Result<bool>> saveLastChildBirthDate(DateTime date) async => Success(true);
   @override

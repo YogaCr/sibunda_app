@@ -26,7 +26,9 @@ class HomeVmDi {
     saveLastChildBirthDate: HomeUseCaseDi.saveLastChildBirthDate,
     saveChildrenCount: HomeUseCaseDi.saveChildrenCount,
   );
-  static ChildFormVm get childFormVm => ChildFormVm(HomeUseCaseDi.saveChildData);
+  static ChildFormVm get childFormVm => ChildFormVm(
+    saveChildrenData: HomeUseCaseDi.saveChildrenData,
+  );
   static HomeVm get homeVm => HomeVm(
     getHomeMenuList: HomeUseCaseDi.getHomeMenuList,
     getHomeStatusList: HomeUseCaseDi.getHomeStatusList,

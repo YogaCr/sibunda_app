@@ -7,6 +7,9 @@ import 'package:core/domain/model/result.dart';
 mixin SaveChildData {
   Future<Result<bool>> call(Child data, int page);
 }
+mixin SaveChildrenData {
+  Future<Result<bool>> call(List<Child> data);
+}
 
 mixin SaveFatherData {
   Future<Result<bool>> call(Father data);
@@ -68,4 +71,10 @@ class SaveChildrenCountImpl with SaveChildrenCount {
   final ChildRepo _repo;
   SaveChildrenCountImpl(this._repo);
   Future<Result<bool>> call(int count) => _repo.saveChildrenCount(count);
+}
+class SaveChildrenDataImpl with SaveChildrenData {
+  final ChildRepo _repo;
+  SaveChildrenDataImpl(this._repo);
+  @override
+  Future<Result<bool>> call(List<Child> data) => _repo.saveChildrenData(data);
 }

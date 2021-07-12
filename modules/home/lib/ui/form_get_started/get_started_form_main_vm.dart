@@ -26,7 +26,7 @@ class GetStartedFormMainVm extends AsyncVm {
     signUpFormVm = SignUpFormVm(_signup);
     motherVm = MotherFormVm(_saveMotherData);
     fatherVm = FatherFormVm(_saveFatherData);
-    childVm = ChildFormVm(_saveChildData);
+    childVm = ChildFormVm(saveChildrenData: _saveChildrenData);
     motherHplVm = MotherHplVm(saveMotherHpl: _saveMotherHpl);
     childrenCountVm = ChildrenCountVm(
       saveChildrenCount: _saveChildrenCount,
@@ -36,7 +36,7 @@ class GetStartedFormMainVm extends AsyncVm {
   final SignUpAndRegisterOtherData _signUpAndRegisterOtherData;
 
   final _SignupImpl _signup = _SignupImpl();
-  final _SaveChildDataImpl _saveChildData = _SaveChildDataImpl();
+  final _SaveChildrenDataImpl _saveChildrenData = _SaveChildrenDataImpl();
   final _SaveFatherDataImpl _saveFatherData = _SaveFatherDataImpl();
   final _SaveMotherDataImpl _saveMotherData = _SaveMotherDataImpl();
   final _SaveMotherHplImpl _saveMotherHpl = _SaveMotherHplImpl();
@@ -58,7 +58,7 @@ class GetStartedFormMainVm extends AsyncVm {
     _signup.data,
     _saveMotherData.data,
     _saveFatherData.data,
-    _saveChildData.data,
+    _saveChildrenData.data,
     _saveMotherHpl.data,
   ];
 
@@ -69,7 +69,7 @@ class GetStartedFormMainVm extends AsyncVm {
       final signup = _signup.data.value;
       final mother = _saveMotherData.data.value;
       final father = _saveFatherData.data.value;
-      final children = _saveChildData.data.value;
+      final children = _saveChildrenData.data.value;
       prind("sendData() Current data (signup=$signup), (mother=$mother), (father=$father), (children=$children)");
 
       if(signup == null || mother == null || father == null || children == null) {
@@ -118,17 +118,12 @@ class _SignupImpl with SaveSignUpData {
   }
   
 }
-class _SaveChildDataImpl with SaveChildData {
+class _SaveChildrenDataImpl with SaveChildrenData {
   final MutableLiveData<List<Child>> _data = MutableLiveData();
   LiveData<List<Child>> get data => _data;
   @override
-  Future<Result<bool>> call(Child data, int page) async {
-    final list = _data.value ??= [];
-    if(page <= list.length) {
-      list.insert(page, data);
-    } else {
-      list.add(data);
-    }
+  Future<Result<bool>> call(List<Child> data) async {
+    _data.value = data;
     return Success(true); // We return `Success` in intention cuz, in this context, the 'save' means save locally before collective submission in the end of get started related forms.
   }
 }
