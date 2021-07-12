@@ -391,7 +391,7 @@ final motherFormGroupData = <FormGroupData>[
     data: [
       FormData(key: Const.KEY_VISIT_DATE, question: Strings.visit_date, type: FormType.text, input: FieldInputMethod.pickDate),
       FormData(key: Const.KEY_VISIT_PLACE, question: Strings.visit_place, type: FormType.text,),
-      FormData(key: Const.KEY_CHECKER_NAME, question: Strings.checker_name, type: FormType.text,),
+      FormData(key: Const.KEY_CHECKER_NAME, question: Strings.checker_name, type: FormType.text, inputType: InputType.person,),
       FormData(key: Const.KEY_MOTHER_DIFFICULTY, question: Strings.mother_difficulty, type: FormType.text,),
       FormData(key: Const.KEY_WEEK, question: Strings.pregnancy_age, type: FormType.text, isInputEnabled: false),
       FormData(key: Const.KEY_BABY_GENDER, question: Strings.baby_gender, type: FormType.text, inputType: InputType.char), //TODO: isian field udah preset.
