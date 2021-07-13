@@ -15,11 +15,14 @@ import 'mother_form_page.dart';
 import 'mother_hpl_page.dart';
 import 'new_account_confirmation_page.dart';
 
+// ignore: must_be_immutable
 class GetStartedFormMainPage extends StatelessWidget {
   final pageControl = PageController();
   final nestedPageControl = MutableLiveData<PageController>();
   final LiveData<int> page = MutableLiveData(0);
   final FormGroupInterceptor? interceptor;
+
+  late GetStartedFormMainVm vm;
 
   GetStartedFormMainPage({
     this.interceptor,
@@ -27,7 +30,7 @@ class GetStartedFormMainPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final vm = ViewModelProvider.of<GetStartedFormMainVm>(context);
+    vm = ViewModelProvider.of<GetStartedFormMainVm>(context);
 
     return ViewModelProvider(
       creators: [
@@ -35,6 +38,7 @@ class GetStartedFormMainPage extends StatelessWidget {
         (ctx) => vm.motherVm,
         (ctx) => vm.fatherVm,
         (ctx) => vm.childVm,
+        (ctx) => vm.doMotherHavePregnancyVm,
         (ctx) => vm.motherHplVm,
         (ctx) => vm.childrenCountVm,
         (ctx) => vm,
@@ -57,16 +61,16 @@ class GetStartedFormMainPage extends StatelessWidget {
                 pageControll: pageControl,
                 interceptor: interceptor,
               ),
-              DoMotherHavePregnancyPage(pageControll: pageControl,),
+              DoMotherHavePregnancyPage(pageControll: pageControl,), //3
               MotherHplPage(pageControll: pageControl,),
-              ChildrenCountPage(pageControll: pageControl,),
+              ChildrenCountPage(pageControll: pageControl,), //5
               ChildFormPage(
                 pageControll: pageControl,
                 nestedPageControll: nestedPageControl,
                 interceptor: interceptor,
                 //childCount: vm.childrenCountVm.childrenCount,
               ),
-              NewAccountConfirmPage(),
+              NewAccountConfirmPage(), //7
             ],
           ),
           Align(
@@ -107,8 +111,14 @@ class GetStartedFormMainPage extends StatelessWidget {
     final page = controller.page?.toInt();
     if(page != null) {
       if(page > 0) {
+        final dest = page != 5 // '5' is the index of `ChildrenCountPage`.
+            || !vm.doMotherHavePregnancyVm.isHplDeleted
+            ? page-1
+            : page-2; // if the current page is at `ChildrenCountPage` (page=5) and hpl is deleted,
+                  // then skip the previous page relative to `ChildrenCountPage` (that is `MotherHplPage`).
+
         controller.animateToPage(
-          page-1,
+          dest,
           duration: Duration(milliseconds: 500),
           curve: Curves.easeOut,
         );

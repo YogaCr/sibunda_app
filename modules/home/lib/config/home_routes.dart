@@ -77,7 +77,9 @@ class HomeRoutes extends ModuleRoute {
     padding: EdgeInsets.all(20),
   ));
   static final doMotherHavePregnancyPage = SibRoute("DoMotherHavePregnancyPage", DoMotherHavePregnancyPage, (ctx) =>  PlainBackFrame(
-    body: DoMotherHavePregnancyPage(), //.inVmProvider([(ctx) => HomeVmDi.childFormVm,]),
+    body: DoMotherHavePregnancyPage().inVmProvider([
+      (ctx) => HomeVmDi.doMotherHavePregnancyVm,
+    ]),
     padding: EdgeInsets.all(20),
   ));
   static final motherHplPage = SibRoute("MotherHplPage", MotherHplPage, (ctx) =>  PlainBackFrame(

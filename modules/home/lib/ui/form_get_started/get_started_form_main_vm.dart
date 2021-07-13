@@ -2,6 +2,7 @@ import 'package:common/arch/domain/model/auth.dart';
 import 'package:common/arch/domain/model/child.dart';
 import 'package:common/arch/domain/model/father.dart';
 import 'package:common/arch/domain/model/mother.dart';
+import 'package:common/arch/domain/usecase/mother_usecase.dart';
 import 'package:core/domain/model/result.dart';
 import 'package:core/ui/base/async_vm.dart';
 import 'package:core/ui/base/live_data.dart';
@@ -9,6 +10,7 @@ import 'package:core/util/_consoles.dart';
 import 'package:home/core/domain/usecase/_auth_usecase.dart';
 import 'package:home/core/domain/usecase/form_get_started_usecase.dart';
 import 'package:home/ui/form_get_started/child_form_vm.dart';
+import 'package:home/ui/form_get_started/do_mother_have_pregnancy_vm.dart';
 import 'package:home/ui/form_get_started/father_form_vm.dart';
 import 'package:home/ui/form_get_started/mother_form_vm.dart';
 import 'package:home/ui/form_get_started/mother_hpl_vm.dart';
@@ -29,6 +31,7 @@ class GetStartedFormMainVm extends AsyncVm {
     motherVm = MotherFormVm(_saveMotherData);
     fatherVm = FatherFormVm(_saveFatherData);
     motherHplVm = MotherHplVm(saveMotherHpl: _saveMotherHplForChild);
+    doMotherHavePregnancyVm = DoMotherHavePregnancyVm(deleteCurrentMotherHpl: _deleteCurrentMotherHpl);
     childrenCountVm = ChildrenCountVm(
       saveChildrenCount: _saveChildrenCount,
       //saveLastChildBirthDate: _saveLastChildBirthDate,
@@ -51,11 +54,13 @@ class GetStartedFormMainVm extends AsyncVm {
   final _SaveMotherHplImpl _saveMotherHplForChild = _SaveMotherHplImpl();
   //final _SaveLastChildBirthDateImpl _saveLastChildBirthDate = _SaveLastChildBirthDateImpl();
   final _SaveChildrenCountImpl _saveChildrenCount = _SaveChildrenCountImpl();
+  final _DeleteCurrentMotherHplImpl _deleteCurrentMotherHpl = _DeleteCurrentMotherHplImpl();
 
   late final SignUpFormVm signUpFormVm;
   late final MotherFormVm motherVm;
   late final FatherFormVm fatherVm;
   late final ChildFormVm childVm;
+  late final DoMotherHavePregnancyVm doMotherHavePregnancyVm;
   late final MotherHplVm motherHplVm;
   late final ChildrenCountVm childrenCountVm;
 
@@ -92,8 +97,11 @@ class GetStartedFormMainVm extends AsyncVm {
       );
       prind("sendData() res1= $res1");
 
-      final hpl = _saveMotherHplForChild.data.value;
-      if(hpl != null) {
+      if(!doMotherHavePregnancyVm.isHplDeleted) {
+        final hpl = _saveMotherHplForChild.data.value;
+        if(hpl == null) {
+          throw "`hpl` can't be null when `isHplDeleted` == false";
+        }
         final res2 = await _saveMotherHpl(hpl);
         prind("sendData() res2= $res2");
 
@@ -195,6 +203,13 @@ class _SaveChildrenCountImpl with SaveChildrenCount {
   @override
   Future<Result<bool>> call(int count) async {
     _data.value = count;
+    return Success(true);
+  }
+}
+
+class _DeleteCurrentMotherHplImpl with DeleteCurrentMotherHpl {
+  @override
+  Future<Result<bool>> call() async {
     return Success(true);
   }
 }

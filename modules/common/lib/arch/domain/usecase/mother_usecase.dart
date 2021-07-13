@@ -15,6 +15,10 @@ mixin GetMotherHpl {
   Future<Result<DateTime>> call(String motherNik);
 }
 
+mixin DeleteCurrentMotherHpl {
+  Future<Result<bool>> call();
+}
+
 mixin GetMotherHpht {
   Future<Result<DateTime>> call(String motherNik);
 }
@@ -50,6 +54,13 @@ class GetMotherHplImpl with GetMotherHpl {
   GetMotherHplImpl(this._repo);
   @override
   Future<Result<DateTime>> call(String motherNik) => _repo.getCurrentMotherHpl();
+}
+
+class DeleteCurrentMotherHplImpl with DeleteCurrentMotherHpl {
+  final MotherRepo _repo;
+  DeleteCurrentMotherHplImpl(this._repo);
+  @override
+  Future<Result<bool>> call() => _repo.deleteCurrentMotherHpl();
 }
 
 class GetMotherHphtImpl with GetMotherHpht {

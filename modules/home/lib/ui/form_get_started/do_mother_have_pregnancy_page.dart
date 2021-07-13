@@ -4,8 +4,11 @@ import 'package:common/res/string/_string.dart';
 import 'package:common/res/theme/_theme.dart';
 import 'package:common/util/assets.dart';
 import 'package:common/util/ui.dart';
+import 'package:core/ui/base/async_view_model_observer.dart';
+import 'package:core/ui/base/view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:home/config/home_routes.dart';
+import 'package:home/ui/form_get_started/do_mother_have_pregnancy_vm.dart';
 
 class DoMotherHavePregnancyPage extends StatelessWidget {
   final PageController? pageControll;
@@ -15,6 +18,9 @@ class DoMotherHavePregnancyPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
     final picHeight = screenSize.height *40 /100;
+
+    final vm = ViewModelProvider.of<DoMotherHavePregnancyVm>(context);
+
     return Column(
       children: [
         Text(
@@ -36,30 +42,11 @@ class DoMotherHavePregnancyPage extends StatelessWidget {
         ),
         Container(
           margin: EdgeInsets.only(top: 20),
-          child: Row(
-            children: [
-              Spacer(flex: 3,),
-              TxtBtn(
-                Strings.yes,
-                minWidth: 80,
-                onTap: () {
-                  if(pageControll != null) {
-                    pageControll!.animateToPage(
-                      pageControll!.page!.toInt() +1,
-                      duration: Duration(milliseconds: 500),
-                      curve: Curves.easeOut,
-                    );
-                  } else {
-                    HomeRoutes.motherHplPage.goToPage(context);
-                  }
-                },
-              ),
-              Spacer(flex: 3,),
-              TxtBtn(
-                Strings.no,
-                isHollow: true,
-                minWidth: 80,
-                onTap: () {
+          child: AsyncVmObserver<DoMotherHavePregnancyVm, bool>(
+            vm: vm,
+            liveDataGetter: (vm) => vm.onDelete
+              ..observeForever((success) {
+                if(success == true) {
                   if(pageControll != null) {
                     pageControll!.animateToPage(
                       pageControll!.page!.toInt() +2,
@@ -69,10 +56,37 @@ class DoMotherHavePregnancyPage extends StatelessWidget {
                   } else {
                     HomeRoutes.childrenCountPage.goToPage(context);
                   }
-                },
-              ),
-              Spacer(flex: 3,),
-            ],
+                }
+              }),
+            builder: (ctx, onDelete) => Row(
+              children: [
+                Spacer(flex: 3,),
+                TxtBtn(
+                  Strings.yes,
+                  minWidth: 80,
+                  onTap: () {
+                    if(pageControll != null) {
+                      pageControll!.animateToPage(
+                        pageControll!.page!.toInt() +1,
+                        duration: Duration(milliseconds: 500),
+                        curve: Curves.easeOut,
+                      );
+                    } else {
+                      HomeRoutes.motherHplPage.goToPage(context);
+                    }
+                    vm.isHplDeleted = false;
+                  },
+                ),
+                Spacer(flex: 3,),
+                TxtBtn(
+                  Strings.no,
+                  isHollow: true,
+                  minWidth: 80,
+                  onTap: () => vm.deleteHpl(),
+                ),
+                Spacer(flex: 3,),
+              ],
+            ),
           ),
         ),
       ],

@@ -2,11 +2,13 @@ import 'package:common/arch/data/local/dao/check_up_dao.dart';
 import 'package:common/arch/data/local/db/app_db.dart';
 import 'package:common/value/const_values.dart';
 import 'package:core/domain/model/result.dart';
+import 'package:core/util/_consoles.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 mixin PregnancyLocalSrc {
   Future<Result<bool>> saveMotherHpl(DateTime date);
   Future<Result<DateTime>> getCurrentMotherHpl();
+  Future<Result<bool>> deleteCurrentMotherHpl();
 
   Future<Result<bool>> saveMotherHpht(DateTime date);
   Future<Result<DateTime>> getCurrentMotherHpht();
@@ -38,6 +40,17 @@ class PregnancyLocalSrcImpl with PregnancyLocalSrc {
       return Fail();
     }
     return Success(DateTime.parse(hpl));
+  }
+  @override
+  Future<Result<bool>> deleteCurrentMotherHpl() async {
+    try {
+      final success = await _sharedPref.remove(Const.KEY_HPL);
+      return Success(success);
+    } catch(e, stack) {
+      prine(e);
+      prine(stack);
+      return Fail(msg: "Error calling `deleteCurrentMotherHpl()`", error: e);
+    }
   }
 
   @override
