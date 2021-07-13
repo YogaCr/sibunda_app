@@ -7,6 +7,7 @@ import 'package:common/value/enums.dart';
 import 'package:core/domain/model/result.dart';
 import 'package:core/ui/base/async_view_model_observer.dart';
 import 'package:core/ui/base/expirable.dart';
+import 'package:core/ui/base/live_data.dart';
 import 'package:core/ui/base/live_data_observer.dart';
 import 'package:core/ui/base/view_model.dart';
 import 'package:core/util/_consoles.dart';
@@ -39,6 +40,7 @@ class FormVmGroupObserver<VM extends FormVmGroup> extends StatefulWidget {
   final bool showHeader;
   /// Flag whether 'all' fields this [FormVmGroupObserver] will build is enabled or not.
   final bool enabled;
+  final Widget? Function(int group, String key, MutableLiveData data)? pickerIconBuilder;
 
   final VM? vm;
   final FormGroupInterceptor? interceptor;
@@ -55,6 +57,7 @@ class FormVmGroupObserver<VM extends FormVmGroup> extends StatefulWidget {
     this.showHeader = true,
     this.enabled = true,
     this.interceptor,
+    this.pickerIconBuilder,
   });
 
   @override
@@ -69,6 +72,7 @@ class FormVmGroupObserver<VM extends FormVmGroup> extends StatefulWidget {
     showHeader: showHeader,
     enabled: enabled,
     interceptor: interceptor,
+    pickerIconBuilder: pickerIconBuilder,
   );
 }
 
@@ -99,6 +103,7 @@ class _FormVmGroupObserverState<VM extends FormVmGroup>
   final bool showHeader;
   /// Flag whether 'all' fields this [FormVmGroupObserver] will build is enabled or not.
   final bool enabled;
+  final Widget? Function(int group, String key, MutableLiveData data)? pickerIconBuilder;
 
   VM? vm;
   final FormGroupInterceptor? interceptor;
@@ -115,6 +120,7 @@ class _FormVmGroupObserverState<VM extends FormVmGroup>
     required this.showHeader,
     required this.enabled,
     required this.interceptor,
+    required this.pickerIconBuilder,
   });
 
   @override
@@ -139,6 +145,7 @@ class _FormVmGroupObserverState<VM extends FormVmGroup>
                 showHeader: showHeader,
                 enabled: enabled,
                 interceptor: interceptor?[i],
+                pickerIconBuilder: pickerIconBuilder,
               ): defaultLoading(),
             ),
           );

@@ -64,7 +64,7 @@ class FormUiTxt extends FormUiData {
   FormUiTxt({
     required String key,
     required String question,
-    required this.inputType,
+    this.inputType = InputType.any,
     this.answer,
     bool isInputEnabled = true,
     FieldInputMethod input = FieldInputMethod.direct,

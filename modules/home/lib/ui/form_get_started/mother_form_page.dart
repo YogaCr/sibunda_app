@@ -1,9 +1,14 @@
 
+import 'package:common/arch/di/db_di.dart';
+import 'package:common/arch/ui/widget/form_controller.dart';
 import 'package:common/arch/ui/widget/form_generic_vm_group_observer.dart';
 import 'package:common/arch/ui/widget/form_vm_observer.dart';
+import 'package:common/arch/ui/widget/picker_icon_widget.dart';
+import 'package:common/arch/ui/widget/popup_widget.dart';
 import 'package:common/res/string/_string.dart';
 import 'package:common/res/theme/_theme.dart';
 import 'package:common/util/ui.dart';
+import 'package:common/value/const_values.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:home/config/home_routes.dart';
@@ -11,7 +16,12 @@ import 'package:home/ui/form_get_started/mother_form_vm.dart';
 
 class MotherFormPage extends StatelessWidget {
   final PageController? pageControll;
-  MotherFormPage({ this.pageControll });
+  final FormGroupInterceptor? interceptor;
+
+  MotherFormPage({
+    this.pageControll,
+    this.interceptor,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +33,19 @@ class MotherFormPage extends StatelessWidget {
         ).withMargin(EdgeInsets.only(top: 60)),
         FormVmGroupObserver<MotherFormVm>(
           showHeader: false,
+          interceptor: interceptor,
+          pickerIconBuilder: (group, key, data) {
+            if(group == 0) {
+              switch(key) {
+                case Const.KEY_BIRTH_PLACE:
+                  return CityPickerIcon(
+                    onItemSelected: (city) async {
+                      data.value = city;
+                    },
+                  );
+              }
+            }
+          },
           onSubmit: (ctx, success) {
             if(success) {
               if(pageControll != null) {

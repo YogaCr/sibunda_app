@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: GlobalRoutes.home,
       theme: Manifest.theme.materialData,
-      home: HomeRoutes.homePage.build(context), //HomeRoutes.obj.entryPoint.build(context),
+      home: HomeRoutes.obj.entryPoint.build(context), //HomeRoutes.homePage.build(context), //
     );
   }
 }

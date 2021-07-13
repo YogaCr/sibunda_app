@@ -1,7 +1,9 @@
 
 import 'package:common/arch/ui/widget/_basic_widget.dart';
+import 'package:common/arch/ui/widget/form_controller.dart';
 import 'package:common/arch/ui/widget/form_generic_vm_group_observer.dart';
 import 'package:common/arch/ui/widget/form_vm_observer.dart';
+import 'package:common/arch/ui/widget/picker_icon_widget.dart';
 import 'package:common/res/string/_string.dart';
 import 'package:common/res/theme/_theme.dart';
 import 'package:common/util/navigations.dart';
@@ -16,12 +18,14 @@ import 'package:home/ui/form_get_started/child_form_vm.dart';
 class ChildFormPage extends StatelessWidget {
   final PageController? pageControll;
   final PageController innerPageControll = PageController();
+  final FormGroupInterceptor? interceptor;
   final LiveData<int>? childCount;
   final int defaultChildCount = 1;
 
   ChildFormPage({
     this.pageControll,
     this.childCount,
+    this.interceptor,
   });
 
   @override
@@ -78,6 +82,7 @@ class ChildFormPage extends StatelessWidget {
         childCount?.value ?? defaultChildCount,
         (index) => _ChildSingleFormPage(
           page: index,
+          interceptor: interceptor,
           pageControll: innerPageControll,
         ),
       ),
@@ -87,11 +92,13 @@ class ChildFormPage extends StatelessWidget {
 
 class _ChildSingleFormPage extends StatelessWidget {
   final PageController pageControll;
+  final FormGroupInterceptor? interceptor;
   final int page;
 
   _ChildSingleFormPage({
     required this.page,
     required this.pageControll,
+    required this.interceptor,
   });
 
   @override
@@ -99,7 +106,7 @@ class _ChildSingleFormPage extends StatelessWidget {
     return Column(
       children: [
         Text(
-          Strings.fill_child_data,
+          Strings.fill_child_data +" - ke ${page+1}",
           style: SibTextStyles.header1,
         ).withMargin(EdgeInsets.only(top: 60)),
         ImgPick().withMargin(EdgeInsets.only(top: 10)),
@@ -109,6 +116,19 @@ class _ChildSingleFormPage extends StatelessWidget {
         ),
         FormVmGroupObserver<ChildFormVm>(
           showHeader: false,
+          interceptor: interceptor,
+          pickerIconBuilder: (group, key, data) {
+            if(group == 0) {
+              switch(key) {
+                case Const.KEY_BIRTH_PLACE:
+                  return CityPickerIcon(
+                    onItemSelected: (city) async {
+                      data.value = city;
+                    },
+                  );
+              }
+            }
+          },
           onPreSubmit: (ctx, canProceed) {
             if(canProceed != true) {
               showSnackBar(ctx, Strings.there_still_invalid_fields);

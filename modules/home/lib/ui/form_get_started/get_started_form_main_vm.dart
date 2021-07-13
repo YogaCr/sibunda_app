@@ -22,25 +22,28 @@ class GetStartedFormMainVm extends AsyncVm {
 
   GetStartedFormMainVm({
     required SignUpAndRegisterOtherData signUpAndRegisterOtherData,
-  }): _signUpAndRegisterOtherData = signUpAndRegisterOtherData {
+    required SaveMotherHpl saveMotherHpl,
+  }): _saveMotherHpl = saveMotherHpl,
+      _signUpAndRegisterOtherData = signUpAndRegisterOtherData {
     signUpFormVm = SignUpFormVm(_signup);
     motherVm = MotherFormVm(_saveMotherData);
     fatherVm = FatherFormVm(_saveFatherData);
     childVm = ChildFormVm(saveChildrenData: _saveChildrenData);
-    motherHplVm = MotherHplVm(saveMotherHpl: _saveMotherHpl);
+    motherHplVm = MotherHplVm(saveMotherHpl: _saveMotherHplForChild);
     childrenCountVm = ChildrenCountVm(
       saveChildrenCount: _saveChildrenCount,
-      saveLastChildBirthDate: _saveLastChildBirthDate,
+      //saveLastChildBirthDate: _saveLastChildBirthDate,
     );
   }
   final SignUpAndRegisterOtherData _signUpAndRegisterOtherData;
+  final SaveMotherHpl _saveMotherHpl;
 
   final _SignupImpl _signup = _SignupImpl();
   final _SaveChildrenDataImpl _saveChildrenData = _SaveChildrenDataImpl();
   final _SaveFatherDataImpl _saveFatherData = _SaveFatherDataImpl();
   final _SaveMotherDataImpl _saveMotherData = _SaveMotherDataImpl();
-  final _SaveMotherHplImpl _saveMotherHpl = _SaveMotherHplImpl();
-  final _SaveLastChildBirthDateImpl _saveLastChildBirthDate = _SaveLastChildBirthDateImpl();
+  final _SaveMotherHplImpl _saveMotherHplForChild = _SaveMotherHplImpl();
+  //final _SaveLastChildBirthDateImpl _saveLastChildBirthDate = _SaveLastChildBirthDateImpl();
   final _SaveChildrenCountImpl _saveChildrenCount = _SaveChildrenCountImpl();
 
   late final SignUpFormVm signUpFormVm;
@@ -59,7 +62,7 @@ class GetStartedFormMainVm extends AsyncVm {
     _saveMotherData.data,
     _saveFatherData.data,
     _saveChildrenData.data,
-    _saveMotherHpl.data,
+    _saveMotherHplForChild.data,
   ];
 
 
@@ -75,17 +78,28 @@ class GetStartedFormMainVm extends AsyncVm {
       if(signup == null || mother == null || father == null || children == null) {
         throw "`signup`, `mother`, `father`, `child` are both non-nullable.\n Current data (signup=$signup), (mother=$mother), (father=$father), (children=$children)";
       }
-      final res = await _signUpAndRegisterOtherData(
+      final res1 = await _signUpAndRegisterOtherData(
         signup: signup,
         mother: mother,
         father: father,
         children: children,
       );
-      prind("sendData() res= $res");
+      prind("sendData() res1= $res1");
 
-      _onSubmit.value = res is Success<bool>;
-      if(res is Fail<bool>) {
-        return res;
+      final hpl = _saveMotherHplForChild.data.value;
+      if(hpl != null) {
+        final res2 = await _saveMotherHpl(hpl);
+        prind("sendData() res2= $res2");
+
+        if(res2 is Fail<bool>) {
+          _onSubmit.value = false;
+          return res2.copy(msg: "Can't save mother HPL");
+        }
+      }
+
+      _onSubmit.value = res1 is Success<bool>;
+      if(res1 is Fail<bool>) {
+        return res1;
       }
     });
   }
@@ -116,10 +130,10 @@ class _SignupImpl with SaveSignUpData {
     _data.value = data;
     return Success(true);
   }
-  
 }
+
 class _SaveChildrenDataImpl with SaveChildrenData {
-  final MutableLiveData<List<Child>> _data = MutableLiveData();
+  final MutableLiveData<List<Child>> _data = MutableLiveData([]); // default is empty, in case of child form page isn't visited at all.
   LiveData<List<Child>> get data => _data;
   @override
   Future<Result<bool>> call(List<Child> data) async {
@@ -157,7 +171,7 @@ class _SaveMotherHplImpl with SaveMotherHpl {
     return Success(true);
   }
 }
-
+/*
 class _SaveLastChildBirthDateImpl with SaveLastChildBirthDate {
   final MutableLiveData<DateTime> _data = MutableLiveData();
   LiveData<DateTime> get data => _data;
@@ -167,6 +181,7 @@ class _SaveLastChildBirthDateImpl with SaveLastChildBirthDate {
     return Success(true);
   }
 }
+ */
 
 class _SaveChildrenCountImpl with SaveChildrenCount {
   final MutableLiveData<int> _data = MutableLiveData();

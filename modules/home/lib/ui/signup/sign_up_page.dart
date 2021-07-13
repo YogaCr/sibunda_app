@@ -1,5 +1,6 @@
 
 import 'package:common/arch/domain/dummy_data.dart';
+import 'package:common/arch/ui/widget/form_controller.dart';
 import 'package:common/arch/ui/widget/form_generic_vm_group_observer.dart';
 import 'package:common/arch/ui/widget/form_vm_observer.dart';
 import 'package:common/res/theme/_theme.dart';
@@ -16,7 +17,12 @@ import 'sign_up_vm.dart';
 
 class SignUpPage extends StatelessWidget {
   final PageController? pageControll;
-  SignUpPage({ this.pageControll });
+  final FormGroupInterceptor? interceptor;
+
+  SignUpPage({
+    this.pageControll,
+    this.interceptor,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -32,6 +38,7 @@ class SignUpPage extends StatelessWidget {
             .withMargin(EdgeInsets.only(top: 10, bottom: 20,)),
         FormVmGroupObserver<SignUpFormVm>(
           showHeader: false,
+          interceptor: interceptor,
           onSubmit: (ctx, success) {
             if(success) {
               if(pageControll != null) {

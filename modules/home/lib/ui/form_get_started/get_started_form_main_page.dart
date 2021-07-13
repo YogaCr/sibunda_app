@@ -1,3 +1,4 @@
+import 'package:common/arch/ui/widget/form_controller.dart';
 import 'package:common/util/navigations.dart';
 import 'package:core/ui/base/live_data.dart';
 import 'package:core/ui/base/view_model.dart';
@@ -17,6 +18,11 @@ import 'new_account_confirmation_page.dart';
 class GetStartedFormMainPage extends StatelessWidget {
   final pageControl = PageController();
   final LiveData<int> page = MutableLiveData(0);
+  final FormGroupInterceptor? interceptor;
+
+  GetStartedFormMainPage({
+    this.interceptor,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -38,14 +44,24 @@ class GetStartedFormMainPage extends StatelessWidget {
             controller: pageControl,
             physics: NeverScrollableScrollPhysics(),
             children: [
-              SignUpPage(pageControll: pageControl,),
-              MotherFormPage(pageControll: pageControl,),
-              FatherFormPage(pageControll: pageControl,),
+              SignUpPage(
+                pageControll: pageControl,
+                interceptor: interceptor,
+              ),
+              MotherFormPage(
+                pageControll: pageControl,
+                interceptor: interceptor,
+              ),
+              FatherFormPage(
+                pageControll: pageControl,
+                interceptor: interceptor,
+              ),
               DoMotherHavePregnancyPage(pageControll: pageControl,),
               MotherHplPage(pageControll: pageControl,),
               ChildrenCountPage(pageControll: pageControl,),
               ChildFormPage(
                 pageControll: pageControl,
+                interceptor: interceptor,
                 childCount: vm.childrenCountVm.childrenCount,
               ),
               NewAccountConfirmPage(),

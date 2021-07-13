@@ -16,6 +16,7 @@ class HomeVmDi {
 
   static GetStartedFormMainVm get getStartedFormMainVm => GetStartedFormMainVm(
     signUpAndRegisterOtherData: HomeUseCaseDi.signUpAndRegister,
+    saveMotherHpl: HomeUseCaseDi.saveMotherHpl,
   );
   static SignUpFormVm get signUpFormVm => SignUpFormVm(HomeUseCaseDi.signUp);
   static LoginFormVm get loginFormVm => LoginFormVm(HomeUseCaseDi.login);
@@ -23,7 +24,7 @@ class HomeVmDi {
   static FatherFormVm get fatherFormVm => FatherFormVm(HomeUseCaseDi.saveFatherData);
   static MotherHplVm get motherHplVm => MotherHplVm(saveMotherHpl: HomeUseCaseDi.saveMotherHpl);
   static ChildrenCountVm get childrenCountVm => ChildrenCountVm(
-    saveLastChildBirthDate: HomeUseCaseDi.saveLastChildBirthDate,
+    //saveLastChildBirthDate: HomeUseCaseDi.saveLastChildBirthDate,
     saveChildrenCount: HomeUseCaseDi.saveChildrenCount,
   );
   static ChildFormVm get childFormVm => ChildFormVm(

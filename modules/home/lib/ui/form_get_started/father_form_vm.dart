@@ -52,6 +52,16 @@ class FatherFormVm extends FormVmGroup {
 
   @override
   Future<List<FormUiGroupData>> getFieldGroupList() async => formDataListToUi(fatherFormData);
+
+  @override
+  String getResponseStringRepr(int groupPosition, String inputKey, response) {
+    if(groupPosition == 0) {
+      switch(inputKey) {
+        case Const.KEY_BIRTH_PLACE: return (response as IdStringModel?)?.name ?? "";
+      }
+    }
+    return super.getResponseStringRepr(groupPosition, inputKey, response);
+  }
 /*
   @override
   Future<bool> validateField(int groupPosition, String inputKey, response) async {

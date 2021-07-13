@@ -108,8 +108,9 @@ class _FormFakerState extends State<FormFaker> {
                       fieldInterceptor.value = timestamp +faker.internet.email();
                       break;
                     case InputType.password:
+                      //prind("FormFaker InputType.password len = $len");
                       fieldInterceptor.value = faker.internet.password(
-                        length: faker.randomGenerator.integer(30)
+                        length: faker.randomGenerator.integer(30, min: 8),
                       );
                       break;
                     case InputType.person:
@@ -124,7 +125,7 @@ class _FormFakerState extends State<FormFaker> {
                       fieldInterceptor.value = faker.lorem.sentence();
                   }
                   break;
-                default: prinw("Can't fill automatically to `TxtField` with `input` of `FieldInputMethod.pick`");
+                default: prinw("Can't fill automatically to `TxtField` with `input` of `FieldInputMethod.pick`, `key` = '${fieldData.key}'");
               }
               break;
           }

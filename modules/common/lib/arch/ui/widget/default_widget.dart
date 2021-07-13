@@ -108,3 +108,13 @@ Widget defaultFormItemImg(String link) => Container(
   constraints: BoxConstraints(maxHeight: 200,),
   child: buildImgNetwork(link, ), //SibImages.get("ilstr_mother_carry_baby.png", package: "common",) //
 );
+
+
+Future<void> showLoadingPopup({
+  required BuildContext context,
+}) => showDialog(
+  context: context,
+  builder: (ctx) => AlertDialog(
+    content: defaultLoading(),
+  ),
+);

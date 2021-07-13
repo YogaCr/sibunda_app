@@ -25,7 +25,7 @@ class ChildrenCountPage extends StatelessWidget {
         showSnackBar(context, Strings.error_occurred_when_saving_data);
       }
     });
-    final now = DateTime.now();
+    //final now = DateTime.now();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -37,11 +37,13 @@ class ChildrenCountPage extends StatelessWidget {
         ), //TODO hardcode string
         SibImages.get("ilstr_mother_carry_baby.png", package: "common",) //TODO
             .withMargin(EdgeInsets.symmetric(horizontal: 50).copyWith(top: 70)),
-        Text("Berapa anak yang Bunda punya?",),
+        Text("Berapa bayi (0-7 tahun) yang Bunda punya?",),
         NumberPicker(
           onNumberChange: (i) => vm.childrenCount.value = i,
           max: 11,
         ),
+/*
+        // I decide to remove this date picker, cuz it is already provided in `ChildFormPage`
         TxtInputUnderline(
           readOnly: true,
           overText: "Tanggal lahir anak terakhir",
@@ -56,6 +58,7 @@ class ChildrenCountPage extends StatelessWidget {
             vm.lastChildBirthDate.value = date;
           },
         ),
+ */
         LiveDataObserver<bool>(
           liveData: vm.canProceed,
           builder: (ctx, canProceed) => FloatingActionButton(

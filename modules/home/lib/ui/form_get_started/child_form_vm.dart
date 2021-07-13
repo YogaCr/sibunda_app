@@ -131,6 +131,16 @@ class ChildFormVm extends FormVmGroup {
   Future<List<FormUiGroupData>> getFieldGroupList() async => formDataListToUi(childFormData);
 
   @override
+  String getResponseStringRepr(int groupPosition, String inputKey, response) {
+    if(groupPosition == 0) {
+      switch(inputKey) {
+        case Const.KEY_BIRTH_PLACE: return (response as IdStringModel?)?.name ?? "";
+      }
+    }
+    return super.getResponseStringRepr(groupPosition, inputKey, response);
+  }
+
+  @override
   Future<bool> validateField(int groupPosition, String inputKey, response) async {
     switch(inputKey) {
       case Const.KEY_CHILD_ORDER: return tryParseInt(response) != null;

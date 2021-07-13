@@ -68,6 +68,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Cob',
       theme: Manifest.theme.materialData,
+/*
       home: Scaffold(
         body: Builder(
           builder: (ctx) => CobFieldFaker(
@@ -81,6 +82,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
+// */
 /*
       home: Scaffold(
         body: Builder(
@@ -133,7 +135,7 @@ class MyApp extends StatelessWidget {
         ),
       ),
 // */
-/*
+///*
       home: Scaffold(
         body: Builder(
           builder: (ctx) => IdStringPopup(
@@ -142,7 +144,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
- */
+// */
 
     //_FormPage(),
       /*

@@ -1,4 +1,6 @@
 import 'package:common/arch/ui/page/frames.dart';
+import 'package:common/arch/ui/widget/form_controller.dart';
+import 'package:common/arch/ui/widget/form_faker.dart';
 import 'package:common/config/_config.dart';
 import 'package:common/util/providers.dart';
 import 'package:flutter/material.dart';
@@ -44,11 +46,17 @@ class HomeRoutes extends ModuleRoute {
     padding: EdgeInsets.all(20),
   ));
 
-  static final getStartedFormMainPage = SibRoute("GetStartedFormMainPage", GetStartedFormMainPage, (ctx) => MainFrame(
-    body: GetStartedFormMainPage().inVmProvider([
-      (ctx) => HomeVmDi.getStartedFormMainVm,
-    ]),
-  ));
+  static final getStartedFormMainPage = SibRoute("GetStartedFormMainPage", GetStartedFormMainPage, (ctx) {
+    final FormGroupInterceptor? interceptor = FormGroupInterceptor();
+    return MainFrame(
+      body: FormFaker(
+        interceptor: interceptor,
+        child: GetStartedFormMainPage(interceptor: interceptor,).inVmProvider([
+              (ctx) => HomeVmDi.getStartedFormMainVm,
+        ]),
+      ),
+    );
+  });
   //============ Get started forms ==========
   static final signUpPage = SibRoute("SignUpPage", SignUpPage, (ctx) =>  PlainBackFrame(
     body: SignUpPage().inVmProvider([
