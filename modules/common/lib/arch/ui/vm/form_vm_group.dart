@@ -84,6 +84,19 @@ mixin FormVmGroupMixin implements AsyncVm {
 
   Map<String, dynamic> getResponseMap() => getResponse().toLinear();
 
+  /// Be careful when work with multiple group that have duplicate key
+  /// in different group. Because this method will flatten all responses
+  /// in all groups to 1 flat map.
+  Map<String, dynamic> getRawResponseMap() {
+    final map = <String, dynamic>{};
+    for(final group in responseGroupList) {
+      for(final field in group.entries) {
+        map[field.key] = field.value.response.value;
+      }
+    }
+    return map;
+  }
+
   /// Responses with these input keys will be mapped before submitted.
   /// If this `null`, it means all responses will be mapped.
   /// If this empty, it means all responses will *NOT* be mapped.

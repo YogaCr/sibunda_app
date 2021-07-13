@@ -49,7 +49,11 @@ class MotherFormPage extends StatelessWidget {
           onSubmit: (ctx, success) {
             if(success) {
               if(pageControll != null) {
-                pageControll!.jumpToPage(pageControll!.page!.toInt() +1);
+                pageControll!.animateToPage(
+                  pageControll!.page!.toInt() +1,
+                  duration: Duration(milliseconds: 500),
+                  curve: Curves.easeOut,
+                );
               } else {
                 HomeRoutes.fatherFormPage.goToPage(context);
               }

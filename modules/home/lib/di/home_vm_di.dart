@@ -1,4 +1,5 @@
 import 'package:common/arch/di/usecase_di.dart';
+import 'package:core/ui/base/live_data.dart';
 import 'package:home/core/di/home_usecase_di.dart';
 import 'package:home/ui/form_get_started/child_form_vm.dart';
 import 'package:home/ui/form_get_started/children_count_vm.dart';
@@ -28,6 +29,7 @@ class HomeVmDi {
     saveChildrenCount: HomeUseCaseDi.saveChildrenCount,
   );
   static ChildFormVm get childFormVm => ChildFormVm(
+    childCount: MutableLiveData(),
     saveChildrenData: HomeUseCaseDi.saveChildrenData,
   );
   static HomeVm get homeVm => HomeVm(

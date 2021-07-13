@@ -10,26 +10,31 @@ import 'package:common/util/navigations.dart';
 import 'package:common/util/ui.dart';
 import 'package:common/value/const_values.dart';
 import 'package:core/ui/base/live_data.dart';
+import 'package:core/ui/base/live_data_observer.dart';
 import 'package:core/ui/base/view_model.dart';
+import 'package:core/util/_consoles.dart';
 import 'package:flutter/material.dart';
 import 'package:home/config/home_routes.dart';
 import 'package:home/ui/form_get_started/child_form_vm.dart';
 
 class ChildFormPage extends StatelessWidget {
   final PageController? pageControll;
+  final MutableLiveData<PageController>? nestedPageControll;
   final PageController innerPageControll = PageController();
   final FormGroupInterceptor? interceptor;
-  final LiveData<int>? childCount;
+  //final LiveData<int>? childCount;
   final int defaultChildCount = 1;
 
   ChildFormPage({
     this.pageControll,
-    this.childCount,
+    this.nestedPageControll,
+    //this.childCount,
     this.interceptor,
   });
 
   @override
   Widget build(BuildContext context) {
+    prind("ChildFormPage.build()");
     /*
     final childCount = getArgs<int>(context, Const.KEY_DATA) ?? 1;
     if(childCount < 0) {
@@ -39,16 +44,28 @@ class ChildFormPage extends StatelessWidget {
 
     final vm = ViewModelProvider.of<ChildFormVm>(context)
       //..childCount.value = childCount
+/*
+      ..onActiveInParent = () {
+        nestedPageControll?.value = innerPageControll;
+      }
+ */
       ..onSaveBatch.observeForever((canProceed) {
         if(canProceed == true) {
           if(pageControll != null) {
-            pageControll!.jumpToPage(pageControll!.page!.toInt() +1);
+            pageControll!.animateToPage(
+              pageControll!.page!.toInt() +1,
+              duration: Duration(milliseconds: 500),
+              curve: Curves.easeOut,
+            );
           } else {
             HomeRoutes.newAccountConfirmPage.goToPage(context);
           }
+          //nestedPageControll?.value = null;
         }
       });
 
+    //vm.childCount = childCount ?? MutableLiveData();
+/*
     if(childCount != null) {
       childCount!.observe(vm.childCount, (count) {
         vm.childCount.value = count;
@@ -59,10 +76,26 @@ class ChildFormPage extends StatelessWidget {
     } else {
       vm.childCount.value = defaultChildCount;
     }
-
+ */
+    bool isBuilt = false;
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
       innerPageControll.jumpToPage(0);
       innerPageControll.notifyListeners();
+      nestedPageControll?.value = innerPageControll;
+      isBuilt = true;
+      //vm.pageInParent = pageControll?.page?.toInt();
+    });
+
+    pageControll?.addListener(() {
+      final currPage = pageControll!.page;
+      if(currPage != null) {
+        int currPageInt;
+        prind("pageControll?.addListener(()) isBuilt= $isBuilt currPage= $currPage vm.pageInParent= ${vm.pageInParent}");
+        if(isBuilt && currPage == (currPageInt = currPage.toInt())) {
+          nestedPageControll?.value = vm.checkPageActiveInParent(currPageInt)
+              ? innerPageControll : null;
+        }
+      }
     });
 
     innerPageControll.addListener(() {
@@ -70,33 +103,46 @@ class ChildFormPage extends StatelessWidget {
       if(page != null) {
         int pageInt;
         if(page == (pageInt = page.toInt())) {
-          vm.currentPage.value = pageInt;
+          vm.initPage(pageInt);
         }
       }
     });
 
-    return PageView(
-      physics: NeverScrollableScrollPhysics(),
-      controller: innerPageControll,
-      children: List.generate(
-        childCount?.value ?? defaultChildCount,
-        (index) => _ChildSingleFormPage(
-          page: index,
-          interceptor: interceptor,
-          pageControll: innerPageControll,
+    final builder = (ctx, count) {
+      prind("ChildFormPage LiveDataObserver.builder count= $count");
+      return count != null ? PageView(
+        physics: NeverScrollableScrollPhysics(),
+        controller: innerPageControll,
+        children: List.generate(
+          count, (index) => _ChildSingleFormPage(
+            page: index,
+            vm: vm,
+            interceptor: interceptor,
+            innerPageControll: innerPageControll,
+            pageControll: pageControll,
+          ),
         ),
-      ),
+      ) : defaultLoading();
+    };
+
+    return LiveDataObserver<int>(
+      liveData: vm.childCount,
+      builder: builder,
     );
   }
 }
 
 class _ChildSingleFormPage extends StatelessWidget {
-  final PageController pageControll;
+  final PageController innerPageControll;
+  final PageController? pageControll;
   final FormGroupInterceptor? interceptor;
+  final ChildFormVm vm;
   final int page;
 
   _ChildSingleFormPage({
+    required this.vm,
     required this.page,
+    required this.innerPageControll,
     required this.pageControll,
     required this.interceptor,
   });
@@ -135,13 +181,32 @@ class _ChildSingleFormPage extends StatelessWidget {
             }
           },
           onSubmit: (ctx, success) {
+            prind("page < vm.childCount.value! -1 success= $success page= $page vm.currentPage= ${vm.currentPage} vm.childCount= ${vm.childCount}");
             if(success) {
               //showSnackBar(context, "Berhasil", backgroundColor: Colors.green);
-              pageControll.animateToPage(
-                pageControll.page!.toInt() +1,
-                duration: Duration(milliseconds: 600,),
-                curve: Curves.easeOut,
-              );
+              if(vm.currentPage.value! < vm.childCount.value! -1) { // It should be impossible to be null cuz off course if null, then this `_ChildSingleFormPage` won't be built.
+                innerPageControll.animateToPage(
+                  innerPageControll.page!.toInt() +1,
+                  duration: Duration(milliseconds: 600,),
+                  curve: Curves.easeOut,
+                );
+              } else {
+                vm.saveBatchChildren();
+              }
+/*
+              // It has been handled in parent page by observing `onSaveBatch`.
+              else {
+                if(pageControll != null) {
+                  pageControll!.animateToPage(
+                    pageControll!.page!.toInt() +1,
+                    duration: Duration(milliseconds: 500),
+                    curve: Curves.easeOut,
+                  );
+                } else {
+                  HomeRoutes.newAccountConfirmPage.goToPage(context);
+                }
+              }
+ */
             } else {
               showSnackBar(context, "Terjadi kesalahan",);
             }

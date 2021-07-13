@@ -111,6 +111,10 @@ class MotherHplPage extends StatelessWidget {
   void _moveToNext(BuildContext context) {
     pageControll == null
         ? HomeRoutes.childrenCountPage.goToPage(context)
-        : pageControll!.jumpToPage(pageControll!.page!.toInt() +1);
+        : pageControll!.animateToPage(
+          pageControll!.page!.toInt() +1,
+          duration: Duration(milliseconds: 500),
+          curve: Curves.easeOut,
+        );
   }
 }

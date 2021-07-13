@@ -28,12 +28,18 @@ class GetStartedFormMainVm extends AsyncVm {
     signUpFormVm = SignUpFormVm(_signup);
     motherVm = MotherFormVm(_saveMotherData);
     fatherVm = FatherFormVm(_saveFatherData);
-    childVm = ChildFormVm(saveChildrenData: _saveChildrenData);
     motherHplVm = MotherHplVm(saveMotherHpl: _saveMotherHplForChild);
     childrenCountVm = ChildrenCountVm(
       saveChildrenCount: _saveChildrenCount,
       //saveLastChildBirthDate: _saveLastChildBirthDate,
     );
+    childVm = ChildFormVm(
+      childCount: childrenCountVm.childrenCount,
+      saveChildrenData: _saveChildrenData,
+    );
+    childrenCountVm.childrenCount.observe(this, (count) {
+      prind("GetStartedFormMainVm childrenCountVm.childrenCount.observe count= $count");
+    });
   }
   final SignUpAndRegisterOtherData _signUpAndRegisterOtherData;
   final SaveMotherHpl _saveMotherHpl;

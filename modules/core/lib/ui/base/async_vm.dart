@@ -1,5 +1,6 @@
 import 'package:async/async.dart';
 import 'package:core/domain/model/result.dart';
+import 'package:core/ui/base/live_data.dart';
 import 'package:core/util/_consoles.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -44,6 +45,14 @@ abstract class AsyncVm extends ViewModel {
   /// For its values, the lambda returns [Widget].
   /// If not null, it means the widget will be rebuilt using the returned [Widget].
   /// If null, the old [Widget] will stay.
+  ///
+  /// These callbacks will be called after all [LiveData.value] possible changes in [startJob]'s block.
+  /// Note that these will only be called when there's no error or failure during [startJob]'s block.
+  Map<Expirable, void Function(String key)> _postAsyncTaskMap = {};
+
+  /// For its values, the lambda returns [Widget].
+  /// If not null, it means the widget will be rebuilt using the returned [Widget].
+  /// If null, the old [Widget] will stay.
   Map<Expirable, void Function(String key, Fail failure)> _onFailTaskMap = {};
 
 
@@ -55,7 +64,6 @@ abstract class AsyncVm extends ViewModel {
       _preAsyncTaskMap.remove(observer);
     }
   }
-
   @nonVirtual
   void doPreAsyncTask(String key) {
     final removedKeys = <Expirable>{};
@@ -69,6 +77,30 @@ abstract class AsyncVm extends ViewModel {
     }
     for(final key in removedKeys) {
       _preAsyncTaskMap.remove(key);
+    }
+  }
+
+  @nonVirtual
+  void addOnPostAsyncTask(Expirable observer, void Function(String key)? block) {
+    if(block != null) {
+      _postAsyncTaskMap[observer] = block;
+    } else {
+      _postAsyncTaskMap.remove(observer);
+    }
+  }
+  @nonVirtual
+  void doPostAsyncTask(String key) {
+    final removedKeys = <Expirable>{};
+    for(final observer in _postAsyncTaskMap.keys) {
+      if(observer.isActive) {
+        _postAsyncTaskMap[observer]!(key);
+      } else {
+        removedKeys.add(observer);
+      }
+      //else { _preAsyncTaskMap.remove(observer); }
+    }
+    for(final key in removedKeys) {
+      _postAsyncTaskMap.remove(key);
     }
   }
 
@@ -120,6 +152,8 @@ abstract class AsyncVm extends ViewModel {
         (future = block(isActive)).then((fail) {
           if(fail != null) {
             doOnFailTask(key, fail);
+          } else {
+            doPostAsyncTask(key);
           }
         })
     ), isActive);

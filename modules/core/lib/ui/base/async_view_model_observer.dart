@@ -18,6 +18,10 @@ class AsyncVmObserver<Vm extends AsyncVm, V> extends StatefulWidget {
 
   /// If it returns [Widget], it means the widget will be rebuilt using the returned [Widget].
   /// If it returns null, the old [Widget] will stay.
+  final Widget? Function(BuildContext ctx, String key)? postAsyncBuilder;
+
+  /// If it returns [Widget], it means the widget will be rebuilt using the returned [Widget].
+  /// If it returns null, the old [Widget] will stay.
   final Widget? Function(BuildContext ctx, String key, Fail failure)? onFailBuilder;
   final bool distinctUntilChanged;
 
@@ -32,6 +36,7 @@ class AsyncVmObserver<Vm extends AsyncVm, V> extends StatefulWidget {
     this.vmTaskKeys,
     this.predicate,
     this.preAsyncBuilder,
+    this.postAsyncBuilder,
     this.onFailBuilder,
     this.distinctUntilChanged = false,
     /// This way, this.[AsyncVmObserver] won't be busy of looking for [Vm] in parent tree.
@@ -45,6 +50,7 @@ class AsyncVmObserver<Vm extends AsyncVm, V> extends StatefulWidget {
     builder: builder,
     predicate: predicate,
     preAsyncBuilder: preAsyncBuilder,
+    postAsyncBuilder: postAsyncBuilder,
     onFailBuilder: onFailBuilder,
     distinctUntilChanged: distinctUntilChanged,
     vmTaskKeys: vmTaskKeys,
@@ -65,6 +71,7 @@ class _AsyncVmObserverState<Vm extends AsyncVm, V>
   LiveData<V>? _liveData;
 
   final Widget? Function(BuildContext ctx, String key)? preAsyncBuilder;
+  final Widget? Function(BuildContext ctx, String key)? postAsyncBuilder;
   final Widget? Function(BuildContext ctx, String key, Fail failure)? onFailBuilder;
 
   Widget? incomingWidget;
@@ -72,11 +79,12 @@ class _AsyncVmObserverState<Vm extends AsyncVm, V>
   _AsyncVmObserverState({
     required this.liveDataGetter,
     required this.builder,
-    /// This way, this.[AsyncVmObserver] won't be busy of looking for [Vm] in parent tree.
     required this.vmTaskKeys,
+    /// This way, this.[AsyncVmObserver] won't be busy of looking for [Vm] in parent tree.
     required this.vm,
     required this.predicate,
     required this.preAsyncBuilder,
+    required this.postAsyncBuilder,
     required this.onFailBuilder,
     required this.distinctUntilChanged,
   });
@@ -109,6 +117,18 @@ class _AsyncVmObserverState<Vm extends AsyncVm, V>
           }
         }
       } : null;
+      final vmPostAsyncTask = (postAsyncBuilder != null) ? (String key) {
+        if(vmTaskKeys?.isEmpty != false || vmTaskKeys!.contains(key)) {
+          final newPreWidget = postAsyncBuilder!(this.context, key);
+          //print("AsyncVmObserver.build() newPreWidget= $newPreWidget");
+          if(newPreWidget != null) {
+            setState(() {
+              incomingWidget = newPreWidget;
+              //print("AsyncVmObserver.build() incomingWidget SET");
+            });
+          }
+        }
+      } : null;
       final vmOnFailTask = (onFailBuilder != null) ? (String key, Fail failure) {
         if(vmTaskKeys?.isEmpty != false || vmTaskKeys!.contains(key)) {
           final newPreWidget = onFailBuilder!(this.context, key, failure);
@@ -123,6 +143,7 @@ class _AsyncVmObserverState<Vm extends AsyncVm, V>
       } : null;
 
       vm.addOnPreAsyncTask(this, vmPreAsyncTask);
+      vm.addOnPostAsyncTask(this, vmPostAsyncTask);
       vm.addOnFailTask(this, vmOnFailTask);
       _liveData = liveDataGetter(vm);
       _liveData!.observe(this, (data) {

@@ -6,6 +6,7 @@ import 'package:common/util/type_util.dart';
 import 'package:common/value/enums.dart';
 import 'package:core/domain/model/result.dart';
 import 'package:core/ui/base/async_view_model_observer.dart';
+import 'package:core/ui/base/async_vm.dart';
 import 'package:core/ui/base/expirable.dart';
 import 'package:core/ui/base/live_data.dart';
 import 'package:core/ui/base/live_data_observer.dart';
@@ -22,6 +23,12 @@ class FormVmGroupObserver<VM extends FormVmGroup> extends StatefulWidget {
 
   /// The [String] in its parameter is for async key from [FormTxtVm.doPreAsyncTask].
   final Widget? Function(BuildContext, String)? preSubmitBtnBuilder;
+
+  /// The [String] in its parameter is for async key from [AsyncVm.doPostAsyncTask].
+  final Widget? Function(BuildContext, String)? postSubmitBtnBuilder;
+
+  /// The [String] in its parameter is for async key from [AsyncVm.doOnFailTask].
+  final Widget? Function(BuildContext, String, Fail)? onFailSubmitBtnBuilder;
 
   /// This will be called after [Vm.submit] method is called.
   /// This callback parameter `true` if the [Vm.submit] is success.
@@ -49,6 +56,8 @@ class FormVmGroupObserver<VM extends FormVmGroup> extends StatefulWidget {
   FormVmGroupObserver({
     required this.submitBtnBuilder,
     this.preSubmitBtnBuilder,
+    this.postSubmitBtnBuilder,
+    this.onFailSubmitBtnBuilder,
     this.onSubmit,
     this.onPreSubmit,
     this.predicate,
@@ -64,6 +73,8 @@ class FormVmGroupObserver<VM extends FormVmGroup> extends StatefulWidget {
   _FormVmGroupObserverState<VM> createState() => _FormVmGroupObserverState<VM>(
     submitBtnBuilder: submitBtnBuilder,
     preSubmitBtnBuilder: preSubmitBtnBuilder,
+    postSubmitBtnBuilder: postSubmitBtnBuilder,
+    onFailSubmitBtnBuilder: onFailSubmitBtnBuilder,
     onSubmit: onSubmit,
     onPreSubmit: onPreSubmit,
     predicate: predicate,
@@ -80,11 +91,17 @@ class _FormVmGroupObserverState<VM extends FormVmGroup>
     extends State<FormVmGroupObserver>
     implements Expirable
 {
-  /// The [bool] in its parameter is for representation of [FormTxtVm.canProceed].
+  /// The [bool] in its parameter is for representation of [FormVmGroup.canProceed].
   final Widget Function(BuildContext, bool?) submitBtnBuilder;
 
-  /// The [String] in its parameter is for async key from [FormTxtVm.doPreAsyncTask].
+  /// The [String] in its parameter is for async key from [AsyncVm.doPreAsyncTask].
   final Widget? Function(BuildContext, String)? preSubmitBtnBuilder;
+
+  /// The [String] in its parameter is for async key from [AsyncVm.doPostAsyncTask].
+  final Widget? Function(BuildContext, String)? postSubmitBtnBuilder;
+
+  /// The [String] in its parameter is for async key from [AsyncVm.doOnFailTask].
+  final Widget? Function(BuildContext, String, Fail)? onFailSubmitBtnBuilder;
 
   /// This will be called after [Vm.submit] method is called.
   /// This callback parameter `true` if the [Vm.submit] is success.
@@ -112,6 +129,8 @@ class _FormVmGroupObserverState<VM extends FormVmGroup>
   _FormVmGroupObserverState({
     required this.submitBtnBuilder,
     required this.preSubmitBtnBuilder,
+    required this.postSubmitBtnBuilder,
+    required this.onFailSubmitBtnBuilder,
     required this.onSubmit,
     required this.onPreSubmit,
     required this.predicate,
@@ -189,6 +208,19 @@ class _FormVmGroupObserverState<VM extends FormVmGroup>
       builder: builder,
     );
 
+    final submitBtnWrapperBuilder = (BuildContext ctx, bool? canProceed) => InkWell(
+      child: submitBtnBuilder(ctx, canProceed),
+      onTap: () {
+        //print("SignUpPage.onTap() submit canProceed= $canProceed");
+        onPreSubmit?.call(ctx, canProceed);
+        if(canProceed == true) {
+          vm.submit();
+        } else if(vm.isFormEnabled.value == true) {
+          vm.displayInvalidFields();
+        }
+      },
+    );
+
     final outerChildren = <Widget>[
       formAreaWidget,
       MultiLiveDataObserver<bool>(
@@ -200,20 +232,13 @@ class _FormVmGroupObserverState<VM extends FormVmGroup>
             vm: vm,
             liveDataGetter: (vm) => vm.canProceed,
             distinctUntilChanged: true,
-            builder: (ctx, canProceed) => InkWell(
-              child: submitBtnBuilder(ctx, canProceed),
-              onTap: () {
-                //print("SignUpPage.onTap() submit canProceed= $canProceed");
-                onPreSubmit?.call(ctx, canProceed);
-                if(canProceed == true) {
-                  vm.submit();
-                } else if(vm.isFormEnabled.value == true) {
-                  vm.displayInvalidFields();
-                }
-              },
-            ),
+            builder: submitBtnWrapperBuilder,
             preAsyncBuilder: preSubmitBtnBuilder ?? (ctx, key) => key == FormVmGroupMixin.submitFormKey
                 ? defaultLoading() : null,
+            postAsyncBuilder: postSubmitBtnBuilder ?? (ctx, key) => key == FormVmGroupMixin.submitFormKey
+                ? submitBtnWrapperBuilder(ctx, true) /* Off course true after successfully sent data */ : null,
+            onFailBuilder: onFailSubmitBtnBuilder ?? (ctx, key, fail) => key == FormVmGroupMixin.submitFormKey
+                ? submitBtnWrapperBuilder(ctx, false) /* Off course false after failing sent data */ : null,
           ),
         ) : defaultEmptyWidget(),
       ),

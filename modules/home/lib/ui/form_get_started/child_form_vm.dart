@@ -5,6 +5,7 @@ import 'package:common/arch/ui/model/form_data.dart';
 import 'package:common/arch/ui/vm/form_vm.dart';
 import 'package:common/arch/ui/vm/form_vm_group.dart';
 import 'package:common/res/string/_string.dart';
+import 'package:common/util/collections.dart';
 import 'package:common/util/data_mapper.dart';
 import 'package:common/util/type_util.dart';
 import 'package:common/value/const_values.dart';
@@ -22,28 +23,45 @@ class ChildFormVm extends FormVmGroup {
   ChildFormVm({
     //required SaveChildData saveChildData,
     required SaveChildrenData saveChildrenData,
+    required this.childCount,
   }):
     //_saveChildData = saveChildData,
     _saveChildrenData = saveChildrenData
   {
-    currentPage.observe(this, (page) {
+    _currentPage.observe(this, (page) {
+      Map<String, dynamic>? map;
+      if(page != null) {
+        //await _saveCurrentResponses(saveIncompleteResponses: canProceed.value != true);
+        final child = _children.value![page];
+        if(child != null) {
+          map = child.toJson;
+          map[Const.KEY_BIRTH_PLACE] = _birthPlaces.value![page];
+          map[Const.KEY_BIRTH_DATE] = parseDate(map[Const.KEY_BIRTH_DATE]);
+        } else {
+          final incompleteResponses = _currentIncompleteResponses.value![page];
+          if(incompleteResponses != null) {
+            map = incompleteResponses;
+          }
+        }
+      }
+      //prind("_currentPage.observe map= $map");
       resetResponses();
+      if(map != null) {
+        patchResponse([map]);
+        //return;
+      }
     }, distinctUntilChanged: true,);
     childCount.observe(this, (count) {
       if(count != null) {
         if(count < 0) {
           throw "Can't have negative `count`";
         }
-        final list = _children.value ??= [];
-        if(count > list.length) {
-          for(final i in range(count - list.length)){
-            list.add(null);
-          }
-        } else if(count < list.length) {
-          for(final i in range(count - list.length)){
-            list.removeLast();
-          }
-        }
+        final childList = _children.value ??= [];
+        final cityList = _birthPlaces.value ??= [];
+        final incompleteResponses = _currentIncompleteResponses.value ??= [];
+        setListSize(childList, count);
+        setListSize(cityList, count);
+        setListSize(incompleteResponses, count);
       }
     });
     if(childCount.value != null) {
@@ -70,12 +88,19 @@ class ChildFormVm extends FormVmGroup {
   }
  */
 
-  final MutableLiveData<int> childCount = MutableLiveData();
+  int? _pageInParent;
+  int? get pageInParent => _pageInParent;
+  final LiveData<int> childCount;
+
+  //void Function()? onActiveInParent;
 
   //TODO: <tag>ChildFromVM</tag>
-  final MutableLiveData<int> currentPage = MutableLiveData();
+  final MutableLiveData<int> _currentPage = MutableLiveData();
+  LiveData<int> get currentPage => _currentPage;
 
+  final MutableLiveData<List<Map<String, dynamic>?>> _currentIncompleteResponses = MutableLiveData();
   final MutableLiveData<List<Child?>> _children = MutableLiveData();
+  final MutableLiveData<List<IdStringModel?>> _birthPlaces = MutableLiveData();
 
   final MutableLiveData<bool> _onSaveBatch = MutableLiveData(false);
   LiveData<bool> get onSaveBatch => _onSaveBatch;
@@ -83,7 +108,25 @@ class ChildFormVm extends FormVmGroup {
   //LiveData<List<Child>> get children => _children;
 
   @override
-  List<LiveData> get liveDatas => [currentPage, _children, _onSaveBatch,];
+  List<LiveData> get liveDatas => [_currentPage, _children, _onSaveBatch,];
+
+
+  bool checkPageActiveInParent(int page, { bool force = false }) {
+    if(force || _pageInParent == null) {
+      _pageInParent = page;
+    }
+    return page == _pageInParent;
+  }
+
+  void initPage(int page, { bool force = false }) {
+    prind("initPage page= $page _currentPage= $_currentPage force= $force");
+    if(!force && page == _currentPage.value) return;
+    //final currPage = _currentPage.value;
+    if(_currentPage.value != null) {
+      _saveCurrentResponses(saveIncompleteResponses: canProceed.value != true);
+    }
+    _currentPage.value = page;
+  }
 
   @override
   Set<String>? get mappedKey => {
@@ -95,10 +138,11 @@ class ChildFormVm extends FormVmGroup {
   mapResponse(int groupPosition, String key, response) {
     switch(key) {
       case Const.KEY_CHILD_ORDER:
-        if(response is int) {
-          return response;
+        final i = tryParseInt(response);
+        if(i != null) {
+          return i;
         }
-        throw "Expected type of response with `key` of '$key' is `int`";
+        throw "Can't parse `response` of '$response' to `int`";
       case Const.KEY_BIRTH_PLACE:
         if(response is IdStringModel) {
           return response.id;
@@ -114,14 +158,27 @@ class ChildFormVm extends FormVmGroup {
   }
 
   @override
-  Future<Result<String>> doSubmitJob() async {
+  Future<Result<String>> doSubmitJob() => _saveCurrentResponses(
+    saveIncompleteResponses: false,
+  );
+
+  Future<Result<String>> _saveCurrentResponses({
+    bool saveIncompleteResponses = false,
+  }) async {
+    prind("_saveCurrentResponses() _currentPage = $_currentPage saveIncompleteResponses= $saveIncompleteResponses");
+    if(saveIncompleteResponses) {
+      _currentIncompleteResponses.value![_currentPage.value!] = getRawResponseMap();
+      return Success("ok");
+    }
     try {
       final txtMap = getResponseMap();
       final data = Child.fromJson(txtMap);
-      _children.value![currentPage.value!] = data;
-      //final res = await _saveChildData(data, currentPage.value!); //.then<Result<String>>((value) => );
+      _children.value![_currentPage.value!] = data;
+      _birthPlaces.value![_currentPage.value!] = responseGroupList[0][Const.KEY_BIRTH_PLACE]!.response.value as IdStringModel?;
+      //final res = await _saveChildData(data, _currentPage.value!); //.then<Result<String>>((value) => );
       return Success("ok");
     } catch(e, stack) {
+      prine(e);
       prine(stack);
       return Fail(msg: "Error submitting in `$runtimeType`", error: e);
     }
@@ -157,8 +214,8 @@ class ChildFormVm extends FormVmGroup {
   }
 
   void saveBatchChildren() {
-    if(currentPage.value != childCount.value! -1) {
-      throw "`currentPage` is '${currentPage.value}' and total children count (`pageCount`) is '$childCount'.\n"
+    if(_currentPage.value != childCount.value! -1) {
+      throw "`currentPage` is '${_currentPage.value}' and total children count (`pageCount`) is '$childCount'.\n"
             "There are still some `Child`s with no data.\n"
             "Thus, can't save batch all `Child`s";
     }

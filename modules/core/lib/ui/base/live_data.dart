@@ -97,6 +97,7 @@ class LiveData<T> implements Expirable {
     _foreverObservers = null;
     _onceObservers?.clear();
     _onceObservers = null;
+    _value = null;
   }
 
   void notifyObservers({T? oldValue, T? newValue}) {

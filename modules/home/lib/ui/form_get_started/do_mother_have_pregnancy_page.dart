@@ -44,7 +44,11 @@ class DoMotherHavePregnancyPage extends StatelessWidget {
                 minWidth: 80,
                 onTap: () {
                   if(pageControll != null) {
-                    pageControll!.jumpToPage(pageControll!.page!.toInt() +1);
+                    pageControll!.animateToPage(
+                      pageControll!.page!.toInt() +1,
+                      duration: Duration(milliseconds: 500),
+                      curve: Curves.easeOut,
+                    );
                   } else {
                     HomeRoutes.motherHplPage.goToPage(context);
                   }
@@ -57,7 +61,11 @@ class DoMotherHavePregnancyPage extends StatelessWidget {
                 minWidth: 80,
                 onTap: () {
                   if(pageControll != null) {
-                    pageControll!.jumpToPage(pageControll!.page!.toInt() +2);
+                    pageControll!.animateToPage(
+                      pageControll!.page!.toInt() +2,
+                      duration: Duration(milliseconds: 500),
+                      curve: Curves.easeOut,
+                    );
                   } else {
                     HomeRoutes.childrenCountPage.goToPage(context);
                   }

@@ -39,6 +39,7 @@ class ChildrenCountPage extends StatelessWidget {
             .withMargin(EdgeInsets.symmetric(horizontal: 50).copyWith(top: 70)),
         Text("Berapa bayi (0-7 tahun) yang Bunda punya?",),
         NumberPicker(
+          init: vm.childrenCount.value ?? 0,
           onNumberChange: (i) => vm.childrenCount.value = i,
           max: 11,
         ),
@@ -79,7 +80,11 @@ class ChildrenCountPage extends StatelessWidget {
 
   void _moveToNext(BuildContext context) {
     if(pageControll != null) {
-      pageControll!.jumpToPage(pageControll!.page!.toInt() +1);
+      pageControll!.animateToPage(
+        pageControll!.page!.toInt() +1,
+        duration: Duration(milliseconds: 500),
+        curve: Curves.easeOut,
+      );
     } else {
       HomeRoutes.childFormPage.goToPage(context);
     }

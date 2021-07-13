@@ -5,11 +5,13 @@ import 'circle_btn.dart';
 
 class NumberPicker extends StatefulWidget {
   final void Function(int)? onNumberChange;
+  final int init;
   final int min;
   final int max;
 
   NumberPicker({
     this.onNumberChange,
+    this.init = 0,
     this.min = 0,
     this.max = 100000,
   });
@@ -17,6 +19,7 @@ class NumberPicker extends StatefulWidget {
   @override
   State createState() => NumberPickerState(
     onNumberChange: onNumberChange,
+    init: init,
     min: min,
     max: max,
   );
@@ -26,14 +29,25 @@ class NumberPicker extends StatefulWidget {
 class NumberPickerState extends State<NumberPicker> {
   final void Function(int)? onNumberChange;
   int _number = 0;
+  final int init;
   final int min;
   final int max;
 
   NumberPickerState({
     this.onNumberChange,
+    required this.init,
     required this.min,
     required this.max,
   });
+
+  @override
+  void initState() {
+    if(min > max) {
+      throw "Can't have `max` ($max) that is greater than `min` ($min)";
+    }
+    _number = min <= init && init <= max ? init : min;
+    super.initState();
+  }
 
 
   @override

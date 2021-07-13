@@ -17,6 +17,7 @@ import 'new_account_confirmation_page.dart';
 
 class GetStartedFormMainPage extends StatelessWidget {
   final pageControl = PageController();
+  final nestedPageControl = MutableLiveData<PageController>();
   final LiveData<int> page = MutableLiveData(0);
   final FormGroupInterceptor? interceptor;
 
@@ -61,8 +62,9 @@ class GetStartedFormMainPage extends StatelessWidget {
               ChildrenCountPage(pageControll: pageControl,),
               ChildFormPage(
                 pageControll: pageControl,
+                nestedPageControll: nestedPageControl,
                 interceptor: interceptor,
-                childCount: vm.childrenCountVm.childrenCount,
+                //childCount: vm.childrenCountVm.childrenCount,
               ),
               NewAccountConfirmPage(),
             ],
@@ -78,16 +80,16 @@ class GetStartedFormMainPage extends StatelessWidget {
                   color: Colors.black,
                 ),
                 onTap: () {
-                  final page = pageControl.page?.toInt();
-                  if(page != null) {
-                    if(page >= 0) {
-                      pageControl.animateToPage(
-                        page -1,
-                        duration: Duration(milliseconds: 500),
-                        curve: Curves.easeOut,
-                      );
-                    } else {
+                  if(nestedPageControl.value == null) {
+                    if(!_scrollBackward(pageControl)) {
                       backPage(context);
+                    }
+                  } else {
+                    if(!_scrollBackward(nestedPageControl.value!)) {
+                      nestedPageControl.value = null;
+                      if(!_scrollBackward(pageControl)) {
+                        backPage(context);
+                      }
                     }
                   }
                 },
@@ -97,5 +99,24 @@ class GetStartedFormMainPage extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  /// Returns `true` if [controller] is not in page 0 currently
+  /// and successfully scroll backward.
+  bool _scrollBackward(PageController controller) {
+    final page = controller.page?.toInt();
+    if(page != null) {
+      if(page > 0) {
+        controller.animateToPage(
+          page-1,
+          duration: Duration(milliseconds: 500),
+          curve: Curves.easeOut,
+        );
+        return true;
+      } else {
+        return false;
+      }
+    }
+    return false;
   }
 }
