@@ -15,6 +15,10 @@ class SibTextStyles {
       fontSize: 15,
   );
 
+  static final size_plus_7 = default_.copyWith(fontSize: 34);
+  static final size_plus_6 = default_.copyWith(fontSize: 32);
+  static final size_plus_5 = default_.copyWith(fontSize: 30);
+  static final size_plus_4 = default_.copyWith(fontSize: 26);
   static final size_plus_3 = default_.copyWith(fontSize: 23);
   static final size_plus_2 = default_.copyWith(fontSize: 20);
   static final size_plus_1 = default_.copyWith(fontSize: 18);

@@ -1,10 +1,13 @@
 import 'package:common/arch/di/repo_di.dart';
 import 'package:common/arch/domain/usecase/baby_usecase.dart';
+import 'package:common/arch/domain/usecase/data_usecase.dart';
 import 'package:common/arch/domain/usecase/mother_usecase.dart';
 import 'package:common/arch/domain/usecase/profile_usecase.dart';
 
 class UseCaseDi {
   UseCaseDi._();
+
+  static GetCityList get getCityList => GetCityListImpl(RepoDi.dataRepo);
 
   static GetMotherNik get getMotherNik => GetMotherNikImpl(RepoDi.motherRepo);
   static GetBabyNik get getBabyNik => GetBabyNikImpl(RepoDi.myBabyRepo);

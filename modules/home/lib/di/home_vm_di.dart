@@ -12,10 +12,12 @@ import 'package:home/ui/home/home_vm.dart';
 import 'package:home/ui/home/notif_and_message_vm.dart';
 import 'package:home/ui/login/login_vm.dart';
 import 'package:home/ui/signup/sign_up_vm.dart';
+import 'package:home/ui/splash/splash_vm.dart';
 
 class HomeVmDi {
   HomeVmDi._();
 
+  static SplashVm get splashVm => SplashVm(getCityList: UseCaseDi.getCityList,);
   static GetStartedFormMainVm get getStartedFormMainVm => GetStartedFormMainVm(
     signUpAndRegisterOtherData: HomeUseCaseDi.signUpAndRegister,
     saveMotherHpl: HomeUseCaseDi.saveMotherHpl,

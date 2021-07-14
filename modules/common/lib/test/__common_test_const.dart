@@ -88,7 +88,9 @@ class TestUtil {
   }
   static initDummyDb() async {
     try {
-      await DbDi.cityDao.insertAll(dummyCities);
+      final cities = await DbDi.cityDao.get();
+      prind("`initDummyDb()` cities = $cities");
+      //await DbDi.cityDao.insertAll(dummyCities);
       await DbDi.roleDao.insertAll(userRoles);
       await DbDi.profileTypeDao.insertAll(profileTypes);
       await DbDi.credentialDao.insertAll([dummyCredential]);

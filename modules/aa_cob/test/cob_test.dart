@@ -15,6 +15,18 @@ main() async {
   for(final i in range(10, start: 8)) {
     prind("for i = $i");
   }
+
+  final sw = Stopwatch();
+
+  sw.start();
+  await Future.delayed(Duration(milliseconds: 1000), () {
+    prinw("Future.delayed duration = 1000");
+    prind("sw.elapsed = ${sw.elapsed}");
+  });
+  await Future.delayed(Duration(milliseconds: 300), () {
+    prinw("Future.delayed duration = 300");
+    prind("sw.elapsed = ${sw.elapsed}");
+  });
 }
 
 /*

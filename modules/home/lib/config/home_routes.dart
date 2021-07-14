@@ -15,9 +15,10 @@ import 'package:home/ui/form_get_started/mother_hpl_page.dart';
 import 'package:home/ui/form_get_started/new_account_confirmation_page.dart';
 import 'package:home/ui/home/home_page.dart';
 import 'package:home/ui/home/notif_and_message_page.dart';
-import 'package:home/ui/splash/splash_page.dart';
+import 'package:home/ui/intro/intro_page.dart';
 import 'package:home/ui/login/login_page.dart';
 import 'package:home/ui/signup/sign_up_page.dart';
+import 'package:home/ui/splash/splash_page.dart';
 
 class HomeRoutes extends ModuleRoute {
   HomeRoutes._(): super(GlobalRoutes.manager);
@@ -29,14 +30,19 @@ class HomeRoutes extends ModuleRoute {
   final String name = GlobalRoutes.home;
   @override
   Set<SibRoute> get routes => {
-    splashPage, signUpPage, loginPage,
+    introPage, signUpPage, loginPage,
     motherFormPage, fatherFormPage, childFormPage,
     doMotherHavePregnancyPage, motherHplPage, childrenCountPage,
     homePage, homeNotifAndMessagePage,
   };
 
   static final splashPage = SibRoute("SplashPage", SplashPage, (ctx) => NoAppBarFrame(
-    body: SplashPage(),
+    body: SplashPage().inVmProvider([
+      (ctx) => HomeVmDi.splashVm,
+    ]),
+  ));
+  static final introPage = SibRoute("IntroPage", IntroPage, (ctx) => NoAppBarFrame(
+    body: IntroPage(),
     padding: EdgeInsets.all(20),
   ));
   static final loginPage = SibRoute("LoginPage", LoginPage, (ctx) =>  PlainBackFrame(

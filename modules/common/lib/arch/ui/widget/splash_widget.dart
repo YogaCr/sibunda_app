@@ -1,11 +1,26 @@
+import 'package:core/util/_consoles.dart';
 import 'package:flutter/material.dart';
 
 class SplashScreen extends StatefulWidget {
   final Duration transitionDuration;
+
+  /// Duration of this [SplashScreen] stay until begin the transition
+  /// to other page.
+  ///
+  /// If [computation] is not null, then this [stayDuration]
+  /// will become the least duration to begin the page transition.
+  /// Here the 2 condition that may come:
+  /// - If [computation] takes longer than [stayDuration], then the duration of
+  ///   this [SplashScreen] will stay is as long as that [computation] duration.
+  /// - If [computation] takes shorter than [stayDuration], then the duration of
+  ///   this [SplashScreen] will stay is [stayDuration].
   final Duration stayDuration;
   final Widget Function(BuildContext context) pageBuilder;
   final Widget Function(BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child)? transitionBuilder;
   final Widget child;
+
+  /// This block will be executed immediately after the [_SplashScreenState.initState]
+  /// is executed.
   final Future<void> Function()? computation;
 
   SplashScreen({
@@ -56,8 +71,18 @@ class _SplashScreenState extends State<SplashScreen> {
         Navigator.push(context, _createRoute());
       });
     } else {
+      final sw = Stopwatch()..start();
       computation!().then((_) {
-        Navigator.push(context, _createRoute());
+        final durr = sw.elapsed;
+        sw.stop();
+        //prind("SplashScreen computation durr= $durr stayDuration= $stayDuration durr >= stayDuration => ${durr >= stayDuration} stayDuration - durr= ${stayDuration - durr}");
+        if(durr >= stayDuration) {
+          Navigator.push(context, _createRoute());
+        } else {
+          Future.delayed(stayDuration - durr, () {
+            Navigator.push(context, _createRoute());
+          });
+        }
       });
     }
   }

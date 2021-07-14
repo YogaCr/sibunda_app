@@ -33,12 +33,15 @@ class CheckUpLocalSrcImpl with CheckUpLocalSrc {
     try {
       final entity = CheckUpIdEntity(id: id, period: period, nik: nik);
       final rowId = await _checkUpIdDao.insert(entity);
+      prind("CheckUpLocalSrc.saveCheckUpId() rowId= $rowId");
       if(rowId < 0) {
-        return Fail();
+        return Fail(msg: "Can't insert `CheckUpIdEntity` to DB");
       }
       return Success(true);
-    } catch(e) {
-      return Fail(error: e);
+    } catch(e, stack) {
+      prine(e);
+      prine(stack);
+      return Fail(msg: "Can't insert `CheckUpIdEntity` to DB", error: e);
     }
   }
   @override
@@ -47,17 +50,19 @@ class CheckUpLocalSrcImpl with CheckUpLocalSrc {
     required String nik,
   }) async {
     try {
-      //prind("getCheckUpId() period = $period nik = $nik");
+      prind("getCheckUpId() period = $period nik = $nik");
+      final all = await _checkUpIdDao.getAll();
+      prind("getCheckUpId() all = $all");
       final e = await _checkUpIdDao.getByNikAndPeriod(nik: nik, period: period);
-      //prind("getCheckUpId() e = $e");
+      prind("getCheckUpId() e = $e");
       if(e == null) {
-        return Fail();
+        return Fail(msg: "Can't get `CheckUpIdEntity` from DB with `period` '$period' and `nik` '$nik'",);
       }
       return Success(e.id);
     } catch(e, stack) {
       prine(e);
       prine(stack);
-      return Fail(error: e);
+      return Fail(msg: "Can't get `CheckUpIdEntity` from DB with `period` '$period' and `nik` '$nik'", error: e);
     }
   }
 }

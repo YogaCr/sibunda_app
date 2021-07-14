@@ -38,6 +38,9 @@ final idStringList = List<IdStringModel>.generate(20, (index) => IdStringModel(
 ));
 
 
+final appLogoImg = ImgData(link: "logo_app_color.png", package: GlobalRoutes.common, isLocal: true);
+final appLogoImgWhite = ImgData(link: "logo_app_white.png", package: GlobalRoutes.common, isLocal: true);
+
 final dummyImg = ImgData(link: "", isLocal: true);
 final dummyImg_smillingCat = ImgData(link: "_smiling_cat.jpg", package: GlobalRoutes.common, isLocal: true);
 final dummyImg_profile_sm = ImgData(link: "pic_profile_example.png", package: GlobalRoutes.common, isLocal: true);

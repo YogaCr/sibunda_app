@@ -4,6 +4,7 @@ import 'package:common/arch/data/local/dao/data_dao.dart';
 import 'package:common/arch/data/local/db/app_db.dart';
 import 'package:common/arch/data/local/db/executor/shared.dart';
 import 'package:common/arch/data/remote/api/data_api.dart';
+import 'package:common/arch/di/db_di.dart';
 import 'package:common/arch/domain/dummy_data.dart';
 import 'package:common/arch/domain/model/baby_data.dart';
 import 'package:common/arch/domain/model/form_data.dart';
@@ -39,6 +40,7 @@ import 'package:intl/date_symbol_data_local.dart';
 
 void main() async {
   await initializeDateFormatting("id_ID");
+  await ConfigUtil.init();
   runApp(MyApp());
 }
 
@@ -68,6 +70,28 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Cob',
       theme: Manifest.theme.materialData,
+      home: Scaffold(
+        body: SplashIc,
+      ),
+/*
+      home: Scaffold(
+        body: Builder(
+          builder: (ctx) {
+            final list = DbDi.cityDao.get();
+            return FutureBuilder<List<CityEntity>>(
+              future: list,
+              builder: (ctx, snapshot) {
+                if(snapshot.hasData) {
+                  return Text("data len = ${snapshot.data?.length} \n"
+                      "data = ${snapshot.data}");
+                }
+                return defaultNoData();
+              },
+            );
+          },
+        ),
+      ),
+ */
 /*
       home: Scaffold(
         body: Builder(
@@ -135,7 +159,7 @@ class MyApp extends StatelessWidget {
         ),
       ),
 // */
-///*
+/*
       home: Scaffold(
         body: Builder(
           builder: (ctx) => IdStringPopup(
@@ -342,6 +366,28 @@ class _Vm extends FormVmGroup {
 
 }
 
+class _Splash2 extends StatelessWidget {
+
+  @override
+  Widget build(BuildContext context) {
+    return SplashScreen(
+      stayDuration: Duration(seconds: 3),
+      computation: () => Future.delayed(Duration(seconds: 1), () {
+        prind("_Splash2 Future.delayed");
+      }),
+      child: defaultLoading(),
+      pageBuilder: (ctx) {
+        prind("_Splash2 halaman 2");
+        return Scaffold(
+          body: Container(
+            color: Colors.blue,
+            child: Text("halaman 2"),
+          ),
+        );
+      },
+    );
+  }
+}
 
 class _Splash extends StatefulWidget {
 

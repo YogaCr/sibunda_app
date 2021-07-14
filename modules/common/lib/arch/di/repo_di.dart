@@ -16,7 +16,10 @@ import 'package:common/arch/domain/repo/profile_repo.dart';
 class RepoDi {
   RepoDi._();
 
-  static DataRepo get dataRepo => DataRepoImpl(LocalSrcDi.dataSrc);
+  static DataRepo get dataRepo => DataRepoImpl(
+    localSrc: LocalSrcDi.dataSrc,
+    api: ApiDi.dataApi,
+  );
 
   static AuthRepo get authRepo => AuthRepoImpl(api: ApiDi.authApi, localSrc: LocalSrcDi.accountSrc); //AuthDummyRepo.obj; //
 

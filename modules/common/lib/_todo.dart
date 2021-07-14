@@ -4,4 +4,4 @@
 //T ODO: 13 Juli 2021: Next: Pastikan ketika HPL page dilewati setelah sebelumnya dikunjungi, data HPL nya ilang di VM. //14 Juli 2021
 //TODO: 13 Juli 2021: Next: sambungkan user id mother, father, dan child di lokal dg di server.
 //TODO: 13 Juli 2021: Next: Implement child selection di halaman cek covid.
-//TODO: 14 Juli 2021: Next: Buat splash yg nunggu donlot data city dari server.
+//TODO: 14 Juli 2021: Next: Buat splash yg nunggu donlot data city dari server. //14 Juli 2021
