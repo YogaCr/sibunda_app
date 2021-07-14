@@ -1,6 +1,7 @@
 import 'package:common/value/db_const.dart';
 import 'package:moor/moor.dart';
 
+/*
 @DataClassName("BabyCheckUpIdEntity")
 class BabyCheckUpIdEntities extends Table {
   IntColumn get id => integer()();
@@ -14,3 +15,4 @@ class BabyCheckUpIdEntities extends Table {
   @override
   Set<Column>? get primaryKey => {id};
 }
+ */

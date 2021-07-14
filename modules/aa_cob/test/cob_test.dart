@@ -27,6 +27,17 @@ main() async {
     prinw("Future.delayed duration = 300");
     prind("sw.elapsed = ${sw.elapsed}");
   });
+
+  //true & false;
+  var a = false;
+  //if(a &&= true){}
+  var b = true;
+  b &= false;
+  prin("b = $b");
+  b |= true;
+  prin("b = $b");
+  b &= true & false;
+  prin("b = $b");
 }
 
 /*

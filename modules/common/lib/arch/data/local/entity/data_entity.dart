@@ -7,7 +7,7 @@ class CityEntities extends Table {
   TextColumn get name => text()();
 
   @override
-  String? get tableName => "cities"; //DbConst.NAME_CITIES;
+  String get tableName => "cities"; //DbConst.NAME_CITIES;
 
   @override
   List<String> get customConstraints => [

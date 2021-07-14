@@ -1,5 +1,6 @@
 import 'package:common/arch/data/local/db/app_db.dart';
 import 'package:common/arch/data/local/entity/account_entity.dart';
+import 'package:common/util/db_util.dart';
 import 'package:core/util/_consoles.dart';
 import 'package:moor/moor.dart';
 
@@ -9,6 +10,16 @@ part 'account_dao.g.dart';
 class CredentialDao extends DatabaseAccessor<AppDatabase> with _$CredentialDaoMixin {
   CredentialDao(AppDatabase attachedDatabase) : super(attachedDatabase);
 
+  Future<bool> dropTable() async {
+    try {
+      await customStatement(getDropTableStatement(credentialEntities.tableName));
+      return true;
+    } catch(e, stack) {
+      prine(e);
+      prine(stack);
+      return false;
+    }
+  }
   Future<int> insert(Insertable<CredentialEntity> e) => into(credentialEntities).insert(e);
   Future<void> insertAll(List<Insertable<CredentialEntity>> e) => batch((batch) => batch.insertAll(credentialEntities, e));
   Future<int> deleteData(Insertable<CredentialEntity> e) => delete(credentialEntities).delete(e);
@@ -19,6 +30,16 @@ class CredentialDao extends DatabaseAccessor<AppDatabase> with _$CredentialDaoMi
 class RoleDao extends DatabaseAccessor<AppDatabase> with _$RoleDaoMixin {
   RoleDao(AppDatabase attachedDatabase) : super(attachedDatabase);
 
+  Future<bool> dropTable() async {
+    try {
+      await customStatement(getDropTableStatement(roleEntities.tableName));
+      return true;
+    } catch(e, stack) {
+      prine(e);
+      prine(stack);
+      return false;
+    }
+  }
   Future<int> insert(Insertable<RoleEntity> e) => into(roleEntities).insert(e);
   Future<void> insertAll(List<Insertable<RoleEntity>> e) => batch((batch) => batch.insertAll(roleEntities, e));
   Future<int> deleteData(Insertable<RoleEntity> e) => delete(roleEntities).delete(e);
@@ -29,6 +50,16 @@ class RoleDao extends DatabaseAccessor<AppDatabase> with _$RoleDaoMixin {
 class ProfileTypeDao extends DatabaseAccessor<AppDatabase> with _$ProfileTypeDaoMixin {
   ProfileTypeDao(AppDatabase attachedDatabase) : super(attachedDatabase);
 
+  Future<bool> dropTable() async {
+    try {
+      await customStatement(getDropTableStatement(profileTypeEntities.tableName));
+      return true;
+    } catch(e, stack) {
+      prine(e);
+      prine(stack);
+      return false;
+    }
+  }
   Future<int> insert(Insertable<ProfileTypeEntity> e) => into(profileTypeEntities).insert(e);
   Future<void> insertAll(List<Insertable<ProfileTypeEntity>> e) => batch((batch) => batch.insertAll(profileTypeEntities, e));
   Future<int> deleteData(Insertable<ProfileTypeEntity> e) => delete(profileTypeEntities).delete(e);
@@ -38,6 +69,16 @@ class ProfileTypeDao extends DatabaseAccessor<AppDatabase> with _$ProfileTypeDao
 class ProfileDao extends DatabaseAccessor<AppDatabase> with _$ProfileDaoMixin {
   ProfileDao(AppDatabase attachedDatabase) : super(attachedDatabase);
 
+  Future<bool> dropTable() async {
+    try {
+      await customStatement(getDropTableStatement(profileEntities.tableName));
+      return true;
+    } catch(e, stack) {
+      prine(e);
+      prine(stack);
+      return false;
+    }
+  }
   Future<int> insert(Insertable<ProfileEntity> e) => into(profileEntities).insert(e);
   Future<void> insertAll(List<Insertable<ProfileEntity>> e) => batch((batch) => batch.insertAll(profileEntities, e));
   Future<int> deleteData(Insertable<ProfileEntity> e) => delete(profileEntities).delete(e);

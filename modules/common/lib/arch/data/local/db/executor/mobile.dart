@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:common/value/db_const.dart';
+import 'package:core/util/_consoles.dart';
 import 'package:moor/ffi.dart';
 import 'package:moor/moor.dart';
 
@@ -27,4 +28,17 @@ AppDatabase constructDb({bool logStatements = false}) {
   //   return Database(VMDatabase(file, logStatements: logStatements));
   // }
   return AppDatabase(VmDatabase.memory(logStatements: logStatements));
+}
+
+Future<bool> destroyDb({bool logStatements = false}) async {
+  try {
+    final dataDir = await paths.getApplicationDocumentsDirectory();
+    final dbFile = File(p.join(dataDir.path, DbConst.DB_FILE));
+    await dbFile.delete();
+    return true;
+  } catch(e, stack) {
+    prinw("Error calling `destroyDb()`, e= $e");
+    prine(stack);
+    return false;
+  }
 }

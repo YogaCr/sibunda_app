@@ -6,6 +6,7 @@ import 'package:common/arch/data/local/db/executor/shared.dart';
 import 'package:common/arch/data/remote/api/data_api.dart';
 import 'package:common/arch/di/db_di.dart';
 import 'package:common/arch/domain/dummy_data.dart';
+import 'package:common/arch/domain/model/_model_template.dart';
 import 'package:common/arch/domain/model/baby_data.dart';
 import 'package:common/arch/domain/model/form_data.dart';
 import 'package:common/arch/domain/model/img_data.dart';
@@ -40,7 +41,19 @@ import 'package:intl/date_symbol_data_local.dart';
 
 void main() async {
   await initializeDateFormatting("id_ID");
+  //await TestUtil.nukeDb();
   await ConfigUtil.init();
+  //await DbDi.db.reset();
+/*
+  final res = await DbDi.db.getAllTableName();
+  res.forEach((e) {
+    prin("e.data = ${e}");
+  });
+ */
+  //await destroyDb(logStatements: true);
+  //await DbDi.db.reset();
+  await ConfigUtil.init();
+  //await DbDi.db.deleteAllTable();
   runApp(MyApp());
 }
 
@@ -71,8 +84,27 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Cob',
       theme: Manifest.theme.materialData,
       home: Scaffold(
-        body: SplashIc,
+        body: Builder(
+          builder: (ctx) {
+            final cities = DbDi.cityDao.get();
+            return FutureBuilder<List<CityEntity>>(
+              future: cities,
+              builder: (ctx, snap) {
+                prind("snap.data = ${snap.data}");
+                if(snap.hasData) {
+                  return IdStringPopup(
+                    dataList: snap.data!.map((e) => IdStringModel(id: e.id, name: e.name)).toList(),
+                  );
+                } else {
+                  return defaultError();
+                }
+              },
+            );
+          },
+        ),
       ),
+
+      //home: Scaffold(body: _Splash2(),),
 /*
       home: Scaffold(
         body: Builder(

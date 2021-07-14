@@ -9,5 +9,5 @@ class CheckUpIdEntities extends Table {
     .customConstraint("REFERENCES profiles(nik)")();
 
   @override
-  String? get tableName => "check_up_ids"; //DbConst.NAME_PREGNANCY_CHECK_UP_ID;
+  String get tableName => "check_up_ids"; //DbConst.NAME_PREGNANCY_CHECK_UP_ID;
 }

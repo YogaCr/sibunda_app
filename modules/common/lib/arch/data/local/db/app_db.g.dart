@@ -1348,216 +1348,6 @@ class $CheckUpIdEntitiesTable extends CheckUpIdEntities
   }
 }
 
-class BabyCheckUpIdEntity extends DataClass
-    implements Insertable<BabyCheckUpIdEntity> {
-  final int id;
-  final int month;
-  final String babyNik;
-  BabyCheckUpIdEntity(
-      {required this.id, required this.month, required this.babyNik});
-  factory BabyCheckUpIdEntity.fromData(
-      Map<String, dynamic> data, GeneratedDatabase db,
-      {String? prefix}) {
-    final effectivePrefix = prefix ?? '';
-    return BabyCheckUpIdEntity(
-      id: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
-      month: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}month'])!,
-      babyNik: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}baby_nik'])!,
-    );
-  }
-  @override
-  Map<String, Expression> toColumns(bool nullToAbsent) {
-    final map = <String, Expression>{};
-    map['id'] = Variable<int>(id);
-    map['month'] = Variable<int>(month);
-    map['baby_nik'] = Variable<String>(babyNik);
-    return map;
-  }
-
-  BabyCheckUpIdEntitiesCompanion toCompanion(bool nullToAbsent) {
-    return BabyCheckUpIdEntitiesCompanion(
-      id: Value(id),
-      month: Value(month),
-      babyNik: Value(babyNik),
-    );
-  }
-
-  factory BabyCheckUpIdEntity.fromJson(Map<String, dynamic> json,
-      {ValueSerializer? serializer}) {
-    serializer ??= moorRuntimeOptions.defaultSerializer;
-    return BabyCheckUpIdEntity(
-      id: serializer.fromJson<int>(json['id']),
-      month: serializer.fromJson<int>(json['month']),
-      babyNik: serializer.fromJson<String>(json['babyNik']),
-    );
-  }
-  @override
-  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
-    serializer ??= moorRuntimeOptions.defaultSerializer;
-    return <String, dynamic>{
-      'id': serializer.toJson<int>(id),
-      'month': serializer.toJson<int>(month),
-      'babyNik': serializer.toJson<String>(babyNik),
-    };
-  }
-
-  BabyCheckUpIdEntity copyWith({int? id, int? month, String? babyNik}) =>
-      BabyCheckUpIdEntity(
-        id: id ?? this.id,
-        month: month ?? this.month,
-        babyNik: babyNik ?? this.babyNik,
-      );
-  @override
-  String toString() {
-    return (StringBuffer('BabyCheckUpIdEntity(')
-          ..write('id: $id, ')
-          ..write('month: $month, ')
-          ..write('babyNik: $babyNik')
-          ..write(')'))
-        .toString();
-  }
-
-  @override
-  int get hashCode =>
-      $mrjf($mrjc(id.hashCode, $mrjc(month.hashCode, babyNik.hashCode)));
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      (other is BabyCheckUpIdEntity &&
-          other.id == this.id &&
-          other.month == this.month &&
-          other.babyNik == this.babyNik);
-}
-
-class BabyCheckUpIdEntitiesCompanion
-    extends UpdateCompanion<BabyCheckUpIdEntity> {
-  final Value<int> id;
-  final Value<int> month;
-  final Value<String> babyNik;
-  const BabyCheckUpIdEntitiesCompanion({
-    this.id = const Value.absent(),
-    this.month = const Value.absent(),
-    this.babyNik = const Value.absent(),
-  });
-  BabyCheckUpIdEntitiesCompanion.insert({
-    this.id = const Value.absent(),
-    required int month,
-    required String babyNik,
-  })  : month = Value(month),
-        babyNik = Value(babyNik);
-  static Insertable<BabyCheckUpIdEntity> custom({
-    Expression<int>? id,
-    Expression<int>? month,
-    Expression<String>? babyNik,
-  }) {
-    return RawValuesInsertable({
-      if (id != null) 'id': id,
-      if (month != null) 'month': month,
-      if (babyNik != null) 'baby_nik': babyNik,
-    });
-  }
-
-  BabyCheckUpIdEntitiesCompanion copyWith(
-      {Value<int>? id, Value<int>? month, Value<String>? babyNik}) {
-    return BabyCheckUpIdEntitiesCompanion(
-      id: id ?? this.id,
-      month: month ?? this.month,
-      babyNik: babyNik ?? this.babyNik,
-    );
-  }
-
-  @override
-  Map<String, Expression> toColumns(bool nullToAbsent) {
-    final map = <String, Expression>{};
-    if (id.present) {
-      map['id'] = Variable<int>(id.value);
-    }
-    if (month.present) {
-      map['month'] = Variable<int>(month.value);
-    }
-    if (babyNik.present) {
-      map['baby_nik'] = Variable<String>(babyNik.value);
-    }
-    return map;
-  }
-
-  @override
-  String toString() {
-    return (StringBuffer('BabyCheckUpIdEntitiesCompanion(')
-          ..write('id: $id, ')
-          ..write('month: $month, ')
-          ..write('babyNik: $babyNik')
-          ..write(')'))
-        .toString();
-  }
-}
-
-class $BabyCheckUpIdEntitiesTable extends BabyCheckUpIdEntities
-    with TableInfo<$BabyCheckUpIdEntitiesTable, BabyCheckUpIdEntity> {
-  final GeneratedDatabase _db;
-  final String? _alias;
-  $BabyCheckUpIdEntitiesTable(this._db, [this._alias]);
-  final VerificationMeta _idMeta = const VerificationMeta('id');
-  late final GeneratedColumn<int?> id = GeneratedColumn<int?>(
-      'id', aliasedName, false,
-      typeName: 'INTEGER', requiredDuringInsert: false);
-  final VerificationMeta _monthMeta = const VerificationMeta('month');
-  late final GeneratedColumn<int?> month = GeneratedColumn<int?>(
-      'month', aliasedName, false,
-      typeName: 'INTEGER', requiredDuringInsert: true);
-  final VerificationMeta _babyNikMeta = const VerificationMeta('babyNik');
-  late final GeneratedColumn<String?> babyNik = GeneratedColumn<String?>(
-      'baby_nik', aliasedName, false,
-      typeName: 'TEXT',
-      requiredDuringInsert: true,
-      $customConstraints: 'REFERENCES profiles(nik)');
-  @override
-  List<GeneratedColumn> get $columns => [id, month, babyNik];
-  @override
-  String get aliasedName => _alias ?? 'baby_check_up_ids';
-  @override
-  String get actualTableName => 'baby_check_up_ids';
-  @override
-  VerificationContext validateIntegrity(
-      Insertable<BabyCheckUpIdEntity> instance,
-      {bool isInserting = false}) {
-    final context = VerificationContext();
-    final data = instance.toColumns(true);
-    if (data.containsKey('id')) {
-      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
-    }
-    if (data.containsKey('month')) {
-      context.handle(
-          _monthMeta, month.isAcceptableOrUnknown(data['month']!, _monthMeta));
-    } else if (isInserting) {
-      context.missing(_monthMeta);
-    }
-    if (data.containsKey('baby_nik')) {
-      context.handle(_babyNikMeta,
-          babyNik.isAcceptableOrUnknown(data['baby_nik']!, _babyNikMeta));
-    } else if (isInserting) {
-      context.missing(_babyNikMeta);
-    }
-    return context;
-  }
-
-  @override
-  Set<GeneratedColumn> get $primaryKey => {id};
-  @override
-  BabyCheckUpIdEntity map(Map<String, dynamic> data, {String? tablePrefix}) {
-    return BabyCheckUpIdEntity.fromData(data, _db,
-        prefix: tablePrefix != null ? '$tablePrefix.' : null);
-  }
-
-  @override
-  $BabyCheckUpIdEntitiesTable createAlias(String alias) {
-    return $BabyCheckUpIdEntitiesTable(_db, alias);
-  }
-}
-
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
   late final $CredentialEntitiesTable credentialEntities =
@@ -1570,8 +1360,6 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $CityEntitiesTable cityEntities = $CityEntitiesTable(this);
   late final $CheckUpIdEntitiesTable checkUpIdEntities =
       $CheckUpIdEntitiesTable(this);
-  late final $BabyCheckUpIdEntitiesTable babyCheckUpIdEntities =
-      $BabyCheckUpIdEntitiesTable(this);
   late final CredentialDao credentialDao = CredentialDao(this as AppDatabase);
   late final ProfileDao profileDao = ProfileDao(this as AppDatabase);
   late final ProfileTypeDao profileTypeDao =
@@ -1579,8 +1367,6 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final RoleDao roleDao = RoleDao(this as AppDatabase);
   late final CityDao cityDao = CityDao(this as AppDatabase);
   late final CheckUpIdDao checkUpIdDao = CheckUpIdDao(this as AppDatabase);
-  late final BabyCheckUpIdDao babyCheckUpIdDao =
-      BabyCheckUpIdDao(this as AppDatabase);
   @override
   Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
   @override
@@ -1590,7 +1376,6 @@ abstract class _$AppDatabase extends GeneratedDatabase {
         profileTypeEntities,
         roleEntities,
         cityEntities,
-        checkUpIdEntities,
-        babyCheckUpIdEntities
+        checkUpIdEntities
       ];
 }

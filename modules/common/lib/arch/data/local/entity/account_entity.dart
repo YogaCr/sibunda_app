@@ -10,7 +10,7 @@ class CredentialEntities extends Table {
   IntColumn get role => integer().customConstraint("REFERENCES roles(id)")();
 
   @override
-  String? get tableName => "credentials"; //DbConst.NAME_CREDENTIALS;
+  String get tableName => "credentials"; //DbConst.NAME_CREDENTIALS;
 
   @override
   List<String> get customConstraints => [
@@ -24,7 +24,7 @@ class RoleEntities extends Table {
   TextColumn get name => text()();
   
   @override
-  String? get tableName => "roles"; //DbConst.NAME_ROLES;
+  String get tableName => "roles"; //DbConst.NAME_ROLES;
 
   @override
   List<String> get customConstraints => [
@@ -40,7 +40,7 @@ class ProfileTypeEntities extends Table {
   TextColumn get name => text()();
 
   @override
-  String? get tableName => "profile_types"; //DbConst.NAME_ROLES;
+  String get tableName => "profile_types"; //DbConst.NAME_ROLES;
 
   @override
   List<String> get customConstraints => [
@@ -61,7 +61,7 @@ class ProfileEntities extends Table {
       .customConstraint("REFERENCES cities(id)")();
 
   @override
-  String? get tableName => "profiles"; //DbConst.NAME_PROFILES;
+  String get tableName => "profiles"; //DbConst.NAME_PROFILES;
 
   @override
   Set<Column>? get primaryKey => {userId, type};
