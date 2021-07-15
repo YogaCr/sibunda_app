@@ -1,8 +1,11 @@
 import 'package:common/arch/domain/dummy_data.dart';
 import 'package:common/arch/domain/model/baby_data.dart';
 import 'package:common/arch/ui/model/immunization.dart';
+import 'package:flutter/material.dart';
 
 import 'home_graph_menu.dart';
+
+const ic_gender = IconData(0x26A4, fontFamily: 'MaterialIcons');
 
 final motherHomeGraph_ui = <HomeGraphMenu>[
   HomeGraphMenu(name: 'Grafik Evaluasi Kehamilan', img: dummyImg,),

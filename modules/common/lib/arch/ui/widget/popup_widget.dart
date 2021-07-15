@@ -1,4 +1,5 @@
 import 'package:common/arch/data/local/dao/data_dao.dart';
+import 'package:common/arch/domain/dummy_data.dart';
 import 'package:common/arch/domain/model/_model_template.dart';
 import 'package:common/arch/ui/adapter/id_string_adp.dart';
 import 'package:common/arch/ui/widget/_basic_widget.dart';
@@ -72,10 +73,12 @@ class PopupSuccess extends StatelessWidget {
 class IdStringPopup extends StatelessWidget {
   final List<IdStringModel> dataList;
   final void Function(int id, String name)? onItemClick;
+  final bool showId;
 
   IdStringPopup({
     required this.dataList,
     this.onItemClick,
+    this.showId = true,
   });
 
   @override
@@ -93,6 +96,7 @@ class IdStringPopup extends StatelessWidget {
             dataList: dataList,
             searchTxtControl: txtControl,
             onItemClick: onItemClick,
+            showId: showId,
           ),
         ),
       ],
@@ -103,11 +107,17 @@ class IdStringPopup extends StatelessWidget {
 Future<IdStringModel?> showIdStringPopup({
   required BuildContext context,
   required List<IdStringModel> dataList,
+  String? title,
+  bool showId = true,
 }) => showDialog<IdStringModel>(
   context: context,
   builder: (ctx) => AlertDialog(
+    title: title != null
+        ? Text(title, style: SibTextStyles.size_0_bold,)
+        : null,
     content: IdStringPopup(
       dataList: dataList,
+      showId: showId,
       onItemClick: (id, str) => backPage<IdStringModel>(
         ctx,
         result: IdStringModel(id: id, name: str),
@@ -119,6 +129,8 @@ Future<IdStringModel?> showIdStringPopup({
 Future<IdStringModel?> showLazyIdStringPopup({
   required BuildContext context,
   required Future<List<IdStringModel>> Function() dataSrc,
+  String? title,
+  bool showId = true,
 }) async {
   final isReady = MutableLiveData(false);
 
@@ -131,6 +143,9 @@ Future<IdStringModel?> showLazyIdStringPopup({
   return showDialog<IdStringModel>(
     context: context,
     builder: (ctx) => AlertDialog(
+      title: title != null
+          ? Text(title, style: SibTextStyles.size_0_bold,)
+          : null,
       content: LiveDataObserver<bool>(
         liveData: isReady,
         builder: (ctx, isReady) {
@@ -148,6 +163,7 @@ Future<IdStringModel?> showLazyIdStringPopup({
  */
             child: IdStringPopup(
               dataList: dataList!,
+              showId: showId,
               onItemClick: (id, str) => backPage<IdStringModel>(
                 ctx,
                 result: IdStringModel(id: id, name: str),
@@ -169,9 +185,19 @@ Future<IdStringModel?> showCitySelectionPopup({
   required CityDao dao,
 }) => showLazyIdStringPopup(
   context: context,
+  title: Strings.select_city,
   dataSrc: () async {
     final cities = await dao.get();
     final list = cities.map((e) => IdStringModel(id: e.id, name: e.name)).toList(growable: false);
     return list;
   },
+);
+
+Future<IdStringModel?> showGenderSelectionPopup({
+  required BuildContext context,
+}) => showLazyIdStringPopup(
+  context: context,
+  title: Strings.select_gender,
+  showId: false,
+  dataSrc: () async => genderSelectionList,
 );

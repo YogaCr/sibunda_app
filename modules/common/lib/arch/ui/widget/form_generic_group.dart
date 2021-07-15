@@ -127,7 +127,7 @@ class _FormGenericGroupState
             switch(itemData.input) {
               case FieldInputMethod.pickDate:
                 final dateNow = DateTime.now();
-                suffixIcon = InkWell(
+                suffixIcon = InkResponse(
                   onTap: () async {
                     final pickedDate = await showDatePicker(
                       context: context,
@@ -144,7 +144,7 @@ class _FormGenericGroupState
                 break;
               case FieldInputMethod.pickTime:
                 final timeNow = TimeOfDay.now();
-                suffixIcon = InkWell(
+                suffixIcon = InkResponse(
                   onTap: () async {
                     final pickedTime = await showTimePicker(
                       context: context,
@@ -158,7 +158,7 @@ class _FormGenericGroupState
                 responseRepresentator = (resp) => getTextForTextController(resp);
                 break;
               case FieldInputMethod.pick:
-                suffixIcon = pickerIconBuilder?.call(groupPosition, key, vmLiveData) ?? InkWell(
+                suffixIcon = pickerIconBuilder?.call(groupPosition, key, vmLiveData) ?? InkResponse(
                   onTap: () {
                     showSnackBar(context, CoreStrings.pick_not_available);
                   },

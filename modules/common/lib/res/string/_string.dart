@@ -52,6 +52,10 @@ class Strings {
 
   static const mother_children_data = "Data Anak Bunda";
 
+  static const select_city = "Pilih Kota";
+  static const select_gender = "Pilih Kelamin";
+  static const male = "Laki-Laki";
+  static const female = "Perempuan";
 
   static const nik = "NIK";
   static const jkn = "No JKN";

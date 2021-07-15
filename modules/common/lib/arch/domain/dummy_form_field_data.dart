@@ -82,7 +82,7 @@ final childFormData = <FormGroupData>[
     FormData(key: Const.KEY_BIRTH_PLACE, question: Strings.birth_place, type: FormType.text, input: FieldInputMethod.pick,),
     FormData(key: Const.KEY_BIRTH_DATE, question: Strings.birth_date, type: FormType.text, input: FieldInputMethod.pickDate,),
     FormData(key: Const.KEY_CHILD_ORDER, question: Strings.child_order, type: FormType.text, inputType: InputType.int),
-    FormData(key: Const.KEY_BABY_GENDER, question: Strings.gender, type: FormType.text, inputType: InputType.char),
+    FormData(key: Const.KEY_BABY_GENDER, question: Strings.gender, type: FormType.text, input: FieldInputMethod.pick, inputType: InputType.char),
     FormData(key: Const.KEY_BIRTH_CERT_NO, question: Strings.birth_cert_no, type: FormType.text,),
     FormData(key: Const.KEY_JKN_START_DATE, question: Strings.jkn_start_date, type: FormType.text,),
     FormData(key: Const.KEY_BABY_COHORT_REG, question: Strings.baby_cohort_no, type: FormType.text,),
@@ -394,7 +394,7 @@ final motherFormGroupData = <FormGroupData>[
       FormData(key: Const.KEY_CHECKER_NAME, question: Strings.checker_name, type: FormType.text, inputType: InputType.person,),
       FormData(key: Const.KEY_MOTHER_DIFFICULTY, question: Strings.mother_difficulty, type: FormType.text,),
       FormData(key: Const.KEY_WEEK, question: Strings.pregnancy_age, type: FormType.text, isInputEnabled: false),
-      FormData(key: Const.KEY_BABY_GENDER, question: Strings.baby_gender, type: FormType.text, inputType: InputType.char), //TODO: isian field udah preset.
+      FormData(key: Const.KEY_BABY_GENDER, question: Strings.baby_gender, type: FormType.text, input: FieldInputMethod.pick, inputType: InputType.char), //TODO: isian field udah preset.
       FormData(key: Const.KEY_FUTURE_VISIT_DATE, question: Strings.future_visit_date, type: FormType.text, input: FieldInputMethod.pickDate),
       FormData(key: Const.KEY_HPHT, question: Strings.hpht, type: FormType.text, isInputEnabled: false),
       FormData(key: Const.KEY_HPL, question: Strings.hpl, type: FormType.text, isInputEnabled: false),

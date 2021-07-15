@@ -9,10 +9,12 @@ class IdStringListView extends StatefulWidget {
   final List<IdStringModel> dataList;
   final TextEditingController searchTxtControl;
   final void Function(int id, String name)? onItemClick;
+  final bool showId;
 
   IdStringListView({
     required this.dataList,
     this.onItemClick,
+    this.showId = true,
     TextEditingController? searchTxtControl,
   }): this.searchTxtControl = searchTxtControl ?? TextEditingController();
 
@@ -21,6 +23,7 @@ class IdStringListView extends StatefulWidget {
     dataList: dataList,
     searchTxtControl: searchTxtControl,
     onItemClick: onItemClick,
+    showId: showId,
   );
 }
 
@@ -33,11 +36,13 @@ class _IdStringListViewState
   final TextEditingController searchTxtControl;
   final void Function(int id, String name)? onItemClick;
   late final void Function() onSearchChange;
+  final bool showId;
 
   _IdStringListViewState({
     required this.dataList,
     required this.searchTxtControl,
     required this.onItemClick,
+    required this.showId,
   }): _usedDataList = List.unmodifiable(dataList) {
     onSearchChange = () {
       //prind("IdStringAdp.listen() searchTxtControl.text = ${searchTxtControl.text}");
@@ -78,7 +83,7 @@ class _IdStringListViewState
             onTap: onItemClick == null ? null
                 : () => onItemClick!.call(_usedDataList[i].id, _usedDataList[i].name),
             title: Text(_usedDataList[i].name),
-            subtitle: Text(_usedDataList[i].id.toString()),
+            subtitle: showId ? Text(_usedDataList[i].id.toString()) : null,
           ),
         );
     return child;

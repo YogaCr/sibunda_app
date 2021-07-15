@@ -37,6 +37,11 @@ final idStringList = List<IdStringModel>.generate(20, (index) => IdStringModel(
   name: _faker.person.name(),
 ));
 
+final genderSelectionList = <IdStringModel>[
+  IdStringModel(id: 1, name: Strings.male),
+  IdStringModel(id: 2, name: Strings.female),
+];
+
 
 final appLogoImg = ImgData(link: "logo_app_color.png", package: GlobalRoutes.common, isLocal: true);
 final appLogoImgWhite = ImgData(link: "logo_app_white.png", package: GlobalRoutes.common, isLocal: true);

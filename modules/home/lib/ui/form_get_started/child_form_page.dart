@@ -172,6 +172,12 @@ class _ChildSingleFormPage extends StatelessWidget {
                       data.value = city;
                     },
                   );
+                case Const.KEY_BABY_GENDER:
+                  return GenderPickerIcon(
+                    onItemSelected: (gender) async {
+                      data.value = gender?.name[0];
+                    },
+                  );
               }
             }
           },

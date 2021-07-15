@@ -9,6 +9,7 @@ import 'package:common/arch/ui/widget/_items_kehamilanku.dart';
 import 'package:common/arch/ui/widget/form_controller.dart';
 import 'package:common/arch/ui/widget/form_faker.dart';
 import 'package:common/arch/ui/widget/form_generic_vm_group_observer.dart';
+import 'package:common/arch/ui/widget/picker_icon_widget.dart';
 import 'package:common/arch/ui/widget/popup_widget.dart';
 import 'package:common/res/string/_string.dart';
 import 'package:common/res/theme/_theme.dart';
@@ -205,6 +206,16 @@ class _WeeklyFormPage extends StatelessWidget {
                   }
                 } else {
                   showSnackBar(ctx, Strings.form_submission_fail);
+                }
+              },
+              pickerIconBuilder: (group, key, data) {
+                switch(key) {
+                  case Const.KEY_BABY_GENDER:
+                    return GenderPickerIcon(
+                      onItemSelected: (gender) async {
+                        data.value = gender?.name[0];
+                      },
+                    );
                 }
               },
               submitBtnBuilder: (ctx, canProceed) => Container(
