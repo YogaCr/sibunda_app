@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: Image.network("https://i.imgflip.com/qk533.jpg"), //MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }

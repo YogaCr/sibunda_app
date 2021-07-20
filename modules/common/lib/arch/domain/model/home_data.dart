@@ -28,12 +28,12 @@ class HomeStatus {
 class HomeMenu {
   final String name;
   final String moduleName;
-  final String imgLink;
+  final ImgData img;
 
   HomeMenu({
     required this.name,
     required this.moduleName,
-    required this.imgLink,
+    required this.img,
   });
 }
 /*

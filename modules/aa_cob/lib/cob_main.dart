@@ -19,6 +19,7 @@ import 'package:common/arch/ui/widget/_items_education.dart';
 import 'package:common/arch/ui/widget/_items_kehamilanku.dart';
 import 'package:common/arch/ui/widget/form_generic_group.dart';
 import 'package:common/arch/ui/widget/form_generic_vm_group_observer.dart';
+import 'package:common/arch/ui/widget/img_widget.dart';
 import 'package:common/arch/ui/widget/overlay_widget.dart';
 import 'package:common/arch/ui/widget/popup_widget.dart';
 import 'package:common/arch/ui/widget/splash_widget.dart';
@@ -40,6 +41,7 @@ import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
 void main() async {
+/*
   await initializeDateFormatting("id_ID");
   //await TestUtil.nukeDb();
   await ConfigUtil.init();
@@ -53,6 +55,7 @@ void main() async {
   //await destroyDb(logStatements: true);
   //await DbDi.db.reset();
   await ConfigUtil.init();
+// */
   //await DbDi.db.deleteAllTable();
   runApp(MyApp());
 }
@@ -86,6 +89,18 @@ class MyApp extends StatelessWidget {
       home: Scaffold(
         body: Builder(
           builder: (ctx) {
+            final img = ImgData(
+              link: "https://i.imgflip.com/qk533.jpg",
+              isLocal: false,
+            );
+            return buildImgNetwork("https://i.imgflip.com/qk533.jpg");
+          },
+        ),
+      ),
+      /*
+      home: Scaffold(
+        body: Builder(
+          builder: (ctx) {
             final cities = DbDi.cityDao.get();
             return FutureBuilder<List<CityEntity>>(
               future: cities,
@@ -103,6 +118,7 @@ class MyApp extends StatelessWidget {
           },
         ),
       ),
+       */
 
       //home: Scaffold(body: _Splash2(),),
 /*

@@ -85,18 +85,18 @@ class ItemDashboardStatus extends StatelessWidget {
 
 
 class ItemDashboardMenu extends StatelessWidget {
-  final Widget image;
+  final ImgData img;
   final String text;
   final void Function()? onClick;
 
   ItemDashboardMenu({
-    required this.image,
+    required this.img,
     required this.text,
     this.onClick
   });
 
   ItemDashboardMenu.fromData(HomeMenu data, {this.onClick}):
-      image = Container(color: Manifest.theme.colorPrimary,), //TODO 13 Juni 2021: img
+      img = data.img,
       text = data.name
   ;
 
@@ -115,7 +115,7 @@ class ItemDashboardMenu extends StatelessWidget {
                 color: Manifest.theme.colorPrimary,
                 height: 70,
                 width: 70,
-                child: image,
+                child: SibImages.resolve(img),
               ),
             ),
             Container(

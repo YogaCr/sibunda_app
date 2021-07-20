@@ -151,7 +151,7 @@ class HomePage extends StatelessWidget {
               ),
               Text(
                 "Info",
-                style: SibTextStyles.size_min_1.copyWith(
+                style: SibTextStyles.size_min_2.copyWith(
                   color: white,
                   fontWeight: FontWeight.bold,
                 ),

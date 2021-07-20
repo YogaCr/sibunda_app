@@ -250,9 +250,15 @@ final dummyStatusList = <HomeStatus>[
 ];
 
 final dummyMenuList = <HomeMenu>[
-  HomeMenu(name: Strings.my_pregnancy, moduleName: GlobalRoutes.kehamilanku, imgLink: "",),
-  HomeMenu(name: Strings.my_baby, moduleName: GlobalRoutes.bayiku, imgLink: "",),
-  HomeMenu(name: Strings.covid_19, moduleName: GlobalRoutes.covid19, imgLink: "",),
+  HomeMenu(name: Strings.my_pregnancy, moduleName: GlobalRoutes.kehamilanku,
+    img: ImgData(link: "menu_kehamilanku.png", package: GlobalRoutes.common, isLocal: true,),
+  ),
+  HomeMenu(name: Strings.my_baby, moduleName: GlobalRoutes.bayiku,
+    img: ImgData(link: "menu_bayiku.png", package: GlobalRoutes.common, isLocal: true,),
+  ),
+  HomeMenu(name: Strings.covid_19, moduleName: GlobalRoutes.covid19,
+    img: ImgData(link: "menu_covid19.png", package: GlobalRoutes.common, isLocal: true,),
+  ),
 ];
 
 final dummyTipsList = <Tips>[
