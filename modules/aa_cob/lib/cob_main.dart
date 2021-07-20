@@ -89,11 +89,14 @@ class MyApp extends StatelessWidget {
       home: Scaffold(
         body: Builder(
           builder: (ctx) {
+            final url = "https://i.imgflip.com/qk533.jpg";
+            final svgUrl = "https://www.babycenter.com/ims/2019/04/8-weeks-fruit-fetus-size-01.svg";
             final img = ImgData(
-              link: "https://i.imgflip.com/qk533.jpg",
+              link: svgUrl,
               isLocal: false,
             );
-            return buildImgNetwork("https://i.imgflip.com/qk533.jpg");
+            prind("cob main img= $img");
+            return SibImages.resolve(img);
           },
         ),
       ),
