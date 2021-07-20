@@ -1,5 +1,6 @@
 import 'package:bayiku/config/baby_routes.dart';
 import 'package:bayiku/ui/home/baby_home_vm.dart';
+import 'package:common/arch/domain/dummy_data.dart';
 import 'package:common/arch/domain/model/baby_data.dart';
 import 'package:common/arch/domain/model/chart_data_baby.dart';
 import 'package:common/arch/ui/model/dummy_ui_data.dart';
@@ -80,18 +81,16 @@ class BabyHomePage extends StatelessWidget {
                 children: [
                   Flexible(
                     flex: 10,
-                    child: ItemHomeGraphMenu(
-                      image: Container(color: Manifest.theme.colorPrimary,),
-                      text: "Pertumbuhan Bayi",
+                    child: ItemHomeGraphMenu.fromData(
+                      babyHomeGraphMenu[0],
                       onClick: () => BabyRoutes.growthChartMenuVm.goToPage(context),
                     ),
                   ),
                   Spacer(flex: 1,),
                   Flexible(
                     flex: 10,
-                    child: ItemHomeGraphMenu(
-                      image: Container(color: Manifest.theme.colorPrimary,),
-                      text: "Perkembangan Bayi",
+                    child: ItemHomeGraphMenu.fromData(
+                      babyHomeGraphMenu[1],
                       onClick: () => BabyRoutes.chartPageRoute.go(context, BabyChartType.dev),
                     ),
                   ),

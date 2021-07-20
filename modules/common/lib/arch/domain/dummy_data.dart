@@ -458,6 +458,15 @@ final pregnancyHomeGraphMenu = <HomeGraphMenu>[
   ),
 ];
 
+final babyHomeGraphMenu = <HomeGraphMenu>[
+  HomeGraphMenu(name: "Pertumbuhan Bayi",
+    img: ImgData(link: "bayi_grafik_1.png", package: GlobalRoutes.common, isLocal: true,),
+  ),
+  HomeGraphMenu(name: "Perkembangan Bayi",
+    img: ImgData(link: "bayi_grafik_2.png", package: GlobalRoutes.common, isLocal: true,),
+  ),
+];
+
 final covidHomeOverview = CovidHomeOverview(
   title: "Bunda, jangan lupa tetap jaga kesehatan Bunda dan si Kecil ya",
   img: ImgData(
