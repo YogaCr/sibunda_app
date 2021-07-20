@@ -52,7 +52,7 @@ class CovidCheckPage extends StatelessWidget {
                 child: ItemPanelWithButton(
                   title: "Jangan lupa jaga kesehatan dan rutin cuci tangan ya Bunda",
                   action: "",
-                  img: dummyImg,
+                  img: imgCovidFormOverview,
                 ),
               ),
               LiveDataObserver<FormWarningStatus>(

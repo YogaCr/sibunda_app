@@ -1,3 +1,4 @@
+import 'package:common/arch/domain/dummy_data.dart';
 import 'package:common/arch/domain/model/chart_data_mother.dart';
 import 'package:common/arch/domain/model/kehamilanku_data.dart';
 import 'package:common/arch/ui/model/dummy_ui_data.dart';
@@ -130,18 +131,16 @@ class KehamilankuHomePage extends StatelessWidget {
                   children: [
                     Flexible(
                       flex: 10,
-                      child: ItemHomeGraphMenu(
-                        image: Container(color: Manifest.theme.colorPrimary,),
-                        text: "Grafik Evaluasi Kehamilan",
+                      child: ItemHomeGraphMenu.fromData(
+                        pregnancyHomeGraphMenu[0],
                         onClick: () => KehamilankuRoutes.pregEvalChartMenuPage.goToPage(context),
                       ),
                     ),
                     Spacer(flex: 1,),
                     Flexible(
                       flex: 10,
-                      child: ItemHomeGraphMenu(
-                        image: Container(color: Manifest.theme.colorPrimary,),
-                        text: "Grafik Berat Badan",
+                      child: ItemHomeGraphMenu.fromData(
+                        pregnancyHomeGraphMenu[1],
                         onClick: () => KehamilankuRoutes.chartPage.go(context, MotherChartType.bmi),
                       ),
                     ),

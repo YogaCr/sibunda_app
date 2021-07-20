@@ -1,3 +1,4 @@
+import 'package:common/arch/domain/dummy_data.dart';
 import 'package:common/arch/domain/model/baby_data.dart';
 import 'package:common/arch/domain/model/img_data.dart';
 import 'package:common/arch/domain/model/kehamilanku_data.dart';
@@ -23,25 +24,25 @@ final _paddingSmall = 10.0;
 
 
 class ItemMotherOverview extends StatelessWidget {
-  final Widget image;
+  final ImgData img;
   final int pregnancyAge; // in weeks
   final int pregnancyAgeRem; // in days
 
   ItemMotherOverview({
-    required this.image,
+    required this.img,
     required this.pregnancyAge,
     required this.pregnancyAgeRem,
   });
 
   ItemMotherOverview.fromData(
     MotherPregnancyAgeOverview? data,
-  ): image = Container(color: Manifest.theme.colorPrimary,), //TODO 12 Juni 2021: img
+  ): img = data?.img ?? dummyImg,
     pregnancyAge = data?.weekAge ?? -1,
     pregnancyAgeRem = data?.daysRemaining ?? -1
   ;
 
   ItemMotherOverview.def():
-    image = Container(color: Manifest.theme.colorPrimary,),
+    img = dummyImg,
     pregnancyAge = -1,
     pregnancyAgeRem = -1
   ;
@@ -49,7 +50,7 @@ class ItemMotherOverview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ItemModuleHomeOverview(
-      image: image,
+      image: SibImages.resolve(img),
       upperText: RichText(
         textAlign: TextAlign.start,
         text: TextSpan(

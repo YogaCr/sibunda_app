@@ -1,4 +1,5 @@
 import 'package:common/arch/domain/model/img_data.dart';
+import 'package:common/arch/ui/widget/_basic_widget.dart';
 import 'package:common/arch/ui/widget/img_widget.dart';
 import 'package:core/util/_consoles.dart';
 import 'package:flutter/widgets.dart';
@@ -17,7 +18,12 @@ class SibImages {
     final dir = getDir(fileName);
     if(package != null) {
       if(fileName.endsWith(".svg"))
-        return SvgPicture.asset(dir, width: width, height: height, fit: usedFit, package: package,);
+        return SvgPicture.asset(dir, width: width, height: height, fit: usedFit, package: package,
+          placeholderBuilder: (ctx) {
+            prind("SibImages.get() image with file name '$fileName' doesn't exist in package '$package'. Trying to look in default package...");
+            return get(fileName, width: width, height: height, fit: usedFit,);
+          },
+        );
       return Image.asset(dir, width: width, height: height, fit: usedFit, package: package,
         errorBuilder: (ctx, error, stackTrace,) {
           prind("SibImages.get() image with file name '$fileName' doesn't exist in package '$package'. Trying to look in default package...");
@@ -27,7 +33,11 @@ class SibImages {
       );
     } else {
       if(fileName.endsWith(".svg"))
-        return SvgPicture.asset(dir, width: width, height: height, fit: usedFit,);
+        return SvgPicture.asset(dir, width: width, height: height, fit: usedFit,
+          placeholderBuilder: (ctx) => !showError
+              ? defaultImg()
+              : defaultError(text: "Svg img Load Error"),
+        );
       return Image.asset(dir, width: width, height: height, fit: usedFit,
         errorBuilder: !showError
             ? defImgBuilder()

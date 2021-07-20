@@ -248,12 +248,12 @@ class ItemPanelWithButton extends StatelessWidget {
 
 
 class ItemHomeGraphMenu extends StatelessWidget {
-  final Widget image;
+  final ImgData img;
   final String text;
   final void Function()? onClick;
 
   ItemHomeGraphMenu({
-    required this.image,
+    required this.img,
     required this.text,
     this.onClick,
   });
@@ -263,7 +263,7 @@ class ItemHomeGraphMenu extends StatelessWidget {
       this.onClick,
   }):
     text = data.name,
-    image = Container(color: Manifest.theme.colorPrimary,) //TODO: img
+    img = data.img
   ;
 
   @override
@@ -276,7 +276,7 @@ class ItemHomeGraphMenu extends StatelessWidget {
           height: 50,
           width: 50,
           color: Manifest.theme.colorPrimary,
-          child: image,
+          child: SibImages.resolve(img),
         ),
       ),
     );

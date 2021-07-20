@@ -1,3 +1,4 @@
+import 'package:core/util/_consoles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -5,7 +6,7 @@ import 'default_widget.dart';
 
 Widget buildImgNetwork(
   String src, {
-      Widget Function(BuildContext context,Widget child, ImageChunkEvent? loadingProgress,)? loadingBuilder,
+      Widget Function(BuildContext context, Widget? child, ImageChunkEvent? loadingProgress,)? loadingBuilder,
       Widget Function(BuildContext context, Object error, StackTrace? stackTrace,)? errorBuilder,
       BoxFit? fit,
       double? width,
@@ -13,7 +14,15 @@ Widget buildImgNetwork(
 }) {
   final usedFit = fit ?? BoxFit.cover;
   if(src.endsWith(".svg")) {
-    return SvgPicture.network(src, fit: usedFit, width: width, height: height,);
+    try {
+      return SvgPicture.network(src, fit: usedFit, width: width, height: height,
+        placeholderBuilder: (ctx) => loadingBuilder?.call(ctx, null, null) ?? defaultLoading(),
+      );
+    } catch(e, stack) {
+      prine(e);
+      prine(stack);
+      return defaultError(text: "Svg img Load Error");
+    }
   }
   return Image.network(
     src,

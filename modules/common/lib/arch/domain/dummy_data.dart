@@ -46,6 +46,22 @@ final genderSelectionList = <IdStringModel>[
 final appLogoImg = ImgData(link: "logo_app_color.png", package: GlobalRoutes.common, isLocal: true);
 final appLogoImgWhite = ImgData(link: "logo_app_white.png", package: GlobalRoutes.common, isLocal: true);
 
+final imgPregnancyAgeOverview = ImgData(
+  link: "kehamilanku_header.png",
+  package: GlobalRoutes.common,
+  isLocal: true,
+);
+final imgBabyAgeOverview = ImgData(
+  link: "bayi_header.png",
+  package: GlobalRoutes.common,
+  isLocal: true,
+);
+final imgCovidFormOverview = ImgData(
+  link: "covid_inner_header.png",
+  package: GlobalRoutes.common,
+  isLocal: true,
+);
+
 final dummyImg = ImgData(link: "", isLocal: true);
 final dummyImg_smillingCat = ImgData(link: "_smiling_cat.jpg", package: GlobalRoutes.common, isLocal: true);
 final dummyImg_profile_sm = ImgData(link: "pic_profile_example.png", package: GlobalRoutes.common, isLocal: true);
@@ -168,8 +184,17 @@ final dummyChild4 = Child(
 );
 
 
-final dummyPregnancyAgeOverview = MotherPregnancyAgeOverview(weekAge: 2, daysRemaining: 256);
-final dummyBabyAgeOverview = BabyAgeOverview(year: 1, month: 10, day: 3);
+final dummyPregnancyAgeOverview = MotherPregnancyAgeOverview(
+  weekAge: 2,
+  daysRemaining: 256,
+  img: dummyImg,
+);
+final dummyBabyAgeOverview = BabyAgeOverview(
+  year: 1,
+  month: 10,
+  day: 3,
+  img: dummyImg
+);
 
 
 /*
@@ -424,19 +449,40 @@ final babyImmunizationGroupList = <ImmunizationDetailGroup>[
 ];
 
 
+final pregnancyHomeGraphMenu = <HomeGraphMenu>[
+  HomeGraphMenu(name: "Grafik Evaluasi Kehamilan",
+    img: ImgData(link: "kehamilanku_grafik_1.png", package: GlobalRoutes.common, isLocal: true,),
+  ),
+  HomeGraphMenu(name: "Grafik Berat Badan",
+    img: ImgData(link: "kehamilanku_grafik_2.png", package: GlobalRoutes.common, isLocal: true,),
+  ),
+];
+
 final covidHomeOverview = CovidHomeOverview(
   title: "Bunda, jangan lupa tetap jaga kesehatan Bunda dan si Kecil ya",
-  img: dummyImg,
+  img: ImgData(
+    link: "covid_header.png",
+    package: GlobalRoutes.common,
+    isLocal: true,
+  ),
 );
 
 final covidHomeMenu = <HomeGraphMenu>[
   HomeGraphMenu(
     name: "Cek Covid-19 untuk Bayi",
-    img: dummyImg,
+    img: ImgData(
+      link: "covid_form_bayi.png",
+      package: GlobalRoutes.common,
+      isLocal: true,
+    ),
   ),
   HomeGraphMenu(
     name: "Cek Covid-19 untuk Bunda",
-    img: dummyImg,
+    img: ImgData(
+      link: "covid_form_bunda.png",
+      package: GlobalRoutes.common,
+      isLocal: true,
+    ),
   ),
 ];
 
@@ -463,6 +509,7 @@ final motherHomeData = List<MotherHomeBabyData>.generate(3, (i) => MotherHomeBab
   pregnancyAge: MotherPregnancyAgeOverview(
     weekAge: i+1,
     daysRemaining: i+3,
+    img: imgPregnancyAgeOverview,
   ),
   foodRecomList: dummyFoodRecomList(i+1),
   trimesterList: dummyTrimesterList,
@@ -651,13 +698,13 @@ final dummyCovidCheckResult_mother = FormWarningStatus(
   desc: "Bunda, dari hasil form, bunda masuk kategori Pasien Dalam Pengawasan",
   action: dummyWarningAction,
   isSafe: false,
-  img: dummyImg,
+  img: imgPregnancyAgeOverview,
 );
 final dummyCovidCheckResult_baby = FormWarningStatus(
   desc: "Bunda, dari hasil form, bayi bunda masuk kategori Pasien Dalam Pengawasan",
   action: dummyWarningAction,
   isSafe: false,
-  img: dummyImg,
+  img: imgBabyAgeOverview,
 );
 
 

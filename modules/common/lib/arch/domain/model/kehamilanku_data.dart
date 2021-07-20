@@ -3,6 +3,7 @@ import 'package:common/arch/data/remote/model/kehamilanku_form_warning_api_model
 import 'package:common/arch/data/remote/model/kehamilanku_overview_api_model.dart';
 import 'package:common/arch/domain/dummy_data.dart';
 import 'package:common/arch/domain/model/img_data.dart';
+import 'package:common/config/_config.dart';
 import 'package:common/util/times.dart';
 import 'package:common/util/type_util.dart';
 import 'package:common/value/const_values.dart';
@@ -155,10 +156,12 @@ HOME
 class MotherPregnancyAgeOverview {
   final int weekAge;
   final int daysRemaining;
+  final ImgData img;
 
   MotherPregnancyAgeOverview({
     required this.weekAge,
     required this.daysRemaining,
+    required this.img,
   });
 }
 
@@ -266,6 +269,7 @@ class MotherHomeBabyData {
       pregnancyAge: MotherPregnancyAgeOverview(
         weekAge: response.week,
         daysRemaining: response.remainingDays,
+        img: imgPregnancyAgeOverview,
       ),
       foodRecomList: response.foodRecomList.map((e) => MotherFoodRecom.fromResponse(e)).toList(growable: false),
       trimesterList: response.trimesterList.map((e) => MotherTrimester.fromResponse(e)).toList(growable: false),

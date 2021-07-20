@@ -1,6 +1,8 @@
 import 'package:common/arch/domain/dummy_data.dart';
 import 'package:common/arch/domain/model/baby_data.dart';
+import 'package:common/arch/domain/model/img_data.dart';
 import 'package:common/arch/ui/model/immunization.dart';
+import 'package:common/config/_config.dart';
 import 'package:flutter/material.dart';
 
 import 'home_graph_menu.dart';
@@ -21,13 +23,21 @@ final babyHomeGraph_ui = <HomeGraphMenu>[
 final motherHomeImmunization_ui = HomeImmunizationData(
   action: "Lihat imunisasi Bunda",
   title: "Jangan lupa ikut imunisasi ya Bunda",
-  img: dummyImg,
+  img: ImgData(
+    link: "kehamilanku_imunisasipng.png",
+    package: GlobalRoutes.common,
+    isLocal: true,
+  ),
 );
 
 final babyHomeImmunization_ui = HomeImmunizationData(
   action: "Lihat imunisasi Bayi",
   title: "Jangan lupa ikut imunisasi Bayi ya Bun",
-  img: dummyImg,
+  img: ImgData(
+    link: "bayi_imunisasi.png",
+    package: GlobalRoutes.common,
+    isLocal: true,
+  ),
 );
 
 final babyFormMenuList_ui = List<BabyFormMenuData>.generate(5, (i) => BabyFormMenuData(
