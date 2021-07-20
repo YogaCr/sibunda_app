@@ -51,6 +51,7 @@ BabyHomeChildYearFormResponse _$BabyHomeChildYearFormResponseFromJson(
     id: json['id'] as int,
     year: json['year'] as int,
     childId: json['kia_anak_id'] as int,
+    img_url: json['img_url'] as String,
   );
 }
 
@@ -60,4 +61,5 @@ Map<String, dynamic> _$BabyHomeChildYearFormResponseToJson(
       'id': instance.id,
       'year': instance.year,
       'kia_anak_id': instance.childId,
+      'img_url': instance.img_url,
     };

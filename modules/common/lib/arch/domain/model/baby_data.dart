@@ -25,12 +25,14 @@ class BabyFormMenuData {
   final int year;
   final int monthStart;
   final int monthEnd;
+  final ImgData img;
 
   BabyFormMenuData({
     required this.id,
     required this.year,
     required this.monthStart,
     required this.monthEnd,
+    required this.img,
   });
 
   factory BabyFormMenuData.fromResponse(BabyHomeChildYearFormResponse response) => BabyFormMenuData(
@@ -38,6 +40,10 @@ class BabyFormMenuData {
     monthStart: (response.year -1) *12,
     monthEnd: response.year *12,
     id: response.id,
+    img: ImgData(
+      link: response.img_url,
+      isLocal: false,
+    ),
   );
 }
 

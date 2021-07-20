@@ -46,11 +46,13 @@ class BabyHomeChildYearFormResponse {
   final int year;
   @JsonKey(name: Const.KEY_BABY_ID)
   final int childId;
+  final String img_url;
 
   BabyHomeChildYearFormResponse({
     required this.id,
     required this.year,
     required this.childId,
+    required this.img_url,
   });
 
   factory BabyHomeChildYearFormResponse.fromJson(Map<String, dynamic> map) => _$BabyHomeChildYearFormResponseFromJson(map);

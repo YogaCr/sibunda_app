@@ -188,7 +188,10 @@ class MotherTrimester {
       trimester: response.no,
       startWeek: startWeek,
       endWeek: endWeek,
-      img: dummyImg,
+      img: ImgData(
+        link: response.img_url,
+        isLocal: false,
+      ),
     );
   }
 }

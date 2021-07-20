@@ -71,11 +71,13 @@ class PregnancyHomeTrimester {
   final int no;
   @JsonKey(name: Const.KEY_BABY_ID)
   final int babyId;
+  final String img_url;
 
   PregnancyHomeTrimester({
     required this.id,
     required this.no,
     required this.babyId,
+    required this.img_url,
   });
 
   factory PregnancyHomeTrimester.fromJson(Map<String, dynamic> map) => _$PregnancyHomeTrimesterFromJson(map);

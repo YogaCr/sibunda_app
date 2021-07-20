@@ -78,6 +78,7 @@ PregnancyHomeTrimester _$PregnancyHomeTrimesterFromJson(
     id: json['id'] as int,
     no: json['trisemester'] as int,
     babyId: json['kia_anak_id'] as int,
+    img_url: json['img_url'] as String,
   );
 }
 
@@ -87,4 +88,5 @@ Map<String, dynamic> _$PregnancyHomeTrimesterToJson(
       'id': instance.id,
       'trisemester': instance.no,
       'kia_anak_id': instance.babyId,
+      'img_url': instance.img_url,
     };
