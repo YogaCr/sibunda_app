@@ -1,8 +1,10 @@
 
 import 'package:common/arch/di/db_di.dart';
+import 'package:common/arch/domain/dummy_data.dart';
 import 'package:common/arch/ui/widget/form_controller.dart';
 import 'package:common/arch/ui/widget/form_generic_vm_group_observer.dart';
 import 'package:common/arch/ui/widget/form_vm_observer.dart';
+import 'package:common/arch/ui/widget/img_pick.dart';
 import 'package:common/arch/ui/widget/picker_icon_widget.dart';
 import 'package:common/arch/ui/widget/popup_widget.dart';
 import 'package:common/res/string/_string.dart';
@@ -31,6 +33,8 @@ class MotherFormPage extends StatelessWidget {
           Strings.fill_mother_data,
           style: SibTextStyles.header1,
         ).withMargin(EdgeInsets.only(top: 60)),
+        ImgPick(placeholderImg: dummyImg_profile,)
+            .withMargin(EdgeInsets.only(top: 10, bottom: 20,)),
         FormVmGroupObserver<MotherFormVm>(
           showHeader: false,
           interceptor: interceptor,

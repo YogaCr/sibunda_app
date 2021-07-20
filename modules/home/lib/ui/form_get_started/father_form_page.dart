@@ -29,7 +29,7 @@ class FatherFormPage extends StatelessWidget {
           Strings.fill_father_data,
           style: SibTextStyles.header1,
         ).withMargin(EdgeInsets.only(top: 60)),
-        ImgPick().withMargin(EdgeInsets.only(top: 10)),
+        ImgPick().withMargin(EdgeInsets.only(top: 10, bottom: 14)),
         FormVmGroupObserver<FatherFormVm>(
           showHeader: false,
           interceptor: interceptor,

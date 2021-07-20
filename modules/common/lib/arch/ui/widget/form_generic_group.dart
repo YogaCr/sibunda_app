@@ -188,6 +188,7 @@ class _FormGenericGroupState
               readOnly: itemData.input != FieldInputMethod.direct,
               getResponseRepresentation: responseRepresentator,
               controller: interceptor,
+              isTypePassword: itemData.inputType == InputType.password
             );
 /*
             txtControl = (field as TxtField).textController;

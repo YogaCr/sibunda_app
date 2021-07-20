@@ -152,14 +152,15 @@ class _ChildSingleFormPage extends StatelessWidget {
     return Column(
       children: [
         Text(
-          Strings.fill_child_data +" - ke ${page+1}",
+          Strings.fill_child_data +"\nke ${page+1}",
           style: SibTextStyles.header1,
+          textAlign: TextAlign.center,
         ).withMargin(EdgeInsets.only(top: 60)),
-        ImgPick().withMargin(EdgeInsets.only(top: 10)),
-        TxtLink(
+        ImgPick().withMargin(EdgeInsets.only(top: 10, bottom: 15)),
+        /*TxtLink(
           Strings.skip,
           onTap: () => showSnackBar(context, "dipencet"),
-        ),
+        ),*/
         FormVmGroupObserver<ChildFormVm>(
           showHeader: false,
           interceptor: interceptor,

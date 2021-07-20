@@ -26,7 +26,7 @@ class DoMotherHavePregnancyPage extends StatelessWidget {
         Text(
           Strings.mother_children_data,
           style: SibTextStyles.header1,
-        ),
+        ).withMargin(EdgeInsets.only(top: 10)),
         Container(
           height: picHeight,
           child: SibImages.get("ilstr_mother_pregnant.png", package: "common",)

@@ -29,6 +29,7 @@ class LoginPage extends StatelessWidget {
                     package: "common",
                     width: 100,
                     height: 100,
+                    fit: BoxFit.contain
                   ),
                 ),
                 Text(

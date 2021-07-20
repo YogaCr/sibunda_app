@@ -3,15 +3,15 @@
 
 part of '_theme.dart';
 
-const pink_highlight = Color(0xFFFA1992);
-const pink_100 = Color(0xFFFF1493);
-const pink_200 = Color(0xFFE51284);
-const pink_300 = Color(0xFFCC1075); //parseColor3("CC1075")
-const pink_300_ripple = Color(0x55CC1075);
-const pink_400 = Color(0xFFB20E66);
-const pink_500 = Color(0xFF990C58);
+const pink_highlight = Color(0xFFF383A1);
+const pink_100 = Color(0xFFF5517D);
+const pink_200 = Color(0xFFF13F6F);
+const pink_300 = Color(0xFFF53266);//Color(0xFFCC1075); //parseColor3("CC1075")
+const pink_300_ripple = Color(0x55F53266);
+const pink_400 = Color(0xFFF82C62);
+const pink_500 = Color(0xFFF52159);
 const pink_swatch = MaterialColor(
-  0xFFCC1075,
+  0xFFF53266,
   {
     100: pink_100,
     200: pink_200,
@@ -19,11 +19,11 @@ const pink_swatch = MaterialColor(
     400: pink_400,
     500: pink_500,
 
-    50: Color(0xFFFCE4EC),
-    600: Color(0xFFD81B60),
-    700: Color(0xFFC2185B),
-    800: Color(0xFFAD1457),
-    900: Color(0xFF880E4F),
+    50: Color(0xFFF51B54),
+    600: Color(0xFFF5134E),
+    700: Color(0xFFF50E4A),
+    800: Color(0xFFE20D44),
+    900: Color(0xFFBF0B3A),
   },
 );
 const white = Color(0xFFFFFFFF);

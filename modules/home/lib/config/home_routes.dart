@@ -45,7 +45,7 @@ class HomeRoutes extends ModuleRoute {
     body: IntroPage(),
     padding: EdgeInsets.all(20),
   ));
-  static final loginPage = SibRoute("LoginPage", LoginPage, (ctx) =>  PlainBackFrame(
+  static final loginPage = SibRoute("LoginPage", LoginPage, (ctx) =>  MainFrame(
     body: LoginPage().inVmProvider([
       (ctx) => HomeVmDi.loginFormVm,
     ]),

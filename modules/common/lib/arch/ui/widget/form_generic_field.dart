@@ -53,6 +53,8 @@ class TxtField<D> extends SibFormField {
   final bool enabled;
   final Widget? suffixIcon;
 
+  final bool isTypePassword;
+
   TxtField({
     required this.itemData,
     this.isValid,
@@ -66,6 +68,7 @@ class TxtField<D> extends SibFormField {
     //this.dataPicker,
     this.getResponseRepresentation,
     this.rawResponseMapper,
+    this.isTypePassword = false,
     bool? isLiveDataOwner,
     //TextEditingController? textController,
     MutableLiveData<D>? responseLiveData,
@@ -154,6 +157,7 @@ class TxtField<D> extends SibFormField {
         suffixIcon: suffixIcon,
         textController: _textController,
         label: itemData.question,
+        isTypePassword: isTypePassword
       );
     } else if(isValid != null && isEnabledController != null) {
       widget = MultiLiveDataObserver<bool>(
@@ -169,6 +173,7 @@ class TxtField<D> extends SibFormField {
             errorText: (bools[0] == false && !isInit)
                 ? invalidMsgGenerator?.call(_textController.text) ?? invalidMsg
                 : null,
+              isTypePassword: isTypePassword
           );
           if(bools[0] != null) { //if `isValid` still null, then this widget is still init (`isInit` == true)
             isInit = false;
@@ -190,6 +195,7 @@ class TxtField<D> extends SibFormField {
             errorText: (isValid == false && !isInit)
                 ? invalidMsgGenerator?.call(_textController.text) ?? invalidMsg
                 : null,
+              isTypePassword: isTypePassword
           );
           if(isValid != null) { //if `isValid` still null, then this widget is still init (`isInit` == true)
             isInit = false;
@@ -208,6 +214,7 @@ class TxtField<D> extends SibFormField {
             suffixIcon: suffixIcon,
             textController: _textController,
             label: itemData.question,
+            isTypePassword: isTypePassword
           );
           return txtWidget;
         },

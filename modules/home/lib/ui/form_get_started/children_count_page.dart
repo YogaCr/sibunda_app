@@ -38,10 +38,13 @@ class ChildrenCountPage extends StatelessWidget {
         SibImages.get("ilstr_mother_carry_baby.png", package: "common",) //TODO
             .withMargin(EdgeInsets.symmetric(horizontal: 50).copyWith(top: 70)),
         Text("Berapa bayi (0-7 tahun) yang Bunda punya?",),
-        NumberPicker(
-          init: vm.childrenCount.value ?? 0,
-          onNumberChange: (i) => vm.childrenCount.value = i,
-          max: 11,
+        Container(
+          child: NumberPicker(
+            init: vm.childrenCount.value ?? 0,
+            onNumberChange: (i) => vm.childrenCount.value = i,
+            max: 11,
+          ),
+          width: 120,
         ),
 /*
         // I decide to remove this date picker, cuz it is already provided in `ChildFormPage`

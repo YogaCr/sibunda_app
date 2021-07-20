@@ -20,6 +20,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      debugShowMaterialGrid: false,
       title: Strings.app_name,
       theme: Manifest.theme.materialData,
       home: AppRoutes.obj.entryPoint.build(context), //SibRoutes.motherDataPage.build(context),

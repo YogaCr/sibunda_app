@@ -105,7 +105,7 @@ class MotherHplPage extends StatelessWidget {
           ),
         ),
       ],
-    );
+    ).withMargin(EdgeInsets.only(right: 24, left: 24));
   }
 
   void _moveToNext(BuildContext context) {

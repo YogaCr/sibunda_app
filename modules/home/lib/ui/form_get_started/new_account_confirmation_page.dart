@@ -67,7 +67,9 @@ class NewAccountConfirmPage extends StatelessWidget {
               ),
               Text(
                 Strings.welcome_mother,
-                style: SibTextStyles.header1,
+                style: SibTextStyles.header1.copyWith(
+                    fontWeight: FontWeight.normal,
+                ),
               ).withMargin(EdgeInsets.only(top: 15)),
               LiveDataObserver<String>(
                 liveData: nameLiveData,
@@ -86,7 +88,7 @@ class NewAccountConfirmPage extends StatelessWidget {
             color: green_calm,
             onTap: () => vm.sendData(),
           ),
-        ),
+        ).withMargin(EdgeInsets.only(bottom: 55)),
       ],
     ); //.insideScroll();
   }
