@@ -519,13 +519,17 @@ final covidHomeCheckHistory = <CovidCheckHistory>[
     date: DateTime.parse("2020-01-12"), //"12 Januari 2020",
     person: "Bayi",
     img: dummyImg,
-    category: CovidCategory.normal,
+    desc: "Terindaksi normal",
+    longDesc: "Ini desc panjang",
+    isNormal: true,
   ),
   CovidCheckHistory(
     date: DateTime.parse("2020-01-12"), //"12 Januari 2020",
     person: "Bunda",
     img: dummyImg,
-    category: CovidCategory.pdp,
+    desc: "Terindaksi PDP",
+    longDesc: "Ini desc panjang",
+    isNormal: false,
   ),
 ];
 

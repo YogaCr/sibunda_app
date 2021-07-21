@@ -23,6 +23,12 @@ mixin AccountLocalSrc {
     required List<Child> children,
     required BatchProfileIds ids,
   });
+  Future<Result<bool>> saveBatchProfileRaw({
+    //required int userId,
+    required int userRole,
+    required SignUpData signup,
+    required BatchProfileServer batchProfiles,
+  });
   Future<Result<bool>> saveSession(SessionData data);
   Future<Result<bool>> deleteSession();
   /// Returns null if user hasn't logged in yet.
@@ -75,13 +81,6 @@ class AccountLocalSrcImpl with AccountLocalSrc {
     required List<Child> children,
     required BatchProfileIds ids,
   }) async {
-    final credential = CredentialEntity(
-      id: userId,
-      name: signup.name,
-      email: signup.email,
-      role: userRole,
-    );
-
     final motherProf = ProfileEntity(
       userId: userId,
       type: DbConst.TYPE_MOTHER,
@@ -113,14 +112,51 @@ class AccountLocalSrcImpl with AccountLocalSrc {
         serverId: id,
       );
     });
-    final profiles = [motherProf, fatherProf, ...childProfs];
 
-    final credRowId = await _credentialDao.insert(credential);
-    if(credRowId < 0) {
-      return Fail(msg: "Can't insert `credential` '$credential'");
+    return saveBatchProfileRaw(
+      userRole: userRole,
+      signup: signup,
+      batchProfiles: BatchProfileServer(
+        mother: motherProf,
+        father: fatherProf,
+        children: childProfs,
+      ),
+    );
+  }
+
+  @override
+  Future<Result<bool>> saveBatchProfileRaw({
+    //required int userId,
+    required int userRole,
+    required SignUpData signup,
+    required BatchProfileServer batchProfiles,
+  }) async {
+    try {
+      final credential = CredentialEntity(
+        id: batchProfiles.mother.userId,
+        name: signup.name,
+        email: signup.email,
+        role: userRole,
+      );
+
+      final profiles = [
+        batchProfiles.mother,
+        batchProfiles.father,
+        ...batchProfiles.children
+      ];
+
+      final credRowId = await _credentialDao.insert(credential);
+      if(credRowId < 0) {
+        return Fail(msg: "Can't insert `credential` '$credential'");
+      }
+      await _profileDao.insertAll(profiles);
+      return Success(true);
+    } catch(e, stack) {
+      final msg = "Error calling `saveBatchProfileRaw()`";
+      prine("$msg, e= $e");
+      prine(stack);
+      return Fail(msg: msg, error: e);
     }
-    await _profileDao.insertAll(profiles);
-    return Success(true);
   }
 
   @override

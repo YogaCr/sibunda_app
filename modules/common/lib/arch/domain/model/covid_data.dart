@@ -24,20 +24,30 @@ class CovidCheckHistory {
   final DateTime date;
   final String person; // mother or baby
   final ImgData img;
-  final CovidCategory category;
+  //final CovidCategory category;
+  final String desc;
+  final String longDesc;
+  final bool isNormal;
 
   CovidCheckHistory({
     required this.date,
     required this.person,
     required this.img,
-    required this.category,
+    required this.desc,
+    required this.longDesc,
+    required this.isNormal,
   });
 
   factory CovidCheckHistory.fromResponse(CovidCheckFormDataResponse response) => CovidCheckHistory(
     date: parseDate(response.date),
     person: getCovidPersonStr(response.is_ibu),
-    img: dummyImg,
-    category: getCovidCategory(response.result_desc),
+    img: ImgData(
+      link: response.img_url,
+      isLocal: false,
+    ),
+    desc: response.result_desc,
+    longDesc: response.result_long_desc,
+    isNormal: response.result_is_normal,
   );
 }
 

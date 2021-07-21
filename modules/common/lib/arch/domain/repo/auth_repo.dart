@@ -8,12 +8,14 @@ import 'package:common/arch/data/remote/api/data_api.dart';
 import 'package:common/arch/data/remote/model/login_api_model.dart';
 import 'package:common/arch/data/remote/model/logout_api_model.dart';
 import 'package:common/arch/data/remote/model/register_api_model.dart';
+import 'package:common/arch/di/api_di.dart';
 import 'package:common/arch/di/config_di.dart';
 import 'package:common/arch/domain/model/auth.dart';
 import 'package:common/arch/domain/model/child.dart';
 import 'package:common/arch/domain/model/father.dart';
 import 'package:common/arch/domain/model/mother.dart';
 import 'package:common/arch/domain/model/profile_data.dart';
+import 'package:common/value/db_const.dart';
 import 'package:core/domain/model/result.dart';
 import 'package:core/util/_consoles.dart';
 import 'package:core/util/annotation/data_annotation.dart';
@@ -40,24 +42,26 @@ mixin AuthRepo {
 // Although it's a repo, but I feel the implementation is like use case.
 class AuthRepoImpl with AuthRepo {
   final AuthApi _api;
-  final DataApi _dataApi;
+  DataApi? _dataApi;
   final AccountLocalSrc _localSrc;
   final PregnancyLocalSrc _pregnancyLocalSrc;
   final CheckUpLocalSrc _checkUpLocalSrc;
 
   AuthRepoImpl({
     required AuthApi api,
-    required DataApi dataApi,
+    //required DataApi dataApi,
     required AccountLocalSrc localSrc,
     required PregnancyLocalSrc pregnancyLocalSrc,
     required CheckUpLocalSrc checkUpLocalSrc,
   }):
     _api = api,
-    _dataApi = dataApi,
+    //_dataApi = dataApi,
     _localSrc = localSrc,
     _pregnancyLocalSrc = pregnancyLocalSrc,
     _checkUpLocalSrc = checkUpLocalSrc
   ;
+
+  DataApi getDataApi() => _dataApi ??= ApiDi.dataApi;
 
   @override
   Future<Result<bool>> saveSignupData(SignUpData signup) async => Success(true); //For now, this is just for gymmic. it is because `SignUpData` is stored together with other get started related data.
@@ -85,7 +89,7 @@ class AuthRepoImpl with AuthRepo {
       final userId = res.user.id;
       final userRole = res.user.groupId;
 
-      final bioRes = await _dataApi.getBio();
+      final bioRes = await getDataApi().getBio();
       if(bioRes.code != 200) {
         return Fail(code: bioRes.code, msg: bioRes.message);
       }
@@ -125,9 +129,32 @@ class AuthRepoImpl with AuthRepo {
       if(locRes is! Success<bool>) {
         return Fail(msg: "Can't save `email` in local");
       }
+
+      final bioRes = await getBio();
+      if(bioRes is! Success<List<BatchProfileServer>>) {
+        return Fail(msg: "Can't download `bio` when login");
+      }
+
+      for(final bio in bioRes.data) {
+        final saveBioRes = await _localSrc.saveBatchProfileRaw(
+          userRole: DbConst.ROLE_USER,
+          signup: SignUpData(
+            name: bio.mother.name,
+            email: data.email,
+            password: data.password,
+          ),
+          batchProfiles: bio,
+        );
+        if(saveBioRes is Fail<bool>) {
+          return Fail(msg: "Can't save `bio` of '$bio' in local");
+        }
+      }
       return Success(session, 200);
-    } catch(e) {
-      return Fail();
+    } catch(e, stack) {
+      final msg = "Error calling `login()`";
+      prine("$msg, e= $e");
+      prine(stack);
+      return Fail(msg: msg, error: e);
     }
   }
   @override
@@ -161,10 +188,12 @@ class AuthRepoImpl with AuthRepo {
       if(locRes is! Success<bool>) {
         return Fail(msg: "Can't clear all `profile` in local");
       }
-
       return Success(true, 200);
-    } catch(e) {
-      return Fail();
+    } catch(e, stack) {
+      final msg = "Error calling `logout()`";
+      prine("$msg, e= $e");
+      prine(stack);
+      return Fail(msg: msg, error: e);
     }
   }
 
@@ -184,7 +213,7 @@ class AuthRepoImpl with AuthRepo {
   @override
   Future<Result<List<BatchProfileServer>>> getBio() async {
     try {
-      final res = await _dataApi.getBio();
+      final res = await getDataApi().getBio();
       if(res.code != 200) {
         return Fail(code: res.code, msg: "msg= '${res.message}', status= '${res.status}'",);
       }

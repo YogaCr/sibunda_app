@@ -91,6 +91,8 @@ class CovidCheckFormDataResponse extends Equatable {
   final String img_url; // Check up id
   final bool result_is_normal;
   final String result_desc;
+  final String result_long_desc;
+  //final bool result_is_normal;
 
   CovidCheckFormDataResponse({
     required this.date,
@@ -101,6 +103,8 @@ class CovidCheckFormDataResponse extends Equatable {
     required this.img_url,
     required this.result_is_normal,
     required this.result_desc,
+    required this.result_long_desc,
+    //required this.result_is_normal,
   });
 
   factory CovidCheckFormDataResponse.fromJson(Map<String, dynamic> map) {
@@ -114,7 +118,7 @@ class CovidCheckFormDataResponse extends Equatable {
   @override
   List<Object?> get props => [
     /*date, */is_ibu, user_id, kia_anak_id, id,
-    result_is_normal, result_desc, img_url
+    result_is_normal, result_desc, result_long_desc, img_url,
   ];
 }
 

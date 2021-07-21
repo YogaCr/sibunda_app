@@ -93,6 +93,7 @@ CovidCheckFormDataResponse _$CovidCheckFormDataResponseFromJson(
     img_url: json['img_url'] as String,
     result_is_normal: json['result_is_normal'] as bool,
     result_desc: json['result_desc'] as String,
+    result_long_desc: json['result_long_desc'] as String,
   );
 }
 
@@ -107,6 +108,7 @@ Map<String, dynamic> _$CovidCheckFormDataResponseToJson(
       'img_url': instance.img_url,
       'result_is_normal': instance.result_is_normal,
       'result_desc': instance.result_desc,
+      'result_long_desc': instance.result_long_desc,
     };
 
 CovidFormResponse _$CovidFormResponseFromJson(Map<String, dynamic> json) {

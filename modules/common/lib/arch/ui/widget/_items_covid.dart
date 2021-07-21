@@ -59,9 +59,9 @@ class ItemCovidCheckHistory extends StatelessWidget {
   }):
     img = data.img,
     date = syncFormatTime(data.date),
-    title = "Terindikasi ${getCovidCategoryString(data.category)}",
+    title = data.desc, //"Terindikasi ${getCovidCategoryString(data.category)}",
     person = data.person,
-    color = getCovidCategoryColor(data.category)
+    color = getCovidColor(data.isNormal)
   ;
 
   @override
@@ -86,7 +86,7 @@ class ItemCovidCheckHistory extends StatelessWidget {
     final txtList = <Widget>[
       Text(
         title,
-        style: SibTextStyles.size_0_colorPrimary,
+        style: SibTextStyles.size_min_1,
       ),
       Expanded(
         child: Row(

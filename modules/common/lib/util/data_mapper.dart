@@ -142,6 +142,8 @@ Color getCovidCategoryColor(CovidCategory category) {
   }
 }
 
+Color getCovidColor(bool isNormal) => isNormal ? green_safe : red_warning;
+
 String getBabyImmunizationHeader(int monthType) {
   switch(monthType) {
     case 1: return Strings.month_0_until_4;
