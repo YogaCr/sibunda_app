@@ -1,6 +1,7 @@
 
 import 'package:common/arch/data/remote/model/baby_immunization_api_model.dart';
 import 'package:common/arch/data/remote/model/kehamilanku_immunization_api_model.dart';
+import 'package:common/arch/domain/model/img_data.dart';
 import 'package:common/res/string/_string.dart';
 import 'package:common/util/data_mapper.dart';
 import 'package:common/value/const_values.dart';
@@ -158,10 +159,10 @@ class ImmunizationDetailGroup {
 
 class ImmunizationOverview {
   final String text;
-  final String imgLink;
+  final ImgData img;
 
   ImmunizationOverview({
-    required this.imgLink,
+    required this.img,
     required this.text,
   });
 }

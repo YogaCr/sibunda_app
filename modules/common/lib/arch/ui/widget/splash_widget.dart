@@ -68,7 +68,7 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
     if(computation == null) {
       Future.delayed(stayDuration, () {
-        Navigator.push(context, _createRoute());
+        Navigator.pushReplacement(context, _createRoute());
       });
     } else {
       final sw = Stopwatch()..start();
@@ -77,10 +77,10 @@ class _SplashScreenState extends State<SplashScreen> {
         sw.stop();
         //prind("SplashScreen computation durr= $durr stayDuration= $stayDuration durr >= stayDuration => ${durr >= stayDuration} stayDuration - durr= ${stayDuration - durr}");
         if(durr >= stayDuration) {
-          Navigator.push(context, _createRoute());
+          Navigator.pushReplacement(context, _createRoute());
         } else {
           Future.delayed(stayDuration - durr, () {
-            Navigator.push(context, _createRoute());
+            Navigator.pushReplacement(context, _createRoute());
           });
         }
       });

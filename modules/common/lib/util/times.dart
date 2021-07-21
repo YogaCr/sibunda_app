@@ -17,6 +17,11 @@ Future<String> formatTime(DateTime date, { String localeName = "id_ID" }) async 
   return DateFormat.yMMMMd(localeName).format(date);
 }
 
+int calculateYearAge(DateTime birthDate) {
+  final days = DateTime.now().difference(birthDate).inDays;
+  return Jiffy({ "day": days }).year;
+}
+
 String syncFormatTimeFromStr(String datestr, { String localeName = "id_ID" }) =>
   syncFormatTime(parseDate(datestr), localeName: localeName);
 String syncFormatTime(DateTime date, { String localeName = "id_ID" }) {

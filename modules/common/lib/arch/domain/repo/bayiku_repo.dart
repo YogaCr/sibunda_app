@@ -94,8 +94,8 @@ class MyBabyRepoImpl with MyBabyRepo {
   BabyFormWarningResponse? _formWarningResponse;
 
   @override
-  Future<Result<BabyAgeOverview>> getBabyAgeOverview(String babyNik) async => Success(dummyBabyAgeOverview);
-/*
+  Future<Result<BabyAgeOverview>> getBabyAgeOverview(String babyNik) async //=> Success(dummyBabyAgeOverview);
+///*
   {
     final idRes = await _accountLocalSrc.getChildId(babyNik);
     if(idRes is Success<int>) {
@@ -103,14 +103,16 @@ class MyBabyRepoImpl with MyBabyRepo {
       final homeResponse = _homeResponse ??= await _api.getHomeData();
       final child = homeResponse.data.firstWhereOrNull((e) => e.id == id);
       if(child == null) {
-        return Fail(msg: "Can't find `child` with `id` '$id' with `babyNik` '$babyNik'");
+        final msg = "Can't find `child` with `id` '$id' with `babyNik` '$babyNik'";
+        prine(msg);
+        return Fail(msg: msg);
       }
       final res = BabyAgeOverview.fromResponse(child);
       return Success(res);
     }
     return (idRes as Fail<int>).copy();
   }
- */
+// */
   Future<Result<List<FormWarningStatus>>> getBabyWarningStatus(String babyNik, int monthId) async {
     try {
       if(monthId != _currentMonthId) {

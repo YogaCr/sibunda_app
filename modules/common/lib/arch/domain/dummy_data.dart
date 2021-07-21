@@ -420,8 +420,22 @@ final babyImmunizationDetailList = babyImmunizationList.map((e) => ImmunizationD
 )).toList(growable: false);
 
 
-final motherImmunizationOverview = ImmunizationOverview(text: "Yuk cek apakah Bunda sudah mendapatkan semua imunisasi ya Bun", imgLink: "");
-final babyImmunizationOverview = ImmunizationOverview(text: "Yuk cek apakah Bayi sudah mendapatkan semua imunisasi ya Bun", imgLink: "");
+final motherImmunizationOverview = ImmunizationOverview(
+  text: "Yuk cek apakah Bunda sudah mendapatkan semua imunisasi ya Bun",
+  img: ImgData(
+    link: "kehamilanku_imunisasi_inner.png",
+    package: GlobalRoutes.common,
+    isLocal: true,
+  ),
+);
+final babyImmunizationOverview = ImmunizationOverview(
+  text: "Yuk cek apakah Bayi sudah mendapatkan semua imunisasi ya Bun",
+  img: ImgData(
+    link: "bayi_imunisasi_inner.png",
+    package: GlobalRoutes.common,
+    isLocal: true,
+  ),
+);
 
 final motherImmunizationGroupList = <ImmunizationDetailGroup>[
   ImmunizationDetailGroup(

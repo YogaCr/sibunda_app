@@ -16,13 +16,21 @@ import 'package:home/ui/splash/splash_vm.dart';
 class SplashPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final vm = ViewModelProvider.of<SplashVm>(context);
+    final vm = ViewModelProvider.of<SplashVm>(context)
+      ..isLoggedIn.observeOnce((isLoggedIn) {
+        if(isLoggedIn == true) {
+          HomeRoutes.homePage.goToPage(context, replaceCurrent: true);
+        }
+      }, immediatelyGet: false);
 
     return SplashScreen(
       child: SplashIconPage(),
       pageBuilder: (ctx) => HomeRoutes.introPage.build(ctx),
       computation: () async {
-        await vm.downloadCityList();
+        await vm.checkLogIn();
+        if(vm.isLoggedIn.value != true) {
+          await vm.downloadCityList();
+        }
       },
     );
   }
