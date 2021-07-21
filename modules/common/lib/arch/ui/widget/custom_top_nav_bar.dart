@@ -67,6 +67,7 @@ class RoundedTopNavBarTitleAndBack extends StatelessWidget {
             child: Text(
               title,
               style: SibTextStyles.size_plus_2_colorOnPrimary,
+              textAlign: TextAlign.center,
             ),
           ),
         ),

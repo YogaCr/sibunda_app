@@ -23,7 +23,7 @@ class CovidHomePage extends StatelessWidget {
 
     return TopBarTitleAndBackFrame(
       withTopOffset: true,
-      title: Strings.covid_19,
+      title: "Menu Cek Covid-19\nBunda dan Bayi", //Strings.covid_19,
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 10),
         child: BelowTopBarScrollContentArea(slivers: [
