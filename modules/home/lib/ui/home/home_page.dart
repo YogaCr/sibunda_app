@@ -35,6 +35,7 @@ class HomePage extends StatelessWidget {
       child: Icon(
         Icons.notifications_none_rounded,
         color: Colors.white,
+        size: 40,
       ),
     );
 
