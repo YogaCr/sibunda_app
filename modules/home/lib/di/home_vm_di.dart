@@ -17,7 +17,10 @@ import 'package:home/ui/splash/splash_vm.dart';
 class HomeVmDi {
   HomeVmDi._();
 
-  static SplashVm get splashVm => SplashVm(getCityList: UseCaseDi.getCityList,);
+  static SplashVm get splashVm => SplashVm(
+    getCityList: UseCaseDi.getCityList,
+    isLoggedInUseCase: UseCaseDi.isLoggedIn,
+  );
   static GetStartedFormMainVm get getStartedFormMainVm => GetStartedFormMainVm(
     signUpAndRegisterOtherData: HomeUseCaseDi.signUpAndRegister,
     saveMotherHpl: HomeUseCaseDi.saveMotherHpl,
