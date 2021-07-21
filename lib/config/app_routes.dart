@@ -22,7 +22,7 @@ class AppRoutes extends ModuleRoute {
   }
 
   @override
-  SibRoute get entryPoint => HomeRoutes.splashPage;
+  SibRoute get entryPoint => HomeRoutes.homePage;
 
   @override
   String get name => GlobalRoutes.app;
