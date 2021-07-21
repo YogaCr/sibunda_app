@@ -94,7 +94,9 @@ class MyBabyRepoImpl with MyBabyRepo {
   BabyFormWarningResponse? _formWarningResponse;
 
   @override
-  Future<Result<BabyAgeOverview>> getBabyAgeOverview(String babyNik) async {
+  Future<Result<BabyAgeOverview>> getBabyAgeOverview(String babyNik) async => Success(dummyBabyAgeOverview);
+/*
+  {
     final idRes = await _accountLocalSrc.getChildId(babyNik);
     if(idRes is Success<int>) {
       final id = idRes.data;
@@ -108,6 +110,7 @@ class MyBabyRepoImpl with MyBabyRepo {
     }
     return (idRes as Fail<int>).copy();
   }
+ */
   Future<Result<List<FormWarningStatus>>> getBabyWarningStatus(String babyNik, int monthId) async {
     try {
       if(monthId != _currentMonthId) {
