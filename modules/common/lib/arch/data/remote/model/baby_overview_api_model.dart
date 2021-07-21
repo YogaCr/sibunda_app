@@ -28,11 +28,15 @@ class BabyHomeChildResponse {
   final int id; // child id
   @JsonKey(name: Const.KEY_NAME_INDO)
   final String name;
+  final int anak_ke;
+  final String age;
   final List<BabyHomeChildYearFormResponse> years;
 
   BabyHomeChildResponse({
     required this.id,
     required this.name,
+    required this.anak_ke,
+    required this.age,
     required this.years,
   });
 

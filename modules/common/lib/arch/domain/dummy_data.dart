@@ -197,10 +197,8 @@ final dummyPregnancyAgeOverview = MotherPregnancyAgeOverview(
   img: dummyImg,
 );
 final dummyBabyAgeOverview = BabyAgeOverview(
-  year: 1,
-  month: 10,
-  day: 3,
-  img: dummyImg
+  desc: "10 Hari",
+  img: imgBabyAgeOverview
 );
 
 
@@ -544,12 +542,48 @@ final motherWeightGraphMenuList = <MotherChartMenuData>[
 
 
 final babyGrowthGraphMenuList = <BabyChartMenuData>[
-  BabyChartMenuData(title: "Grafik KMS", img: dummyImg, type: BabyChartType.kms,),
-  BabyChartMenuData(title: "Grafik Berat Badan Menurut Umur", img: dummyImg, type: BabyChartType.weight,),
-  BabyChartMenuData(title: "Grafik Panjang Badan Menurut Umur", img: dummyImg, type: BabyChartType.len,),
-  BabyChartMenuData(title: "Grafik Berat Badan Menurut Panjang Badan", img: dummyImg, type: BabyChartType.weightToLen,),
-  BabyChartMenuData(title: "Grafik Lingkar Kepala", img: dummyImg, type: BabyChartType.head,),
-  BabyChartMenuData(title: "Grafik Indeks Massa Tubuh", img: dummyImg, type: BabyChartType.bmi),
+  BabyChartMenuData(title: "Grafik KMS", type: BabyChartType.kms,
+    img: ImgData(
+      link: "bayi_grafik_kms.png",
+      package: GlobalRoutes.common,
+      isLocal: true,
+    ),
+  ),
+  BabyChartMenuData(title: "Grafik Berat Badan Menurut Umur", type: BabyChartType.weight,
+    img: ImgData(
+      link: "bayi_grafik_berat_badan_umur.png",
+      package: GlobalRoutes.common,
+      isLocal: true,
+    ),
+  ),
+  BabyChartMenuData(title: "Grafik Panjang Badan Menurut Umur", type: BabyChartType.len,
+    img: ImgData(
+      link: "bayi_grafik_panjang_badan_umur.png",
+      package: GlobalRoutes.common,
+      isLocal: true,
+    ),
+  ),
+  BabyChartMenuData(title: "Grafik Berat Badan Menurut Panjang Badan", type: BabyChartType.weightToLen,
+    img: ImgData(
+      link: "bayi_grafik_berat_badan_panjang_badan.png",
+      package: GlobalRoutes.common,
+      isLocal: true,
+    ),
+  ),
+  BabyChartMenuData(title: "Grafik Lingkar Kepala", type: BabyChartType.head,
+    img: ImgData(
+      link: "bayi_grafik_lingkar_kepala_imt.png",
+      package: GlobalRoutes.common,
+      isLocal: true,
+    ),
+  ),
+  BabyChartMenuData(title: "Grafik Indeks Massa Tubuh", type: BabyChartType.bmi,
+    img: ImgData(
+      link: "bayi_grafik_lingkar_kepala_imt.png",
+      package: GlobalRoutes.common,
+      isLocal: true,
+    ),
+  ),
 ];
 
 final babyDevGraphMenuList = <BabyChartMenuData>[

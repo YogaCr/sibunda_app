@@ -21,11 +21,14 @@ class ItemBabyOverview extends StatelessWidget {
   factory ItemBabyOverview.fromData(
     BabyAgeOverview? data,
   ) {
-    final ageString = formatAgeString(
+    final ageString = data?.desc ?? "<null>";
+/*
+    formatAgeString(
       year: data?.year ?? -1,
       month: data?.month ?? -1,
       day: data?.day ?? -1,
     );
+ */
     return ItemBabyOverview(
       img: data?.img ?? dummyImg,
       ageString: ageString,

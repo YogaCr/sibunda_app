@@ -4,20 +4,28 @@ import 'package:common/value/const_values.dart';
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
+import '../dummy_data.dart';
+
 part 'baby_data.g.dart';
 
 class BabyAgeOverview {
+  /*
   final int year; //If 0, it won't be displayed on screen. This applies to other fields.
   final int month;
   final int day;
+   */
+  final String desc;
   final ImgData img;
 
   BabyAgeOverview({
-    required this.year,
-    required this.month,
-    required this.day,
+    required this.desc,
     required this.img,
   });
+
+  factory BabyAgeOverview.fromResponse(BabyHomeChildResponse response) => BabyAgeOverview(
+    desc: response.age,
+    img: imgBabyAgeOverview,
+  );
 }
 
 class BabyFormMenuData {

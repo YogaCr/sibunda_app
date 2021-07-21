@@ -88,6 +88,7 @@ class CovidCheckFormDataResponse extends Equatable {
   final int user_id;
   final int? kia_anak_id; // null when `is_ibu` is true.
   final int id; // Check up id
+  final String img_url; // Check up id
   final bool result_is_normal;
   final String result_desc;
 
@@ -97,6 +98,7 @@ class CovidCheckFormDataResponse extends Equatable {
     required this.user_id,
     required this.kia_anak_id,
     required this.id,
+    required this.img_url,
     required this.result_is_normal,
     required this.result_desc,
   });
@@ -110,7 +112,10 @@ class CovidCheckFormDataResponse extends Equatable {
   Map<String, dynamic> toJson() => _$CovidCheckFormDataResponseToJson(this);
 
   @override
-  List<Object?> get props => [/*date, */is_ibu, user_id, kia_anak_id, id, result_is_normal, result_desc];
+  List<Object?> get props => [
+    /*date, */is_ibu, user_id, kia_anak_id, id,
+    result_is_normal, result_desc, img_url
+  ];
 }
 
 /// For form data

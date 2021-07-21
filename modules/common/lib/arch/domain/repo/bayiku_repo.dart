@@ -14,6 +14,7 @@ import 'package:common/arch/ui/model/dummy_ui_data.dart';
 import 'package:common/arch/ui/model/home_graph_menu.dart';
 import 'package:core/domain/model/result.dart';
 import 'package:core/util/_consoles.dart';
+import 'package:collection/collection.dart';
 
 mixin MyBabyRepo {
   Future<Result<String>> getBabyNik();
@@ -93,7 +94,20 @@ class MyBabyRepoImpl with MyBabyRepo {
   BabyFormWarningResponse? _formWarningResponse;
 
   @override
-  Future<Result<BabyAgeOverview>> getBabyAgeOverview(String babyNik) async => Success(dummyBabyAgeOverview);  //TODO: getBabyAgeOverview: ngomong Amir blum ada datanya.
+  Future<Result<BabyAgeOverview>> getBabyAgeOverview(String babyNik) async {
+    final idRes = await _accountLocalSrc.getChildId(babyNik);
+    if(idRes is Success<int>) {
+      final id = idRes.data;
+      final homeResponse = _homeResponse ??= await _api.getHomeData();
+      final child = homeResponse.data.firstWhereOrNull((e) => e.id == id);
+      if(child == null) {
+        return Fail(msg: "Can't find `child` with `id` '$id' with `babyNik` '$babyNik'");
+      }
+      final res = BabyAgeOverview.fromResponse(child);
+      return Success(res);
+    }
+    return (idRes as Fail<int>).copy();
+  }
   Future<Result<List<FormWarningStatus>>> getBabyWarningStatus(String babyNik, int monthId) async {
     try {
       if(monthId != _currentMonthId) {

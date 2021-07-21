@@ -27,7 +27,7 @@ _$_BatchProfileServer _$_$_BatchProfileServerFromJson(
   return _$_BatchProfileServer(
     mother: json['mother'],
     father: json['father'],
-    children: json['children'] as List<dynamic>,
+    children: json['children'] as List<ProfileEntity>,
   );
 }
 

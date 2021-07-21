@@ -30,6 +30,8 @@ BabyHomeChildResponse _$BabyHomeChildResponseFromJson(
   return BabyHomeChildResponse(
     id: json['id'] as int,
     name: json['nama'] as String,
+    anak_ke: json['anak_ke'] as int,
+    age: json['age'] as String,
     years: (json['years'] as List<dynamic>)
         .map((e) =>
             BabyHomeChildYearFormResponse.fromJson(e as Map<String, dynamic>))
@@ -42,6 +44,8 @@ Map<String, dynamic> _$BabyHomeChildResponseToJson(
     <String, dynamic>{
       'id': instance.id,
       'nama': instance.name,
+      'anak_ke': instance.anak_ke,
+      'age': instance.age,
       'years': instance.years,
     };
 
