@@ -42,6 +42,13 @@ final genderSelectionList = <IdStringModel>[
   IdStringModel(id: 2, name: Strings.female),
 ];
 
+final bloodTypeSelectionList = <IdStringModel>[
+  IdStringModel(id: 1, name: "A"),
+  IdStringModel(id: 2, name: "B"),
+  IdStringModel(id: 3, name: "AB"),
+  IdStringModel(id: 4, name: "O"),
+];
+
 
 final appLogoImg = ImgData(link: "logo_app_color.png", package: GlobalRoutes.common, isLocal: true);
 final appLogoImgWhite = ImgData(link: "logo_app_white.png", package: GlobalRoutes.common, isLocal: true);
@@ -740,6 +747,7 @@ final dummyCredential = CredentialEntity(
   role: userRoles[1].id,
 );
 
+
 final dummyProfileMother = ProfileEntity(
   userId: dummyCredential.id,
   type: DbConst.TYPE_MOTHER,
@@ -795,6 +803,17 @@ final dummyProfileChild4 = ProfileEntity(
   nik: dummyChild4.nik,
 );
 
+
+final dummyBatchProfile = BatchProfileServer(
+  mother: dummyProfileMother,
+  father: dummyProfileFather,
+  children: [
+    dummyProfileChild,
+    dummyProfileChild2,
+    dummyProfileChild3,
+    dummyProfileChild4,
+  ],
+);
 
 //============== For UI =============
 final dummyChildOverlayData1 = BabyOverlayData(

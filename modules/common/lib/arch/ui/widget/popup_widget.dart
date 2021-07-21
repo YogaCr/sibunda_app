@@ -201,3 +201,12 @@ Future<IdStringModel?> showGenderSelectionPopup({
   showId: false,
   dataSrc: () async => genderSelectionList,
 );
+
+Future<IdStringModel?> showBloodTypeSelectionPopup({
+  required BuildContext context,
+}) => showLazyIdStringPopup(
+  context: context,
+  title: Strings.select_blood_type,
+  showId: false,
+  dataSrc: () async => bloodTypeSelectionList,
+);

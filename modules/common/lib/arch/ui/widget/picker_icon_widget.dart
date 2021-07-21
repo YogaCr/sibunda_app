@@ -42,3 +42,22 @@ class GenderPickerIcon extends StatelessWidget {
     );
   }
 }
+
+class BloodTypePickerIcon extends StatelessWidget {
+  final void Function(IdStringModel?)? onItemSelected;
+
+  BloodTypePickerIcon({
+    this.onItemSelected,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return InkResponse(
+      onTap: () async {
+        final selected = await showBloodTypeSelectionPopup(context: context,);
+        onItemSelected?.call(selected);
+      },
+      child: Icon(Icons.bloodtype_outlined,),
+    );
+  }
+}

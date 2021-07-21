@@ -15,4 +15,6 @@ abstract class DataApi {
 
   @GET("/kota")
   Future<List<CityResponse>> getCity();
+  @GET("/bio")
+  Future<BioResponse> getBio();
 }

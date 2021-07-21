@@ -42,6 +42,12 @@ class FatherFormPage extends StatelessWidget {
                       data.value = city;
                     },
                   );
+                case Const.KEY_BLOOD_TYPE:
+                  return BloodTypePickerIcon(
+                    onItemSelected: (bloodType) async {
+                      data.value = bloodType?.name;
+                    },
+                  );
               }
             }
           },

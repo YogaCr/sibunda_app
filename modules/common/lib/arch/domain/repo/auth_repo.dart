@@ -1,7 +1,10 @@
 // User and Auth related repository.
 
 import 'package:common/arch/data/local/source/account_local_source.dart';
+import 'package:common/arch/data/local/source/check_up_local_source.dart';
+import 'package:common/arch/data/local/source/pregnancy_local_source.dart';
 import 'package:common/arch/data/remote/api/auth_api.dart';
+import 'package:common/arch/data/remote/api/data_api.dart';
 import 'package:common/arch/data/remote/model/login_api_model.dart';
 import 'package:common/arch/data/remote/model/logout_api_model.dart';
 import 'package:common/arch/data/remote/model/register_api_model.dart';
@@ -10,7 +13,9 @@ import 'package:common/arch/domain/model/auth.dart';
 import 'package:common/arch/domain/model/child.dart';
 import 'package:common/arch/domain/model/father.dart';
 import 'package:common/arch/domain/model/mother.dart';
+import 'package:common/arch/domain/model/profile_data.dart';
 import 'package:core/domain/model/result.dart';
+import 'package:core/util/_consoles.dart';
 import 'package:core/util/annotation/data_annotation.dart';
 
 import '../dummy_data.dart';
@@ -28,22 +33,37 @@ mixin AuthRepo {
   Future<Result<bool>> saveSession(SessionData data);
   /// Returns null if user hasn't logged in yet.
   Future<Result<SessionData?>> getSession();
+  
+  Future<Result<List<BatchProfileServer>>> getBio();
 }
 
 // Although it's a repo, but I feel the implementation is like use case.
 class AuthRepoImpl with AuthRepo {
   final AuthApi _api;
+  final DataApi _dataApi;
   final AccountLocalSrc _localSrc;
+  final PregnancyLocalSrc _pregnancyLocalSrc;
+  final CheckUpLocalSrc _checkUpLocalSrc;
+
   AuthRepoImpl({
     required AuthApi api,
+    required DataApi dataApi,
     required AccountLocalSrc localSrc,
+    required PregnancyLocalSrc pregnancyLocalSrc,
+    required CheckUpLocalSrc checkUpLocalSrc,
   }):
     _api = api,
-    _localSrc = localSrc
+    _dataApi = dataApi,
+    _localSrc = localSrc,
+    _pregnancyLocalSrc = pregnancyLocalSrc,
+    _checkUpLocalSrc = checkUpLocalSrc
   ;
 
   @override
   Future<Result<bool>> saveSignupData(SignUpData signup) async => Success(true); //For now, this is just for gymmic. it is because `SignUpData` is stored together with other get started related data.
+
+  /// This method also calls login and downloads mother, father, and children data
+  /// for the ids to be saved in local DB.
   @override
   Future<Result<bool>> signup({
     required SignUpData signup,
@@ -65,12 +85,24 @@ class AuthRepoImpl with AuthRepo {
       final userId = res.user.id;
       final userRole = res.user.groupId;
 
+      final bioRes = await _dataApi.getBio();
+      if(bioRes.code != 200) {
+        return Fail(code: bioRes.code, msg: bioRes.message);
+      }
+      if(bioRes.data.isEmpty) {
+        throw "`List<BioMotherResponse>` is empty";
+      }
+      final ids = BatchProfileIds.fromResponse(bioRes.data.first);
+
       final locRes = await _localSrc.saveBatchProfile(
         userId: userId, userRole: userRole, signup: signup,
         mother: mother, father: father, children: children,
+        ids: ids,
       );
       return locRes;
-    } catch(e) {
+    } catch(e, stack) {
+      prine(e);
+      prine(stack);
       return Fail(msg: "Something error in this `$runtimeType`.signup()", error: e);
     }
   }
@@ -106,7 +138,17 @@ class AuthRepoImpl with AuthRepo {
       if(res.code != 200) {
         return Fail(code: res.code, msg: res.message);
       }
-      var locRes = await _localSrc.deleteSession();
+
+      var locRes = await _pregnancyLocalSrc.clear();
+      if(locRes is! Success<bool>) {
+        return Fail(msg: "Can't delete `checkUps` in local");
+      }
+      locRes = await _pregnancyLocalSrc.clear();
+      if(locRes is! Success<bool>) {
+        return Fail(msg: "Can't delete `pregnancy` data in local");
+      }
+
+      locRes = await _localSrc.deleteSession();
       if(locRes is! Success<bool>) {
         return Fail(msg: "Can't delete `session` in local");
       }
@@ -114,6 +156,12 @@ class AuthRepoImpl with AuthRepo {
       if(locRes is! Success<bool>) {
         return Fail(msg: "Can't delete `email` in local");
       }
+
+      locRes = await _localSrc.clear();
+      if(locRes is! Success<bool>) {
+        return Fail(msg: "Can't clear all `profile` in local");
+      }
+
       return Success(true, 200);
     } catch(e) {
       return Fail();
@@ -132,6 +180,24 @@ class AuthRepoImpl with AuthRepo {
 
   @override
   Future<Result<SessionData?>> getSession() => _localSrc.getSession();
+  
+  @override
+  Future<Result<List<BatchProfileServer>>> getBio() async {
+    try {
+      final res = await _dataApi.getBio();
+      if(res.code != 200) {
+        return Fail(code: res.code, msg: "msg= '${res.message}', status= '${res.status}'",);
+      }
+      final list = res.data.map<BatchProfileServer>((e) =>
+          BatchProfileServer.fromBioResponse(e)).toList(growable: false);
+
+      return Success(list);
+    } catch(e, stack) {
+      prine(e);
+      prine(stack);
+      return Fail(msg: "Error calling `getBio()`, e= $e");
+    }
+  }
 }
 
 /*
@@ -215,4 +281,7 @@ class AuthDummyRepo with AuthRepo {
 
   @override
   Future<Result<bool>> saveSession(SessionData data) async => Success(true);
+  
+  @override
+  Future<Result<List<BatchProfileServer>>> getBio() async => Success([dummyBatchProfile]);
 }

@@ -179,6 +179,12 @@ class _ChildSingleFormPage extends StatelessWidget {
                       data.value = gender?.name[0];
                     },
                   );
+                case Const.KEY_BLOOD_TYPE:
+                  return BloodTypePickerIcon(
+                    onItemSelected: (bloodType) async {
+                      data.value = bloodType?.name;
+                    },
+                  );
               }
             }
           },

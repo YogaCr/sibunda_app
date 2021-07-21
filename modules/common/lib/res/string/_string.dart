@@ -54,6 +54,7 @@ class Strings {
 
   static const select_city = "Pilih Kota";
   static const select_gender = "Pilih Kelamin";
+  static const select_blood_type = "Pilih Golongan Darah";
   static const male = "Laki-Laki";
   static const female = "Perempuan";
 

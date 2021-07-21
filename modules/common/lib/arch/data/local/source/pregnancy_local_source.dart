@@ -12,7 +12,9 @@ mixin PregnancyLocalSrc {
 
   Future<Result<bool>> saveMotherHpht(DateTime date);
   Future<Result<DateTime>> getCurrentMotherHpht();
+  Future<Result<bool>> deleteCurrentMotherHpht();
 
+  Future<Result<bool>> clear();
 }
 
 class PregnancyLocalSrcImpl with PregnancyLocalSrc {
@@ -69,6 +71,33 @@ class PregnancyLocalSrcImpl with PregnancyLocalSrc {
       return Fail();
     }
     return Success(DateTime.parse(hpl));
+  }
+  @override
+  Future<Result<bool>> deleteCurrentMotherHpht() async {
+    try {
+      final success = await _sharedPref.remove(Const.KEY_HPHT);
+      return Success(success);
+    } catch(e, stack) {
+      prine(e);
+      prine(stack);
+      return Fail(msg: "Error calling `deleteCurrentMotherHpht()`", error: e);
+    }
+  }
+
+  @override
+  Future<Result<bool>> clear() async {
+    final res1 = await deleteCurrentMotherHpl();
+    if(res1 is Fail<bool>) {
+      return res1;
+    }
+    final res2 = await deleteCurrentMotherHpht();
+    if(res2 is Fail<bool>) {
+      return res2;
+    }
+    return Success(
+        (res1 as Success<bool>).data
+            && (res2 as Success<bool>).data
+    );
   }
 }
 

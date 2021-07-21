@@ -21,6 +21,7 @@ mixin AccountLocalSrc {
     required Mother mother,
     required Father father,
     required List<Child> children,
+    required BatchProfileIds ids,
   });
   Future<Result<bool>> saveSession(SessionData data);
   Future<Result<bool>> deleteSession();
@@ -42,6 +43,8 @@ mixin AccountLocalSrc {
   Future<Result<bool>> saveCurrentEmail(String email);
   Future<Result<String>> getCurrentEmail();
   Future<Result<bool>> deleteCurrentEmail();
+
+  Future<Result<bool>> clear();
 }
 
 class AccountLocalSrcImpl with AccountLocalSrc {
@@ -70,6 +73,7 @@ class AccountLocalSrcImpl with AccountLocalSrc {
     required Mother mother,
     required Father father,
     required List<Child> children,
+    required BatchProfileIds ids,
   }) async {
     final credential = CredentialEntity(
       id: userId,
@@ -78,8 +82,6 @@ class AccountLocalSrcImpl with AccountLocalSrc {
       role: userRole,
     );
 
-    final dummyId = 1; //TODO: dummy id for profile.
-
     final motherProf = ProfileEntity(
       userId: userId,
       type: DbConst.TYPE_MOTHER,
@@ -87,7 +89,7 @@ class AccountLocalSrcImpl with AccountLocalSrc {
       nik: mother.nik,
       birthDate: DateTime.parse(mother.birthDate),
       birthPlace: mother.birthCity,
-      serverId: dummyId,
+      serverId: ids.motherId,
     );
     final fatherProf = ProfileEntity(
       userId: userId,
@@ -96,17 +98,21 @@ class AccountLocalSrcImpl with AccountLocalSrc {
       nik: father.nik,
       birthDate: DateTime.parse(father.birthDate),
       birthPlace: father.birthCity,
-      serverId: dummyId,
+      serverId: ids.fatherId,
     );
-    final childProfs = children.map((child) => ProfileEntity(
-      userId: userId,
-      type: DbConst.TYPE_CHILD,
-      name: child.name,
-      nik: child.nik,
-      birthDate: DateTime.parse(child.birthDate),
-      birthPlace: child.birthCity,
-      serverId: dummyId,
-    ));
+    final childProfs = List<ProfileEntity>.generate(children.length, (i) {
+      final child = children[i];
+      final id = ids.childrenId[i];
+      return ProfileEntity(
+        userId: userId,
+        type: DbConst.TYPE_CHILD,
+        name: child.name,
+        nik: child.nik,
+        birthDate: DateTime.parse(child.birthDate),
+        birthPlace: child.birthCity,
+        serverId: id,
+      );
+    });
     final profiles = [motherProf, fatherProf, ...childProfs];
 
     final credRowId = await _credentialDao.insert(credential);
@@ -265,6 +271,18 @@ class AccountLocalSrcImpl with AccountLocalSrc {
       return Success(res);
     } catch(e) {
       return Fail();
+    }
+  }
+
+  @override
+  Future<Result<bool>> clear() async {
+    try {
+      final res = await _profileDao.deleteAll();
+      return Success(res > 0);
+    } catch(e, stack) {
+      prine(e);
+      prine(stack);
+      return Fail(msg: "Error calling `AccountLocalSrcImpl.clear()`", error: e);
     }
   }
 }

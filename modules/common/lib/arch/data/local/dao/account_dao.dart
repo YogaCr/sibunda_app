@@ -82,6 +82,7 @@ class ProfileDao extends DatabaseAccessor<AppDatabase> with _$ProfileDaoMixin {
   Future<int> insert(Insertable<ProfileEntity> e) => into(profileEntities).insert(e);
   Future<void> insertAll(List<Insertable<ProfileEntity>> e) => batch((batch) => batch.insertAll(profileEntities, e));
   Future<int> deleteData(Insertable<ProfileEntity> e) => delete(profileEntities).delete(e);
+  Future<int> deleteAll() => delete(profileEntities).go();
 
   Future<ProfileEntity?> getByNik(String nik, { int? type }) async {
     final sel = select(profileEntities)..where((it) => it.nik.equals(nik));

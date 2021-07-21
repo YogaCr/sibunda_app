@@ -21,7 +21,13 @@ class RepoDi {
     api: ApiDi.dataApi,
   );
 
-  static AuthRepo get authRepo => AuthRepoImpl(api: ApiDi.authApi, localSrc: LocalSrcDi.accountSrc); //AuthDummyRepo.obj; //
+  static AuthRepo get authRepo => AuthRepoImpl(
+    api: ApiDi.authApi,
+    dataApi: ApiDi.dataApi,
+    localSrc: LocalSrcDi.accountSrc,
+    pregnancyLocalSrc: LocalSrcDi.pregnancySrc,
+    checkUpLocalSrc: LocalSrcDi.checkUpSrc,
+  ); //AuthDummyRepo.obj; //
 
   static ProfileRepo get profileRepo => ProfileRepoImpl(localSrc: LocalSrcDi.accountSrc); //ProfileRepoDummy.obj; //ProfileRepoImpl(localSrc: LocalSrcDi.accountSrc); //
   static HomeStatusRepo get homeStatusRepo => HomeStatusRepoImpl(homeApi: ApiDi.homeApi); //HomeStatusRepoDummy.obj;

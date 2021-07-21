@@ -24,12 +24,27 @@ _group1() {
     });
 
     print("");
+
+    test("_getBio", () async {
+      prinw("_getBio ===========");
+      await _getBio();
+      prinw("_getBio =========== end");
+    });
+
+    print("");
   });
   prinw("Data Overall Test =========== end");
 }
+
 
 _getCity() async {
   final res = await _api.getCity();
   prinr("res = $res");
   assert(res.isNotEmpty);
+}
+
+_getBio() async {
+  final res = await _api.getBio();
+  prinr("res = $res");
+  assert(res.code == 200);
 }

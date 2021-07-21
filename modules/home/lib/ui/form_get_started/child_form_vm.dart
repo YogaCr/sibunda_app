@@ -37,6 +37,7 @@ class ChildFormVm extends FormVmGroup {
           map = child.toJson;
           map[Const.KEY_BIRTH_PLACE] = _birthPlaces.value![page];
           map[Const.KEY_BIRTH_DATE] = parseDate(map[Const.KEY_BIRTH_DATE]);
+          map[Const.KEY_JKN_START_DATE] = parseDate(map[Const.KEY_JKN_START_DATE]);
         } else {
           final incompleteResponses = _currentIncompleteResponses.value![page];
           if(incompleteResponses != null) {
@@ -132,6 +133,7 @@ class ChildFormVm extends FormVmGroup {
   Set<String>? get mappedKey => {
     Const.KEY_BIRTH_PLACE,
     Const.KEY_BIRTH_DATE,
+    Const.KEY_JKN_START_DATE,
     Const.KEY_CHILD_ORDER,
   };
   @override
@@ -148,6 +150,7 @@ class ChildFormVm extends FormVmGroup {
           return response.id;
         }
         throw "Expected type of response with `key` of '$key' is `IdStringModel`";
+      case Const.KEY_JKN_START_DATE:
       case Const.KEY_BIRTH_DATE:
         if(response is DateTime) {
           return response.toString();

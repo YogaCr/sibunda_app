@@ -13,6 +13,7 @@ mixin CheckUpLocalSrc {
     required int period,
     required String nik,
   });
+  Future<Result<bool>> clear();
 }
 
 
@@ -21,7 +22,7 @@ class CheckUpLocalSrcImpl with CheckUpLocalSrc {
   CheckUpLocalSrcImpl({
     required CheckUpIdDao checkUpIdDao,
   }):
-      _checkUpIdDao = checkUpIdDao
+    _checkUpIdDao = checkUpIdDao
   ;
 
   @override
@@ -63,6 +64,17 @@ class CheckUpLocalSrcImpl with CheckUpLocalSrc {
       prine(e);
       prine(stack);
       return Fail(msg: "Can't get `CheckUpIdEntity` from DB with `period` '$period' and `nik` '$nik'", error: e);
+    }
+  }
+  @override
+  Future<Result<bool>> clear() async {
+    try {
+      final res = await _checkUpIdDao.deleteAll();
+      return Success(res > 0);
+    } catch(e, stack) {
+      prine(e);
+      prine(stack);
+      return Fail(msg: "Error calling `clear()`", error: e);
     }
   }
 }

@@ -29,7 +29,7 @@ class RegisterBody {
     var signupMap = signup.toJson;
     var motherMap = mother.toJson;
     var fatherMap = father.toJson;
-    var childMaps = children.map((e) => e.toJson);
+    var childMaps = children.map((e) => e.toJson).toList(growable: false);
 /*
     motherMap[Const.KEY_SALARY] = motherMap[Const.KEY_SALARY].toString();
     fatherMap[Const.KEY_SALARY] = fatherMap[Const.KEY_SALARY].toString();
