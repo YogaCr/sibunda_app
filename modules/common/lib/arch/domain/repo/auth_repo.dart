@@ -90,9 +90,9 @@ class AuthRepoImpl with AuthRepo {
         return Fail(code: res.code, msg: res.message);
       }
       prind("AuthRepoImpl.signup() _api.register() res= $res");
+/*
       final userId = res.user.id;
       final userRole = res.user.groupId;
-/*
       final bioRes = await getDataApi().getBio();
       if(bioRes.code != 200) {
         return Fail(code: bioRes.code, msg: bioRes.message);
@@ -125,15 +125,6 @@ class AuthRepoImpl with AuthRepo {
         return Fail(code: res.code, msg: res.message);
       }
       final session = SessionData(token: res.data.token, tokenType: res.data.tokenType,);
-      var locRes = await _localSrc.saveSession(session);
-      if(locRes is! Success<bool>) {
-        return Fail(msg: "Can't save `session` in local");
-      }
-      VarDi.session = session;
-      locRes = await _localSrc.saveCurrentEmail(data.email);
-      if(locRes is! Success<bool>) {
-        return Fail(msg: "Can't save `email` in local");
-      }
 
       final bioRes = await getBio();
       if(bioRes is! Success<List<BatchProfileServer>>) {
@@ -144,7 +135,7 @@ class AuthRepoImpl with AuthRepo {
 
       for(final bio in bioData) {
         final saveBioRes = await _localSrc.saveBatchProfileRaw(
-          userRole: DbConst.ROLE_USER,
+          userRole: DbConst.ROLE_USER, //TODO: Hardcoded role type
           signup: SignUpData(
             name: bio.mother.name,
             email: data.email,
@@ -159,6 +150,16 @@ class AuthRepoImpl with AuthRepo {
       VarDi.motherNik.value = bioData.first.mother.nik;
       prind("AuthRepo.login() VarDi.motherNik= ${VarDi.motherNik}");
       //VarDi.pregnancyWeek.value = bioData.first.mother;
+
+      var locRes = await _localSrc.saveSession(session);
+      if(locRes is! Success<bool>) {
+        return Fail(msg: "Can't save `session` in local");
+      }
+      VarDi.session = session;
+      locRes = await _localSrc.saveCurrentEmail(data.email);
+      if(locRes is! Success<bool>) {
+        return Fail(msg: "Can't save `email` in local");
+      }
 
       return Success(session, 200);
     } catch(e, stack) {

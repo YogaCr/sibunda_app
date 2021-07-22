@@ -61,7 +61,8 @@ class BioMotherResponse with _$BioMotherResponse {
     required BioFatherResponse kia_ayah,
     required List<BioChildResponse> kia_anak,
   }) = _BioMotherResponse;
-  factory BioMotherResponse.fromJson(Map<String, dynamic> map) = _BioMotherResponse.fromJson;
+  factory BioMotherResponse.fromJson(Map<String, dynamic> map) =>
+      _BioMotherResponse.fromJson(filterBioChildResponse(map));
 }
 
 @freezed
@@ -106,4 +107,18 @@ class BioChildResponse with _$BioChildResponse {
     required bool is_janin,
   }) = _BioChildResponse;
   factory BioChildResponse.fromJson(Map<String, dynamic> map) = _BioChildResponse.fromJson;
+}
+
+
+
+Map<String, dynamic> filterBioChildResponse(Map<String, dynamic> bioMotherResponse) {
+  final list = bioMotherResponse["kia_anak"] as List<dynamic>?;
+  if(list == null) {
+    throw "This method is designed to filter `BioMotherResponse`'s response map";
+  }
+  final filtered = list
+      .where((map) => map is Map<String, dynamic> && map.containsKey("anak_ke") && map["anak_ke"] != null)
+      .toList(growable: false);
+  bioMotherResponse["kia_anak"] = filtered;
+  return bioMotherResponse;
 }
