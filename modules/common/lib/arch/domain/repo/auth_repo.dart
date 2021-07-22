@@ -125,6 +125,7 @@ class AuthRepoImpl with AuthRepo {
         return Fail(code: res.code, msg: res.message);
       }
       final session = SessionData(token: res.data.token, tokenType: res.data.tokenType,);
+      VarDi.session = session;
 
       final bioRes = await getBio();
       if(bioRes is! Success<List<BatchProfileServer>>) {
@@ -155,7 +156,6 @@ class AuthRepoImpl with AuthRepo {
       if(locRes is! Success<bool>) {
         return Fail(msg: "Can't save `session` in local");
       }
-      VarDi.session = session;
       locRes = await _localSrc.saveCurrentEmail(data.email);
       if(locRes is! Success<bool>) {
         return Fail(msg: "Can't save `email` in local");
