@@ -33,7 +33,12 @@ class SibRoute {
   final String name;
   final Type klass;
   final Widget Function(BuildContext) builder;
-  const SibRoute(this.name, this.klass, this.builder);
+  /// Called before [builder] is called.
+  final void Function(BuildContext)? onPreBuild;
+
+  const SibRoute(this.name, this.klass, this.builder, {
+    this.onPreBuild,
+  });
 
 
   Future<T?> goToPage<T>(BuildContext context, {
@@ -44,17 +49,21 @@ class SibRoute {
   })  {
     if(post) {
       return Future(() {
-        final future = Future(() => NavExt.goToPage<T>(
-          context, builder,
-          name: name,
-          clearPrevs: clearPrevs,
-          replaceCurrent: replaceCurrent,
-          args: args,
-        ));
+        final future = Future(() {
+          onPreBuild?.call(context);
+          return NavExt.goToPage<T>(
+            context, builder,
+            name: name,
+            clearPrevs: clearPrevs,
+            replaceCurrent: replaceCurrent,
+            args: args,
+          );
+        });
         WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async => await future);
         return future;
       });
     } else {
+      onPreBuild?.call(context);
       return NavExt.goToPage<T>(
         context, builder,
         name: name,

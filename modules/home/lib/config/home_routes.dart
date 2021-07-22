@@ -2,6 +2,7 @@ import 'package:common/arch/ui/page/frames.dart';
 import 'package:common/arch/ui/widget/form_controller.dart';
 import 'package:common/arch/ui/widget/form_faker.dart';
 import 'package:common/config/_config.dart';
+import 'package:common/test/__common_test_const.dart';
 import 'package:common/util/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:home/di/home_vm_di.dart';
@@ -38,9 +39,11 @@ class HomeRoutes extends ModuleRoute {
 
   static final splashPage = SibRoute("SplashPage", SplashPage, (ctx) => NoAppBarFrame(
     body: SplashPage().inVmProvider([
-      (ctx) => HomeVmDi.splashVm,
+          (ctx) => HomeVmDi.splashVm,
     ]),
-  ));
+  ), onPreBuild: (ctx) async {
+    await TestUtil.initSession();
+  });
   static final introPage = SibRoute("IntroPage", IntroPage, (ctx) => NoAppBarFrame(
     body: IntroPage(),
     padding: EdgeInsets.all(20),

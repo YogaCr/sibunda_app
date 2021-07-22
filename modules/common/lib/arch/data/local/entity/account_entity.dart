@@ -68,6 +68,6 @@ class ProfileEntities extends Table {
 
   @override
   List<String> get customConstraints => [
-    "UNIQUE (nik)"
+    "UNIQUE (nik, user_id, type, server_id)"
   ];
 }

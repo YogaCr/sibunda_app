@@ -23,15 +23,20 @@ class NewAccountConfirmPage extends StatelessWidget {
     final screenSize = MediaQuery.of(context).size;
     final imgSize = screenSize.width /2;
 
-    final vm = ViewModelProvider.of<GetStartedFormMainVm>(context);
-    vm.onSubmit.observeForever((success) {
-      if(success == true) {
-        HomeRoutes.homePage.goToPage(context);
-        showSnackBar(context, Strings.welcome_mother, backgroundColor: Colors.green);
-      } else {
-        showSnackBar(context, Strings.form_submission_fail);
-      }
-    });
+    final vm = ViewModelProvider.of<GetStartedFormMainVm>(context)
+      ..onSubmit.observeForever((success) {
+        if(success != true) {
+          showSnackBar(context, Strings.form_submission_fail);
+        }
+      })
+      ..onLogin.observeForever((success) {
+        if(success == true) {
+          HomeRoutes.homePage.goToPage(context);
+          showSnackBar(context, Strings.welcome_mother, backgroundColor: Colors.green);
+        } else {
+          showSnackBar(context, Strings.form_submission_fail);
+        }
+      });
 
     final nameLiveData = MutableLiveData<String>();
     vm.signUpFormVm.isFormReady.observeForever((isFormReady) {

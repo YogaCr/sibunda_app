@@ -12,15 +12,15 @@ import 'package:intl/intl.dart';
 DateTime getHpl([DateTime? hpht]) => Jiffy(hpht).add(years: 1, days: 7).subtract(months: 3).dateTime;
 DateTime getHpht([DateTime? hpl]) => Jiffy(hpl).subtract(years: 1, days: 7).add(months: 3).dateTime;
 
+int getPregnancyWeek(DateTime hpht) => calculateDayAge(hpht) ~/ 7;
+
 Future<String> formatTime(DateTime date, { String localeName = "id_ID" }) async {
   await initializeDateFormatting(localeName);
   return DateFormat.yMMMMd(localeName).format(date);
 }
 
-int calculateYearAge(DateTime birthDate) {
-  final days = DateTime.now().difference(birthDate).inDays;
-  return Jiffy({ "day": days }).year;
-}
+int calculateDayAge(DateTime birthDate) => DateTime.now().difference(birthDate).inDays;
+int calculateYearAge(DateTime birthDate) => Jiffy({ "day": calculateDayAge(birthDate) }).year;
 
 String syncFormatTimeFromStr(String datestr, { String localeName = "id_ID" }) =>
   syncFormatTime(parseDate(datestr), localeName: localeName);

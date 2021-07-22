@@ -59,6 +59,7 @@ class BatchProfileServer with _$BatchProfileServer {
     required ProfileEntity mother,
     required ProfileEntity father,
     required List<ProfileEntity> children,
+    //required DateTime? motherHpht,
   }) = _BatchProfileServer;
   factory BatchProfileServer.fromJson(Map<String, dynamic> map) = _BatchProfileServer.fromJson;
   factory BatchProfileServer.fromBioResponse(BioMotherResponse response) {
@@ -92,6 +93,10 @@ class BatchProfileServer with _$BatchProfileServer {
       birthPlace: e.tempat_lahir,
     )).toList(growable: false);
 
-    return BatchProfileServer(mother: mother, father: father, children: children);
+    return BatchProfileServer(
+      mother: mother,
+      father: father,
+      children: children,
+    );
   }
 }

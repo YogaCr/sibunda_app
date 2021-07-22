@@ -86,9 +86,10 @@ class AuthRepoImpl with AuthRepo {
       if(res.code != 200) {
         return Fail(code: res.code, msg: res.message);
       }
+      prind("AuthRepoImpl.signup() _api.register() res= $res");
       final userId = res.user.id;
       final userRole = res.user.groupId;
-
+/*
       final bioRes = await getDataApi().getBio();
       if(bioRes.code != 200) {
         return Fail(code: bioRes.code, msg: bioRes.message);
@@ -103,7 +104,8 @@ class AuthRepoImpl with AuthRepo {
         mother: mother, father: father, children: children,
         ids: ids,
       );
-      return locRes;
+ */
+      return Success(true);
     } catch(e, stack) {
       prine(e);
       prine(stack);
@@ -135,7 +137,9 @@ class AuthRepoImpl with AuthRepo {
         return Fail(msg: "Can't download `bio` when login");
       }
 
-      for(final bio in bioRes.data) {
+      final bioData = bioRes.data;
+
+      for(final bio in bioData) {
         final saveBioRes = await _localSrc.saveBatchProfileRaw(
           userRole: DbConst.ROLE_USER,
           signup: SignUpData(
@@ -149,6 +153,10 @@ class AuthRepoImpl with AuthRepo {
           return Fail(msg: "Can't save `bio` of '$bio' in local");
         }
       }
+      VarDi.motherNik.value = bioData.first.mother.nik;
+      prind("AuthRepo.login() VarDi.motherNik= ${VarDi.motherNik}");
+      //VarDi.pregnancyWeek.value = bioData.first.mother;
+
       return Success(session, 200);
     } catch(e, stack) {
       final msg = "Error calling `login()`";

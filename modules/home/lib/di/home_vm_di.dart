@@ -23,6 +23,8 @@ class HomeVmDi {
   );
   static GetStartedFormMainVm get getStartedFormMainVm => GetStartedFormMainVm(
     signUpAndRegisterOtherData: HomeUseCaseDi.signUpAndRegister,
+    login: HomeUseCaseDi.login,
+    initConfig: UseCaseDi.initConfig,
     saveMotherHpl: HomeUseCaseDi.saveMotherHpl,
   );
   static SignUpFormVm get signUpFormVm => SignUpFormVm(HomeUseCaseDi.signUp);

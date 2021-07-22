@@ -18,6 +18,9 @@ class ConfigUtil {
       await TestUtil.init();
       await TestUtil.initDummyPrefs();
       await TestUtil.initDummyDb();
+    } else {
+      await Prefs.loadPrefs();
+      await TestUtil.initDb();
     }
   }
 }
@@ -25,7 +28,7 @@ class ConfigUtil {
 class TestUtil {
   TestUtil._();
 
-  static bool isDebug = true;
+  static bool isDebug = false;
   //static bool isTest = false;
   static String testOutputDir = "test/_out/signup_data.txt";
 
@@ -73,7 +76,15 @@ class TestUtil {
   static initPrefs() async {
     await Prefs.loadPrefs();
   }
-
+  static initDb() async {
+    try {
+      await DbDi.roleDao.insertAll(userRoles);
+      await DbDi.profileTypeDao.insertAll(profileTypes);
+    } catch(e, stack) {
+      prinw("Error when calling `initDb()`, e= $e");
+      prine(stack);
+    }
+  }
 
   static initDummyPrefs() async {
     try {
@@ -93,8 +104,7 @@ class TestUtil {
       //final cities = await DbDi.cityDao.get();
       //prind("`initDummyDb()` cities = $cities");
       //await DbDi.cityDao.insertAll(dummyCities);
-      await DbDi.roleDao.insertAll(userRoles);
-      await DbDi.profileTypeDao.insertAll(profileTypes);
+      await initDb();
       await DbDi.credentialDao.insertAll([dummyCredential]);
       await DbDi.profileDao.insertAll([
         dummyProfileMother, dummyProfileFather, dummyProfileChild,

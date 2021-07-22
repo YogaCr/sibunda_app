@@ -2,6 +2,7 @@ import 'package:common/arch/domain/model/auth.dart';
 import 'package:common/arch/domain/model/child.dart';
 import 'package:common/arch/domain/model/father.dart';
 import 'package:common/arch/domain/model/mother.dart';
+import 'package:common/arch/domain/usecase/auth_usecase.dart';
 import 'package:common/arch/domain/usecase/mother_usecase.dart';
 import 'package:core/domain/model/result.dart';
 import 'package:core/ui/base/async_vm.dart';
@@ -24,9 +25,13 @@ class GetStartedFormMainVm extends AsyncVm {
 
   GetStartedFormMainVm({
     required SignUpAndRegisterOtherData signUpAndRegisterOtherData,
+    required Login login,
+    required InitConfig initConfig,
     required SaveMotherHpl saveMotherHpl,
   }): _saveMotherHpl = saveMotherHpl,
-      _signUpAndRegisterOtherData = signUpAndRegisterOtherData {
+      _signUpAndRegisterOtherData = signUpAndRegisterOtherData,
+      _login = login,
+      _initConfig = initConfig {
     signUpFormVm = SignUpFormVm(_signup);
     motherVm = MotherFormVm(_saveMotherData);
     fatherVm = FatherFormVm(_saveFatherData);
@@ -43,8 +48,29 @@ class GetStartedFormMainVm extends AsyncVm {
     childrenCountVm.childrenCount.observe(this, (count) {
       prind("GetStartedFormMainVm childrenCountVm.childrenCount.observe count= $count");
     });
+    _onSubmit.observe(this, (success) async {
+      if(success == true) {
+        final signupData = _signup.data.value;
+        if(signupData == null) {
+          throw "`onSubmit` is success, but current signup data is null.";
+        }
+        final loginRes = await _login.call(signupData.toLoginData());
+        prind("GetStartedFormMainVm loginRes= $loginRes");
+        if(loginRes is Success<SessionData>) {
+          final configRes = await _initConfig();
+          prind("GetStartedFormMainVm configRes= $configRes");
+          if(configRes is Success<bool>) {
+            _onLogin.value = configRes.data;
+            return;
+          }
+        }
+        _onLogin.value = false;
+      }
+    });
   }
   final SignUpAndRegisterOtherData _signUpAndRegisterOtherData;
+  final Login _login;
+  final InitConfig _initConfig;
   final SaveMotherHpl _saveMotherHpl;
 
   final _SignupImpl _signup = _SignupImpl();
@@ -67,6 +93,9 @@ class GetStartedFormMainVm extends AsyncVm {
   final MutableLiveData<bool> _onSubmit = MutableLiveData();
   LiveData<bool> get onSubmit => _onSubmit;
 
+  final MutableLiveData<bool> _onLogin = MutableLiveData();
+  LiveData<bool> get onLogin => _onLogin;
+
   @override
   List<LiveData> get liveDatas => [
     _signup.data,
@@ -74,6 +103,8 @@ class GetStartedFormMainVm extends AsyncVm {
     _saveFatherData.data,
     _saveChildrenData.data,
     _saveMotherHplForChild.data,
+    _onSubmit,
+    _onLogin,
   ];
 
 

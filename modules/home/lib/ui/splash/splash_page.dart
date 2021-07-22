@@ -1,3 +1,4 @@
+import 'package:common/arch/di/config_di.dart';
 import 'package:common/arch/domain/dummy_data.dart';
 import 'package:common/arch/ui/widget/_basic_widget.dart';
 import 'package:common/arch/ui/widget/splash_widget.dart';

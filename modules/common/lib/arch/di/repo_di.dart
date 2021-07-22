@@ -23,7 +23,7 @@ class RepoDi {
 
   static AuthRepo get authRepo => AuthRepoImpl(
     api: ApiDi.authApi,
-    dataApi: ApiDi.dataApi,
+    //dataApi: ApiDi.dataApi,
     localSrc: LocalSrcDi.accountSrc,
     pregnancyLocalSrc: LocalSrcDi.pregnancySrc,
     checkUpLocalSrc: LocalSrcDi.checkUpSrc,

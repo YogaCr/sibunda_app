@@ -12,6 +12,7 @@ import 'config/app_routes.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await ConfigUtil.init();
+  await TestUtil.initSession();
   runApp(MyApp());
 }
 

@@ -1,3 +1,4 @@
+import 'package:common/arch/di/data_source_di.dart';
 import 'package:common/arch/di/repo_di.dart';
 import 'package:common/arch/domain/usecase/auth_usecase.dart';
 import 'package:common/arch/domain/usecase/baby_usecase.dart';
@@ -10,6 +11,7 @@ class UseCaseDi {
 
   static GetCityList get getCityList => GetCityListImpl(RepoDi.dataRepo);
   static IsLoggedIn get isLoggedIn => IsLoggedInImpl(RepoDi.authRepo);
+  static InitConfig get initConfig => InitConfigImpl(LocalSrcDi.accountSrc);
 
   static GetMotherNik get getMotherNik => GetMotherNikImpl(RepoDi.motherRepo);
   static GetBabyNik get getBabyNik => GetBabyNikImpl(RepoDi.myBabyRepo);
