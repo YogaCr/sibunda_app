@@ -20,6 +20,7 @@ class HomeVmDi {
   static SplashVm get splashVm => SplashVm(
     getCityList: UseCaseDi.getCityList,
     isLoggedInUseCase: UseCaseDi.isLoggedIn,
+    initConfig: UseCaseDi.initConfig,
   );
   static GetStartedFormMainVm get getStartedFormMainVm => GetStartedFormMainVm(
     signUpAndRegisterOtherData: HomeUseCaseDi.signUpAndRegister,

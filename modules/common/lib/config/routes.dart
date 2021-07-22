@@ -187,7 +187,7 @@ class RouteManager {
   }
   SibRoute Function(Map<String, dynamic> args) getExternalRouteBuilder(String key) {
     if(!_routeBuilders.containsKey(key)) {
-      throw "No such router with key of '$key'";
+      throw "No such route builder with key of '$key'";
     }
     return _routeBuilders[key]!;
   }

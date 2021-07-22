@@ -1,5 +1,6 @@
 // User and Auth related repository.
 
+import 'package:collection/collection.dart';
 import 'package:common/arch/data/local/source/account_local_source.dart';
 import 'package:common/arch/data/local/source/check_up_local_source.dart';
 import 'package:common/arch/data/local/source/pregnancy_local_source.dart';
@@ -15,6 +16,7 @@ import 'package:common/arch/domain/model/child.dart';
 import 'package:common/arch/domain/model/father.dart';
 import 'package:common/arch/domain/model/mother.dart';
 import 'package:common/arch/domain/model/profile_data.dart';
+import 'package:common/util/times.dart';
 import 'package:common/value/db_const.dart';
 import 'package:core/domain/model/result.dart';
 import 'package:core/util/_consoles.dart';
@@ -44,20 +46,20 @@ mixin AuthRepo {
 class AuthRepoImpl with AuthRepo {
   final AuthApi _api;
   DataApi? _dataApi;
-  final AccountLocalSrc _localSrc;
+  final AccountLocalSrc _accountLocalSrc;
   final PregnancyLocalSrc _pregnancyLocalSrc;
   final CheckUpLocalSrc _checkUpLocalSrc;
 
   AuthRepoImpl({
     required AuthApi api,
     //required DataApi dataApi,
-    required AccountLocalSrc localSrc,
+    required AccountLocalSrc accountLocalSrc,
     required PregnancyLocalSrc pregnancyLocalSrc,
     required CheckUpLocalSrc checkUpLocalSrc,
   }):
     _api = api,
     //_dataApi = dataApi,
-    _localSrc = localSrc,
+    _accountLocalSrc = accountLocalSrc,
     _pregnancyLocalSrc = pregnancyLocalSrc,
     _checkUpLocalSrc = checkUpLocalSrc
   ;
@@ -135,7 +137,7 @@ class AuthRepoImpl with AuthRepo {
       final bioData = bioRes.data;
 
       for(final bio in bioData) {
-        final saveBioRes = await _localSrc.saveBatchProfileRaw(
+        final saveBioRes = await _accountLocalSrc.saveBatchProfileRaw(
           userRole: DbConst.ROLE_USER, //TODO: Hardcoded role type
           signup: SignUpData(
             name: bio.mother.name,
@@ -152,13 +154,27 @@ class AuthRepoImpl with AuthRepo {
       prind("AuthRepo.login() VarDi.motherNik= ${VarDi.motherNik}");
       //VarDi.pregnancyWeek.value = bioData.first.mother;
 
-      var locRes = await _localSrc.saveSession(session);
+      var locRes = await _accountLocalSrc.saveSession(session);
       if(locRes is! Success<bool>) {
         return Fail(msg: "Can't save `session` in local");
       }
-      locRes = await _localSrc.saveCurrentEmail(data.email);
+      locRes = await _accountLocalSrc.saveCurrentEmail(data.email);
       if(locRes is! Success<bool>) {
         return Fail(msg: "Can't save `email` in local");
+      }
+
+      //final unbornChild = bioData.first.children.firstWhereOrNull((e) => e.)
+      final motherHpl = bioData.first.motherHpl;
+      if(motherHpl != null) {
+        locRes = await _pregnancyLocalSrc.saveMotherHpl(motherHpl);
+        if(locRes is! Success<bool>) {
+          return Fail(msg: "Can't save `hpl` in local");
+        }
+        final hpht = getHpht(motherHpl);
+        locRes = await _pregnancyLocalSrc.saveMotherHpht(hpht);
+        if(locRes is! Success<bool>) {
+          return Fail(msg: "Can't save `hpht` in local");
+        }
       }
 
       return Success(session, 200);
@@ -180,25 +196,30 @@ class AuthRepoImpl with AuthRepo {
 
       var locRes = await _pregnancyLocalSrc.clear();
       if(locRes is! Success<bool>) {
-        return Fail(msg: "Can't delete `checkUps` in local");
+        return Fail(msg: "Can't delete `hpl` and `hpht` in local");
       }
-      locRes = await _pregnancyLocalSrc.clear();
+      locRes = await _checkUpLocalSrc.clear();
+      if(locRes is! Success<bool>) {
+        return Fail(msg: "Can't delete `checkUps` data in local");
+      }
+/*
       if(locRes is! Success<bool>) {
         return Fail(msg: "Can't delete `pregnancy` data in local");
       }
+ */
 
-      locRes = await _localSrc.deleteSession();
+      locRes = await _accountLocalSrc.deleteSession();
       if(locRes is! Success<bool>) {
         return Fail(msg: "Can't delete `session` in local");
       }
-      locRes = await _localSrc.deleteCurrentEmail();
+      locRes = await _accountLocalSrc.deleteCurrentEmail();
       if(locRes is! Success<bool>) {
         return Fail(msg: "Can't delete `email` in local");
       }
 
-      locRes = await _localSrc.clear();
+      locRes = await _accountLocalSrc.clear();
       if(locRes is! Success<bool>) {
-        return Fail(msg: "Can't clear all `profile` in local");
+        return Fail(msg: "Can't clear all `profile` and `credential` in local");
       }
       return Success(true, 200);
     } catch(e, stack) {
@@ -211,7 +232,7 @@ class AuthRepoImpl with AuthRepo {
 
   @override
   Future<Result<bool>> saveSession(SessionData data) async {
-    var locRes = await _localSrc.saveSession(data);
+    var locRes = await _accountLocalSrc.saveSession(data);
     if(locRes is! Success<bool>) {
       return Fail(msg: "Can't save `session` in local");
     }
@@ -220,7 +241,7 @@ class AuthRepoImpl with AuthRepo {
   }
 
   @override
-  Future<Result<SessionData?>> getSession() => _localSrc.getSession();
+  Future<Result<SessionData?>> getSession() => _accountLocalSrc.getSession();
   
   @override
   Future<Result<List<BatchProfileServer>>> getBio() async {
@@ -230,7 +251,8 @@ class AuthRepoImpl with AuthRepo {
         return Fail(code: res.code, msg: "msg= '${res.message}', status= '${res.status}'",);
       }
       final list = res.data.map<BatchProfileServer>((e) =>
-          BatchProfileServer.fromBioResponse(e)).toList(growable: false);
+          BatchProfileServer.fromBioResponse(e))
+          .toList(growable: false);
 
       return Success(list);
     } catch(e, stack) {

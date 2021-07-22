@@ -1,3 +1,4 @@
+import 'package:common/arch/di/config_di.dart';
 import 'package:common/arch/domain/dummy_data.dart';
 import 'package:common/arch/domain/model/chart_data_mother.dart';
 import 'package:common/arch/domain/model/kehamilanku_data.dart';
@@ -33,7 +34,7 @@ class KehamilankuHomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     prind("KehamilankuHomePage build()");
     final vm = ViewModelProvider.of<KehamilankuHomeVm>(context)
-      ..getAgeOverview("")
+      ..getAgeOverview(VarDi.motherNik.getOrElse())
       ..getTrimesterList()
       ..getFoodRecomList()
       ..getBabyOverlay();
@@ -48,6 +49,7 @@ class KehamilankuHomePage extends StatelessWidget {
       ),
       contentOverlay: BabySelectionOverlay(
         visibilityController: overlayVisibility,
+        selectedIndex: LiveData(0),
         bornBabyList: vm.bornBabyList,
         unbornBabyList: vm.unbornBabyList,
         onItemClick: (baby, isBorn) {

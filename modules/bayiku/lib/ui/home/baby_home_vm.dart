@@ -6,7 +6,9 @@ import 'package:common/arch/domain/usecase/baby_usecase.dart';
 import 'package:core/domain/model/result.dart';
 import 'package:core/ui/base/async_vm.dart';
 import 'package:core/ui/base/live_data.dart';
+import 'package:core/util/_consoles.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:collection/collection.dart';
 
 class BabyHomeVm extends AsyncVm {
   static const getBabyAgeOverviewKey = "getBabyAgeOverview";
@@ -31,6 +33,29 @@ class BabyHomeVm extends AsyncVm {
         }
       }
     });
+    _ageOverview.observe(this, (data) {
+      if(data != null) {
+        final babyCred = _babyCredential.value;
+        if(babyCred == null) {
+          throw "Something error. `babyCred` is null";
+        }
+        final unbornIndex = _unbornBabyList.value!.indexWhere((e) => e.id == babyCred.id);
+        prind("BabyHomeVm unbornIndex= $unbornIndex");
+        if(unbornIndex == 0) {
+          selectedIndex.value = 0;
+          selectedBabyData = _unbornBabyList.value![unbornIndex];
+        } else {
+          final bornIndex = _bornBabyList.value!.indexWhere((e) => e.id == babyCred.id);
+          prind("BabyHomeVm bornIndex= $bornIndex");
+          if(bornIndex < 0) {
+            throw "Something error. `ageOverview.value` is not null, but there's no selected baby";
+          }
+          selectedBabyData = _bornBabyList.value![bornIndex];
+          selectedIndex.value = bornIndex +1;
+        }
+        prind("BabyHomeVm selectedIndex= $selectedIndex");
+      }
+    }, tag: toString());
   }
   final GetBabyAgeOverview _getBabyAgeOverview;
   final GetBabyFormMenuList _getBabyFormMenuList;
@@ -51,11 +76,14 @@ class BabyHomeVm extends AsyncVm {
 
   //String get babyNik => dummyProfileChild.nik; //TODO: babyNik: tuk smtr ini kyk gini.
 
+  final MutableLiveData<int> selectedIndex = MutableLiveData(1);
+  BabyOverlayData? selectedBabyData;
+
   @override
   List<LiveData> get liveDatas => [
     _formMenuList, _ageOverview,
     _bornBabyList, _unbornBabyList,
-    _babyCredential,
+    _babyCredential, selectedIndex,
   ];
 
   void initHome({
@@ -64,6 +92,8 @@ class BabyHomeVm extends AsyncVm {
   }) {
     if(!forceLoad && babyCredential == _babyCredential.value) return;
     _babyCredential.value = babyCredential;
+    _ageOverview.value = null;
+    _formMenuList.value = null;
     getBabyAgeOverview(forceLoad: true);
     getBabyFormMenuList(forceLoad: true);
   }

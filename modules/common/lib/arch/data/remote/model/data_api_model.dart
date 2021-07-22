@@ -61,8 +61,8 @@ class BioMotherResponse with _$BioMotherResponse {
     required BioFatherResponse kia_ayah,
     required List<BioChildResponse> kia_anak,
   }) = _BioMotherResponse;
-  factory BioMotherResponse.fromJson(Map<String, dynamic> map) =>
-      _BioMotherResponse.fromJson(filterBioChildResponse(map));
+  factory BioMotherResponse.fromJson(Map<String, dynamic> map) = _BioMotherResponse.fromJson;
+      //_BioMotherResponse.fromJson(filterBioChildResponse(map));
 }
 
 @freezed
@@ -91,17 +91,17 @@ class BioChildResponse with _$BioChildResponse {
   const factory BioChildResponse({
     required int id,
     required String nama,
-    required int anak_ke,
-    required String no_akte_kelahiran,
-    required String nik,
+    required int? anak_ke, // null if this is unborn child (fetus).
+    required String? no_akte_kelahiran,
+    required String? nik,
     required String? jenis_kelamin,
-    required String gol_darah,
-    required int tempat_lahir,
-    required String tanggal_lahir,
-    required String no_jkn,
-    required String tanggal_berlaku_jkn,
-    required String no_kohort,
-    required String no_catatan_medik,
+    required String? gol_darah,
+    required int? tempat_lahir,
+    required String? tanggal_lahir,
+    required String? no_jkn,
+    required String? tanggal_berlaku_jkn,
+    required String? no_kohort,
+    required String? no_catatan_medik,
     required String? hpl,
     required String? hpht,
     required bool is_janin,

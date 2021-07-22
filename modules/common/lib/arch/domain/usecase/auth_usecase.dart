@@ -83,7 +83,7 @@ class ToLoginPageImpl with ToLoginPage {
     required ModuleRoute moduleRoute,
   }) async {
     try {
-      moduleRoute.goToExternalRouteBuilder(
+      moduleRoute.goToExternalRoute(
         context, GlobalRoutes.home_LoginPage,
         clearPrevs: true,
       );

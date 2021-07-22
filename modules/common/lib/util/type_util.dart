@@ -63,6 +63,7 @@ DateTime parseDate(source, { DateTime Function(dynamic)? onError }) {
   throw "Unknown type '${source.runtimeType}' to parse to `DateTime`";
 }
 DateTime? tryParseDate(source, { DateTime Function(dynamic)? onError }) {
+  if(source == null) return null;
   if(source is DateTime) return source;
   if(source is String) {
     final res = DateTime.tryParse(source);

@@ -6,7 +6,10 @@ class VarDi {
   VarDi._();
 
   static SessionData? _session;
-  static set session(SessionData v) => _session = v;
+  static set session(SessionData v) {
+    prind("VarDi.session set v = $v");
+    _session = v;
+  }
   static SessionData get session {
     prind("VarDi.session = $_session");
     if(_session == null) {

@@ -24,7 +24,7 @@ class RepoDi {
   static AuthRepo get authRepo => AuthRepoImpl(
     api: ApiDi.authApi,
     //dataApi: ApiDi.dataApi,
-    localSrc: LocalSrcDi.accountSrc,
+    accountLocalSrc: LocalSrcDi.accountSrc,
     pregnancyLocalSrc: LocalSrcDi.pregnancySrc,
     checkUpLocalSrc: LocalSrcDi.checkUpSrc,
   ); //AuthDummyRepo.obj; //

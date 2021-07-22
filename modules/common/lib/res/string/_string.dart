@@ -40,6 +40,7 @@ class Strings {
 
   static const mother = "Bunda";
   static const baby = "Bayi";
+  static const baby_candidate = "Calon Bayi";
 
   static const ready_to_be_mother_assistant = "Siap Jadi Asisten Bunda";
   static const splash_motto_desc = "Dengan aplikasi kami, Bunda akan serasa memiliki asisten untuk merawat buah hati";

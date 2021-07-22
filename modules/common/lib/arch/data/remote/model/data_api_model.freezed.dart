@@ -1334,17 +1334,17 @@ class _$BioChildResponseTearOff {
   _BioChildResponse call(
       {required int id,
       required String nama,
-      required int anak_ke,
-      required String no_akte_kelahiran,
-      required String nik,
+      required int? anak_ke,
+      required String? no_akte_kelahiran,
+      required String? nik,
       required String? jenis_kelamin,
-      required String gol_darah,
-      required int tempat_lahir,
-      required String tanggal_lahir,
-      required String no_jkn,
-      required String tanggal_berlaku_jkn,
-      required String no_kohort,
-      required String no_catatan_medik,
+      required String? gol_darah,
+      required int? tempat_lahir,
+      required String? tanggal_lahir,
+      required String? no_jkn,
+      required String? tanggal_berlaku_jkn,
+      required String? no_kohort,
+      required String? no_catatan_medik,
       required String? hpl,
       required String? hpht,
       required bool is_janin}) {
@@ -1380,17 +1380,18 @@ const $BioChildResponse = _$BioChildResponseTearOff();
 mixin _$BioChildResponse {
   int get id => throw _privateConstructorUsedError;
   String get nama => throw _privateConstructorUsedError;
-  int get anak_ke => throw _privateConstructorUsedError;
-  String get no_akte_kelahiran => throw _privateConstructorUsedError;
-  String get nik => throw _privateConstructorUsedError;
+  int? get anak_ke =>
+      throw _privateConstructorUsedError; // null if this is unborn child (fetus).
+  String? get no_akte_kelahiran => throw _privateConstructorUsedError;
+  String? get nik => throw _privateConstructorUsedError;
   String? get jenis_kelamin => throw _privateConstructorUsedError;
-  String get gol_darah => throw _privateConstructorUsedError;
-  int get tempat_lahir => throw _privateConstructorUsedError;
-  String get tanggal_lahir => throw _privateConstructorUsedError;
-  String get no_jkn => throw _privateConstructorUsedError;
-  String get tanggal_berlaku_jkn => throw _privateConstructorUsedError;
-  String get no_kohort => throw _privateConstructorUsedError;
-  String get no_catatan_medik => throw _privateConstructorUsedError;
+  String? get gol_darah => throw _privateConstructorUsedError;
+  int? get tempat_lahir => throw _privateConstructorUsedError;
+  String? get tanggal_lahir => throw _privateConstructorUsedError;
+  String? get no_jkn => throw _privateConstructorUsedError;
+  String? get tanggal_berlaku_jkn => throw _privateConstructorUsedError;
+  String? get no_kohort => throw _privateConstructorUsedError;
+  String? get no_catatan_medik => throw _privateConstructorUsedError;
   String? get hpl => throw _privateConstructorUsedError;
   String? get hpht => throw _privateConstructorUsedError;
   bool get is_janin => throw _privateConstructorUsedError;
@@ -1409,17 +1410,17 @@ abstract class $BioChildResponseCopyWith<$Res> {
   $Res call(
       {int id,
       String nama,
-      int anak_ke,
-      String no_akte_kelahiran,
-      String nik,
+      int? anak_ke,
+      String? no_akte_kelahiran,
+      String? nik,
       String? jenis_kelamin,
-      String gol_darah,
-      int tempat_lahir,
-      String tanggal_lahir,
-      String no_jkn,
-      String tanggal_berlaku_jkn,
-      String no_kohort,
-      String no_catatan_medik,
+      String? gol_darah,
+      int? tempat_lahir,
+      String? tanggal_lahir,
+      String? no_jkn,
+      String? tanggal_berlaku_jkn,
+      String? no_kohort,
+      String? no_catatan_medik,
       String? hpl,
       String? hpht,
       bool is_janin});
@@ -1465,15 +1466,15 @@ class _$BioChildResponseCopyWithImpl<$Res>
       anak_ke: anak_ke == freezed
           ? _value.anak_ke
           : anak_ke // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       no_akte_kelahiran: no_akte_kelahiran == freezed
           ? _value.no_akte_kelahiran
           : no_akte_kelahiran // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       nik: nik == freezed
           ? _value.nik
           : nik // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       jenis_kelamin: jenis_kelamin == freezed
           ? _value.jenis_kelamin
           : jenis_kelamin // ignore: cast_nullable_to_non_nullable
@@ -1481,31 +1482,31 @@ class _$BioChildResponseCopyWithImpl<$Res>
       gol_darah: gol_darah == freezed
           ? _value.gol_darah
           : gol_darah // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       tempat_lahir: tempat_lahir == freezed
           ? _value.tempat_lahir
           : tempat_lahir // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       tanggal_lahir: tanggal_lahir == freezed
           ? _value.tanggal_lahir
           : tanggal_lahir // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       no_jkn: no_jkn == freezed
           ? _value.no_jkn
           : no_jkn // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       tanggal_berlaku_jkn: tanggal_berlaku_jkn == freezed
           ? _value.tanggal_berlaku_jkn
           : tanggal_berlaku_jkn // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       no_kohort: no_kohort == freezed
           ? _value.no_kohort
           : no_kohort // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       no_catatan_medik: no_catatan_medik == freezed
           ? _value.no_catatan_medik
           : no_catatan_medik // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       hpl: hpl == freezed
           ? _value.hpl
           : hpl // ignore: cast_nullable_to_non_nullable
@@ -1532,17 +1533,17 @@ abstract class _$BioChildResponseCopyWith<$Res>
   $Res call(
       {int id,
       String nama,
-      int anak_ke,
-      String no_akte_kelahiran,
-      String nik,
+      int? anak_ke,
+      String? no_akte_kelahiran,
+      String? nik,
       String? jenis_kelamin,
-      String gol_darah,
-      int tempat_lahir,
-      String tanggal_lahir,
-      String no_jkn,
-      String tanggal_berlaku_jkn,
-      String no_kohort,
-      String no_catatan_medik,
+      String? gol_darah,
+      int? tempat_lahir,
+      String? tanggal_lahir,
+      String? no_jkn,
+      String? tanggal_berlaku_jkn,
+      String? no_kohort,
+      String? no_catatan_medik,
       String? hpl,
       String? hpht,
       bool is_janin});
@@ -1590,15 +1591,15 @@ class __$BioChildResponseCopyWithImpl<$Res>
       anak_ke: anak_ke == freezed
           ? _value.anak_ke
           : anak_ke // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       no_akte_kelahiran: no_akte_kelahiran == freezed
           ? _value.no_akte_kelahiran
           : no_akte_kelahiran // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       nik: nik == freezed
           ? _value.nik
           : nik // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       jenis_kelamin: jenis_kelamin == freezed
           ? _value.jenis_kelamin
           : jenis_kelamin // ignore: cast_nullable_to_non_nullable
@@ -1606,31 +1607,31 @@ class __$BioChildResponseCopyWithImpl<$Res>
       gol_darah: gol_darah == freezed
           ? _value.gol_darah
           : gol_darah // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       tempat_lahir: tempat_lahir == freezed
           ? _value.tempat_lahir
           : tempat_lahir // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       tanggal_lahir: tanggal_lahir == freezed
           ? _value.tanggal_lahir
           : tanggal_lahir // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       no_jkn: no_jkn == freezed
           ? _value.no_jkn
           : no_jkn // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       tanggal_berlaku_jkn: tanggal_berlaku_jkn == freezed
           ? _value.tanggal_berlaku_jkn
           : tanggal_berlaku_jkn // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       no_kohort: no_kohort == freezed
           ? _value.no_kohort
           : no_kohort // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       no_catatan_medik: no_catatan_medik == freezed
           ? _value.no_catatan_medik
           : no_catatan_medik // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       hpl: hpl == freezed
           ? _value.hpl
           : hpl // ignore: cast_nullable_to_non_nullable
@@ -1676,27 +1677,27 @@ class _$_BioChildResponse implements _BioChildResponse {
   @override
   final String nama;
   @override
-  final int anak_ke;
+  final int? anak_ke;
+  @override // null if this is unborn child (fetus).
+  final String? no_akte_kelahiran;
   @override
-  final String no_akte_kelahiran;
-  @override
-  final String nik;
+  final String? nik;
   @override
   final String? jenis_kelamin;
   @override
-  final String gol_darah;
+  final String? gol_darah;
   @override
-  final int tempat_lahir;
+  final int? tempat_lahir;
   @override
-  final String tanggal_lahir;
+  final String? tanggal_lahir;
   @override
-  final String no_jkn;
+  final String? no_jkn;
   @override
-  final String tanggal_berlaku_jkn;
+  final String? tanggal_berlaku_jkn;
   @override
-  final String no_kohort;
+  final String? no_kohort;
   @override
-  final String no_catatan_medik;
+  final String? no_catatan_medik;
   @override
   final String? hpl;
   @override
@@ -1792,17 +1793,17 @@ abstract class _BioChildResponse implements BioChildResponse {
   const factory _BioChildResponse(
       {required int id,
       required String nama,
-      required int anak_ke,
-      required String no_akte_kelahiran,
-      required String nik,
+      required int? anak_ke,
+      required String? no_akte_kelahiran,
+      required String? nik,
       required String? jenis_kelamin,
-      required String gol_darah,
-      required int tempat_lahir,
-      required String tanggal_lahir,
-      required String no_jkn,
-      required String tanggal_berlaku_jkn,
-      required String no_kohort,
-      required String no_catatan_medik,
+      required String? gol_darah,
+      required int? tempat_lahir,
+      required String? tanggal_lahir,
+      required String? no_jkn,
+      required String? tanggal_berlaku_jkn,
+      required String? no_kohort,
+      required String? no_catatan_medik,
       required String? hpl,
       required String? hpht,
       required bool is_janin}) = _$_BioChildResponse;
@@ -1815,27 +1816,27 @@ abstract class _BioChildResponse implements BioChildResponse {
   @override
   String get nama => throw _privateConstructorUsedError;
   @override
-  int get anak_ke => throw _privateConstructorUsedError;
+  int? get anak_ke => throw _privateConstructorUsedError;
+  @override // null if this is unborn child (fetus).
+  String? get no_akte_kelahiran => throw _privateConstructorUsedError;
   @override
-  String get no_akte_kelahiran => throw _privateConstructorUsedError;
-  @override
-  String get nik => throw _privateConstructorUsedError;
+  String? get nik => throw _privateConstructorUsedError;
   @override
   String? get jenis_kelamin => throw _privateConstructorUsedError;
   @override
-  String get gol_darah => throw _privateConstructorUsedError;
+  String? get gol_darah => throw _privateConstructorUsedError;
   @override
-  int get tempat_lahir => throw _privateConstructorUsedError;
+  int? get tempat_lahir => throw _privateConstructorUsedError;
   @override
-  String get tanggal_lahir => throw _privateConstructorUsedError;
+  String? get tanggal_lahir => throw _privateConstructorUsedError;
   @override
-  String get no_jkn => throw _privateConstructorUsedError;
+  String? get no_jkn => throw _privateConstructorUsedError;
   @override
-  String get tanggal_berlaku_jkn => throw _privateConstructorUsedError;
+  String? get tanggal_berlaku_jkn => throw _privateConstructorUsedError;
   @override
-  String get no_kohort => throw _privateConstructorUsedError;
+  String? get no_kohort => throw _privateConstructorUsedError;
   @override
-  String get no_catatan_medik => throw _privateConstructorUsedError;
+  String? get no_catatan_medik => throw _privateConstructorUsedError;
   @override
   String? get hpl => throw _privateConstructorUsedError;
   @override

@@ -124,6 +124,7 @@ class AccountLocalSrcImpl with AccountLocalSrc {
         mother: motherProf,
         father: fatherProf,
         children: childProfs,
+        motherHpl: null, //TODO: Consider to save hpl via this local src.
       ),
     );
   }
@@ -348,7 +349,8 @@ class AccountLocalSrcImpl with AccountLocalSrc {
   Future<Result<bool>> clear() async {
     try {
       final res = await _profileDao.deleteAll();
-      return Success(res > 0);
+      final res2 = await _credentialDao.deleteAll();
+      return Success(res > 0 && res2 > 0);
     } catch(e, stack) {
       prine(e);
       prine(stack);

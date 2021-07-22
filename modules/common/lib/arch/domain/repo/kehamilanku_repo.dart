@@ -1,5 +1,6 @@
 
 
+import 'package:common/arch/data/local/source/account_local_source.dart';
 import 'package:common/arch/data/local/source/check_up_local_source.dart';
 import 'package:common/arch/data/remote/api/kehamilanku_api.dart';
 import 'package:common/arch/data/remote/model/kehamilanku_form_api_model.dart';
@@ -39,13 +40,16 @@ mixin PregnancyRepo {
 
 class PregnancyRepoImpl with PregnancyRepo {
   final KehamilankuApi _api;
+  //final AccountLocalSrc _accountLocalSrc;
   final CheckUpLocalSrc _checkUpLocalSrc;
 
   PregnancyRepoImpl({
     required KehamilankuApi api,
+    //required AccountLocalSrc accountLocalSrc,
     required CheckUpLocalSrc checkUpLocalSrc,
   }):
     _api = api,
+    //_accountLocalSrc = accountLocalSrc,
     _checkUpLocalSrc = checkUpLocalSrc
   ;
 
@@ -60,18 +64,21 @@ class PregnancyRepoImpl with PregnancyRepo {
       final rawHomeData = res.data;
       _homeDataList = rawHomeData.map((e) => MotherHomeBabyData.fromResponse(e)).toList(growable: false);
       return Success(_homeDataList!);
-    } catch(e) {
-      return Fail();
+    } catch(e, stack) {
+      final msg = "Error calling `getMotherHomeData()`";
+      prine("$msg; e= $e");
+      prine(stack);
+      return Fail(msg: msg, error: e);
     }
   }
   @override
   Future<Result<List<MotherTrimester>>> getMotherTrimester() async {
     if(_homeDataList == null) {
       @mayChangeInFuture
-      final motherNik = "";
+      final motherNik = VarDi.motherNik.getOrElse();
       final res = await getMotherHomeData(motherNik);
       if(res is Fail<List<MotherHomeBabyData>>) {
-        return Fail();
+        return res.copy();
       }
     }
     return Success(_homeDataList!.first.trimesterList); //For now, we only use the first one.
@@ -115,8 +122,10 @@ class PregnancyRepoImpl with PregnancyRepo {
       _checkBody = await _api.getPregnancyCheckForm(body);
       return Success(PregnancyCheck.fromResponse(_checkBody!));
     } catch(e, stack) {
+      final msg = "`getPregnancyCheck()` error";
+      prine("$msg; e= $e");
       prine(stack);
-      return Fail(msg: "`getPregnancyCheck()` error", error: e);
+      return Fail(msg: msg, error: e);
     }
   }
   @override
@@ -133,11 +142,14 @@ class PregnancyRepoImpl with PregnancyRepo {
       ));
       prind("savePregnancyCheck() motherNik= $motherNik res2 = $res2 data.pregnancyAge = ${data.pregnancyAge} res.checkupId = ${res.checkupId}");
       if(res2 is! Success<bool>) {
-        return Fail();
+        return res2 as Fail<bool>;
       }
       return res2;
-    } catch(e) {
-      return Fail();
+    } catch(e, stack) {
+      final msg = "`savePregnancyCheck()` error";
+      prine("$msg; e= $e");
+      prine(stack);
+      return Fail(msg: msg, error: e);
     }
   }
   /// Returns null if there's no available [PregnancyBabySize] for [pregnancyWeekAge].
@@ -169,8 +181,11 @@ class PregnancyRepoImpl with PregnancyRepo {
         final body = PregnancyShowCheckBody(checkId: checkId);
         _checkUpAnalysis = (await _api.getPregnancyCheckWarning(body)).data;
         //_checkBody = await _api.getPregnancyCheckWarning(body);
-      } catch(e) {
-        return Fail();
+      } catch(e, stack) {
+        final msg = "`getMotherWarningStatus()` error";
+        prine("$msg; e= $e");
+        prine(stack);
+        return Fail(msg: msg, error: e);
       }
       _currentCheckUpId = checkUpId;
     }

@@ -12,12 +12,15 @@ class SplashVm extends AsyncVm {
   SplashVm({
     required GetCityList getCityList,
     required IsLoggedIn isLoggedInUseCase,
+    required InitConfig initConfig,
   }):
     _getCityList = getCityList,
-    _isLoggedInUseCase = isLoggedInUseCase
+    _isLoggedInUseCase = isLoggedInUseCase,
+    _initConfig = initConfig
   ;
   final GetCityList _getCityList;
   final IsLoggedIn _isLoggedInUseCase;
+  final InitConfig _initConfig;
 
   final MutableLiveData<List<IdStringModel>> _cityList = MutableLiveData();
   LiveData<List<IdStringModel>> get cityList => _cityList;
@@ -25,8 +28,11 @@ class SplashVm extends AsyncVm {
   final MutableLiveData<bool> _isLoggedIn = MutableLiveData();
   LiveData<bool> get isLoggedIn => _isLoggedIn;
 
+  final MutableLiveData<bool> _onInitConfig = MutableLiveData();
+  LiveData<bool> get onInitConfig => _onInitConfig;
+
   @override
-  List<LiveData> get liveDatas => [_cityList, _isLoggedIn];
+  List<LiveData> get liveDatas => [_cityList, _isLoggedIn, _onInitConfig,];
 
   Future<void> downloadCityList() {
     return startJob(downloadCityListKey, (isActive) async {
@@ -45,6 +51,13 @@ class SplashVm extends AsyncVm {
       if(res is Success<bool>) {
         final data = res.data;
         _isLoggedIn.value = data;
+
+        final res2 = await _initConfig();
+        if(res2 is Success<bool>) {
+          _onInitConfig.value = res2.data;
+        } else {
+          _onInitConfig.value = false;
+        }
         return null;
       }
       return res as Fail;

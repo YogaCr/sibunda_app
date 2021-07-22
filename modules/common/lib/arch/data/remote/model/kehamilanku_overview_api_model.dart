@@ -27,7 +27,7 @@ class PregnancyHomeBabyResponse {
   @JsonKey(name: Const.KEY_NAME_INDO)
   final String name;
   @JsonKey(name: Const.KEY_CHILD_ORDER)
-  final int childOrder;
+  final int? childOrder;
   final int week;
   @JsonKey(name: Const.KEY_REM_DAYS)
   final int remainingDays;

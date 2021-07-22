@@ -2,6 +2,7 @@ import 'package:common/arch/data/local/db/app_db.dart';
 import 'package:common/arch/data/remote/model/baby_overview_api_model.dart';
 import 'package:common/arch/domain/model/img_data.dart';
 import 'package:common/arch/domain/model/profile_data.dart';
+import 'package:common/res/string/_string.dart';
 import 'package:common/value/const_values.dart';
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -86,6 +87,16 @@ class BabyOverlayData extends Equatable {
     nik: profile.nik,
     name: profile.name,
     date: profile.birthDate,
+    img: dummyImg_profile,
+  );
+  factory BabyOverlayData.fromProfileEntityAsUnborn({
+    required ProfileEntity profile,
+    required DateTime hpl,
+  }) => BabyOverlayData(
+    id: profile.serverId,
+    nik: profile.nik,
+    name: Strings.baby_candidate,
+    date: hpl,
     img: dummyImg_profile,
   );
 

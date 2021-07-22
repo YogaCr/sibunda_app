@@ -12,15 +12,18 @@ import 'package:flutter/material.dart';
 class ItemBabyOverview extends StatelessWidget {
   final ImgData img;
   final String ageString;
+  final String name;
 
   ItemBabyOverview({
     required this.img,
     required this.ageString,
+    required this.name,
   });
 
   factory ItemBabyOverview.fromData(
-    BabyAgeOverview? data,
-  ) {
+    BabyAgeOverview? data, {
+    String? babyName,
+  }) {
     final ageString = data?.desc ?? "<null>";
 /*
     formatAgeString(
@@ -32,6 +35,7 @@ class ItemBabyOverview extends StatelessWidget {
     return ItemBabyOverview(
       img: data?.img ?? dummyImg,
       ageString: ageString,
+      name: babyName ?? "Bayi Bunda",
     );
   }
 
@@ -43,7 +47,7 @@ class ItemBabyOverview extends StatelessWidget {
         text: TextSpan(
           style: SibTextStyles.size_0_bold_black,
           children: [
-            TextSpan(text: "Bayi Bunda sekarang sudah berusia "),
+            TextSpan(text: "$name sekarang sudah berusia "),
             TextSpan(text: ageString, style: SibTextStyles.size_0_bold_colorPrimary),
             TextSpan(text: " ya Bun"),
           ],

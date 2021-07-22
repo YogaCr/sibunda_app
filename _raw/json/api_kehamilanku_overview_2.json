@@ -1,0 +1,32 @@
+{
+  "message": "response success",
+  "status": "success",
+  "code": 200,
+  "data": [
+    {
+      "id": 9,
+      "nama": "Janin 1",
+      "anak_ke": null,
+      "week": 40,
+      "remaining_days": 0,
+      "food_recommendations": [
+        {
+          "img_url": "https://sibunda.amirmb.com/res/img/kehamilanku/rekomendasi_1.png",
+          "food_category": "Nasi atau Makanan Pokok",
+          "food_dose": "Bunda, 1 hari minimal harus makan 5 porsi nasi ya, dengan 1 porsi = 100 gr atau 3/4 gelas nasi"
+        },
+        {
+          "img_url": "https://sibunda.amirmb.com/res/img/kehamilanku/rekomendasi_2.png",
+          "food_category": "Nasi atau Makanan Pokok",
+          "food_dose": "Bunda, 1 hari minimal harus makan 5 porsi nasi ya, dengan 1 porsi = 100 gr atau 3/4 gelas nasi"
+        },
+        {
+          "img_url": "https://sibunda.amirmb.com/res/img/kehamilanku/rekomendasi_3.png",
+          "food_category": "Nasi atau Makanan Pokok",
+          "food_dose": "Bunda, 1 hari minimal harus makan 5 porsi nasi ya, dengan 1 porsi = 100 gr atau 3/4 gelas nasi"
+        }
+      ],
+      "trisemesters": []
+    }
+  ]
+}

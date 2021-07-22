@@ -28,6 +28,9 @@ _$_BatchProfileServer _$_$_BatchProfileServerFromJson(
     mother: json['mother'],
     father: json['father'],
     children: json['children'] as List<ProfileEntity>,
+    motherHpl: json['motherHpl'] == null
+        ? null
+        : DateTime.parse(json['motherHpl'] as String),
   );
 }
 
@@ -37,4 +40,5 @@ Map<String, dynamic> _$_$_BatchProfileServerToJson(
       'mother': instance.mother,
       'father': instance.father,
       'children': instance.children,
+      'motherHpl': instance.motherHpl?.toIso8601String(),
     };

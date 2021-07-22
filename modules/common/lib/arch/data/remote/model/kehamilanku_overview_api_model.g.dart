@@ -33,7 +33,7 @@ PregnancyHomeBabyResponse _$PregnancyHomeBabyResponseFromJson(
   return PregnancyHomeBabyResponse(
     babyId: json['id'] as int,
     name: json['nama'] as String,
-    childOrder: json['anak_ke'] as int,
+    childOrder: json['anak_ke'] as int?,
     week: json['week'] as int,
     remainingDays: json['remaining_days'] as int,
     foodRecomList: (json['food_recommendations'] as List<dynamic>)

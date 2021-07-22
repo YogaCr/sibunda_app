@@ -80,11 +80,16 @@ class BatchProfileIds with _$BatchProfileIds {
     required List<int> childrenId,
   }) = _BatchProfileIds;
   factory BatchProfileIds.fromJson(Map<String, dynamic> map) = _BatchProfileIds.fromJson;
-  factory BatchProfileIds.fromResponse(BioMotherResponse response) => BatchProfileIds(
-    motherId: response.id,
-    fatherId: response.kia_ayah.id,
-    childrenId: response.kia_anak.map<int>((e) => e.id).toList(growable: false),
-  );
+  factory BatchProfileIds.fromResponse(BioMotherResponse response) {
+    Iterable<BioChildResponse> childrenItr = response.kia_anak;
+    //if(filterUnbornChild) { childrenItr = childrenItr.where((e) => e.anak_ke != null); }
+    return BatchProfileIds(
+      motherId: response.id,
+      fatherId: response.kia_ayah.id,
+      childrenId: childrenItr.where((e) => !e.is_janin)
+          .map<int>((e) => e.id).toList(growable: false),
+    );
+  }
 }
 
 @freezed
@@ -93,7 +98,7 @@ class BatchProfileServer with _$BatchProfileServer {
     required ProfileEntity mother,
     required ProfileEntity father,
     required List<ProfileEntity> children,
-    //required DateTime? motherHpht,
+    required DateTime? motherHpl,
   }) = _BatchProfileServer;
   factory BatchProfileServer.fromJson(Map<String, dynamic> map) = _BatchProfileServer.fromJson;
   factory BatchProfileServer.fromBioResponse(BioMotherResponse response) {
@@ -117,20 +122,27 @@ class BatchProfileServer with _$BatchProfileServer {
       birthDate: parseDate(rawFather.tanggal_lahir),
       birthPlace: rawFather.tempat_lahir,
     );
-    final children = response.kia_anak.map<ProfileEntity>((e) => ProfileEntity(
+    Iterable<BioChildResponse> childrenItr = response.kia_anak;
+    //if(filterUnbornChild) { childrenItr = childrenItr.where((e) => e.anak_ke != null); }
+    final children = childrenItr.where((e) => !e.is_janin)
+        .map<ProfileEntity>((e) => ProfileEntity(
       userId: userId,
       type: DbConst.TYPE_CHILD,
       serverId: e.id,
       name: e.nama,
-      nik: e.nik,
+      nik: e.nik!,
       birthDate: parseDate(e.tanggal_lahir),
-      birthPlace: e.tempat_lahir,
+      birthPlace: e.tempat_lahir!,
     )).toList(growable: false);
+
+    final unbornChild = childrenItr.firstWhereOrNull((e) => e.is_janin);
+    final hpl = tryParseDate(unbornChild?.hpl);
 
     return BatchProfileServer(
       mother: mother,
       father: father,
       children: children,
+      motherHpl: hpl,
     );
   }
 }

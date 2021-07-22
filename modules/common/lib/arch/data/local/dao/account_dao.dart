@@ -23,6 +23,7 @@ class CredentialDao extends DatabaseAccessor<AppDatabase> with _$CredentialDaoMi
   Future<int> insert(Insertable<CredentialEntity> e) => into(credentialEntities).insert(e);
   Future<void> insertAll(List<Insertable<CredentialEntity>> e) => batch((batch) => batch.insertAll(credentialEntities, e));
   Future<int> deleteData(Insertable<CredentialEntity> e) => delete(credentialEntities).delete(e);
+  Future<int> deleteAll() => delete(credentialEntities).go();
   Future<CredentialEntity?> getByEmail(String email) => (select(credentialEntities)..where((it) => it.email.equals(email))).getSingleOrNull();
   Future<CredentialEntity?> getById(int id) => (select(credentialEntities)..where((it) => it.id.equals(id))).getSingleOrNull();
 }

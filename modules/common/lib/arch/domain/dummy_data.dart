@@ -8,6 +8,7 @@ import 'package:common/arch/domain/model/img_data.dart';
 import 'package:common/arch/ui/model/home_graph_menu.dart';
 import 'package:common/config/routes.dart';
 import 'package:common/res/string/_string.dart';
+import 'package:common/util/times.dart';
 import 'package:common/util/type_util.dart';
 import 'package:common/value/const_values.dart';
 import 'package:common/value/db_const.dart';
@@ -868,6 +869,7 @@ final dummyBatchProfile = BatchProfileServer(
     dummyProfileChild3,
     dummyProfileChild4,
   ],
+  motherHpl: getHpl(),
 );
 
 //============== For UI =============

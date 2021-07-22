@@ -15,6 +15,7 @@ import 'package:common/arch/domain/model/form_warning_status.dart';
 import 'package:common/arch/domain/model/profile_data.dart';
 import 'package:common/arch/ui/model/dummy_ui_data.dart';
 import 'package:common/arch/ui/model/home_graph_menu.dart';
+import 'package:common/res/string/_string.dart';
 import 'package:common/value/db_const.dart';
 import 'package:core/domain/model/result.dart';
 import 'package:core/util/_consoles.dart';
@@ -111,7 +112,10 @@ class MyBabyRepoImpl with MyBabyRepo {
       final motherRes = await _accountLocalSrc.getProfileByNik(motherNik, type: DbConst.TYPE_MOTHER);
       if(motherRes is Success<ProfileEntity>) {
         final mother = motherRes.data;
-        final data = BabyOverlayData.fromProfileEntity(mother.copyWith(birthDate: hpl));
+        final data = BabyOverlayData.fromProfileEntityAsUnborn(
+          profile: mother,
+          hpl: hpl,
+        );
         return Success([data]);
       } else {
         return Fail(msg: "Can't get mother profile with `motherNik` of '$motherNik' in `getUnbornBabyOverlayData()`");

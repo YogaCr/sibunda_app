@@ -33,6 +33,12 @@ class BabyHomePage extends StatelessWidget {
     final vm = ViewModelProvider.of<BabyHomeVm>(context)
       ..getBabyOverlay();
 
+    vm.ageOverview.observe(vm, (data) {
+      if(data != null) {
+        overlayVisibility.value = false;
+      }
+    }, tag: toString());
+
     if(selectedBaby != null) {
       vm.initHome(babyCredential: selectedBaby);
     }
@@ -46,6 +52,7 @@ class BabyHomePage extends StatelessWidget {
       ),
       contentOverlay: BabySelectionOverlay(
         visibilityController: overlayVisibility,
+        selectedIndex: vm.selectedIndex,
         bornBabyList: vm.bornBabyList,
         unbornBabyList: vm.unbornBabyList,
         onItemClick: (baby, isBorn) {
@@ -58,7 +65,12 @@ class BabyHomePage extends StatelessWidget {
             });
              */
           } else {
-            vm.initHome(babyCredential: ProfileCredential.fromBabyOverlay(baby));
+            final cred = ProfileCredential.fromBabyOverlay(baby);
+            if(cred != vm.babyCredential.value) {
+              vm.initHome(babyCredential: cred);
+            } else {
+              overlayVisibility.value = false;
+            }
           }
           showSnackBar(context, "Nama= ${baby.name} isBorn= $isBorn");
         },
@@ -73,7 +85,7 @@ class BabyHomePage extends StatelessWidget {
                 child: AsyncVmObserver<BabyHomeVm, BabyAgeOverview>(
                   vm: vm,
                   liveDataGetter: (vm2) => vm2.ageOverview,
-                  builder: (ctx, data) => ItemBabyOverview.fromData(data),
+                  builder: (ctx, data) => ItemBabyOverview.fromData(data, babyName: vm.selectedBabyData?.name,),
                 ),
               ),
               Container(

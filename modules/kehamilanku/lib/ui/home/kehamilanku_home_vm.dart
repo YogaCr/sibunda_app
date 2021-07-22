@@ -97,14 +97,19 @@ class KehamilankuHomeVm extends AsyncVm {
       });
     });
   }
-  void getBabyOverlay([bool forceLoad = false]) {
+  void getBabyOverlay({ bool forceLoad = false }) {
+    prind("`getBabyOverlay` MULAI forceLoad= $forceLoad");
     if(!forceLoad
         && _bornBabyList.value != null
         && _unbornBabyList.value != null) return;
+    prind("`getBabyOverlay` LANJUT forceLoad= $forceLoad");
     startJob(getBabyOverlayKey, (isActive) async {
       final motherNik = VarDi.motherNik.getOrElse();
+      prind("`getBabyOverlay` startJob motherNik= $motherNik");
       final res1 = await _getBornBabyList(motherNik);
+      prind("`getBabyOverlay` startJob res1= $res1");
       final res2 = await _getUnbornBabyList(motherNik);
+      prind("`getBabyOverlay` startJob res2= $res2");
 
       if(res1 is Success<List<BabyOverlayData>>
         && res2 is Success<List<BabyOverlayData>>) {

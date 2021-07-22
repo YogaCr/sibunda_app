@@ -18,7 +18,7 @@ class SplashPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final vm = ViewModelProvider.of<SplashVm>(context)
-      ..isLoggedIn.observeOnce((isLoggedIn) {
+      ..onInitConfig.observeOnce((isLoggedIn) {
         if(isLoggedIn == true) {
           HomeRoutes.homePage.goToPage(context, replaceCurrent: true);
         }

@@ -248,7 +248,7 @@ class PregnancyBabySize {
 class MotherHomeBabyData {
   final int babyId;
   final String babyName;
-  final int childOrder;
+  final int? childOrder;
   //final int week;
   //final int remainingDays;
   final MotherPregnancyAgeOverview pregnancyAge;
