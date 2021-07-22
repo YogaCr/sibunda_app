@@ -26,6 +26,7 @@ class BabyHomeResponse {
 @JsonSerializable()
 class BabyHomeChildResponse {
   final int id; // child id
+  final String nik; // child id
   @JsonKey(name: Const.KEY_NAME_INDO)
   final String name;
   final int anak_ke;
@@ -34,6 +35,7 @@ class BabyHomeChildResponse {
 
   BabyHomeChildResponse({
     required this.id,
+    required this.nik,
     required this.name,
     required this.anak_ke,
     required this.age,

@@ -66,6 +66,7 @@ class RepoDi {
     api: ApiDi.babyApi,
     accountLocalSrc: LocalSrcDi.accountSrc,
     checkUpLocalSrc: LocalSrcDi.checkUpSrc,
+    pregnancyLocalSrc: LocalSrcDi.pregnancySrc,
   ); //MyBabyRepoDummy.obj;
 
   static CovidRepo get covidRepo => CovidRepoImpl(

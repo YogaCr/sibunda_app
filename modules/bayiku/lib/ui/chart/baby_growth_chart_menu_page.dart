@@ -34,7 +34,11 @@ class BabyGrowthChartMenuPage extends StatelessWidget {
                 builder: (ctx, data) => data != null
                     ? ChartMenuList<BabyChartMenuData>(
                       data,
-                      onItemClick: (it) => BabyRoutes.chartPageRoute.go(context, it.type),
+                      onItemClick: (it) => BabyRoutes.chartPageRoute.go(
+                        context: context,
+                        type: it.type,
+                        babyCredential: vm.credential,
+                      ),
                     ): defaultLoading(),
               ),
             ]),

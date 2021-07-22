@@ -29,6 +29,7 @@ mixin AuthRepo {
     required Mother mother,
     required Father father,
     required List<Child> children,
+    required DateTime? motherHpl,
   });
   Future<Result<SessionData>> login(LoginData data);
   Future<Result<bool>> logout(SessionData data);
@@ -74,12 +75,14 @@ class AuthRepoImpl with AuthRepo {
     required Mother mother,
     required Father father,
     required List<Child> children,
+    required DateTime? motherHpl,
   }) async {
     final body = RegisterBody(
       signup: signup,
       mother: mother,
       father: father,
       children: children,
+      motherHpl: motherHpl,
     );
     try {
       final res = await _api.register(body);
@@ -309,6 +312,7 @@ class AuthDummyRepo with AuthRepo {
     required Mother mother,
     required Father father,
     required List<Child> children,
+    required DateTime? motherHpl,
   }) async => Success(true, 200);
 
   Future<Result<bool>> logout(SessionData data) async => Success(true, 200);

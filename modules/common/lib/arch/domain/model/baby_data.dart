@@ -1,5 +1,7 @@
+import 'package:common/arch/data/local/db/app_db.dart';
 import 'package:common/arch/data/remote/model/baby_overview_api_model.dart';
 import 'package:common/arch/domain/model/img_data.dart';
+import 'package:common/arch/domain/model/profile_data.dart';
 import 'package:common/value/const_values.dart';
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -58,6 +60,7 @@ class BabyFormMenuData {
 class BabyOverlayData extends Equatable {
   final int id;
   final String name;
+  final String nik;
   final DateTime date; //can be either date of birth or HPL.
       // BTW, if `date` is still in future, it means that the `date` is for HPL.
   final ImgData img;
@@ -65,9 +68,26 @@ class BabyOverlayData extends Equatable {
   BabyOverlayData({
     required this.id,
     required this.name,
+    required this.nik,
     required this.date,
     required this.img,
   });
+
+  factory BabyOverlayData.fromProfile(Profile profile) => BabyOverlayData(
+    id: profile.id,
+    nik: profile.nik,
+    name: profile.name,
+    date: profile.birthDate,
+    img: profile.img,
+  );
+
+  factory BabyOverlayData.fromProfileEntity(ProfileEntity profile) => BabyOverlayData(
+    id: profile.serverId,
+    nik: profile.nik,
+    name: profile.name,
+    date: profile.birthDate,
+    img: dummyImg_profile,
+  );
 
   @override
   List<Object?> get props => [id, name, date, img];

@@ -9,6 +9,7 @@ import 'package:bayiku/ui/neonatal_service/neonatal_service_page.dart';
 import 'package:common/arch/domain/model/baby_data.dart';
 import 'package:common/arch/domain/model/chart_data_baby.dart';
 import 'package:common/arch/domain/model/immunization.dart';
+import 'package:common/arch/domain/model/profile_data.dart';
 import 'package:common/arch/ui/model/immunization_data.dart';
 import 'package:common/arch/ui/page/_page.dart';
 import 'package:common/arch/ui/widget/form_controller.dart';
@@ -32,9 +33,6 @@ class BabyRoutes extends ModuleRoute {
   @override
   Set<SibRoute> get routes => {
     babyHomePage,
-    babyCheckPage._route,
-    babyImmunizationPage._route,
-    chartPageRoute._route,
   };
 
   static final babyHomePage = SibRoute("BabyHomePage", BabyHomePage, (ctx) => MainFrame(
@@ -56,11 +54,7 @@ class BabyRoutes extends ModuleRoute {
   });
 
   static final babyImmunizationPage = _BabyImmunizationPageRoute.obj;
-  static final growthChartMenuVm = SibRoute("BabyGrowthChartMenuVm", BabyGrowthChartMenuPage, (ctx) => MainFrame(
-    body: BabyGrowthChartMenuPage().inVmProvider([
-          (ctx) => BabyVmDi.growthChartMenuVm,
-    ]),
-  ));
+  static final growthChartMenuVm = _BabyGrowthChartPageRoute.obj;
   static final chartPageRoute = _BabyChartPageRoute.obj;
 
   // ================= POPUP ================
@@ -72,20 +66,23 @@ class _BabyCheckFormPage {
   _BabyCheckFormPage._();
   static final obj = _BabyCheckFormPage._();
 
-  final SibRoute _route = SibRoute("BabyCheckFormPage", BabyCheckFormPage, (ctx) {
-    final FormGroupInterceptor? interceptor = FormGroupInterceptor();
-    return MainFrame(
-      body: FormFaker(
-        interceptor: interceptor,
-        child: BabyCheckFormPage(interceptor: interceptor,).inVmProvider([
-              (ctx) => BabyVmDi.babyCheckFormVm,
-        ]),
-      )
-    );
-  });
-
-  void go(BuildContext context, BabyFormMenuData formData) {
-    _route.goToPage(context, args: { Const.KEY_DATA: formData });
+  void go({
+    required BuildContext context,
+    required BabyFormMenuData formData,
+    required ProfileCredential babyCredential,
+  }) {
+    final route = SibRoute("BabyCheckFormPage", BabyCheckFormPage, (ctx) {
+      final FormGroupInterceptor? interceptor = FormGroupInterceptor();
+      return MainFrame(
+          body: FormFaker(
+            interceptor: interceptor,
+            child: BabyCheckFormPage(interceptor: interceptor,).inVmProvider([
+                  (ctx) => BabyVmDi.babyCheckFormVm(babyCredential: babyCredential),
+            ]),
+          )
+      );
+    });
+    route.goToPage(context, args: { Const.KEY_DATA: formData });
   }
 }
 
@@ -102,11 +99,18 @@ class _BabyImmunizationPopupRoute {
  */
   /// Returns future String. String is for date confirmation. If null, then
   /// it means the confirmation is not successful.
-  Future<BabyImmunizationPopupResult?> popup(BuildContext context, ImmunizationData immunization) {
+  Future<BabyImmunizationPopupResult?> popup({
+    required BuildContext context,
+    required ImmunizationData immunization,
+    required ProfileCredential babyCredential,
+  }) {
     //_route.goToPage(context, args: {Const.KEY_TRIMESTER : data});
     final _route = SibRoute("BabyImmunizationPopup", BabyImmunizationPopupPage, (ctx) => MainFrame(
       body: BabyImmunizationPopupPage().inVmProvider([
-            (ctx) => BabyVmDi.immunizationPopupVm(immunization),
+            (ctx) => BabyVmDi.immunizationPopupVm(
+              immunization: immunization,
+              babyCredential: babyCredential,
+            ),
       ]),
     ));
     return _route.showAsDialog<BabyImmunizationPopupResult>(context);
@@ -120,14 +124,17 @@ class _BabyChartPageRoute {
   _BabyChartPageRoute._();
   static final obj = _BabyChartPageRoute._();
 
-  final _route = SibRoute("BabyChartPage", BabyChartPage, (ctx) => MainFrame(
-    body: BabyChartPage().inVmProvider([
-      (ctx) => BabyVmDi.chartVm,
-    ]),
-  ));
-
-  void go(BuildContext context, BabyChartType type) {
-    _route.goToPage(context, args: { Const.KEY_DATA: type });
+  void go({
+    required BuildContext context,
+    required BabyChartType type,
+    required ProfileCredential babyCredential,
+  }) {
+    final route = SibRoute("BabyChartPage", BabyChartPage, (ctx) => MainFrame(
+      body: BabyChartPage().inVmProvider([
+            (ctx) => BabyVmDi.chartVm(babyCredential: babyCredential),
+      ]),
+    ));
+    route.goToPage(context, args: { Const.KEY_DATA: type });
   }
 }
 
@@ -135,12 +142,32 @@ class _BabyImmunizationPageRoute {
   _BabyImmunizationPageRoute._();
   static final obj = _BabyImmunizationPageRoute._();
 
-  final _route = SibRoute("BabyImmunizationPage", BabyImmunizationPage, (ctx) => MainFrame(
-    body: BabyImmunizationPage().inVmProvider([
-          (ctx) => BabyVmDi.babyImmunizationVm,
-    ]),
-  ));
-  void go(BuildContext context, String babyNik) {
-    _route.goToPage(context, args: { Const.KEY_DATA: babyNik });
+  void go({
+    required BuildContext context,
+    required ProfileCredential babyCredential,
+  }) {
+    final route = SibRoute("BabyImmunizationPage", BabyImmunizationPage, (ctx) => MainFrame(
+      body: BabyImmunizationPage().inVmProvider([
+            (ctx) => BabyVmDi.babyImmunizationVm(babyCredential: babyCredential),
+      ]),
+    ));
+    route.goToPage(context);
+  }
+}
+
+class _BabyGrowthChartPageRoute {
+  _BabyGrowthChartPageRoute._();
+  static final obj = _BabyGrowthChartPageRoute._();
+
+  void go({
+    required BuildContext context,
+    required ProfileCredential babyCredential,
+  }) {
+    final route = SibRoute("BabyGrowthChartMenuVm", BabyGrowthChartMenuPage, (ctx) => MainFrame(
+      body: BabyGrowthChartMenuPage().inVmProvider([
+            (ctx) => BabyVmDi.growthChartMenuVm(babyCredential),
+      ]),
+    ));
+    route.goToPage(context);
   }
 }

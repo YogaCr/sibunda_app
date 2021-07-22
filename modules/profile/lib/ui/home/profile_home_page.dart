@@ -2,7 +2,11 @@ import 'package:common/arch/domain/model/profile_data.dart';
 import 'package:common/arch/ui/page/secondary_frames.dart';
 import 'package:common/arch/ui/widget/_basic_widget.dart';
 import 'package:common/arch/ui/widget/_items_profile.dart';
+import 'package:common/config/_config.dart';
+import 'package:common/res/string/_string.dart';
 import 'package:common/util/assets.dart';
+import 'package:common/util/ui.dart';
+import 'package:core/ui/base/async_view_model_observer.dart';
 import 'package:core/ui/base/live_data_observer.dart';
 import 'package:core/ui/base/view_model.dart';
 import 'package:flutter/cupertino.dart';
@@ -17,6 +21,14 @@ class ProfileHomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final vm = ViewModelProvider.of<ProfileHomeVm>(context)
         ..getProfile();
+
+    vm.onLogout.observe(vm, (success) {
+      if(success == true) {
+        vm.toLoginPage(context);
+      } else {
+        showSnackBar(context, Strings.error_occurred_when_logout);
+      }
+    });
 
     return TopBarTitleAndBackFrame(
       withTopOffset: true,
@@ -33,7 +45,21 @@ class ProfileHomePage extends StatelessWidget {
                       children: [
                         ItemProfilePic.fromData(data),
                         _MenuList(profile: data),
-                      ],) : defaultLoading(),
+                        AsyncVmObserver<ProfileHomeVm, bool>(
+                          liveDataGetter: (vm) => vm.onLogout,
+                          preAsyncBuilder: (ctx, key) {
+                            if(key == ProfileHomeVm.logoutKey) {
+                              return CircularProgressIndicator();
+                            }
+                          },
+                          builder: (ctx, data) => TxtBtn(
+                            Strings.logout,
+                            isHollow: true,
+                            onTap: () => vm.logout(),
+                          ),
+                        ),
+                      ],
+                    ) : defaultLoading(),
               ),
             ]),
           ),

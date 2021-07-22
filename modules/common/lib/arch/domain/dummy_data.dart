@@ -269,8 +269,11 @@ final dummyPregnancyBabySizes = <PregnancyBabySize>[
 PregnancyBabySize dummyPregnancyBabySize(int week) => dummyPregnancyBabySizes[week % dummyPregnancyBabySizes.length];
 
 final dummyProfile = Profile(
+  id: 1,
+  nik: "",
   name: dummyName,
   email: dummyEmail,
+  birthDate: DateTime.now(),
   img: dummyImg_profile_sm,
 );
 
@@ -870,24 +873,28 @@ final dummyBatchProfile = BatchProfileServer(
 //============== For UI =============
 final dummyChildOverlayData1 = BabyOverlayData(
   id: dummyProfileChild.serverId,
+  nik: dummyProfileChild.nik,
   name: dummyProfileChild.name,
   date: dummyProfileChild.birthDate,
   img: dummyImg,
 );
 final dummyChildOverlayData2 = BabyOverlayData(
   id: dummyProfileChild2.serverId,
+  nik: dummyProfileChild2.nik,
   name: dummyProfileChild2.name,
   date: dummyProfileChild2.birthDate,
   img: dummyImg,
 );
 final dummyChildOverlayData3 = BabyOverlayData(
   id: dummyProfileChild3.serverId,
+  nik: dummyProfileChild3.nik,
   name: dummyProfileChild3.name,
   date: dummyProfileChild3.birthDate,
   img: dummyImg,
 );
 final dummyChildOverlayData4 = BabyOverlayData(
   id: dummyProfileChild4.serverId,
+  nik: dummyProfileChild4.nik,
   name: dummyProfileChild4.name,
   date: dummyProfileChild4.birthDate,
   img: dummyImg,

@@ -1,28 +1,42 @@
+import 'package:common/arch/di/config_di.dart';
 import 'package:common/arch/domain/model/profile_data.dart';
+import 'package:common/arch/domain/usecase/auth_usecase.dart';
 import 'package:common/arch/domain/usecase/profile_usecase.dart';
 import 'package:core/domain/model/result.dart';
 import 'package:core/ui/base/async_vm.dart';
 import 'package:core/ui/base/live_data.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:profile/config/profile_routes.dart';
 
 class ProfileHomeVm extends AsyncVm {
   static const getProfileKey = "getProfile";
+  static const logoutKey = "logout";
 
   ProfileHomeVm({
     required GetProfile getProfile,
     required GetCurrentEmail getCurrentEmail,
+    required Logout logout,
+    required ToLoginPage toLoginPage,
   }):
       _getProfile = getProfile,
-      _getCurrentEmail = getCurrentEmail
+      _getCurrentEmail = getCurrentEmail,
+      _logout = logout,
+      _toLoginPage = toLoginPage
   ;
 
   final GetProfile _getProfile;
   final GetCurrentEmail _getCurrentEmail;
+  final Logout _logout;
+  final ToLoginPage _toLoginPage;
 
   final MutableLiveData<Profile> _profile = MutableLiveData();
   LiveData<Profile> get profile => _profile;
 
+  final MutableLiveData<bool> _onLogout = MutableLiveData();
+  LiveData<bool> get onLogout => _onLogout;
+
   @override
-  List<LiveData> get liveDatas => [_profile];
+  List<LiveData> get liveDatas => [_profile, _onLogout];
 
   void getProfile({ bool forceLoad = false }) {
     if(!forceLoad && _profile.value != null) return;
@@ -40,5 +54,21 @@ class ProfileHomeVm extends AsyncVm {
       }
       return res1 as Fail;
     });
+  }
+
+  void logout() {
+    startJob(logoutKey, (isActive) async {
+      final res = await _logout(VarDi.session);
+      if(res is Success<bool>) {
+        final data = res.data;
+        _onLogout.value = data;
+      } else {
+        _onLogout.value = false;
+      }
+    });
+  }
+
+  void toLoginPage(BuildContext context) {
+    _toLoginPage(context: context, moduleRoute: ProfileRoutes.obj);
   }
 }

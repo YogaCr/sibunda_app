@@ -11,7 +11,7 @@ class HomeUseCaseDi {
   static SignUpAndRegisterOtherData get signUpAndRegister => SignUpAndRegisterOtherDataImpl(RepoDi.authRepo);
   static SaveSignUpData get signUp => SaveSignUpDataImpl(RepoDi.authRepo);
   static Login get login => LoginImpl(RepoDi.authRepo);
-  static Logout get logout => LogoutImpl(RepoDi.authRepo);
+  //static Logout get logout => LogoutImpl(RepoDi.authRepo);
   static SaveMotherData get saveMotherData => SaveMotherDataImpl(RepoDi.motherRepo);
   static SaveFatherData get saveFatherData => SaveFatherDataImpl(RepoDi.fatherRepo);
   static SaveChildData get saveChildData => SaveChildDataImpl(RepoDi.childRepo);

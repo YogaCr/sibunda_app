@@ -3,6 +3,7 @@ import 'package:bayiku/ui/home/baby_home_vm.dart';
 import 'package:common/arch/domain/dummy_data.dart';
 import 'package:common/arch/domain/model/baby_data.dart';
 import 'package:common/arch/domain/model/chart_data_baby.dart';
+import 'package:common/arch/domain/model/profile_data.dart';
 import 'package:common/arch/ui/model/dummy_ui_data.dart';
 import 'package:common/arch/ui/page/secondary_frames.dart';
 import 'package:common/arch/ui/widget/_basic_widget.dart';
@@ -16,6 +17,7 @@ import 'package:common/res/string/_string.dart';
 import 'package:common/res/theme/_theme.dart';
 import 'package:common/util/navigations.dart';
 import 'package:common/util/ui.dart';
+import 'package:common/value/const_values.dart';
 import 'package:core/ui/base/async_view_model_observer.dart';
 import 'package:core/ui/base/live_data.dart';
 import 'package:core/ui/base/view_model.dart';
@@ -26,10 +28,14 @@ class BabyHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final selectedBaby = getArgs<ProfileCredential>(context, Const.KEY_DATA);
+
     final vm = ViewModelProvider.of<BabyHomeVm>(context)
-      ..getBabyAgeOverview()
-      ..getBabyFormMenuList()
       ..getBabyOverlay();
+
+    if(selectedBaby != null) {
+      vm.initHome(babyCredential: selectedBaby);
+    }
 
     return TopBarTitleAndBackFrame(
       withTopOffset: true,
@@ -51,6 +57,8 @@ class BabyHomePage extends StatelessWidget {
               BabyRoutes.obj.goToModule(context, GlobalRoutes.kehamilanku);
             });
              */
+          } else {
+            vm.initHome(babyCredential: ProfileCredential.fromBabyOverlay(baby));
           }
           showSnackBar(context, "Nama= ${baby.name} isBorn= $isBorn");
         },
@@ -81,17 +89,31 @@ class BabyHomePage extends StatelessWidget {
                 children: [
                   Flexible(
                     flex: 10,
-                    child: ItemHomeGraphMenu.fromData(
-                      babyHomeGraphMenu[0],
-                      onClick: () => BabyRoutes.growthChartMenuVm.goToPage(context),
+                    child: AsyncVmObserver<BabyHomeVm, ProfileCredential>(
+                      liveDataGetter: (vm) => vm.babyCredential,
+                      builder: (ctx, data) => ItemHomeGraphMenu.fromData(
+                        babyHomeGraphMenu[0],
+                        onClick: data != null ? () => BabyRoutes.growthChartMenuVm.go(
+                            context: context,
+                            babyCredential: data,
+                        ) : null,
+                      ),
                     ),
                   ),
                   Spacer(flex: 1,),
                   Flexible(
                     flex: 10,
-                    child: ItemHomeGraphMenu.fromData(
-                      babyHomeGraphMenu[1],
-                      onClick: () => BabyRoutes.chartPageRoute.go(context, BabyChartType.dev),
+                    child: AsyncVmObserver<BabyHomeVm, ProfileCredential>(
+                      vm: vm,
+                      liveDataGetter: (vm) => vm.babyCredential,
+                      builder: (ctx, data) => ItemHomeGraphMenu.fromData(
+                        babyHomeGraphMenu[1],
+                        onClick: data != null ? () => BabyRoutes.chartPageRoute.go(
+                            context: context,
+                            type: BabyChartType.dev,
+                            babyCredential: data,
+                        ) : null,
+                      ),
                     ),
                   ),
                 ],
@@ -108,14 +130,23 @@ class BabyHomePage extends StatelessWidget {
                 vm: vm,
                 liveDataGetter: (vm2) => vm2.formMenuList,
                 builder: (ctx, data) => data != null
-                    ? _BabyFormMenuList(data)
-                    : defaultLoading(),
+                    ? _BabyFormMenuList(
+                      vm: vm,
+                      dataList: data,
+                    ) : defaultLoading(),
               ),
               Container(
                 margin: EdgeInsets.only(top: 5),
-                child: ItemHomeImmunization.fromData(
-                  babyHomeImmunization_ui,
-                  onBtnClick: () => BabyRoutes.babyImmunizationPage.go(context, vm.babyNik),
+                child: AsyncVmObserver<BabyHomeVm, ProfileCredential>(
+                  vm: vm,
+                  liveDataGetter: (vm) => vm.babyCredential,
+                  builder: (ctx, data) => ItemHomeImmunization.fromData(
+                    babyHomeImmunization_ui,
+                    onBtnClick: data != null ? () => BabyRoutes.babyImmunizationPage.go(
+                      context: context,
+                      babyCredential: data,
+                    ) : null,
+                  ),
                 ),
               ),
             ]),
@@ -129,16 +160,29 @@ class BabyHomePage extends StatelessWidget {
 
 class _BabyFormMenuList extends StatelessWidget {
   final List<BabyFormMenuData> dataList;
-  _BabyFormMenuList(this.dataList);
+  final BabyHomeVm vm;
+
+  _BabyFormMenuList({
+    required this.dataList,
+    required this.vm,
+  });
 
   @override
   Widget build(BuildContext context) {
     final children = List<Widget>.generate(dataList.length, (i) => Container(
       margin: EdgeInsets.symmetric(vertical: 5),
-      child: ItemBabyFormMenu.fromData(
-        dataList[i],
-        onClick: () => BabyRoutes.babyCheckPage.go(context, dataList[i]),
-      ),
+      child: AsyncVmObserver<BabyHomeVm, ProfileCredential>(
+        vm: vm,
+        liveDataGetter: (vm) => vm.babyCredential,
+        builder: (ctx, data) => ItemBabyFormMenu.fromData(
+          dataList[i],
+          onClick: data != null ? () => BabyRoutes.babyCheckPage.go(
+            context: context,
+            formData: dataList[i],
+            babyCredential: data,
+          ) : null,
+        ),
+      )
     ));
 
     return Column(

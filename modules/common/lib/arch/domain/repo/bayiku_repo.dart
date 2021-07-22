@@ -1,5 +1,7 @@
+import 'package:common/arch/data/local/db/app_db.dart';
 import 'package:common/arch/data/local/source/account_local_source.dart';
 import 'package:common/arch/data/local/source/check_up_local_source.dart';
+import 'package:common/arch/data/local/source/pregnancy_local_source.dart';
 import 'package:common/arch/data/remote/api/baby_api.dart';
 import 'package:common/arch/data/remote/model/baby_check_form_api_model.dart';
 import 'package:common/arch/data/remote/model/baby_form_warning_api_model.dart';
@@ -10,20 +12,23 @@ import 'package:common/arch/domain/model/baby_data.dart';
 import 'package:common/arch/domain/model/chart_data.dart';
 import 'package:common/arch/domain/model/chart_data_baby.dart';
 import 'package:common/arch/domain/model/form_warning_status.dart';
+import 'package:common/arch/domain/model/profile_data.dart';
 import 'package:common/arch/ui/model/dummy_ui_data.dart';
 import 'package:common/arch/ui/model/home_graph_menu.dart';
+import 'package:common/value/db_const.dart';
 import 'package:core/domain/model/result.dart';
 import 'package:core/util/_consoles.dart';
 import 'package:collection/collection.dart';
 
 mixin MyBabyRepo {
-  Future<Result<String>> getBabyNik();
+  Future<Result<Map<int, String>>> getBabyNik();
   Future<Result<List<BabyOverlayData>>> getBornBabyOverlayData(String motherNik);
   Future<Result<List<BabyOverlayData>>> getUnbornBabyOverlayData(String motherNik);
+  //Future<Result<List<Profile>>> getBabyProfiles();
   Future<Result<BabyAgeOverview>> getBabyAgeOverview(String babyNik);
   Future<Result<List<FormWarningStatus>>> getBabyWarningStatus(String babyNik, int monthId);
   Future<Result<List<HomeGraphMenu>>> getBabyGraphMenu();
-  Future<Result<List<BabyFormMenuData>>> getBabyFormMenu();
+  Future<Result<List<BabyFormMenuData>>> getBabyFormMenu(int babyId);
   Future<Result<List<BabyChartMenuData>>> getBabyGrowthGraphMenu();
   Future<Result<List<BabyChartMenuData>>> getBabyDevGraphMenu();
   Future<Result<bool>> saveBabyMonthlyCheck(BabyMonthlyFormBody body);
@@ -52,30 +57,33 @@ class MyBabyRepoImpl with MyBabyRepo {
   final BabyApi _api;
   final AccountLocalSrc _accountLocalSrc;
   final CheckUpLocalSrc _checkUpLocalSrc;
+  final PregnancyLocalSrc _pregnancyLocalSrc;
 
   MyBabyRepoImpl({
     required BabyApi api,
     required AccountLocalSrc accountLocalSrc,
     required CheckUpLocalSrc checkUpLocalSrc,
+    required PregnancyLocalSrc pregnancyLocalSrc,
   }):
     _api = api,
     _accountLocalSrc = accountLocalSrc,
-    _checkUpLocalSrc = checkUpLocalSrc
+    _checkUpLocalSrc = checkUpLocalSrc,
+    _pregnancyLocalSrc = pregnancyLocalSrc
   ;
 
   @override
-  Future<Result<String>> getBabyNik() async {
+  Future<Result<Map<int, String>>> getBabyNik() async {
     try {
       final res = await _accountLocalSrc.getCurrentEmail();
       prind("MyBabyRepoImpl.getBabyNik() res = $res");
       if(res is Success<String>) {
         final email = res.data;
         prind("MyBabyRepoImpl.getBabyNik() email = $email");
-        final res2 = await _accountLocalSrc.getChildNik(email);
+        final res2 = await _accountLocalSrc.getChildrenNik(email);
         prind("MyBabyRepoImpl.getBabyNik() res2 = $res2");
         return res2;
       } else {
-        return res as Fail<String>;
+        return (res as Fail<String>).copy();
       }
     } catch(e, stack) {
       prine(stack);
@@ -85,9 +93,33 @@ class MyBabyRepoImpl with MyBabyRepo {
 
   //TODO: getBornBabyOverlayData(): Dummy;
   @override
-  Future<Result<List<BabyOverlayData>>> getBornBabyOverlayData(String motherNik) async => Success(dummyBabyOverlayDataList_baby);
+  Future<Result<List<BabyOverlayData>>> getBornBabyOverlayData(String motherNik) async {
+    final rawProfs = await _accountLocalSrc.getChildrenProfilesByMotherNik(motherNik);
+    if(rawProfs is Success<List<Profile>>) {
+      final data = rawProfs.data;
+      final list = data.map((e) => BabyOverlayData.fromProfile(e)).toList(growable: false);
+      return Success(list);
+    } else {
+      return (rawProfs as Fail<List<Profile>>).copy();
+    }
+  }
   @override
-  Future<Result<List<BabyOverlayData>>> getUnbornBabyOverlayData(String motherNik) async => Success(dummyBabyOverlayDataList_pregnancy);
+  Future<Result<List<BabyOverlayData>>> getUnbornBabyOverlayData(String motherNik) async {
+    final hplRes = await _pregnancyLocalSrc.getCurrentMotherHpl();
+    if(hplRes is Success<DateTime>) {
+      final hpl = hplRes.data;
+      final motherRes = await _accountLocalSrc.getProfileByNik(motherNik, type: DbConst.TYPE_MOTHER);
+      if(motherRes is Success<ProfileEntity>) {
+        final mother = motherRes.data;
+        final data = BabyOverlayData.fromProfileEntity(mother.copyWith(birthDate: hpl));
+        return Success([data]);
+      } else {
+        return Fail(msg: "Can't get mother profile with `motherNik` of '$motherNik' in `getUnbornBabyOverlayData()`");
+      }
+    } else {
+      return Fail(msg: "Can't get mother hpl with `motherNik` of '$motherNik' in `getUnbornBabyOverlayData()`");
+    }
+  } //async => Success(dummyBabyOverlayDataList_pregnancy);
 
   BabyHomeResponse? _homeResponse;
   int _currentMonthId = -1;
@@ -139,10 +171,13 @@ class MyBabyRepoImpl with MyBabyRepo {
   Future<Result<List<HomeGraphMenu>>> getBabyGraphMenu() async => Success(babyHomeGraph_ui);
 
   @override
-  Future<Result<List<BabyFormMenuData>>> getBabyFormMenu() async {
+  Future<Result<List<BabyFormMenuData>>> getBabyFormMenu(int babyId) async {
     try {
       final data = _homeResponse = await _api.getHomeData();
-      final rawYears = data.data.first.years;
+      final rawYears = data.data.firstWhereOrNull((e) => e.id == babyId)?.years;
+      if(rawYears == null) {
+        return Fail(msg: "Can't get `rawYears` with `babyId` of '$babyId'");
+      }
       final years = rawYears.map((e) => BabyFormMenuData.fromResponse(e)).toList(growable: false);
       return Success(years);
     } catch(e, stack) {
@@ -238,7 +273,7 @@ class MyBabyRepoDummy with MyBabyRepo {
   static final obj = MyBabyRepoDummy._();
 
   @override
-  Future<Result<String>> getBabyNik() async => Success("");
+  Future<Result<Map<int, String>>> getBabyNik() async => Success({1:""});
   @override
   Future<Result<List<BabyOverlayData>>> getBornBabyOverlayData(String motherNik) async => Success(dummyBabyOverlayDataList_baby);
   @override
@@ -248,7 +283,7 @@ class MyBabyRepoDummy with MyBabyRepo {
   @override
   Future<Result<List<HomeGraphMenu>>> getBabyGraphMenu() async => Success(babyHomeGraph_ui);
   @override
-  Future<Result<List<BabyFormMenuData>>> getBabyFormMenu() async => Success(babyFormMenuList_ui);
+  Future<Result<List<BabyFormMenuData>>> getBabyFormMenu(int babyId) async => Success(babyFormMenuList_ui);
   @override
   Future<Result<List<BabyChartMenuData>>> getBabyGrowthGraphMenu() async => Success(babyGrowthGraphMenuList);
   @override

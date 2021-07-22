@@ -22,7 +22,9 @@ import 'package:home/ui/signup/sign_up_page.dart';
 import 'package:home/ui/splash/splash_page.dart';
 
 class HomeRoutes extends ModuleRoute {
-  HomeRoutes._(): super(GlobalRoutes.manager);
+  HomeRoutes._(): super(GlobalRoutes.manager) {
+    exportRoute(GlobalRoutes.home_LoginPage, HomeRoutes.loginPage);
+  }
   static final obj = HomeRoutes._();
 
   @override

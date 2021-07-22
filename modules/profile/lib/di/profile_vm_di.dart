@@ -9,6 +9,8 @@ class ProfileVmDi {
   static ProfileHomeVm get profileHomeVm => ProfileHomeVm(
     getCurrentEmail: UseCaseDi.getCurrentEmail,
     getProfile: UseCaseDi.getProfile,
+    logout: UseCaseDi.logout,
+    toLoginPage: UseCaseDi.toLoginPage,
   );
   static ProfileEditVm get profileEditVm => ProfileEditVm(
     saveProfile: ProfileUseCaseDi.saveProfile,

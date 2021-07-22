@@ -24,6 +24,7 @@ class CredentialDao extends DatabaseAccessor<AppDatabase> with _$CredentialDaoMi
   Future<void> insertAll(List<Insertable<CredentialEntity>> e) => batch((batch) => batch.insertAll(credentialEntities, e));
   Future<int> deleteData(Insertable<CredentialEntity> e) => delete(credentialEntities).delete(e);
   Future<CredentialEntity?> getByEmail(String email) => (select(credentialEntities)..where((it) => it.email.equals(email))).getSingleOrNull();
+  Future<CredentialEntity?> getById(int id) => (select(credentialEntities)..where((it) => it.id.equals(id))).getSingleOrNull();
 }
 
 @UseDao(tables: [RoleEntities])
@@ -92,8 +93,11 @@ class ProfileDao extends DatabaseAccessor<AppDatabase> with _$ProfileDaoMixin {
     return sel.getSingleOrNull();
   }
 
-  /// It returns [Map]<int, String> that maps [ProfileEntities.type] to [ProfileEntities.nik];
-  Future<Map<int, String>> getNiksByEmail(String email, { int? type }) async {
+  /// It returns [Map]<int, List<String>> that maps [ProfileEntities.type]
+  /// to map that maps [ProfileEntities.serverId] to [ProfileEntities.nik].
+  /// Why map? Because, there may multiple children
+  /// that belong to same [email] of mother.
+  Future<Map<int, Map<int, String>>> getNiksByEmail(String email, { int? type }) async {
     prind("ProfileDao getNiksByEmail() email= $email type= $type");
     final credentials = await (select(credentialEntities)..where((it) => it.email.equals(email))).get();
     prind("ProfileDao getNiksByEmail() credentials = $credentials");
@@ -106,10 +110,38 @@ class ProfileDao extends DatabaseAccessor<AppDatabase> with _$ProfileDaoMixin {
       sel = sel..where((it) => it.type.equals(type));
     }
 
-    final queried = await sel.map((it) => {it.type: it.nik}).get();
-    final res = <int, String>{};
+    final queried = await sel.map((it) => {it.type: it}).get();
+    final res = <int, Map<int, String>>{};
     for(final e in queried) {
-      res.addAll(e);
+      final map = res[e.keys.first] ??= {};
+      map[e.values.first.serverId] = e.values.first.nik;
+      //res.addAll(e);
+    }
+    return res;
+  }
+
+  /// It returns [Map]<int, List<String>> that maps [ProfileEntities.type]
+  /// to list of [ProfileEntities.nik]. Why list? Because, there may multiple children
+  /// that belong to same [email] of mother.
+  Future<Map<int, List<ProfileEntity>>> getProfilesByEmail(String email, { int? type }) async {
+    prind("ProfileDao getNiksByEmail() email= $email type= $type");
+    final credentials = await (select(credentialEntities)..where((it) => it.email.equals(email))).get();
+    prind("ProfileDao getNiksByEmail() credentials = $credentials");
+    if(credentials.isEmpty) {
+      return Map.unmodifiable({});
+    }
+    final id = credentials.first.id;
+    var sel = select(profileEntities)..where((it) => it.userId.equals(id));
+    if(type != null) {
+      sel = sel..where((it) => it.type.equals(type));
+    }
+
+    final queried = await sel.map((it) => {it.type: it}).get();
+    final res = <int, List<ProfileEntity>>{};
+    for(final e in queried) {
+      final list = res[e.keys.first] ??= [];
+      list.add(e.values.first);
+      //res.addAll(e);
     }
     return res;
   }

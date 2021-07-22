@@ -612,7 +612,7 @@ class $ProfileEntitiesTable extends ProfileEntities
   }
 
   @override
-  Set<GeneratedColumn> get $primaryKey => {userId, type};
+  Set<GeneratedColumn> get $primaryKey => <GeneratedColumn>{};
   @override
   ProfileEntity map(Map<String, dynamic> data, {String? tablePrefix}) {
     return ProfileEntity.fromData(data, _db,

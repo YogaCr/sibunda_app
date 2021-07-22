@@ -1,4 +1,5 @@
 import 'package:bayiku/core/domain/usecase/baby_chart_usecase.dart';
+import 'package:common/arch/domain/model/profile_data.dart';
 import 'package:common/arch/domain/usecase/baby_usecase.dart';
 import 'package:common/arch/domain/model/chart_data_baby.dart';
 import 'package:common/arch/domain/model/form_warning_status.dart';
@@ -12,7 +13,7 @@ class BabyChartVm extends AsyncVm {
   static const loadChartKey = "loadChart";
 
   BabyChartVm({
-    required GetBabyNik getBabyNik,
+    required this.credential,
 
     required GetBabyWeightChart getBabyWeightChart,
     required GetBabyKmsChart getBabyKmsChart,
@@ -30,7 +31,6 @@ class BabyChartVm extends AsyncVm {
     required GetBabyBmiChartWarning getBabyBmiChartWarning,
     required GetBabyDevChartWarning getBabyDevChartWarning,
   }):
-    _getBabyNik = getBabyNik,
     _getBabyWeightChart = getBabyWeightChart,
     _getBabyKmsChart = getBabyKmsChart,
     _getBabyLenChart = getBabyLenChart,
@@ -46,7 +46,6 @@ class BabyChartVm extends AsyncVm {
     _getBabyBmiChartWarning = getBabyBmiChartWarning,
     _getBabyDevChartWarning = getBabyDevChartWarning
   ;
-  final GetBabyNik _getBabyNik;
 
   final GetBabyWeightChart _getBabyWeightChart;
   final GetBabyKmsChart _getBabyKmsChart;
@@ -63,6 +62,8 @@ class BabyChartVm extends AsyncVm {
   final GetBabyHeadCircumChartWarning _getBabyHeadCircumChartWarning;
   final GetBabyBmiChartWarning _getBabyBmiChartWarning;
   final GetBabyDevChartWarning _getBabyDevChartWarning;
+
+  final ProfileCredential credential;
 
   final MutableLiveData<List<LineSeries<dynamic, num>>> _seriesList = MutableLiveData();
   final MutableLiveData<List<FormWarningStatus>> _warningList = MutableLiveData();
@@ -84,77 +85,76 @@ class BabyChartVm extends AsyncVm {
     //prind("MotherChartVm res2 = $res2 \n res3 = $res3");
     startJob(loadChartKey, (isActive) async {
       prind("BabyChartVm startJob AWAL =====");
-      final res1 = await _getBabyNik();
-      prind("BabyChartVm res1 = $res1");
-      if(res1 is Success<String>) {
-        final babyNik = res1.data;
-        Result res2;
+      final babyNik = credential.nik; //res1.data[babyId];
+      /*
+        if(babyNik == null) {
+          throw "No such `babyNik` with `babyId` of '$babyId'";
+        }
+         */
+      Result res2;
 
-        Result<List<FormWarningStatus>> res3;
+      Result<List<FormWarningStatus>> res3;
+
+      switch(type) {
+        case BabyChartType.kms: res2 = await _getBabyKmsChart(babyNik);
+        res3 = await _getBabyKmsChartWarning(babyNik);
+        break;
+        case BabyChartType.len: res2 = await _getBabyLenChart(babyNik);
+        res3 = await _getBabyLenChartWarning(babyNik);
+        break;
+        case BabyChartType.weight: res2 = await _getBabyWeightChart(babyNik);
+        res3 = await _getBabyWeightChartWarning(babyNik);
+        break;
+        case BabyChartType.weightToLen: res2 = await _getBabyWeightToLenChart(babyNik);
+        res3 = await _getBabyWeightToLenChartWarning(babyNik);
+        break;
+        case BabyChartType.bmi: res2 = await _getBabyBmiChart(babyNik);
+        res3 = await _getBabyBmiChartWarning(babyNik);
+        break;
+        case BabyChartType.head: res2 = await _getBabyHeadCircumChart(babyNik);
+        res3 = await _getBabyHeadCircumChartWarning(babyNik);
+        break;
+        case BabyChartType.dev: res2 = await _getBabyDevChart(babyNik);
+        res3 = await _getBabyDevChartWarning(babyNik);
+        break;
+      }
+
+      prind("MotherChartVm res2 = $res2 \n res3 = $res3");
+
+      if(res3 is! Success<List<FormWarningStatus>>) {
+        return res3 as Fail;
+      }
+
+      if(res2 is Success) {
+        //final List rawDataList = res2.data;
+        List<LineSeries<dynamic, num>> seriesList;
 
         switch(type) {
-          case BabyChartType.kms: res2 = await _getBabyKmsChart(babyNik);
-          res3 = await _getBabyKmsChartWarning(babyNik);
+          case BabyChartType.kms: seriesList = BabyChartLineSeries.getBabyKmsSeries(res2.data);
           break;
-          case BabyChartType.len: res2 = await _getBabyLenChart(babyNik);
-          res3 = await _getBabyLenChartWarning(babyNik);
+          case BabyChartType.len: seriesList = BabyChartLineSeries.getBabyLenSeries(res2.data);
           break;
-          case BabyChartType.weight: res2 = await _getBabyWeightChart(babyNik);
-          res3 = await _getBabyWeightChartWarning(babyNik);
+          case BabyChartType.weight: seriesList = BabyChartLineSeries.getBabyWeightSeries(res2.data);
           break;
-          case BabyChartType.weightToLen: res2 = await _getBabyWeightToLenChart(babyNik);
-          res3 = await _getBabyWeightToLenChartWarning(babyNik);
+          case BabyChartType.weightToLen: seriesList = BabyChartLineSeries.getBabyWeightToLenSeries(res2.data);
           break;
-          case BabyChartType.bmi: res2 = await _getBabyBmiChart(babyNik);
-          res3 = await _getBabyBmiChartWarning(babyNik);
+          case BabyChartType.bmi: seriesList = BabyChartLineSeries.getBabyBmiSeries(res2.data);
           break;
-          case BabyChartType.head: res2 = await _getBabyHeadCircumChart(babyNik);
-          res3 = await _getBabyHeadCircumChartWarning(babyNik);
+          case BabyChartType.head: seriesList = BabyChartLineSeries.getBabyHeadCircumSeries(res2.data);
           break;
-          case BabyChartType.dev: res2 = await _getBabyDevChart(babyNik);
-          res3 = await _getBabyDevChartWarning(babyNik);
+          case BabyChartType.dev: seriesList = BabyChartLineSeries.getBabyDevSeries(res2.data);
           break;
         }
+        _seriesList.value = seriesList;
+        _warningList.value = res3.data;
+        _currentType = type;
 
-        prind("MotherChartVm res2 = $res2 \n res3 = $res3");
-
-        if(res3 is! Success<List<FormWarningStatus>>) {
-          return res3 as Fail;
-        }
-
-        if(res2 is Success) {
-          //final List rawDataList = res2.data;
-          List<LineSeries<dynamic, num>> seriesList;
-
-          switch(type) {
-            case BabyChartType.kms: seriesList = BabyChartLineSeries.getBabyKmsSeries(res2.data);
-            break;
-            case BabyChartType.len: seriesList = BabyChartLineSeries.getBabyLenSeries(res2.data);
-            break;
-            case BabyChartType.weight: seriesList = BabyChartLineSeries.getBabyWeightSeries(res2.data);
-            break;
-            case BabyChartType.weightToLen: seriesList = BabyChartLineSeries.getBabyWeightToLenSeries(res2.data);
-            break;
-            case BabyChartType.bmi: seriesList = BabyChartLineSeries.getBabyBmiSeries(res2.data);
-            break;
-            case BabyChartType.head: seriesList = BabyChartLineSeries.getBabyHeadCircumSeries(res2.data);
-            break;
-            case BabyChartType.dev: seriesList = BabyChartLineSeries.getBabyDevSeries(res2.data);
-            break;
-          }
-          _seriesList.value = seriesList;
-          _warningList.value = res3.data;
-          _currentType = type;
-
-          prind("BabyChartVm res3.data = ${res3.data}");
-
-        } else {
-          return res2 as Fail;
-        }
+        prind("BabyChartVm res3.data = ${res3.data}");
 
       } else {
-        return res1 as Fail;
+        return res2 as Fail;
       }
+
     });
   }
 }

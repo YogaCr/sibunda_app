@@ -8,6 +8,7 @@ import 'package:bayiku/ui/immunization/baby_immunization_vm.dart';
 import 'package:bayiku/ui/neonatal_service/neonatal_service_vm.dart';
 import 'package:common/arch/di/usecase_di.dart';
 import 'package:common/arch/domain/model/immunization.dart';
+import 'package:common/arch/domain/model/profile_data.dart';
 
 class BabyVmDi {
   BabyVmDi._();
@@ -19,9 +20,11 @@ class BabyVmDi {
     getBornBabyList: UseCaseDi.getBornBabyList,
     getUnbornBabyList: UseCaseDi.getUnbornBabyList,
   );
-  static BabyCheckFormVm get babyCheckFormVm => BabyCheckFormVm(
+  static BabyCheckFormVm babyCheckFormVm({
+    required ProfileCredential babyCredential,
+  }) => BabyCheckFormVm(
+    credential: babyCredential,
     getBabyCheckForm: BabyUseCaseDi.getBabyCheckForm,
-    getBabyNik: UseCaseDi.getBabyNik,
     getBabyCheckFormAnswer: BabyUseCaseDi.getBabyCheckFormAnswer,
     getBabyFromWarningStatus: BabyUseCaseDi.getBabyFormWarningStatus,
     saveBabyCheckForm: BabyUseCaseDi.saveBabyCheckForm,
@@ -30,21 +33,30 @@ class BabyVmDi {
     getNeonatalFormData: BabyUseCaseDi.getNeonatalFormData,
     saveNeonatalForm: BabyUseCaseDi.saveNeonatalForm,
   );
-  static BabyImmunizationVm get babyImmunizationVm => BabyImmunizationVm(
+  static BabyImmunizationVm babyImmunizationVm({
+    required ProfileCredential babyCredential,
+  }) => BabyImmunizationVm(
+    credential: babyCredential,
     getBabyImmunizationGroupList: BabyUseCaseDi.getBabyImmunizationGroupList,
     getBabyImmunizationOverview: BabyUseCaseDi.getBabyImmunizationOverview,
   );
-  static BabyImmunizationPopupVm immunizationPopupVm(ImmunizationData immunization) => BabyImmunizationPopupVm(
+  static BabyImmunizationPopupVm immunizationPopupVm({
+    required ImmunizationData immunization,
+    required ProfileCredential babyCredential,
+  }) => BabyImmunizationPopupVm(
+    credential: babyCredential,
     immunization: immunization,
-    getBabyNik: UseCaseDi.getBabyNik,
     getBabyImmunizationConfirmForm: BabyUseCaseDi.getBabyImmunizationConfirmForm,
     confirmBabyImmunization: BabyUseCaseDi.confirmBabyImmunization,
   );
-  static BabyGrowthChartMenuVm get growthChartMenuVm => BabyGrowthChartMenuVm(
-      getBabyGrowthGraphMenu: BabyUseCaseDi.getBabyGrowthGraphMenu,
+  static BabyGrowthChartMenuVm growthChartMenuVm(ProfileCredential babyCredential) => BabyGrowthChartMenuVm(
+    credential: babyCredential,
+    getBabyGrowthGraphMenu: BabyUseCaseDi.getBabyGrowthGraphMenu,
   );
-  static BabyChartVm get chartVm => BabyChartVm(
-    getBabyNik: UseCaseDi.getBabyNik,
+  static BabyChartVm chartVm({
+    required ProfileCredential babyCredential,
+  }) => BabyChartVm(
+    credential: babyCredential,
     getBabyWeightChart: BabyUseCaseDi.getBabyWeightChart,
     getBabyKmsChart: BabyUseCaseDi.getBabyKmsChart,
     getBabyLenChart: BabyUseCaseDi.getBabyLenChart,

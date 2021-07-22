@@ -12,6 +12,156 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
+/// @nodoc
+class _$ProfileCredentialTearOff {
+  const _$ProfileCredentialTearOff();
+
+  _ProfileCredential call({required int id, required String nik}) {
+    return _ProfileCredential(
+      id: id,
+      nik: nik,
+    );
+  }
+}
+
+/// @nodoc
+const $ProfileCredential = _$ProfileCredentialTearOff();
+
+/// @nodoc
+mixin _$ProfileCredential {
+  int get id => throw _privateConstructorUsedError;
+  String get nik => throw _privateConstructorUsedError;
+
+  @JsonKey(ignore: true)
+  $ProfileCredentialCopyWith<ProfileCredential> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $ProfileCredentialCopyWith<$Res> {
+  factory $ProfileCredentialCopyWith(
+          ProfileCredential value, $Res Function(ProfileCredential) then) =
+      _$ProfileCredentialCopyWithImpl<$Res>;
+  $Res call({int id, String nik});
+}
+
+/// @nodoc
+class _$ProfileCredentialCopyWithImpl<$Res>
+    implements $ProfileCredentialCopyWith<$Res> {
+  _$ProfileCredentialCopyWithImpl(this._value, this._then);
+
+  final ProfileCredential _value;
+  // ignore: unused_field
+  final $Res Function(ProfileCredential) _then;
+
+  @override
+  $Res call({
+    Object? id = freezed,
+    Object? nik = freezed,
+  }) {
+    return _then(_value.copyWith(
+      id: id == freezed
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
+      nik: nik == freezed
+          ? _value.nik
+          : nik // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+abstract class _$ProfileCredentialCopyWith<$Res>
+    implements $ProfileCredentialCopyWith<$Res> {
+  factory _$ProfileCredentialCopyWith(
+          _ProfileCredential value, $Res Function(_ProfileCredential) then) =
+      __$ProfileCredentialCopyWithImpl<$Res>;
+  @override
+  $Res call({int id, String nik});
+}
+
+/// @nodoc
+class __$ProfileCredentialCopyWithImpl<$Res>
+    extends _$ProfileCredentialCopyWithImpl<$Res>
+    implements _$ProfileCredentialCopyWith<$Res> {
+  __$ProfileCredentialCopyWithImpl(
+      _ProfileCredential _value, $Res Function(_ProfileCredential) _then)
+      : super(_value, (v) => _then(v as _ProfileCredential));
+
+  @override
+  _ProfileCredential get _value => super._value as _ProfileCredential;
+
+  @override
+  $Res call({
+    Object? id = freezed,
+    Object? nik = freezed,
+  }) {
+    return _then(_ProfileCredential(
+      id: id == freezed
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
+      nik: nik == freezed
+          ? _value.nik
+          : nik // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$_ProfileCredential implements _ProfileCredential {
+  const _$_ProfileCredential({required this.id, required this.nik});
+
+  @override
+  final int id;
+  @override
+  final String nik;
+
+  @override
+  String toString() {
+    return 'ProfileCredential(id: $id, nik: $nik)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is _ProfileCredential &&
+            (identical(other.id, id) ||
+                const DeepCollectionEquality().equals(other.id, id)) &&
+            (identical(other.nik, nik) ||
+                const DeepCollectionEquality().equals(other.nik, nik)));
+  }
+
+  @override
+  int get hashCode =>
+      runtimeType.hashCode ^
+      const DeepCollectionEquality().hash(id) ^
+      const DeepCollectionEquality().hash(nik);
+
+  @JsonKey(ignore: true)
+  @override
+  _$ProfileCredentialCopyWith<_ProfileCredential> get copyWith =>
+      __$ProfileCredentialCopyWithImpl<_ProfileCredential>(this, _$identity);
+}
+
+abstract class _ProfileCredential implements ProfileCredential {
+  const factory _ProfileCredential({required int id, required String nik}) =
+      _$_ProfileCredential;
+
+  @override
+  int get id => throw _privateConstructorUsedError;
+  @override
+  String get nik => throw _privateConstructorUsedError;
+  @override
+  @JsonKey(ignore: true)
+  _$ProfileCredentialCopyWith<_ProfileCredential> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
 BatchProfileIds _$BatchProfileIdsFromJson(Map<String, dynamic> json) {
   return _BatchProfileIds.fromJson(json);
 }

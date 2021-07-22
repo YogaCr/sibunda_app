@@ -16,8 +16,10 @@ class RegisterBody {
   final Mother mother;
   final Father father;
   final List<Child> children;
+  final DateTime? motherHpl;
 
   RegisterBody({
+    required this.motherHpl,
     required this.signup,
     required this.mother,
     required this.father,
@@ -48,6 +50,7 @@ class RegisterBody {
       ...motherMap,
       ...fatherMap,
       Const.KEY_CHILD: childMaps,
+      "janin_hpl": motherHpl?.toString(),
 /*
       Const.KEY_CHILD : [
         childMap,

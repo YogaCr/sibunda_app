@@ -1,5 +1,6 @@
 import 'package:bayiku/core/domain/usecase/baby_graph_menu_usecase.dart';
 import 'package:common/arch/domain/model/chart_data_baby.dart';
+import 'package:common/arch/domain/model/profile_data.dart';
 import 'package:core/domain/model/result.dart';
 import 'package:core/ui/base/async_vm.dart';
 import 'package:core/ui/base/live_data.dart';
@@ -8,11 +9,13 @@ class BabyGrowthChartMenuVm extends AsyncVm {
   static const getMenuListKey = "getMenuList";
 
   BabyGrowthChartMenuVm({
+    required this.credential,
     required GetBabyGrowthGraphMenu getBabyGrowthGraphMenu,
   }):
     _getBabyGrowthGraphMenu = getBabyGrowthGraphMenu
   ;
   final GetBabyGrowthGraphMenu _getBabyGrowthGraphMenu;
+  final ProfileCredential credential;
 
   final MutableLiveData<List<BabyChartMenuData>> _menuList = MutableLiveData();
   LiveData<List<BabyChartMenuData>> get menuList => _menuList;

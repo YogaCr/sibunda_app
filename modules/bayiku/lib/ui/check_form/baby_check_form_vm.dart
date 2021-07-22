@@ -2,6 +2,7 @@ import 'package:bayiku/core/domain/usecase/baby_check_usecase.dart';
 import 'package:common/arch/data/remote/model/baby_check_form_api_model.dart';
 import 'package:common/arch/domain/model/form_data.dart';
 import 'package:common/arch/domain/model/form_warning_status.dart';
+import 'package:common/arch/domain/model/profile_data.dart';
 import 'package:common/arch/domain/usecase/baby_usecase.dart';
 import 'package:common/arch/ui/model/form_data.dart';
 import 'package:common/arch/ui/vm/form_vm_group.dart';
@@ -18,14 +19,15 @@ class BabyCheckFormVm extends FormVmGroup {
   static const getBabyFormAnswerKey = "getBabyFormAnswer";
 
   BabyCheckFormVm({
-    required GetBabyNik getBabyNik,
+    required this.credential,
+    //required GetBabyNik getBabyNik,
     required GetBabyCheckForm getBabyCheckForm,
     required GetBabyFormWarningStatus getBabyFromWarningStatus,
     required SaveBabyCheckForm saveBabyCheckForm,
     required GetBabyCheckFormAnswer getBabyCheckFormAnswer,
     //required SaveBabyCheckUpId saveBabyCheckUpId,
   }):
-    _getBabyNik = getBabyNik,
+    //_getBabyNik = getBabyNik,
     _getBabyCheckForm = getBabyCheckForm,
     _getBabyFromWarningStatus = getBabyFromWarningStatus,
     _saveBabyCheckForm = saveBabyCheckForm,
@@ -66,12 +68,14 @@ class BabyCheckFormVm extends FormVmGroup {
     });
   }
 
-  final GetBabyNik _getBabyNik;
+  //final GetBabyNik _getBabyNik;
   final GetBabyCheckForm _getBabyCheckForm;
   final GetBabyFormWarningStatus _getBabyFromWarningStatus;
   final SaveBabyCheckForm _saveBabyCheckForm;
   final GetBabyCheckFormAnswer _getBabyCheckFormAnswer;
   //final SaveBabyCheckUpId _saveBabyCheckUpId;
+
+  final ProfileCredential credential;
 
   final MutableLiveData<List<FormWarningStatus>> _warningList = MutableLiveData();
   final MutableLiveData<BabyMonthlyFormBody> _formAnswer = MutableLiveData();
@@ -230,21 +234,22 @@ class BabyCheckFormVm extends FormVmGroup {
   void getWarningList({ bool forceLoad = false}) {
     if(!forceLoad && _warningList.value != null) return;
     startJob(getWarningListKey, (isActive) async {
-      final res1 = await _getBabyNik();
-      if(res1 is Success<String>) {
-        final babyNik = res1.data;
-        final res2 = await _getBabyFromWarningStatus(babyNik, _currentMonth.value!);
-        //prind("getWarningList res2 = $res2 _currentMonth = $_currentMonth");
-        if(res2 is Success<List<FormWarningStatus>>) {
-          final data = res2.data;
-          _warningList.value = data;
-          return null;
-        } else {
-          _warningList.value = List.empty();
+      final babyNik = credential.nik; //res1.data[babyId];
+      /*
+        if(babyNik == null) {
+          throw "No such `babyNik` with `babyId` of '$babyId'";
         }
-        return res2 as Fail;
+         */
+      final res2 = await _getBabyFromWarningStatus(babyNik, _currentMonth.value!);
+      //prind("getWarningList res2 = $res2 _currentMonth = $_currentMonth");
+      if(res2 is Success<List<FormWarningStatus>>) {
+        final data = res2.data;
+        _warningList.value = data;
+        return null;
+      } else {
+        _warningList.value = List.empty();
       }
-      return res1 as Fail;
+      return res2 as Fail;
     });
   }
 
@@ -257,6 +262,7 @@ class BabyCheckFormVm extends FormVmGroup {
       final res = await _getBabyCheckFormAnswer(
         yearId : yearId,
         month: _currentMonth.value!,
+        babyId: credential.id,
       );
       //prind("getBabyFormAnswer res = $res _currentMonth = $_currentMonth");
       if(res is Success<BabyMonthlyFormBody>) {

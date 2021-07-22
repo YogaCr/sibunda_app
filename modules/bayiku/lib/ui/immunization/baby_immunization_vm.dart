@@ -1,5 +1,6 @@
 import 'package:bayiku/core/domain/usecase/baby_immunization_use_case.dart';
 import 'package:common/arch/domain/model/immunization.dart';
+import 'package:common/arch/domain/model/profile_data.dart';
 import 'package:common/arch/ui/model/immunization.dart';
 import 'package:common/arch/ui/model/immunization_data.dart';
 import 'package:core/domain/model/result.dart';
@@ -12,6 +13,7 @@ class BabyImmunizationVm extends AsyncVm {
   static const getImmunizationOverviewKey = "getImmunizationOverview";
 
   BabyImmunizationVm({
+    required this.credential,
     required GetBabyImmunizationGroupList getBabyImmunizationGroupList,
     required GetBabyImmunizationOverview getBabyImmunizationOverview,
   }):
@@ -30,7 +32,8 @@ class BabyImmunizationVm extends AsyncVm {
   LiveData<ImmunizationOverview> get overview => _overview;
   //LiveData<Tuple2<Expirable, bool>> get onConfirm => _onConfirm;
 
-  final MutableLiveData<String> babyNik = MutableLiveData();
+  final ProfileCredential credential;
+  //final MutableLiveData<String> babyNik = MutableLiveData();
 
   @override
   List<LiveData> get liveDatas => [_immunizationGroups, _overview];
@@ -41,7 +44,7 @@ class BabyImmunizationVm extends AsyncVm {
   }) {
     if(!forceLoad && _immunizationGroups.value != null) return;
     startJob(getImmunizationGroupsKey, (isActive) async {
-      final res = await _getBabyImmunizationGroupList(babyNik.value!);
+      final res = await _getBabyImmunizationGroupList(credential.nik);
       prind("getImmunizationGroups() res = $res");
       if(res is Success<List<ImmunizationDetailGroup>>) {
         final data = res.data.map((e) => UiImmunizationListGroup.fromDomainModel(e)).toList(growable: false);

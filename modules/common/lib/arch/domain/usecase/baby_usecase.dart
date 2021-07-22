@@ -4,7 +4,7 @@ import 'package:common/arch/domain/repo/bayiku_repo.dart';
 import 'package:core/domain/model/result.dart';
 
 mixin GetBabyNik {
-  Future<Result<String>> call();
+  Future<Result<Map<int, String>>> call();
 }
 
 mixin GetBornBabyList {
@@ -21,7 +21,7 @@ class GetBabyNikImpl with GetBabyNik {
   final MyBabyRepo _repo;
   GetBabyNikImpl(this._repo);
   @override
-  Future<Result<String>> call() => _repo.getBabyNik();
+  Future<Result<Map<int, String>>> call() => _repo.getBabyNik();
 }
 
 class GetBornBabyListImpl with GetBornBabyList {

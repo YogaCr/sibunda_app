@@ -17,6 +17,12 @@ class BabyImmunizationPopupPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    /*
+    final babyNik = getArgs<String>(context, Const.KEY_DATA);
+    if(babyNik == null) {
+      throw "`BabyImmunizationPage` needs `babyNik` arg";
+    }
+     */
     final vm = ViewModelProvider.of<BabyImmunizationPopupVm>(context)
       ..init();
 

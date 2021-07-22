@@ -29,6 +29,7 @@ BabyHomeChildResponse _$BabyHomeChildResponseFromJson(
     Map<String, dynamic> json) {
   return BabyHomeChildResponse(
     id: json['id'] as int,
+    nik: json['nik'] as String,
     name: json['nama'] as String,
     anak_ke: json['anak_ke'] as int,
     age: json['age'] as String,
@@ -43,6 +44,7 @@ Map<String, dynamic> _$BabyHomeChildResponseToJson(
         BabyHomeChildResponse instance) =>
     <String, dynamic>{
       'id': instance.id,
+      'nik': instance.nik,
       'nama': instance.name,
       'anak_ke': instance.anak_ke,
       'age': instance.age,

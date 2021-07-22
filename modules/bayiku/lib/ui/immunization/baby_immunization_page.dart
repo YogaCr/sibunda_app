@@ -21,12 +21,14 @@ class BabyImmunizationPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    /*
     final babyNik = getArgs<String>(context, Const.KEY_DATA);
     if(babyNik == null) {
       throw "`BabyImmunizationPage` needs `babyNik` arg";
     }
+     */
     final vm = ViewModelProvider.of<BabyImmunizationVm>(context)
-      ..babyNik.value = babyNik
+      //..babyNik.value = babyNik
       ..getImmunizationOverview()
       ..getImmunizationGroups();
 
@@ -60,7 +62,11 @@ class BabyImmunizationPage extends StatelessWidget {
                           showSnackBar(ctx, "Immunisasi sudah dilakukan", backgroundColor: Colors.green);
                           return;
                         }
-                        final result = await BabyRoutes.immunizationPopup.popup(ctx, immData,);
+                        final result = await BabyRoutes.immunizationPopup.popup(
+                          context: ctx,
+                          immunization: immData,
+                          babyCredential: vm.credential,
+                        );
                         if(result != null) {
                           vm.onConfirmSuccess(group: group, child: child, result: result);
                           showSnackBar(ctx, "Berhasil mengonfirmasi", backgroundColor: Colors.green);

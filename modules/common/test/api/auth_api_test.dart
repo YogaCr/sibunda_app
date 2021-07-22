@@ -7,6 +7,7 @@ import 'package:common/arch/data/remote/model/register_api_model.dart';
 import 'package:common/arch/domain/dummy_data.dart';
 import 'package:common/arch/domain/model/auth.dart';
 import 'package:common/util/net.dart';
+import 'package:common/util/times.dart';
 import 'package:core/util/_consoles.dart';
 import 'package:dio/dio.dart';
 import 'package:faker/faker.dart';
@@ -79,6 +80,7 @@ getStartedFormApiTest_usingRetrofit() async {
     children: [child],
     father: father,
     mother: mother,
+    motherHpl: getHpl(),
   );
 
   final res = await _api.register(body);

@@ -1,5 +1,8 @@
 import 'package:common/arch/data/local/db/app_db.dart';
+import 'package:common/arch/data/remote/model/baby_overview_api_model.dart';
 import 'package:common/arch/data/remote/model/data_api_model.dart';
+import 'package:common/arch/domain/dummy_data.dart';
+import 'package:common/arch/domain/model/baby_data.dart';
 import 'package:common/arch/domain/model/img_data.dart';
 import 'package:common/util/type_util.dart';
 import 'package:common/value/const_values.dart';
@@ -9,17 +12,48 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'profile_data.freezed.dart';
 part 'profile_data.g.dart';
 
+@freezed
+class ProfileCredential with _$ProfileCredential {
+  const factory ProfileCredential({
+    required int id,
+    required String nik,
+  }) = _ProfileCredential;
+
+  factory ProfileCredential.fromChildResponse(BabyHomeChildResponse response) =>
+      ProfileCredential(id: response.id, nik: response.nik,);
+
+  factory ProfileCredential.fromBabyOverlay(BabyOverlayData data) =>
+      ProfileCredential(id: data.id, nik: data.nik,);
+}
 
 class Profile {
+  final int id;
+  final String nik;
   final String name;
   final String email;
+  final DateTime birthDate;
   final ImgData img;
 
   Profile({
+    required this.id,
+    required this.nik,
     required this.name,
     required this.email,
+    required this.birthDate,
     required this.img,
   });
+
+  factory Profile.fromEntity({
+    required ProfileEntity entity,
+    required String email,
+  }) => Profile(
+    id: entity.serverId,
+    nik: entity.nik,
+    name: entity.name,
+    email: email,
+    img: dummyImg_profile,
+    birthDate: entity.birthDate,
+  );
 }
 
 

@@ -1,6 +1,7 @@
 import 'package:bayiku/core/domain/usecase/baby_immunization_use_case.dart';
 import 'package:common/arch/domain/model/form_data.dart';
 import 'package:common/arch/domain/model/immunization.dart';
+import 'package:common/arch/domain/model/profile_data.dart';
 import 'package:common/arch/domain/usecase/baby_usecase.dart';
 import 'package:common/arch/ui/model/form_data.dart';
 import 'package:common/arch/ui/vm/form_vm_group.dart';
@@ -14,47 +15,52 @@ class BabyImmunizationPopupVm extends FormVmGroup {
 
   BabyImmunizationPopupVm({
     required this.immunization,
+    required this.credential,
     required GetBabyImmunizationConfirmForm getBabyImmunizationConfirmForm,
     required ConfirmBabyImmunization confirmBabyImmunization,
-    required GetBabyNik getBabyNik,
+    //required GetBabyNik getBabyNik,
   }):
-    _getBabyNik = getBabyNik,
+    //_getBabyNik = getBabyNik,
     _getBabyImmunizationConfirmForm = getBabyImmunizationConfirmForm,
     _confirmBabyImmunization = confirmBabyImmunization
   ;
 
-  final GetBabyNik _getBabyNik;
+  //final GetBabyNik _getBabyNik;
   final GetBabyImmunizationConfirmForm _getBabyImmunizationConfirmForm;
   final ConfirmBabyImmunization _confirmBabyImmunization;
 
+  //final int babyId;
   final ImmunizationData immunization;
+  final ProfileCredential credential;
 
   @override
   List<LiveData> get liveDatas => [];
 
   @override
   Future<Result<String>> doSubmitJob() async {
-    final nikRes = await _getBabyNik();
-    if(nikRes is Success<String>) {
-      final nik = nikRes.data;
-      final respMap = getResponse().responseGroups.values.first;
-      final data = ImmunizationConfirmData(
-        immunization: immunization.copy(
-          date: respMap[Const.KEY_IMMUNIZATION_DATE],
-          location: respMap[Const.KEY_IMMUNIZATION_PLACE],
-          batchNo: respMap[Const.KEY_NO_BATCH]?.toString(),
-        ),
-        responsibleName: respMap[Const.KEY_RESPONSIBLE_NAME],
+    /*
+    final nik = babyNik.value;
+    if(nik == null) {
+      throw "`babyNik.value` still null";
+    }
+     */
+    final respMap = getResponse().responseGroups.values.first;
+    final data = ImmunizationConfirmData(
+      immunization: immunization.copy(
         date: respMap[Const.KEY_IMMUNIZATION_DATE],
-        place: respMap[Const.KEY_IMMUNIZATION_PLACE],
-        noBatch: respMap[Const.KEY_NO_BATCH] ?? -1,
-      );
+        location: respMap[Const.KEY_IMMUNIZATION_PLACE],
+        batchNo: respMap[Const.KEY_NO_BATCH]?.toString(),
+      ),
+      responsibleName: respMap[Const.KEY_RESPONSIBLE_NAME],
+      date: respMap[Const.KEY_IMMUNIZATION_DATE],
+      place: respMap[Const.KEY_IMMUNIZATION_PLACE],
+      noBatch: respMap[Const.KEY_NO_BATCH] ?? -1,
+    );
 
-      final res = await _confirmBabyImmunization(nik, data);
-      prind("BabyImmunizationPopupVm `doSubmit()` res= $res");
-      if(res is Success<bool>) {
-        return Success("ok");
-      }
+    final res = await _confirmBabyImmunization(credential.nik, data);
+    prind("BabyImmunizationPopupVm `doSubmit()` res= $res");
+    if(res is Success<bool>) {
+      return Success("ok");
     }
     return Fail();
   }

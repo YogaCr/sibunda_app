@@ -7,7 +7,7 @@ mixin GetBabyAgeOverview {
 }
 
 mixin GetBabyFormMenuList {
-  Future<Result<List<BabyFormMenuData>>> call();
+  Future<Result<List<BabyFormMenuData>>> call(int babyId);
 }
 
 
@@ -22,6 +22,7 @@ class GetBabyFormMenuListImpl with GetBabyFormMenuList {
   final MyBabyRepo _repo;
   GetBabyFormMenuListImpl(this._repo);
   @override
-  Future<Result<List<BabyFormMenuData>>> call() async => _repo.getBabyFormMenu();
+  Future<Result<List<BabyFormMenuData>>> call(int babyId) async =>
+      _repo.getBabyFormMenu(babyId);
 }
 

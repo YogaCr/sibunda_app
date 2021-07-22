@@ -36,6 +36,7 @@ mixin GetBabyCheckUpId {
 
 mixin GetBabyCheckFormAnswer {
   Future<Result<BabyMonthlyFormBody>> call({
+    required int babyId,
     required int yearId,
     required int month,
   });
@@ -90,6 +91,7 @@ class GetBabyCheckFormAnswerImpl with GetBabyCheckFormAnswer {
   GetBabyCheckFormAnswerImpl(this._repo);
   @override
   Future<Result<BabyMonthlyFormBody>> call({
+    required int babyId,
     required int yearId,
     required int month,
   }) async {
@@ -97,11 +99,14 @@ class GetBabyCheckFormAnswerImpl with GetBabyCheckFormAnswer {
     if(res is Success<BabyMonthlyFormBody>) {
       final data = res.data;
       final res2 = await _repo.getBabyNik();
-      if(res2 is Success<String>) {
+      if(res2 is Success<Map<int, String>>) {
         prind("GetBabyCheckFormAnswerImpl data = ${data.toJson()}");
-        final babyNik = res2.data;
+        final babyNik = res2.data[babyId];
         if(data.id == null) {
           throw "Something wrong with `BabyMonthlyFormBody.id`, it's null.";
+        }
+        if(babyNik == null) {
+          throw "Can't get `babyNik` with `babyId` of '$babyId'";
         }
         final res3 = await _repo.saveBabyCheckUpId(babyNik: babyNik, month: month, id: data.id!);
         if(res3 is! Success<bool>) {

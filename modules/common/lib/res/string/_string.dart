@@ -3,6 +3,9 @@ class Strings {
   Strings._();
 
   static const app_name = "SiBunda";
+
+  static const logout = "Keluar dari Akun";
+
   static const old_password = "Password Lama";
   static const password = "Password";
   static const name = "Nama";
@@ -27,6 +30,7 @@ class Strings {
   static const form_submission_success = "Form berhasil dikirim";
   static const form_submission_fail = "Terjadi kesalahan saat mengirim form. Harap ulangi.";
   static const error_occurred_when_saving_data = "Terjadi kesalahan saat menyimpan. Harap ulangi.";
+  static const error_occurred_when_logout = "Terjadi kesalahan saat keluar dari akun. Harap ulangi.";
   static const no_data = "Tidak ada data";
   static const baby_dev_form = "Form Pemeriksaan Perkembangan Bayi";
   static const baby_growth_form = "Form Pemeriksaan Pertumbuhan Bayi";

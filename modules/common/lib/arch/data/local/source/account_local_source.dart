@@ -10,7 +10,9 @@ import 'package:common/value/const_values.dart';
 import 'package:common/value/db_const.dart';
 import 'package:core/domain/model/result.dart';
 import 'package:core/util/_consoles.dart';
+import 'package:email_validator/email_validator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:collection/collection.dart';
 
 mixin AccountLocalSrc {
   //Future<Result<bool>> saveSignupData(SignUpData signup); //For now, `SignUpData` is saved as batch with other data type.
@@ -38,7 +40,9 @@ mixin AccountLocalSrc {
 
   Future<Result<String>> getMotherNik(String email);
   Future<Result<String>> getFatherNik(String email);
-  Future<Result<String>> getChildNik(String email);
+  Future<Result<Map<int, String>>> getChildrenNik(String email);
+
+  Future<Result<List<Profile>>> getChildrenProfilesByMotherNik(String motherNik);
 
   Future<Result<int>> getMotherId(String nik);
   Future<Result<int>> getFatherId(String nik);
@@ -205,7 +209,7 @@ class AccountLocalSrcImpl with AccountLocalSrc {
   @override
   Future<Result<String>> getMotherNik(String email) async {
     final niks = await _profileDao.getNiksByEmail(email);
-    final nik = niks[DbConst.TYPE_MOTHER];
+    final nik = niks[DbConst.TYPE_MOTHER]?.values.firstOrNull;
     if(nik != null) {
       return Success(nik);
     } else {
@@ -215,7 +219,7 @@ class AccountLocalSrcImpl with AccountLocalSrc {
   @override
   Future<Result<String>> getFatherNik(String email) async {
     final niks = await _profileDao.getNiksByEmail(email);
-    final nik = niks[DbConst.TYPE_FATHER];
+    final nik = niks[DbConst.TYPE_FATHER]?.values.firstOrNull;
     if(nik != null) {
       return Success(nik);
     } else {
@@ -223,7 +227,7 @@ class AccountLocalSrcImpl with AccountLocalSrc {
     }
   }
   @override
-  Future<Result<String>> getChildNik(String email) async {
+  Future<Result<Map<int, String>>> getChildrenNik(String email) async {
     try {
       prind("AccountLocalSrcImpl getChildNik() email = $email");
       final niks = await _profileDao.getNiksByEmail(email);
@@ -235,8 +239,36 @@ class AccountLocalSrcImpl with AccountLocalSrc {
         return Fail();
       }
     } catch(e, stack) {
+      prine(e);
       prine(stack);
       return Fail(error: e);
+    }
+  }
+
+  @override
+  Future<Result<List<Profile>>> getChildrenProfilesByMotherNik(String motherNik) async {
+    try {
+      final mother = await _profileDao.getByNik(motherNik, type: DbConst.TYPE_MOTHER);
+      if(mother == null) {
+        return Fail(msg: "Can't get mother profile with `motherNik` of '$motherNik' in `getChildrenProfilesByMotherNik()`");
+      }
+      final motherCred = await _credentialDao.getById(mother.userId);
+      if(motherCred == null) {
+        return Fail(msg: "Can't get mother credential with `id` of '${mother.userId}' in `getChildrenProfilesByMotherNik()`");
+      }
+      final res = await _profileDao.getProfilesByEmail(motherCred.email, type: DbConst.TYPE_CHILD);
+      final children = res[DbConst.TYPE_CHILD]?.map((e) => Profile.fromEntity(
+        entity: e, email: motherCred.email,
+      )).toList(growable: false);
+      if(children == null) {
+        return Fail(msg: "Can't get children profiles with `id` of '${mother.userId}' in `getChildrenProfilesByMotherNik()`");
+      }
+      return Success(children);
+    } catch(e, stack) {
+      final msg = "Error calling `getChildrenProfilesByMotherNik()`";
+      prine("$msg, e= $e");
+      prine(stack);
+      return Fail(msg: msg, error: e);
     }
   }
 
@@ -272,12 +304,14 @@ class AccountLocalSrcImpl with AccountLocalSrc {
   }
 
   @override
-  Future<Result<Profile>> getProfile(String email) async {
-    final ent = await _credentialDao.getByEmail(email);
-    if(ent == null) {
+  Future<Result<Profile>> getProfile(String email, { String? type }) async {
+    final cred = await _credentialDao.getByEmail(email);
+    final profRaw = await _profileDao.getProfilesByEmail(email);
+    final prof = profRaw[type ?? DbConst.TYPE_MOTHER]?.firstOrNull;
+    if(cred == null || prof == null) {
       return Fail();
     }
-    final profile = Profile(name: ent.name, email: ent.email, img: dummyImg_profile); //TODO: dummy img.
+    final profile = Profile.fromEntity(entity: prof, email: email);
     return Success(profile);
   }
 

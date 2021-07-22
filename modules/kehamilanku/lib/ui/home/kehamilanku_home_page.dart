@@ -1,6 +1,7 @@
 import 'package:common/arch/domain/dummy_data.dart';
 import 'package:common/arch/domain/model/chart_data_mother.dart';
 import 'package:common/arch/domain/model/kehamilanku_data.dart';
+import 'package:common/arch/domain/model/profile_data.dart';
 import 'package:common/arch/ui/model/dummy_ui_data.dart';
 import 'package:common/arch/ui/page/secondary_frames.dart';
 import 'package:common/arch/ui/widget/_basic_widget.dart';
@@ -52,6 +53,12 @@ class KehamilankuHomePage extends StatelessWidget {
         onItemClick: (baby, isBorn) {
           if(!isBorn) { // unborn baby must always be 1. Off course though.
             overlayVisibility.value = false;
+          } else {
+            KehamilankuRoutes.obj.goToModule(
+              context, GlobalRoutes.bayiku,
+              args: { Const.KEY_DATA: ProfileCredential.fromBabyOverlay(baby) },
+              replaceCurrent: true,
+            );
           }
           showSnackBar(context, "Nama= ${baby.name} isBorn= $isBorn");
         },

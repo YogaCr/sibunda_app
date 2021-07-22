@@ -11,7 +11,10 @@ class UseCaseDi {
 
   static GetCityList get getCityList => GetCityListImpl(RepoDi.dataRepo);
   static IsLoggedIn get isLoggedIn => IsLoggedInImpl(RepoDi.authRepo);
+  static Logout get logout => LogoutImpl(RepoDi.authRepo);
   static InitConfig get initConfig => InitConfigImpl(LocalSrcDi.accountSrc);
+
+  static ToLoginPage get toLoginPage => ToLoginPageImpl();
 
   static GetMotherNik get getMotherNik => GetMotherNikImpl(RepoDi.motherRepo);
   static GetBabyNik get getBabyNik => GetBabyNikImpl(RepoDi.myBabyRepo);

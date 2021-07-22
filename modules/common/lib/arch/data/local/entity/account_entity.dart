@@ -64,9 +64,6 @@ class ProfileEntities extends Table {
   String get tableName => "profiles"; //DbConst.NAME_PROFILES;
 
   @override
-  Set<Column>? get primaryKey => {userId, type};
-
-  @override
   List<String> get customConstraints => [
     "UNIQUE (nik, user_id, type, server_id)"
   ];

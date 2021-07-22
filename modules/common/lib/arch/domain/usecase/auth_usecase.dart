@@ -2,7 +2,10 @@ import 'package:common/arch/data/local/source/account_local_source.dart';
 import 'package:common/arch/di/config_di.dart';
 import 'package:common/arch/domain/model/auth.dart';
 import 'package:common/arch/domain/repo/auth_repo.dart';
+import 'package:common/config/_config.dart';
 import 'package:core/domain/model/result.dart';
+import 'package:core/util/_consoles.dart';
+import 'package:flutter/cupertino.dart';
 
 mixin IsLoggedIn {
   Future<Result<bool>> call();
@@ -10,6 +13,17 @@ mixin IsLoggedIn {
 
 mixin InitConfig {
   Future<Result<bool>> call();
+}
+
+mixin Logout {
+  Future<Result<bool>> call(SessionData data);
+}
+
+mixin ToLoginPage {
+  Future<Result<bool>> call({
+    required BuildContext context,
+    required ModuleRoute moduleRoute,
+  });
 }
 
 
@@ -52,5 +66,33 @@ class InitConfigImpl with InitConfig {
       msg = "Can't get local email";
     }
     return Fail(msg: msg);
+  }
+}
+
+class LogoutImpl with Logout {
+  final AuthRepo repo;
+  LogoutImpl(this.repo);
+  @override
+  Future<Result<bool>> call(SessionData data) => repo.logout(data);
+}
+
+class ToLoginPageImpl with ToLoginPage {
+  @override
+  Future<Result<bool>> call({
+    required BuildContext context,
+    required ModuleRoute moduleRoute,
+  }) async {
+    try {
+      moduleRoute.goToExternalRouteBuilder(
+        context, GlobalRoutes.home_LoginPage,
+        clearPrevs: true,
+      );
+      return Success(true);
+    } catch(e, stack) {
+      final msg = "Can't go to login page";
+      prine("$msg; e= $e");
+      prine(stack);
+      return Fail(msg: msg, error: e);
+    }
   }
 }
