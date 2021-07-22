@@ -31,7 +31,7 @@ class NewAccountConfirmPage extends StatelessWidget {
       })
       ..onLogin.observeForever((success) {
         if(success == true) {
-          HomeRoutes.homePage.goToPage(context);
+          HomeRoutes.homePage.goToPage(context, clearPrevs: true);
           showSnackBar(context, Strings.welcome_mother, backgroundColor: Colors.green);
         } else {
           showSnackBar(context, Strings.form_submission_fail);

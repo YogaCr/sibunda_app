@@ -20,7 +20,7 @@ class SplashPage extends StatelessWidget {
     final vm = ViewModelProvider.of<SplashVm>(context)
       ..onInitConfig.observeOnce((isLoggedIn) {
         if(isLoggedIn == true) {
-          HomeRoutes.homePage.goToPage(context, replaceCurrent: true);
+          HomeRoutes.homePage.goToPage(context, clearPrevs: true);
         }
       }, immediatelyGet: false);
 

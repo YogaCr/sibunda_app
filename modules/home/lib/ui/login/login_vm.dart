@@ -29,7 +29,7 @@ class LoginFormVm extends FormVmGroup {
     final data = LoginData(email: email, password: password);
     return await useCase(data).then<Result<String>>((value) => value is Success<SessionData>
         ? Success("")
-        : value as Fail<String>
+        : (value as Fail<SessionData>).copy()
     );
   }
 

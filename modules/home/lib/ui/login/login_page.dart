@@ -42,7 +42,7 @@ class LoginPage extends StatelessWidget {
         FormVmGroupObserver<LoginFormVm>(
           showHeader: false,
           onSubmit: (ctx, success) => success
-              ? HomeRoutes.homePage.goToPage(context)
+              ? HomeRoutes.homePage.goToPage(context, clearPrevs: true,)
               : showSnackBar(ctx, "Terjadi kesalahan"),
           submitBtnBuilder: (ctx, canProceed) => Container(
             margin: EdgeInsets.symmetric(vertical: 10,),
