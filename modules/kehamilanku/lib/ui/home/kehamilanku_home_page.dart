@@ -34,10 +34,7 @@ class KehamilankuHomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     prind("KehamilankuHomePage build()");
     final vm = ViewModelProvider.of<KehamilankuHomeVm>(context)
-      ..getAgeOverview(VarDi.motherNik.getOrElse())
-      ..getTrimesterList()
-      ..getFoodRecomList()
-      ..getBabyOverlay();
+      ..init();
     prind("KehamilankuHomePage build() 2");
 
     return TopBarTitleAndBackFrame(

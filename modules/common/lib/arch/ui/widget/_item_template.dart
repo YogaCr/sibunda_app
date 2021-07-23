@@ -8,6 +8,7 @@ import 'package:common/arch/ui/model/immunization.dart';
 import 'package:common/config/manifest.dart';
 import 'package:common/res/theme/_theme.dart';
 import 'package:common/util/assets.dart';
+import 'package:common/util/times.dart';
 import 'package:flutter/material.dart';
 
 import 'txt_btn.dart';
@@ -491,7 +492,7 @@ class ItemProfile extends StatelessWidget {
 
   ItemProfile.fromData(Profile data,):
     name = data.name,
-    desc = data.email,
+    desc = "${calculateYearAge(data.birthDate)} tahun", //data.email,
     img = data.img
   ;
 

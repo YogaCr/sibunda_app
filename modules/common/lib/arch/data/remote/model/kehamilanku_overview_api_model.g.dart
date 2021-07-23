@@ -62,6 +62,7 @@ PregnancyHomeFoodRecom _$PregnancyHomeFoodRecomFromJson(
   return PregnancyHomeFoodRecom(
     category: json['food_category'] as String,
     desc: json['food_dose'] as String,
+    img_url: json['img_url'] as String?,
   );
 }
 
@@ -70,6 +71,7 @@ Map<String, dynamic> _$PregnancyHomeFoodRecomToJson(
     <String, dynamic>{
       'food_category': instance.category,
       'food_dose': instance.desc,
+      'img_url': instance.img_url,
     };
 
 PregnancyHomeTrimester _$PregnancyHomeTrimesterFromJson(

@@ -194,7 +194,7 @@ class ItemMotherRecomFood extends StatelessWidget {
   });
 
   ItemMotherRecomFood.fromData(MotherFoodRecom data):
-    img = data.img,
+    img = data.img ?? dummyImg,
     foodName = data.food,
     desc = data.desc
   ;

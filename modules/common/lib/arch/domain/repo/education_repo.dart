@@ -24,11 +24,36 @@ class EducationRepoImpl with EducationRepo {
   ;
 
   @override
-  Future<Result<List<Tips>>> getEducationMainPanelDataList(String motherNik) async => Success(dummyTipsList);
+  Future<Result<List<Tips>>> getEducationMainPanelDataList(String motherNik) async {
+    try {
+      final res = await _homeApi.getInfoCarousel();
+      if(res.code != 200) {
+        return Fail(msg: "`getEducationMainPanelDataList()` msg= ${res.message} status= ${res.status}", code: res.code);
+      }
+      final list = res.data.map((e) => Tips.fromTipsResponse(e)).toList(growable: false);
+      return Success(list);
+    } catch(e, stack) {
+      prine(stack);
+      return Fail(msg: "Error calling `getEducationMainPanelDataList()`", error: e);
+    }
+  }
   @override
-  Future<Result<List<Tips>>> getEducationHomeTipsList(String motherNik) async => Success(dummyTipsList);
+  Future<Result<List<Tips>>> getEducationHomeTipsList(String motherNik) async {
+    try {
+      final res = await _homeApi.getInfoLatest();
+      if(res.code != 200) {
+        return Fail(msg: "`getEducationHomeTipsList()` msg= ${res.message} status= ${res.status}", code: res.code);
+      }
+      final list = res.data.map((e) => Tips.fromTipsResponse(e)).toList(growable: false);
+      return Success(list);
+    } catch(e, stack) {
+      prine(stack);
+      return Fail(msg: "Error calling `getEducationHomeTipsList()`", error: e);
+    }
+  }
   @override
   Future<Result<TipsDetail>> getEducationDetail(Tips data) async {
+    //TODO: Msh dummy, omongi Amir buat endpoint detailnya.
     final i = dummyTipsList.indexOf(data);
     return i >= 0
         ? Success(dummyTipsDetailList[i])
@@ -42,7 +67,7 @@ class EducationRepoImpl with EducationRepo {
       if(res.code != 200) {
         return Fail(msg: "`getHomeTipsList()` msg= ${res.message} status= ${res.status}", code: res.code);
       }
-      final list = res.data.tips_dan_info.map((e) => Tips.fromResponse(e)).toList(growable: false);
+      final list = res.data.tips_dan_info.map((e) => Tips.fromHomeResponse(e)).toList(growable: false);
       return Success(list);
     } catch(e, stack) {
       prine(stack);

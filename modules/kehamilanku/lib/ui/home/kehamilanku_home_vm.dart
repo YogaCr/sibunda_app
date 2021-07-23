@@ -8,6 +8,7 @@ import 'package:core/ui/base/async_vm.dart';
 import 'package:core/ui/base/live_data.dart';
 import 'package:core/util/_consoles.dart';
 import 'package:core/util/val_util.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:kehamilanku/core/domain/usecase/home_usecase.dart';
 
 class KehamilankuHomeVm extends AsyncVm {
@@ -54,6 +55,18 @@ class KehamilankuHomeVm extends AsyncVm {
   @override
   List<LiveData> get liveDatas => [_ageOverview, _trimesterList, _foodRecomList,];
 
+  void init() {
+    getAgeOverview(VarDi.motherNik.getOrElse());
+    getTrimesterList();
+    getBabyOverlay();
+    _ageOverview.observeOnce((age) {
+      if(age != null) { //This way, pregnancy week age will be instantiated first.
+        getFoodRecomList();
+      }
+    }, immediatelyGet: false);
+  }
+
+  @protected
   void getAgeOverview(String motherNik, [bool forceLoad = false]) {
     prind("getAgeOverview() motherNik= $motherNik forceLoad = $forceLoad _ageOverview.value = ${_ageOverview.value}");
     if(!forceLoad && _ageOverview.value != null) return;
@@ -69,6 +82,7 @@ class KehamilankuHomeVm extends AsyncVm {
       });
     });
   }
+  @protected
   void getTrimesterList([bool forceLoad = false]) {
     prind("getTrimesterList() forceLoad = $forceLoad _trimesterList.value = ${_trimesterList.value}");
     if(!forceLoad && _trimesterList.value != null) return;
@@ -83,6 +97,7 @@ class KehamilankuHomeVm extends AsyncVm {
       });
     });
   }
+  @protected
   void getFoodRecomList([bool forceLoad = false]) {
     if(!forceLoad && _trimesterList.value != null) return;
     startJob(getFoodRecomListKey, (isActive) async {
@@ -97,6 +112,7 @@ class KehamilankuHomeVm extends AsyncVm {
       });
     });
   }
+  @protected
   void getBabyOverlay({ bool forceLoad = false }) {
     prind("`getBabyOverlay` MULAI forceLoad= $forceLoad");
     if(!forceLoad

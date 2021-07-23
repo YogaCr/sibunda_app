@@ -73,7 +73,7 @@ String getMotherChartTypeYLabelFormat(MotherChartType type) {
 
 String getBabyChartTypeString(BabyChartType type) {
   switch(type) {
-    case BabyChartType.kms: return "Berat Badan Menurut Usia";
+    case BabyChartType.kms: return "KMS";
     case BabyChartType.len: return "Panjang Badan Menurut Usia";
     case BabyChartType.weight: return "Berat Badan Menurut Usia";
     case BabyChartType.weightToLen: return "Berat Badan Menurut Panjang Badan";

@@ -1,5 +1,6 @@
 import 'package:common/arch/data/remote/model/home_dashboard_api_model.dart';
 import 'package:common/arch/data/remote/model/home_notif_api_model.dart';
+import 'package:common/arch/data/remote/model/home_tips_api_model.dart';
 import 'package:common/arch/domain/model/auth.dart';
 import 'package:common/util/net.dart';
 import 'package:common/value/const_values.dart';
@@ -20,4 +21,9 @@ abstract class HomeApi {
   Future<HomeNotifMsgResponse> getNotifs();
   @GET("/messages")
   Future<HomeNotifMsgResponse> getMessages();
+
+  @GET("/tips-dan-info/carousel")
+  Future<TipsResponse> getInfoCarousel();
+  @GET("/tips-dan-info/latest")
+  Future<TipsResponse> getInfoLatest();
 }

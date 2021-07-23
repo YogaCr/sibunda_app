@@ -55,10 +55,12 @@ class PregnancyHomeFoodRecom {
   final String category;
   @JsonKey(name: Const.KEY_FOOD_DESC)
   final String desc;
+  final String? img_url;
 
   PregnancyHomeFoodRecom({
     required this.category,
     required this.desc,
+    required this.img_url,
   });
 
   factory PregnancyHomeFoodRecom.fromJson(Map<String, dynamic> map) => _$PregnancyHomeFoodRecomFromJson(map);

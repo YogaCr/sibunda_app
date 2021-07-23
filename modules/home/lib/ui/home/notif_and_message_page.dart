@@ -65,14 +65,16 @@ Widget _notifMsgList(
     Widget Function(HomeNotifMsg) builder,
 ) {
   return SliverList(
-    delegate: dataList != null ? SliverChildBuilderDelegate(
+    delegate: dataList?.isNotEmpty == true ? SliverChildBuilderDelegate(
         (ctx, i) => Container(
           margin: EdgeInsets.all(10),
-          child: builder(dataList[i]),
+          child: builder(dataList![i]),
         ),
-      childCount: dataList.length,
+      childCount: dataList!.length,
     ) : SliverChildListDelegate.fixed([
-      defaultLoading()
+      dataList == null
+          ? defaultLoading()
+          : defaultNoData(),
     ]),
   );
 }

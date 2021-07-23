@@ -197,7 +197,7 @@ class MotherTrimester {
 }
 
 class MotherFoodRecom {
-  final ImgData img;
+  final ImgData? img;
   final String food;
   final String desc;
 
@@ -211,7 +211,10 @@ class MotherFoodRecom {
     return MotherFoodRecom(
       food: response.category,
       desc: response.desc,
-      img: dummyImg,
+      img: response.img_url != null ? ImgData(
+        link: response.img_url!,
+        isLocal: false,
+      ) : null,
     );
   }
 }
