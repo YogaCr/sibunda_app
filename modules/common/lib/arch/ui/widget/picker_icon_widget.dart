@@ -1,4 +1,5 @@
 import 'package:common/arch/di/db_di.dart';
+import 'package:common/arch/di/usecase_di.dart';
 import 'package:common/arch/domain/model/_model_template.dart';
 import 'package:common/arch/ui/model/dummy_ui_data.dart';
 import 'package:common/arch/ui/widget/popup_widget.dart';
@@ -20,6 +21,28 @@ class CityPickerIcon extends StatelessWidget {
         onItemSelected?.call(selected);
       },
       child: Icon(Icons.place_outlined,),
+    );
+  }
+}
+
+class BabyPickerIcon extends StatelessWidget {
+  final void Function(IdStringModel?)? onItemSelected;
+
+  BabyPickerIcon({
+    this.onItemSelected,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return InkResponse(
+      onTap: () async {
+        final selected = await showBabySelectionPopup(
+          context: context,
+          getBornBabyList: UseCaseDi.getBornBabyList,
+        );
+        onItemSelected?.call(selected);
+      },
+      child: Icon(Icons.face,),
     );
   }
 }

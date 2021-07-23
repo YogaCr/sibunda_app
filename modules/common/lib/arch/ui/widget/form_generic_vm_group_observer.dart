@@ -45,6 +45,11 @@ class FormVmGroupObserver<VM extends FormVmGroup> extends StatefulWidget {
   final bool Function()? predicate;
 
   final bool showHeader;
+  /// Just like [showHeader], but for each group. Its keys are index of group.
+  /// Note that [showHeader] has higher privilege, so if [showHeader] is false,
+  /// then this property has no effect.
+  final Map<int, bool>? showHeaderMap;
+
   /// Flag whether 'all' fields this [FormVmGroupObserver] will build is enabled or not.
   final bool enabled;
   final Widget? Function(int group, String key, MutableLiveData data)? pickerIconBuilder;
@@ -65,6 +70,7 @@ class FormVmGroupObserver<VM extends FormVmGroup> extends StatefulWidget {
     this.imgPosition = RelativePosition.below,
     this.showHeader = true,
     this.enabled = true,
+    this.showHeaderMap,
     this.interceptor,
     this.pickerIconBuilder,
   });
@@ -81,6 +87,7 @@ class FormVmGroupObserver<VM extends FormVmGroup> extends StatefulWidget {
     vm: vm,
     imgPosition: imgPosition,
     showHeader: showHeader,
+    showHeaderMap: showHeaderMap,
     enabled: enabled,
     interceptor: interceptor,
     pickerIconBuilder: pickerIconBuilder,
@@ -118,6 +125,11 @@ class _FormVmGroupObserverState<VM extends FormVmGroup>
   final bool Function()? predicate;
 
   final bool showHeader;
+  /// Just like [showHeader], but for each group. Its keys are index of group.
+  /// Note that [showHeader] has higher privilege, so if [showHeader] is false,
+  /// then this property has no effect.
+  final Map<int, bool>? showHeaderMap;
+
   /// Flag whether 'all' fields this [FormVmGroupObserver] will build is enabled or not.
   final bool enabled;
   final Widget? Function(int group, String key, MutableLiveData data)? pickerIconBuilder;
@@ -137,6 +149,7 @@ class _FormVmGroupObserverState<VM extends FormVmGroup>
     required this.vm,
     required this.imgPosition,
     required this.showHeader,
+    required this.showHeaderMap,
     required this.enabled,
     required this.interceptor,
     required this.pickerIconBuilder,
@@ -161,7 +174,7 @@ class _FormVmGroupObserverState<VM extends FormVmGroup>
                 groupData: formGroupData,
                 groupPosition: i,
                 imgPosition: imgPosition,
-                showHeader: showHeader,
+                showHeader: showHeader && (showHeaderMap?[i] ?? true),
                 enabled: enabled,
                 interceptor: interceptor?[i],
                 pickerIconBuilder: pickerIconBuilder,

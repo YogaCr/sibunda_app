@@ -11,6 +11,7 @@ mixin FormFieldRepo {
   Future<Result<List<FormGroupData>>> getPregnancyImmunizationFormGroupData();
   Future<Result<List<FormGroupData>>> getBabyImmunizationFormGroupData();
   Future<Result<List<FormGroupData>>> getCovidMotherCheckFormGroupData();
+  Future<Result<List<FormGroupData>>> getCovidBabyCheckFormGroupData();
 
   Future<Result<List<FormGroupData>>> getNeonatalFormData(int page);
 }
@@ -58,6 +59,12 @@ class FormFieldRepoImpl with FormFieldRepo {
     return Success([res]);
   }
   @override
+  Future<Result<List<FormGroupData>>> getCovidBabyCheckFormGroupData() async {
+    final resps = await _covidApi.getFormData();
+    final res = FormGroupData.fromCovidResponse(resps.data);
+    return Success([covidBabySelectionFormGroup, res]);
+  }
+  @override
   Future<Result<List<FormGroupData>>> getNeonatalFormData(int page) async => Success(getBabyNeonatalService(page));
 }
 
@@ -75,6 +82,8 @@ class FormFieldRepoDummy with FormFieldRepo {
   Future<Result<List<FormGroupData>>> getBabyImmunizationFormGroupData() async => Success(babyImmunizationFormGroupData);
   @override
   Future<Result<List<FormGroupData>>> getCovidMotherCheckFormGroupData() async => Success(covidMotherCheckFormGroupData);
+  @override
+  Future<Result<List<FormGroupData>>> getCovidBabyCheckFormGroupData() async => Success(covidMotherCheckFormGroupData);
   @override
   Future<Result<List<FormGroupData>>> getNeonatalFormData(int page) async => Success(babyFormGroupData_neonatal_6h);
 }

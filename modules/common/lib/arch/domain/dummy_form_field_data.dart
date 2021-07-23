@@ -464,3 +464,10 @@ final covidMotherCheckFormGroupData = <FormGroupData>[
     ],
   ),
 ];
+
+final covidBabySelectionFormGroup = FormGroupData(
+  header: "",
+  data: [
+    FormData(key: Const.KEY_BABY_NAME, question: "Nama Bayi", type: FormType.text, input: FieldInputMethod.pick,),
+  ],
+);

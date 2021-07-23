@@ -1,11 +1,16 @@
 import 'package:common/arch/data/local/dao/data_dao.dart';
+import 'package:common/arch/data/local/source/account_local_source.dart';
+import 'package:common/arch/di/config_di.dart';
 import 'package:common/arch/domain/dummy_data.dart';
 import 'package:common/arch/domain/model/_model_template.dart';
+import 'package:common/arch/domain/model/baby_data.dart';
+import 'package:common/arch/domain/usecase/baby_usecase.dart';
 import 'package:common/arch/ui/adapter/id_string_adp.dart';
 import 'package:common/arch/ui/widget/_basic_widget.dart';
 import 'package:common/res/string/_string.dart';
 import 'package:common/res/theme/_theme.dart';
 import 'package:common/util/navigations.dart';
+import 'package:core/domain/model/result.dart';
 import 'package:core/ui/base/live_data.dart';
 import 'package:core/ui/base/live_data_observer.dart';
 import 'package:flutter/cupertino.dart';
@@ -186,10 +191,30 @@ Future<IdStringModel?> showCitySelectionPopup({
 }) => showLazyIdStringPopup(
   context: context,
   title: Strings.select_city,
+  showId: false,
   dataSrc: () async {
     final cities = await dao.get();
     final list = cities.map((e) => IdStringModel(id: e.id, name: e.name)).toList(growable: false);
     return list;
+  },
+);
+
+Future<IdStringModel?> showBabySelectionPopup({
+  required BuildContext context,
+  required GetBornBabyList getBornBabyList,
+}) => showLazyIdStringPopup(
+  context: context,
+  title: Strings.select_city,
+  showId: false,
+  dataSrc: () async {
+    final bornBabiesRes = await getBornBabyList(VarDi.motherNik.getOrElse());
+    if(bornBabiesRes is Success<List<BabyOverlayData>>) {
+      final bornBabies = bornBabiesRes.data;
+      final list = bornBabies.map((e) => IdStringModel(id: e.id, name: e.name)).toList(growable: false);
+      return list;
+    } else {
+      throw "Can't get born baby list data in `showBabySelectionPopup()`; e= $bornBabiesRes";
+    }
   },
 );
 

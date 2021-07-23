@@ -75,6 +75,7 @@ class Const {
   static const KEY_PLACE = "location";
   static const KEY_AGE = "age";
 
+  static const KEY_BABY_NAME = "nama_bayi";
   static const KEY_VISIT_DATE = "tanggal_periksa";
   static const KEY_VISIT_PLACE = "tempat_periksa";
   static const KEY_CHECKER_NAME = "nama_pemeriksa";

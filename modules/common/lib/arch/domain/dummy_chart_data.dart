@@ -100,7 +100,7 @@ final babyWeightWarning = <FormWarningStatus>[
 //final _babyKmsLimit_low = 2;
 final babyKmsChartData = List<BabyKmsChartData>.generate(21, (i) => BabyKmsChartData(
   age: i,
-  kbm: i,
+  //kbm: i,
   min3sd: _babyWeightLimit_low +(i*2),
   min2sd: _babyWeightLimit_low +(i*3) +1,
   min1sd: _babyWeightLimit_low +(i*3) +4,

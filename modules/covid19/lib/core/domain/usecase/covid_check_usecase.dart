@@ -8,6 +8,9 @@ import 'package:core/domain/model/result.dart';
 mixin GetCovidMotherCheckFormData {
   Future<Result<List<FormGroupData>>> call();
 }
+mixin GetCovidBabyCheckFormData {
+  Future<Result<List<FormGroupData>>> call();
+}
 
 mixin SubmitCovidMotherCheckForm {
   Future<Result<FormWarningStatus>> call(String motherNik, Map<int, dynamic> data);
@@ -23,6 +26,12 @@ class GetCovidMotherCheckFormDataImpl with GetCovidMotherCheckFormData {
   GetCovidMotherCheckFormDataImpl(this._repo);
   @override
   Future<Result<List<FormGroupData>>> call() => _repo.getCovidMotherCheckFormGroupData();
+}
+class GetCovidBabyCheckFormDataImpl with GetCovidBabyCheckFormData {
+  final FormFieldRepo _repo;
+  GetCovidBabyCheckFormDataImpl(this._repo);
+  @override
+  Future<Result<List<FormGroupData>>> call() => _repo.getCovidBabyCheckFormGroupData();
 }
 
 class SubmitCovidMotherCheckFormImpl with SubmitCovidMotherCheckForm {

@@ -5,7 +5,7 @@ int parseInt(source, { int radix = 10, int Function(dynamic)? onError }) {
   if(res != null) {
     return res;
   }
-  throw "Unknown type '${source.runtimeType}' to parse to `int`";
+  throw "Unknown type '${source.runtimeType}' to parse to `int`, current source value = '$source'";
 }
 int? tryParseInt(source, {
   int radix = 10,
@@ -26,7 +26,7 @@ num parseNum(source, { num Function(dynamic)? onError }) {
   if(res != null) {
     return res;
   }
-  throw "Unknown type '${source.runtimeType}' to parse to `num`";
+  throw "Unknown type '${source.runtimeType}' to parse to `num`, current source value = '$source'";
 }
 num? tryParseNum(source, { num Function(dynamic)? onError }) {
   if(source is num) return source;
@@ -43,7 +43,7 @@ double parseDouble(source, { double Function(dynamic)? onError }) {
   if(res != null) {
     return res;
   }
-  throw "Unknown type '${source.runtimeType}' to parse to `double`";
+  throw "Unknown type '${source.runtimeType}' to parse to `double`, current source value = '$source'";
 }
 double? tryParseDouble(source, { double Function(dynamic)? onError }) {
   if(source is double) return source;
@@ -60,7 +60,7 @@ DateTime parseDate(source, { DateTime Function(dynamic)? onError }) {
   if(res != null) {
     return res;
   }
-  throw "Unknown type '${source.runtimeType}' to parse to `DateTime`";
+  throw "Unknown type '${source.runtimeType}' to parse to `DateTime`, current source value = '$source'";
 }
 DateTime? tryParseDate(source, { DateTime Function(dynamic)? onError }) {
   if(source == null) return null;
@@ -82,7 +82,7 @@ TimeOfDay parseTimeOfDay(source, { TimeOfDay Function(dynamic)? onError }) {
   if(res != null) {
     return res;
   }
-  throw "Unknown type '${source.runtimeType}' to parse to `TimeOfDay`";
+  throw "Unknown type '${source.runtimeType}' to parse to `TimeOfDay`, current source value = '$source'";
 }
 TimeOfDay? tryParseTimeOfDay(source, { TimeOfDay Function(dynamic)? onError }) {
   if(source is TimeOfDay) return source;

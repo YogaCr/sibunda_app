@@ -34,6 +34,33 @@ Map<String, dynamic> _$BabyWeightChartDataToJson(
       'input': instance.observed,
     };
 
+BabyKmsChartData _$BabyKmsChartDataFromJson(Map<String, dynamic> json) {
+  return BabyKmsChartData(
+    age: json['month'] as int,
+    min3sd: json['minus_3_sd'] as num,
+    min2sd: json['minus_2_sd'] as num,
+    min1sd: json['minus_1_sd'] as num,
+    medianSd: json['median'] as num,
+    plus1sd: json['plus_1_sd'] as num,
+    plus2sd: json['plus_2_sd'] as num,
+    plus3sd: json['plus_3_sd'] as num,
+    observed: json['input'] as num,
+  );
+}
+
+Map<String, dynamic> _$BabyKmsChartDataToJson(BabyKmsChartData instance) =>
+    <String, dynamic>{
+      'month': instance.age,
+      'minus_3_sd': instance.min3sd,
+      'minus_2_sd': instance.min2sd,
+      'minus_1_sd': instance.min1sd,
+      'median': instance.medianSd,
+      'plus_1_sd': instance.plus1sd,
+      'plus_2_sd': instance.plus2sd,
+      'plus_3_sd': instance.plus3sd,
+      'input': instance.observed,
+    };
+
 BabyLenChartData _$BabyLenChartDataFromJson(Map<String, dynamic> json) {
   return BabyLenChartData(
     age: json['month'] as int,

@@ -14,8 +14,10 @@ class CovidVmDi {
   );
   static CovidCheckVm get checkVm => CovidCheckVm(
     getMotherNik: UseCaseDi.getMotherNik,
-    getBabyNik: UseCaseDi.getBabyNik,
+    getBornBabyList: UseCaseDi.getBornBabyList,
+    //getBabyNik: UseCaseDi.getBabyNik,
     getCovidMotherCheckFormData: CovidUseCaseDi.getCovidMotherCheckFormData,
+    getCovidBabyCheckFormData: CovidUseCaseDi.getCovidBabyCheckFormData,
     submitCovidMotherCheckForm: CovidUseCaseDi.submitCovidMotherCheckForm,
     submitCovidBabyCheckForm: CovidUseCaseDi.submitCovidBabyCheckForm,
   );

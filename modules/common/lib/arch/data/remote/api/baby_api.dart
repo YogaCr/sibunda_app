@@ -61,6 +61,8 @@ abstract class BabyApi {
   Future<List<BabyHeadCircumChartData>> getHeadCircumChart(@Path("child_id") int childId,);
   @GET("/graph/imt/{child_id}")
   Future<List<BabyBmiChartData>> getBmiChart(@Path("child_id") int childId,);
+  @GET("/graph/kms/{child_id}")
+  Future<List<BabyKmsChartData>> getKmsChart(@Path("child_id") int childId,);
   @GET("/graph/perkembangan/{child_id}")
   Future<List<BabyDevChartData>> getDevChart(@Path("child_id") int childId,);
 }

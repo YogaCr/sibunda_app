@@ -64,21 +64,30 @@ class BabyWeightChartData {
   Map<String, dynamic> toJson() => _$BabyWeightChartDataToJson(this);
 }
 
+@JsonSerializable()
 class BabyKmsChartData {
+  @JsonKey(name: "month")
   final int age;
-  final num kbm;
+  @JsonKey(name: "minus_3_sd")
   final num min3sd;
+  @JsonKey(name: "minus_2_sd")
   final num min2sd;
+  @JsonKey(name: "minus_1_sd")
   final num min1sd;
+  @JsonKey(name: "median")
   final num medianSd;
+  @JsonKey(name: "plus_1_sd")
   final num plus1sd;
+  @JsonKey(name: "plus_2_sd")
   final num plus2sd;
+  @JsonKey(name: "plus_3_sd")
   final num plus3sd;
+  @JsonKey(name: "input")
   final num observed;
 
   BabyKmsChartData({
     required this.age,
-    required this.kbm,
+    //required this.kbm,
     required this.min3sd,
     required this.min2sd,
     required this.min1sd,
@@ -88,6 +97,9 @@ class BabyKmsChartData {
     required this.plus3sd,
     required this.observed,
   });
+
+  factory BabyKmsChartData.fromJson(Map<String, dynamic> map) => _$BabyKmsChartDataFromJson(map);
+  Map<String, dynamic> toJson() => _$BabyKmsChartDataToJson(this);
 }
 
 @JsonSerializable()

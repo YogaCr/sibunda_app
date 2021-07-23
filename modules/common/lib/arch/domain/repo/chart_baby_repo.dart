@@ -52,7 +52,19 @@ class BabyChartRepoImpl with BabyChartRepo {
     }
   }
   @override
-  Future<Result<List<BabyKmsChartData>>> getBabyKmsChartData(String babyNik) async => Success(babyKmsChartData);
+  Future<Result<List<BabyKmsChartData>>> getBabyKmsChartData(String babyNik) async {
+    try {
+      final res = await _accountLocalSrc.getChildId(babyNik);
+      if(res is Success<int>) {
+        final id = res.data;
+        return Success(await _api.getKmsChart(id));
+      } else {
+        return Fail();
+      }
+    } catch(e) {
+      return Fail();
+    }
+  }
   @override
   Future<Result<List<BabyLenChartData>>> getBabyLenChartData(String babyNik) async {
     try {
