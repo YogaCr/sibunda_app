@@ -2,6 +2,7 @@ import 'package:bayiku/di/baby_vm_di.dart';
 import 'package:bayiku/ui/check_form/baby_check_form_vm.dart';
 import 'package:common/arch/data/remote/model/baby_check_form_api_model.dart';
 import 'package:common/arch/domain/dummy_data.dart';
+import 'package:common/arch/domain/model/profile_data.dart';
 import 'package:common/test/__common_test_const.dart';
 import 'package:common/util/data_mapper.dart';
 import 'package:common/util/type_util.dart';
@@ -20,7 +21,7 @@ late Map<String, dynamic> _sentResp;
 
 main() async {
   await ConfigUtil.init();
-  _vm = BabyVmDi.babyCheckFormVm
+  _vm = BabyVmDi.babyCheckFormVm(babyCredential: ProfileCredential(id: 1, nik: "nik"))
     ..yearId = _yearId;
 
   _group1();

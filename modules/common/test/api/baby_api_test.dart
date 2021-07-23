@@ -228,7 +228,7 @@ _getShowMonthlyForm() async {
 }
 
 _getFormWarning() async {
-  final body = BabyFormWarningBody(monthId: _month);
+  final body = BabyFormWarningBody(month: _month, yearId: _yearId);
   final res = await _api.getFormWarning(body);
   final resMap = res.toJson();
   prinr("res = $resMap");

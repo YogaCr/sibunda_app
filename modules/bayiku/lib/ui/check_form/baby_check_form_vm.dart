@@ -240,7 +240,7 @@ class BabyCheckFormVm extends FormVmGroup {
           throw "No such `babyNik` with `babyId` of '$babyId'";
         }
          */
-      final res2 = await _getBabyFromWarningStatus(babyNik, _currentMonth.value!);
+      final res2 = await _getBabyFromWarningStatus(yearId: yearId, month: _currentMonth.value!);
       //prind("getWarningList res2 = $res2 _currentMonth = $_currentMonth");
       if(res2 is Success<List<FormWarningStatus>>) {
         final data = res2.data;

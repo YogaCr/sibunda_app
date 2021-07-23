@@ -12,7 +12,10 @@ mixin GetBabyCheckForm {
 }
 
 mixin GetBabyFormWarningStatus {
-  Future<Result<List<FormWarningStatus>>> call(String babyNik, int monthId);
+  Future<Result<List<FormWarningStatus>>> call({
+    required int yearId,
+    required int month,
+  });
 }
 
 mixin SaveBabyCheckForm {
@@ -55,7 +58,10 @@ class GetBabyFormWarningStatusImpl with GetBabyFormWarningStatus {
   final MyBabyRepo _repo;
   GetBabyFormWarningStatusImpl(this._repo);
   @override
-  Future<Result<List<FormWarningStatus>>> call(String babyNik, int monthId) => _repo.getBabyWarningStatus(babyNik, monthId);
+  Future<Result<List<FormWarningStatus>>> call({
+    required int yearId,
+    required int month,
+  }) => _repo.getBabyWarningStatus(yearId: yearId, month: month);
 }
 
 class SaveBabyCheckFormImpl with SaveBabyCheckForm {

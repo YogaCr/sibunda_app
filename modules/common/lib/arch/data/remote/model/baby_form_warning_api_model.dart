@@ -5,11 +5,13 @@ part 'baby_form_warning_api_model.g.dart';
 
 //=========== Body ===========
 class BabyFormWarningBody {
-  final int monthId;
+  final int month;
+  final int yearId;
   BabyFormWarningBody({
-    required this.monthId,
+    required this.month,
+    required this.yearId,
   });
-  Map<String, dynamic> toJson() => {"month_id" : monthId};
+  Map<String, dynamic> toJson() => {"month" : month, "year_id": yearId};
 }
 
 //=========== Response ===========

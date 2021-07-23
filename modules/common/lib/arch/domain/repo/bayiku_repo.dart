@@ -27,7 +27,10 @@ mixin MyBabyRepo {
   Future<Result<List<BabyOverlayData>>> getUnbornBabyOverlayData(String motherNik);
   //Future<Result<List<Profile>>> getBabyProfiles();
   Future<Result<BabyAgeOverview>> getBabyAgeOverview(String babyNik);
-  Future<Result<List<FormWarningStatus>>> getBabyWarningStatus(String babyNik, int monthId);
+  Future<Result<List<FormWarningStatus>>> getBabyWarningStatus({
+    required int yearId,
+    required int month,
+  });
   Future<Result<List<HomeGraphMenu>>> getBabyGraphMenu();
   Future<Result<List<BabyFormMenuData>>> getBabyFormMenu(int babyId);
   Future<Result<List<BabyChartMenuData>>> getBabyGrowthGraphMenu();
@@ -126,7 +129,8 @@ class MyBabyRepoImpl with MyBabyRepo {
   } //async => Success(dummyBabyOverlayDataList_pregnancy);
 
   BabyHomeResponse? _homeResponse;
-  int _currentMonthId = -1;
+  int _currentMonth = -1;
+  int _currentYearId = -1;
   BabyFormWarningResponse? _formWarningResponse;
 
   @override
@@ -149,12 +153,16 @@ class MyBabyRepoImpl with MyBabyRepo {
     return (idRes as Fail<int>).copy();
   }
 // */
-  Future<Result<List<FormWarningStatus>>> getBabyWarningStatus(String babyNik, int monthId) async {
+  Future<Result<List<FormWarningStatus>>> getBabyWarningStatus({
+    required int yearId,
+    required int month,
+  }) async {
     try {
-      if(monthId != _currentMonthId) {
-        final body = BabyFormWarningBody(monthId: monthId);
+      if(month != _currentMonth) {
+        final body = BabyFormWarningBody(month: month, yearId: yearId);
         _formWarningResponse = await _api.getFormWarning(body);
-        _currentMonthId = monthId;
+        _currentMonth = month;
+        _currentYearId = yearId;
       }
       final data = _formWarningResponse!.data;
       final list = <FormWarningStatus>[
@@ -293,7 +301,10 @@ class MyBabyRepoDummy with MyBabyRepo {
   @override
   Future<Result<List<BabyChartMenuData>>> getBabyDevGraphMenu() async => Success(babyDevGraphMenuList);
   @override
-  Future<Result<List<FormWarningStatus>>> getBabyWarningStatus(String babyNik, int monthId) async =>
+  Future<Result<List<FormWarningStatus>>> getBabyWarningStatus({
+    required int yearId,
+    required int month,
+  }) async =>
       Success(motherWarningStatusList);
   @override
   Future<Result<bool>> saveBabyMonthlyCheck(BabyMonthlyFormBody body) async => Success(true);
