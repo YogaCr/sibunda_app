@@ -73,6 +73,10 @@ class TestUtil {
     final session = await getDummySession();
     VarDi.session = session;
   }
+  static initDummySeesion() async {
+    final session = SessionData(token: "<null>", tokenType: "Bearer");
+    VarDi.session = session;
+  }
   static initPrefs() async {
     await Prefs.loadPrefs();
   }

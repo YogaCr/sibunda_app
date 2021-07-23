@@ -1,3 +1,4 @@
+import 'package:common/arch/di/config_di.dart';
 import 'package:common/res/string/_string.dart';
 import 'package:common/res/theme/_theme.dart';
 import 'package:common/test/__common_test_const.dart';
@@ -12,7 +13,7 @@ import 'config/app_routes.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await ConfigUtil.init();
-  await TestUtil.initSession();
+  await TestUtil.initDummySeesion();
   runApp(MyApp());
 }
 

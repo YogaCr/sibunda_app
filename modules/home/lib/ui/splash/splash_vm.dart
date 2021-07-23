@@ -4,6 +4,7 @@ import 'package:common/arch/domain/usecase/data_usecase.dart';
 import 'package:core/domain/model/result.dart';
 import 'package:core/ui/base/async_vm.dart';
 import 'package:core/ui/base/live_data.dart';
+import 'package:core/util/_consoles.dart';
 
 class SplashVm extends AsyncVm {
   static const downloadCityListKey = "downloadCityList";
@@ -49,8 +50,8 @@ class SplashVm extends AsyncVm {
     return startJob(checkLogInKey, (isActive) async {
       final res = await _isLoggedInUseCase();
       if(res is Success<bool>) {
-        final data = res.data;
-        _isLoggedIn.value = data;
+        final isLoggedIn = res.data;
+        _isLoggedIn.value = isLoggedIn;
 
         final res2 = await _initConfig();
         if(res2 is Success<bool>) {
@@ -58,6 +59,7 @@ class SplashVm extends AsyncVm {
         } else {
           _onInitConfig.value = false;
         }
+        //if(isLoggedIn) {}
         return null;
       }
       return res as Fail;

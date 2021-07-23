@@ -9,6 +9,7 @@ import 'package:common/util/assets.dart';
 import 'package:core/ui/base/live_data.dart';
 import 'package:core/ui/base/live_data_observer.dart';
 import 'package:core/ui/base/view_model.dart';
+import 'package:core/util/_consoles.dart';
 import 'package:flutter/material.dart';
 import 'package:home/config/home_routes.dart';
 import 'package:home/ui/splash/splash_vm.dart';
@@ -18,11 +19,19 @@ class SplashPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final vm = ViewModelProvider.of<SplashVm>(context)
-      ..onInitConfig.observeOnce((isLoggedIn) {
-        if(isLoggedIn == true) {
+      ..onInitConfig.observeOnce((isInitSuccess) {
+        if(isInitSuccess == true) {
           HomeRoutes.homePage.goToPage(context, clearPrevs: true);
         }
-      }, immediatelyGet: false);
+      }, immediatelyGet: false)
+/*
+      ..isLoggedIn.observeOnce((isLoggedIn) {
+        if(isLoggedIn != true) {
+          HomeRoutes.homePage.goToPage(context, clearPrevs: true);
+        }
+      }, immediatelyGet: false)
+ */
+    ;
 
     return SplashScreen(
       child: SplashIconPage(),

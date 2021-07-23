@@ -639,15 +639,40 @@ class ImgPickerField extends SibFormField {
     final img = LiveDataObserver<ImgData>(
       liveData: imgController,
       isLiveDataOwner: isLiveDataOwner,
-      builder: (ctx, data) => Container(
-        constraints: BoxConstraints(
-          maxHeight: 100,
-          maxWidth: 180,
-        ),
-        child: SibImages.resolve(
-          data ?? imgPlaceholder,
-          fit: data != null ? BoxFit.cover : BoxFit.contain,
-        ),
+      builder: (ctx, data) => Stack(
+        children: [
+          Container(
+            constraints: BoxConstraints(
+              maxHeight: 100,
+              maxWidth: 180,
+            ),
+            child: SibImages.resolve(
+              data ?? imgPlaceholder,
+              fit: data != null ? BoxFit.cover : BoxFit.contain,
+            ),
+          ),
+          data != null ? Positioned.fill(
+            child: Material(
+              color: Colors.transparent,
+              child: InkWell(
+                onTap: () {
+                  showDialog(
+                    context: ctx,
+                    builder: (ctx) => Container(
+                      color: black_trans_most,
+                      child: Padding(
+                        padding: EdgeInsets.all(20),
+                        child: InteractiveViewer(
+                          child: SibImages.resolve(data,),
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+          ) : defaultEmptyWidget(),
+        ],
       ),
     );
     final iconSize = 30.0;

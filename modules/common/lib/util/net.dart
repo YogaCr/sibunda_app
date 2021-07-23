@@ -62,7 +62,7 @@ class SibDio {
   );
   static BaseOptions defaultBaseOptions() => BaseOptions(
     followRedirects: false,
-    //validateStatus: (code) => true, //So that every response, even errors, is returned.
+    validateStatus: (code) => true, //So that every response, even errors, is returned.
     headers: defaultHeaders,
   );
 }
@@ -71,6 +71,8 @@ class SibDio {
 class AuthInterceptor extends Interceptor {
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) {
+    prind("AuthInterceptor.onResponse() response.statusCode= ${response.statusCode} data= $response");
     VarDi.isSessionValid.value = response.statusCode != 401;
+    super.onResponse(response, handler);
   }
 }
