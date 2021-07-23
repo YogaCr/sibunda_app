@@ -24,7 +24,7 @@ class HomeNotifMsg {
     desc: response.desc,
     time: parseDate(response.created_at),
     img: response.img_url != null
-        ? ImgData(link: response.img_url!, isLocal: false)
+        ? ImgData(link: response.img_url!, src: ImgSrc.network,)
         : dummyImg,
     link: response.url,
   );

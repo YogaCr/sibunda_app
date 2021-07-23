@@ -3,6 +3,7 @@ import 'package:common/arch/di/config_di.dart';
 import 'package:common/arch/domain/model/baby_data.dart';
 import 'package:common/arch/domain/model/profile_data.dart';
 import 'package:common/arch/domain/usecase/baby_usecase.dart';
+import 'package:common/arch/ui/vm/vm_auth.dart';
 import 'package:core/domain/model/result.dart';
 import 'package:core/ui/base/async_vm.dart';
 import 'package:core/ui/base/live_data.dart';
@@ -10,11 +11,12 @@ import 'package:core/util/_consoles.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:collection/collection.dart';
 
-class BabyHomeVm extends AsyncVm {
+class BabyHomeVm extends AsyncAuthVm {
   static const getBabyAgeOverviewKey = "getBabyAgeOverview";
   static const getBabyFormMenuListKey = "getBabyFormMenuList";
   static const getBabyOverlayKey = "getBabyOverlay";
   BabyHomeVm({
+    BuildContext? context,
     required GetBabyAgeOverview getBabyAgeOverview,
     required GetBabyFormMenuList getBabyFormMenuList,
     required GetBornBabyList getBornBabyList,
@@ -23,7 +25,7 @@ class BabyHomeVm extends AsyncVm {
       _getBabyAgeOverview = getBabyAgeOverview,
       _getBabyFormMenuList = getBabyFormMenuList,
       _getBornBabyList = getBornBabyList,
-      _getUnbornBabyList = getUnbornBabyList {
+      _getUnbornBabyList = getUnbornBabyList, super(context: context) {
     _bornBabyList.observe(this, (list) {
       if(list?.isNotEmpty == true) {
         if(_babyCredential.value == null) {

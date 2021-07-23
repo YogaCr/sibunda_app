@@ -99,6 +99,7 @@ class Const {
   static const KEY_DRUG_ALLERGY = "alergi_obat";
   static const KEY_DISEASE_HISTORY = "riwayat_penyakit";
   static const KEY_SPECIAL_NOTE = "catatan_khusus";
+  static const KEY_IMG_USG = "img_usg";
 
   static const KEY_REM_DAYS = "remaining_days";
   static const KEY_FOOD_RECOM = "food_recommendations";

@@ -1,17 +1,20 @@
 import 'package:common/arch/domain/model/covid_data.dart';
 import 'package:common/arch/domain/usecase/mother_usecase.dart';
 import 'package:common/arch/ui/model/home_graph_menu.dart';
+import 'package:common/arch/ui/vm/vm_auth.dart';
 import 'package:core/domain/model/result.dart';
 import 'package:core/ui/base/async_vm.dart';
 import 'package:core/ui/base/live_data.dart';
 import 'package:covid19/core/domain/usecase/covid_home_usecase.dart';
+import 'package:flutter/material.dart';
 
-class CovidHomeVm extends AsyncVm {
+class CovidHomeVm extends AsyncAuthVm {
   static const getOverviewKey = "getOverview";
   static const getMenuKey = "getMenu";
   static const getCheckHistoryKey = "getCheckHistory";
 
   CovidHomeVm({
+    BuildContext? context,
     required GetCovidHomeOverview getCovidHomeOverview,
     required GetCovidHomeMenu getCovidHomeMenu,
     required GetCovidHomeCheckHistory getCovidHomeCheckHistory,
@@ -20,7 +23,7 @@ class CovidHomeVm extends AsyncVm {
     _getCovidHomeOverview = getCovidHomeOverview,
     _getCovidHomeMenu = getCovidHomeMenu,
     _getCovidHomeCheckHistory = getCovidHomeCheckHistory,
-    _getMotherNik = getMotherNik
+    _getMotherNik = getMotherNik, super(context: context)
   ;
 
   final GetMotherNik _getMotherNik;

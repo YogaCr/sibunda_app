@@ -51,31 +51,33 @@ final bloodTypeSelectionList = <IdStringModel>[
 ];
 
 
-final appLogoImg = ImgData(link: "logo_app_color.png", package: GlobalRoutes.common, isLocal: true);
-final appLogoImgWhite = ImgData(link: "logo_app_white.png", package: GlobalRoutes.common, isLocal: true);
+final appLogoImg = ImgData(link: "logo_app_color.png", package: GlobalRoutes.common, src: ImgSrc.asset,);
+final appLogoImgWhite = ImgData(link: "logo_app_white.png", package: GlobalRoutes.common, src: ImgSrc.asset,);
 
 final imgPregnancyAgeOverview = ImgData(
   link: "kehamilanku_header.png",
   package: GlobalRoutes.common,
-  isLocal: true,
+  src: ImgSrc.asset,
 );
 final imgBabyAgeOverview = ImgData(
   link: "bayi_header.png",
   package: GlobalRoutes.common,
-  isLocal: true,
+  src: ImgSrc.asset,
 );
 final imgCovidFormOverview = ImgData(
   link: "covid_inner_header.png",
   package: GlobalRoutes.common,
-  isLocal: true,
+  src: ImgSrc.asset,
 );
 
-final dummyImg = ImgData(link: "", isLocal: true);
-final dummyImg_smillingCat = ImgData(link: "_smiling_cat.jpg", package: GlobalRoutes.common, isLocal: true);
-final dummyImg_profile_sm = ImgData(link: "pic_profile_example.png", package: GlobalRoutes.common, isLocal: true);
-final dummyImg_pick = ImgData(link: "ic_plus_color.png", package: GlobalRoutes.common, isLocal: true);
-final dummyImg_profile = ImgData(link: "ic_profile.png", package: GlobalRoutes.common, isLocal: true);
-final dummyImg_babyYellow = ImgData(link: "pic_baby_yellow_part.png", package: GlobalRoutes.bayiku, isLocal: true);
+final imgPlaceholder = ImgData(link: "img_placeholder.png", src: ImgSrc.asset);
+
+final dummyImg = ImgData(link: "", src: ImgSrc.asset,);
+final dummyImg_smillingCat = ImgData(link: "_smiling_cat.jpg", package: GlobalRoutes.common, src: ImgSrc.asset,);
+final dummyImg_profile_sm = ImgData(link: "pic_profile_example.png", package: GlobalRoutes.common, src: ImgSrc.asset,);
+final dummyImg_pick = ImgData(link: "ic_plus_color.png", package: GlobalRoutes.common, src: ImgSrc.asset,);
+final dummyImg_profile = ImgData(link: "ic_profile.png", package: GlobalRoutes.common, src: ImgSrc.asset,);
+final dummyImg_babyYellow = ImgData(link: "pic_baby_yellow_part.png", package: GlobalRoutes.bayiku, src: ImgSrc.asset,);
 
 final dummyEmail = "a@a.a";
 final dummyName = "ayu";
@@ -285,13 +287,13 @@ final dummyStatusList = <HomeStatus>[
 
 final dummyMenuList = <HomeMenu>[
   HomeMenu(name: Strings.my_pregnancy, moduleName: GlobalRoutes.kehamilanku,
-    img: ImgData(link: "menu_kehamilanku.png", package: GlobalRoutes.common, isLocal: true,),
+    img: ImgData(link: "menu_kehamilanku.png", package: GlobalRoutes.common, src: ImgSrc.asset,),
   ),
   HomeMenu(name: Strings.my_baby, moduleName: GlobalRoutes.bayiku,
-    img: ImgData(link: "menu_bayiku.png", package: GlobalRoutes.common, isLocal: true,),
+    img: ImgData(link: "menu_bayiku.png", package: GlobalRoutes.common, src: ImgSrc.asset,),
   ),
   HomeMenu(name: Strings.covid_19, moduleName: GlobalRoutes.covid19,
-    img: ImgData(link: "menu_covid19.png", package: GlobalRoutes.common, isLocal: true,),
+    img: ImgData(link: "menu_covid19.png", package: GlobalRoutes.common, src: ImgSrc.asset,),
   ),
 ];
 
@@ -429,7 +431,7 @@ final motherImmunizationOverview = ImmunizationOverview(
   img: ImgData(
     link: "kehamilanku_imunisasi_inner.png",
     package: GlobalRoutes.common,
-    isLocal: true,
+    src: ImgSrc.asset,
   ),
 );
 final babyImmunizationOverview = ImmunizationOverview(
@@ -437,7 +439,7 @@ final babyImmunizationOverview = ImmunizationOverview(
   img: ImgData(
     link: "bayi_imunisasi_inner.png",
     package: GlobalRoutes.common,
-    isLocal: true,
+    src: ImgSrc.asset,
   ),
 );
 
@@ -474,19 +476,19 @@ final babyImmunizationGroupList = <ImmunizationDetailGroup>[
 
 final pregnancyHomeGraphMenu = <HomeGraphMenu>[
   HomeGraphMenu(name: "Grafik Evaluasi Kehamilan",
-    img: ImgData(link: "kehamilanku_grafik_1.png", package: GlobalRoutes.common, isLocal: true,),
+    img: ImgData(link: "kehamilanku_grafik_1.png", package: GlobalRoutes.common, src: ImgSrc.asset,),
   ),
   HomeGraphMenu(name: "Grafik Berat Badan",
-    img: ImgData(link: "kehamilanku_grafik_2.png", package: GlobalRoutes.common, isLocal: true,),
+    img: ImgData(link: "kehamilanku_grafik_2.png", package: GlobalRoutes.common, src: ImgSrc.asset,),
   ),
 ];
 
 final babyHomeGraphMenu = <HomeGraphMenu>[
   HomeGraphMenu(name: "Pertumbuhan Bayi",
-    img: ImgData(link: "bayi_grafik_1.png", package: GlobalRoutes.common, isLocal: true,),
+    img: ImgData(link: "bayi_grafik_1.png", package: GlobalRoutes.common, src: ImgSrc.asset,),
   ),
   HomeGraphMenu(name: "Perkembangan Bayi",
-    img: ImgData(link: "bayi_grafik_2.png", package: GlobalRoutes.common, isLocal: true,),
+    img: ImgData(link: "bayi_grafik_2.png", package: GlobalRoutes.common, src: ImgSrc.asset,),
   ),
 ];
 
@@ -495,7 +497,7 @@ final covidHomeOverview = CovidHomeOverview(
   img: ImgData(
     link: "covid_header.png",
     package: GlobalRoutes.common,
-    isLocal: true,
+    src: ImgSrc.asset,
   ),
 );
 
@@ -505,7 +507,7 @@ final covidHomeMenu = <HomeGraphMenu>[
     img: ImgData(
       link: "covid_form_bayi.png",
       package: GlobalRoutes.common,
-      isLocal: true,
+      src: ImgSrc.asset,
     ),
   ),
   HomeGraphMenu(
@@ -513,7 +515,7 @@ final covidHomeMenu = <HomeGraphMenu>[
     img: ImgData(
       link: "covid_form_bunda.png",
       package: GlobalRoutes.common,
-      isLocal: true,
+      src: ImgSrc.asset,
     ),
   ),
 ];
@@ -568,42 +570,42 @@ final babyGrowthGraphMenuList = <BabyChartMenuData>[
     img: ImgData(
       link: "bayi_grafik_kms.png",
       package: GlobalRoutes.common,
-      isLocal: true,
+      src: ImgSrc.asset,
     ),
   ),
   BabyChartMenuData(title: "Grafik Berat Badan Menurut Umur", type: BabyChartType.weight,
     img: ImgData(
       link: "bayi_grafik_berat_badan_umur.png",
       package: GlobalRoutes.common,
-      isLocal: true,
+      src: ImgSrc.asset,
     ),
   ),
   BabyChartMenuData(title: "Grafik Panjang Badan Menurut Umur", type: BabyChartType.len,
     img: ImgData(
       link: "bayi_grafik_panjang_badan_umur.png",
       package: GlobalRoutes.common,
-      isLocal: true,
+      src: ImgSrc.asset,
     ),
   ),
   BabyChartMenuData(title: "Grafik Berat Badan Menurut Panjang Badan", type: BabyChartType.weightToLen,
     img: ImgData(
       link: "bayi_grafik_berat_badan_panjang_badan.png",
       package: GlobalRoutes.common,
-      isLocal: true,
+      src: ImgSrc.asset,
     ),
   ),
   BabyChartMenuData(title: "Grafik Lingkar Kepala", type: BabyChartType.head,
     img: ImgData(
       link: "bayi_grafik_lingkar_kepala_imt.png",
       package: GlobalRoutes.common,
-      isLocal: true,
+      src: ImgSrc.asset,
     ),
   ),
   BabyChartMenuData(title: "Grafik Indeks Massa Tubuh", type: BabyChartType.bmi,
     img: ImgData(
       link: "bayi_grafik_lingkar_kepala_imt.png",
       package: GlobalRoutes.common,
-      isLocal: true,
+      src: ImgSrc.asset,
     ),
   ),
 ];

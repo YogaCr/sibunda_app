@@ -27,7 +27,7 @@ class CovidRoutes extends ModuleRoute {
 
   static final covidHomePage = SibRoute("CovidHomePage", CovidHomePage, (ctx) => MainFrame(
     body: CovidHomePage().inVmProvider([
-      (ctx) => CovidVmDi.covidHomeVm,
+      (ctx) => CovidVmDi.covidHomeVm(context: ctx),
     ]),
   ));
   static final covidCheckPage = _CovidCheckPageRoute.obj;
@@ -43,7 +43,7 @@ class _CovidCheckPageRoute {
       body: FormFaker(
         interceptor: interceptor,
         child: CovidCheckPage(interceptor: interceptor,).inVmProvider([
-              (ctx) => CovidVmDi.checkVm,
+              (ctx) => CovidVmDi.checkVm(context: ctx),
         ]),
       ),
     );

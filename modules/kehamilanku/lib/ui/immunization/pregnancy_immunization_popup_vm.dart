@@ -2,16 +2,18 @@ import 'package:common/arch/domain/model/form_data.dart';
 import 'package:common/arch/domain/model/immunization.dart';
 import 'package:common/arch/domain/usecase/mother_usecase.dart';
 import 'package:common/arch/ui/model/form_data.dart';
-import 'package:common/arch/ui/vm/form_vm_group.dart';
+import 'package:common/arch/ui/vm/vm_auth.dart';
 import 'package:common/value/const_values.dart';
 import 'package:core/domain/model/result.dart';
 import 'package:core/ui/base/live_data.dart';
+import 'package:flutter/material.dart';
 import 'package:kehamilanku/core/domain/usecase/mother_immunization_use_case.dart';
 
-class PregnancyImmunizationPopupVm extends FormVmGroup {
+class PregnancyImmunizationPopupVm extends FormAuthVmGroup {
   //static const confirmImmunizationKey = "confirmImmunization";
 
   PregnancyImmunizationPopupVm({
+    BuildContext? context,
     required this.immunization,
     required GetPregnancyImmunizationConfirmForm getPregnancyImmunizationConfirmForm,
     required ConfirmMotherImmunization confirmMotherImmunization,
@@ -19,7 +21,7 @@ class PregnancyImmunizationPopupVm extends FormVmGroup {
   }):
     _getMotherNik = getMotherNik,
     _getPregnancyImmunizationConfirmForm = getPregnancyImmunizationConfirmForm,
-    _confirmMotherImmunization = confirmMotherImmunization
+    _confirmMotherImmunization = confirmMotherImmunization, super(context: context)
   ;
 
   final GetMotherNik _getMotherNik;

@@ -1,4 +1,5 @@
 import 'package:common/arch/domain/model/form_data.dart';
+import 'package:common/arch/domain/model/img_data.dart';
 import 'package:common/arch/ui/model/form_data.dart';
 import 'package:common/arch/ui/vm/form_vm.dart';
 import 'package:common/arch/ui/vm/form_vm_group.dart';
@@ -299,6 +300,33 @@ class _FormGenericGroupState
             if(vmLiveData.value?.isNotEmpty == true) {
               selectedAnswerIndices.value = vmLiveData.value;
             }
+            break;
+          case FormType.imgPick:
+            final imgController = MutableLiveData<ImgData>();
+            itemLiveData[key] = imgController;
+
+            final enabled = this.enabled && itemData.isInputEnabled;
+            //interceptor?.isEnabled = enabled;
+
+            field = ImgPickerField(
+              itemData: itemData as FormUiImgPicker,
+              isValid: groupRespMap[key]!.isValid,
+              isEnabledController: vm.isFormEnabled,
+              invalidMsgGenerator: (response) => vm.getInvalidMsg(key, imgController.value),
+              imgController: imgController,
+              enabled: enabled,
+              //controller: interceptor as FieldController<Set<int>>?,
+            );
+
+            vmLiveData.observe(this, (data) {
+              imgController.value = data;
+            });
+
+            vm.registerField(
+              groupPosition: groupPosition,
+              inputKey: key,
+              field: field as SibFormField,
+            );
             break;
         }
 

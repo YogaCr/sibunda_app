@@ -1,17 +1,20 @@
 import 'package:common/arch/domain/model/chart_data_mother.dart';
 import 'package:common/arch/domain/model/form_warning_status.dart';
 import 'package:common/arch/domain/usecase/mother_usecase.dart';
+import 'package:common/arch/ui/vm/vm_auth.dart';
 import 'package:core/domain/model/result.dart';
 import 'package:core/ui/base/async_vm.dart';
 import 'package:core/ui/base/live_data.dart';
 import 'package:core/util/_consoles.dart';
+import 'package:flutter/material.dart';
 import 'package:kehamilanku/core/domain/usecase/mother_chart_usecase.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
-class MotherChartVm extends AsyncVm {
+class MotherChartVm extends AsyncAuthVm {
   static const loadChartKey = "loadChart";
 
   MotherChartVm({
+    BuildContext? context,
     required GetMotherNik getMotherNik,
     required GetMotherTfuChart getMotherTfuChart,
     required GetMotherDjjChart getMotherDjjChart,
@@ -30,7 +33,7 @@ class MotherChartVm extends AsyncVm {
     _getMotherTfuChartWarning = getMotherTfuChartWarning,
     _getMotherDjjChartWarning = getMotherDjjChartWarning,
     _getMotherBmiChartWarning = getMotherBmiChartWarning,
-    _getMotherMapChartWarning = getMotherMapChartWarning
+    _getMotherMapChartWarning = getMotherMapChartWarning, super(context: context)
   ;
   final GetMotherNik _getMotherNik;
   final GetMotherTfuChart _getMotherTfuChart;

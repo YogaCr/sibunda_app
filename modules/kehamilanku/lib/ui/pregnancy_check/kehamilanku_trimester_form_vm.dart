@@ -1,10 +1,12 @@
+import 'dart:io';
+
 import 'package:common/arch/di/config_di.dart';
 import 'package:common/arch/domain/model/form_data.dart';
 import 'package:common/arch/domain/model/form_warning_status.dart';
 import 'package:common/arch/domain/model/kehamilanku_data.dart';
 import 'package:common/arch/domain/usecase/mother_usecase.dart';
 import 'package:common/arch/ui/model/form_data.dart';
-import 'package:common/arch/ui/vm/form_vm_group.dart';
+import 'package:common/arch/ui/vm/vm_auth.dart';
 import 'package:common/res/string/_string.dart';
 import 'package:common/util/times.dart';
 import 'package:common/util/type_util.dart';
@@ -13,19 +15,22 @@ import 'package:core/domain/model/result.dart';
 import 'package:core/ui/base/live_data.dart';
 import 'package:core/util/_consoles.dart';
 import 'package:core/util/val_util.dart';
+import 'package:flutter/material.dart';
 import 'package:kehamilanku/core/domain/usecase/pregnancy_check_use_case.dart';
 
-class KehamilankuCheckFormVm extends FormVmGroup {
+class KehamilankuCheckFormVm extends FormAuthVmGroup {
   static const getPregnancyCheckKey = "getPregnancyCheck";
   static const getMotherFormWarningStatusKey = "getMotherFormWarningStatus";
   static const getPregnancyBabySizeKey = "getPregnancyBabySize";
 
   KehamilankuCheckFormVm({
+    BuildContext? context,
     required GetMotherNik getMotherNik,
     required GetMotherHpl getMotherHpl,
     required GetMotherHpht getMotherHpht,
     required GetPregnancyCheckUpId getPregnancyCheckUpId,
     required SavePregnancyCheck savePregnancyCheck,
+    required SaveUsgImg saveUsgImg,
     required GetPregnancyCheck getPregnancyCheck,
     required GetMotherFormWarningStatus getMotherFormWarningStatus,
     required GetPregnancyBabySize getPregnancyBabySize,
@@ -36,10 +41,11 @@ class KehamilankuCheckFormVm extends FormVmGroup {
     _getMotherHpht = getMotherHpht,
     _getPregnancyCheckUpId = getPregnancyCheckUpId,
     _savePregnancyCheck = savePregnancyCheck,
+    _saveUsgImg = saveUsgImg,
     _getPregnancyCheck = getPregnancyCheck,
     _getMotherFormWarningStatus = getMotherFormWarningStatus,
     _getPregnancyBabySize = getPregnancyBabySize,
-    _getPregnancyCheckForm = getPregnancyCheckForm {
+    _getPregnancyCheckForm = getPregnancyCheckForm, super(context: context) {
 
     _currentWeek.observe(this, (week) {
       prind("_currentWeek.observe week = $week");
@@ -55,6 +61,7 @@ class KehamilankuCheckFormVm extends FormVmGroup {
       prind("KehamilankuCheckFormVm canProceed = $v");
     });
  */
+
     onSubmit.observe(this, (success) {
       if(success is Success<String>) {
         setFormEnabled(isEnabled: false);
@@ -83,6 +90,7 @@ class KehamilankuCheckFormVm extends FormVmGroup {
 
   final GetPregnancyCheckUpId _getPregnancyCheckUpId;
   final SavePregnancyCheck _savePregnancyCheck;
+  final SaveUsgImg _saveUsgImg;
   final GetPregnancyCheck _getPregnancyCheck;
   final GetMotherFormWarningStatus _getMotherFormWarningStatus;
   final GetPregnancyBabySize _getPregnancyBabySize;
@@ -106,6 +114,12 @@ class KehamilankuCheckFormVm extends FormVmGroup {
   LiveData<int> get currentWeek => _currentWeek;
   late int currentTrimesterId;
 
+  @override
+  List<LiveData> get liveDatas => [
+    _pregnancyCheck, _formWarningStatusList,
+    _pregnancyBabySize, _isBabySizeInit, _currentWeek,
+  ];
+
   void _lateInit() async {
     final res1 = await _getMotherNik();
     if(res1 is Success<String>) {
@@ -126,14 +140,28 @@ class KehamilankuCheckFormVm extends FormVmGroup {
   @override
   Future<Result<String>> doSubmitJob() async {
     //prind("KehamilankuCheckFormVm doSubmitJob() ==== AWAL");
-    final responseMap = getResponse();
+    final response = getResponse();
+    final responseMap = response.responseGroups.values.first;
     //prind("KehamilankuCheckFormVm doSubmitJob() ==== responseMap = ${responseMap.responseGroups}");
-    final data = PregnancyCheck.fromJson(responseMap.responseGroups.values.first);
+    final data = PregnancyCheck.fromJson(responseMap);
     //prind("KehamilankuCheckFormVm doSubmitJob() ==== data = ${data.toJson()}");
     final motherNik = VarDi.motherNik.getOrElse();
-    return _savePregnancyCheck(motherNik, data, currentTrimesterId).then((value) =>
-      value is Success<bool> ? Success("") : (value as Fail<bool>).copy()
-    );
+    final submitRes = await _savePregnancyCheck(motherNik, data, currentTrimesterId);
+    if(submitRes is Success<int>) {
+      final checkUpId = submitRes.data;
+      final res2 = await _saveUsgImg(
+        motherNik: motherNik,
+        checkUpId: checkUpId,
+        imgFile: responseMap[Const.KEY_IMG_USG],
+      );
+      if(res2 is Success<File?>) {
+        return Success("ok");
+      } else {
+        return Fail(msg: "Can't submit USG img");
+      }
+    } else {
+      return Fail(msg: "Can't submit pregnancy check form");
+    }
   }
 
   @override
@@ -230,11 +258,6 @@ class KehamilankuCheckFormVm extends FormVmGroup {
       return List.empty();
     }
   }
-
-  @override
-  List<LiveData> get liveDatas => [
-    _pregnancyCheck, _formWarningStatusList, _pregnancyBabySize,
-  ];
 
   void initPage({
     required int week,

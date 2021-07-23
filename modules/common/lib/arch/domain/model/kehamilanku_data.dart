@@ -3,7 +3,6 @@ import 'package:common/arch/data/remote/model/kehamilanku_form_warning_api_model
 import 'package:common/arch/data/remote/model/kehamilanku_overview_api_model.dart';
 import 'package:common/arch/domain/dummy_data.dart';
 import 'package:common/arch/domain/model/img_data.dart';
-import 'package:common/config/_config.dart';
 import 'package:common/util/times.dart';
 import 'package:common/util/type_util.dart';
 import 'package:common/value/const_values.dart';
@@ -190,7 +189,7 @@ class MotherTrimester {
       endWeek: endWeek,
       img: ImgData(
         link: response.img_url,
-        isLocal: false,
+        src: ImgSrc.network,
       ),
     );
   }
@@ -213,7 +212,7 @@ class MotherFoodRecom {
       desc: response.desc,
       img: response.img_url != null ? ImgData(
         link: response.img_url!,
-        isLocal: false,
+        src: ImgSrc.network,
       ) : null,
     );
   }

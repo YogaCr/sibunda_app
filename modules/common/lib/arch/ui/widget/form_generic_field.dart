@@ -1,7 +1,13 @@
+import 'dart:io';
+
+import 'package:common/arch/domain/dummy_data.dart';
+import 'package:common/arch/domain/model/img_data.dart';
 import 'package:common/arch/ui/model/form_data.dart';
+import 'package:common/arch/ui/widget/_basic_widget.dart';
 import 'package:common/arch/ui/widget/form_controller.dart';
 import 'package:common/arch/ui/widget/img_widget.dart';
 import 'package:common/arch/ui/widget/txt_input.dart';
+import 'package:common/config/_config.dart';
 import 'package:common/res/string/_string.dart';
 import 'package:common/res/theme/_theme.dart';
 import 'package:common/util/assets.dart';
@@ -14,6 +20,7 @@ import 'package:core/ui/base/live_data_observer.dart';
 import 'package:core/util/_consoles.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 import 'default_widget.dart';
 
@@ -584,6 +591,134 @@ class CheckGroup extends SibFormField {
 
     return Column(
       children: outerColumChildren,
+    );
+  }
+}
+
+
+class ImgPickerField extends SibFormField {
+  final FormUiImgPicker itemData;
+  @override
+  final LiveData<bool>? isValid;
+  final LiveData<bool>? isEnabledController;
+  final picker = ImagePicker();
+
+  /// If this is `false`, then this field is forced to be disabled,
+  /// no matter what [isEnabledController.value] is `false` or `true`.
+  final bool enabled;
+
+  final bool isLiveDataOwner;
+
+  @override
+  LiveData<ImgData> get responseLiveData => imgController;
+  final MutableLiveData<ImgData> imgController;
+
+  /// This will become default invalid message.
+  final String invalidMsg;
+  final String? Function(ImgData? responses)? invalidMsgGenerator;
+
+  ImgPickerField({
+    required this.itemData,
+    this.isValid,
+    this.isEnabledController,
+    this.enabled = true,
+    this.invalidMsg = Strings.field_can_not_be_empty,
+    this.invalidMsgGenerator,
+    bool? isLiveDataOwner,
+    MutableLiveData<ImgData>? imgController,
+  }):
+    imgController = imgController ?? MutableLiveData(),
+    isLiveDataOwner = isLiveDataOwner ?? imgController == null
+  ;
+
+  @override
+  Widget build(BuildContext context) {
+    final title = Text(
+      itemData.question,
+    );
+    final img = LiveDataObserver<ImgData>(
+      liveData: imgController,
+      isLiveDataOwner: isLiveDataOwner,
+      builder: (ctx, data) => Container(
+        constraints: BoxConstraints(
+          maxHeight: 100,
+          maxWidth: 180,
+        ),
+        child: SibImages.resolve(
+          data ?? imgPlaceholder,
+          fit: data != null ? BoxFit.cover : BoxFit.contain,
+        ),
+      ),
+    );
+    final iconSize = 30.0;
+    final btnPicker = Row(
+      children: [
+        Text(
+          Strings.pick_img,
+          style: SibTextStyles.size_min_1_colorPrimary,
+        ),
+        SizedBox(width: 12,),
+        InkResponse(
+          onTap: () async {
+            final res = await picker.pickImage(source: ImageSource.gallery);
+            imgController.value = res != null
+                ? ImgData(link: res.path, src: ImgSrc.file)
+                : null;
+          },
+          child: Icon(
+            Icons.add_photo_alternate_outlined,
+            size: iconSize,
+            color: Manifest.theme.colorPrimary,
+          ),
+        ),
+        SizedBox(width: 10,),
+        InkResponse(
+          onTap: () async {
+            final res = await picker.pickImage(source: ImageSource.camera);
+            imgController.value = res != null
+                ? ImgData(link: res.path, src: ImgSrc.file)
+                : null;
+          },
+          child: Icon(
+            Icons.add_a_photo_outlined,
+            size: iconSize,
+            color: Manifest.theme.colorPrimary,
+          ),
+        ),
+      ],
+    );
+    final btnPickerWrapper = isEnabledController != null ? LiveDataObserver<bool>(
+      liveData: isEnabledController!,
+      builder: (ctx, enabled) => this.enabled && enabled == true
+          ? btnPicker : defaultEmptyWidget(),
+    ) : enabled
+        ? btnPicker : defaultEmptyWidget();
+
+    final children = <Widget>[
+      title,
+      SizedBox(height: 10,),
+      Center(child: img,), //2
+      SizedBox(height: 10,),
+      Center(child: btnPickerWrapper,), //4
+    ];
+
+    if(isValid != null) {
+      children.insert(3, Container(
+        margin: EdgeInsets.only(bottom: 10,),
+        child: LiveDataObserver<bool>(
+          liveData: isValid!,
+          builder: (ctx, isValid) => isValid == false
+              ? Text( invalidMsgGenerator?.call(imgController.value) ?? invalidMsg,
+            style: SibTextStyles.size_min_2.copyWith(color: red),
+          ) : SizedBox(),
+        ),
+      ));
+    }
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: children,
     );
   }
 }

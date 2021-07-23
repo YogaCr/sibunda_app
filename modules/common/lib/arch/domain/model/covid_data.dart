@@ -43,7 +43,7 @@ class CovidCheckHistory {
     person: getCovidPersonStr(response.is_ibu),
     img: ImgData(
       link: response.img_url,
-      isLocal: false,
+      src: ImgSrc.network,
     ),
     desc: response.result_desc,
     longDesc: response.result_long_desc,

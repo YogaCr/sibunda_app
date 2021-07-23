@@ -1,5 +1,6 @@
 import 'package:common/arch/di/usecase_di.dart';
 import 'package:core/ui/base/live_data.dart';
+import 'package:flutter/material.dart';
 import 'package:home/core/di/home_usecase_di.dart';
 import 'package:home/ui/form_get_started/child_form_vm.dart';
 import 'package:home/ui/form_get_started/children_count_vm.dart';
@@ -44,7 +45,8 @@ class HomeVmDi {
     childCount: MutableLiveData(),
     saveChildrenData: HomeUseCaseDi.saveChildrenData,
   );
-  static HomeVm get homeVm => HomeVm(
+  static HomeVm homeVm({BuildContext? context,}) => HomeVm(
+    context: context,
     getHomeMenuList: HomeUseCaseDi.getHomeMenuList,
     getHomeStatusList: HomeUseCaseDi.getHomeStatusList,
     getHomeTipsList: HomeUseCaseDi.getHomeTipsList,
@@ -52,7 +54,8 @@ class HomeVmDi {
     getCurrentEmail: UseCaseDi.getCurrentEmail,
     getProfile: UseCaseDi.getProfile,
   );
-  static NotifAndMessageVm get notifAndMessageVm => NotifAndMessageVm(
+  static NotifAndMessageVm notifAndMessageVm({BuildContext? context,}) => NotifAndMessageVm(
+    context: context,
     getCurrentEmail: UseCaseDi.getCurrentEmail,
     getMessageList: HomeUseCaseDi.getMessageList,
     getNotifList: HomeUseCaseDi.getNotifList,

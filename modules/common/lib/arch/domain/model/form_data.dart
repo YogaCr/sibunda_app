@@ -11,6 +11,7 @@ enum FormType {
   text,
   radio,
   check,
+  imgPick,
 }
 
 enum FieldInputMethod {
@@ -73,7 +74,7 @@ class FormData {
     final imgList = response.img_url != null ? [
       ImgData(
         link: response.img_url!,
-        isLocal: false,
+        src: ImgSrc.network,
       )
     ] : null;
     return FormData(

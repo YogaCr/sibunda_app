@@ -15,7 +15,7 @@ late NeonatalServiceVm _vm;
 
 main() async {
   await ConfigUtil.init();
-  _vm = BabyVmDi.neonatalServiceVm
+  _vm = BabyVmDi.neonatalServiceVm()
     ..monthlyCheckUpId = 6;
 
   _group1();

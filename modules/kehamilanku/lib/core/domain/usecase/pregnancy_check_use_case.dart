@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:common/arch/domain/model/form_data.dart';
 import 'package:common/arch/domain/model/form_warning_status.dart';
+import 'package:common/arch/domain/model/img_data.dart';
 import 'package:common/arch/domain/model/kehamilanku_data.dart';
 import 'package:common/arch/domain/repo/_repos.dart';
 import 'package:common/arch/domain/repo/form_field_repo.dart';
@@ -15,7 +18,15 @@ mixin GetPregnancyBabySize {
 }
 
 mixin SavePregnancyCheck {
-  Future<Result<bool>> call(String motherNik, PregnancyCheck data, int trimesterId);
+  Future<Result<int>> call(String motherNik, PregnancyCheck data, int trimesterId);
+}
+
+mixin SaveUsgImg {
+  Future<Result<File?>> call({
+    required String motherNik,
+    required ImgData imgFile,
+    required int checkUpId,
+  });
 }
 
 mixin GetPregnancyCheck {
@@ -46,8 +57,19 @@ class SavePregnancyCheckImpl with SavePregnancyCheck {
   SavePregnancyCheckImpl(this._repo);
   final PregnancyRepo _repo;
   @override
-  Future<Result<bool>> call(String motherNik, PregnancyCheck data, int trimesterId) =>
+  Future<Result<int>> call(String motherNik, PregnancyCheck data, int trimesterId) =>
       _repo.savePregnancyCheck(motherNik, data, trimesterId);
+}
+
+class SaveUsgImgImpl with SaveUsgImg {
+  SaveUsgImgImpl(this._repo);
+  final PregnancyRepo _repo;
+  @override
+  Future<Result<File?>> call({
+    required String motherNik,
+    required ImgData imgFile,
+    required int checkUpId,
+  }) => _repo.saveUsgImg(motherNik: motherNik, imgFile: imgFile, checkUpId: checkUpId);
 }
 
 class GetPregnancyCheckImpl with GetPregnancyCheck {

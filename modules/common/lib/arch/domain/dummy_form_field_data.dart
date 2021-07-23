@@ -162,7 +162,7 @@ final babyFormGroupData2 = <FormGroupData>[
           FormOption(label: "Tidak", isSelected: false),
         ],
         img: [
-          ImgData(link: "pic_baby_head_side_to_middle.png", package: GlobalRoutes.bayiku, isLocal: true),
+          ImgData(link: "pic_baby_head_side_to_middle.png", package: GlobalRoutes.bayiku, src: ImgSrc.asset,),
         ],
       ),
     ],
@@ -411,6 +411,7 @@ final motherFormGroupData = <FormGroupData>[
       FormData(key: Const.KEY_DRUG_ALLERGY, question: Strings.drug_allergy, type: FormType.text,),
       FormData(key: Const.KEY_DISEASE_HISTORY, question: Strings.disease_history, type: FormType.text,),
       FormData(key: Const.KEY_SPECIAL_NOTE, question: Strings.special_note, type: FormType.text,),
+      FormData(key: Const.KEY_IMG_USG, question: Strings.img_usg, type: FormType.imgPick,),
     ],
   ),
 ];

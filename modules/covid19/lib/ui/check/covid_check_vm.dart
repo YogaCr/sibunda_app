@@ -6,6 +6,7 @@ import 'package:common/arch/domain/usecase/baby_usecase.dart';
 import 'package:common/arch/domain/usecase/mother_usecase.dart';
 import 'package:common/arch/ui/model/form_data.dart';
 import 'package:common/arch/ui/vm/form_vm_group.dart';
+import 'package:common/arch/ui/vm/vm_auth.dart';
 import 'package:common/util/data_mapper.dart';
 import 'package:common/util/type_util.dart';
 import 'package:common/value/const_values.dart';
@@ -16,8 +17,9 @@ import 'package:covid19/core/domain/usecase/covid_check_usecase.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 
-class CovidCheckVm extends FormVmGroup {
+class CovidCheckVm extends FormAuthVmGroup {
   CovidCheckVm({
+    BuildContext? context,
     required GetCovidMotherCheckFormData getCovidMotherCheckFormData,
     required GetCovidBabyCheckFormData getCovidBabyCheckFormData,
     required SubmitCovidMotherCheckForm submitCovidMotherCheckForm,
@@ -31,7 +33,7 @@ class CovidCheckVm extends FormVmGroup {
     _submitCovidMotherCheckForm = submitCovidMotherCheckForm,
     _submitCovidBabyCheckForm = submitCovidBabyCheckForm,
     _getMotherNik = getMotherNik,
-    _getBornBabyList = getBornBabyList
+    _getBornBabyList = getBornBabyList, super(context: context)
   {
     onSubmit.observe(this, (success) {
       if(success is Success<String>) {

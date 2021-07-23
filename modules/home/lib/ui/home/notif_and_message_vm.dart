@@ -1,22 +1,25 @@
 import 'package:common/arch/domain/model/notif_data.dart';
 import 'package:common/arch/domain/usecase/profile_usecase.dart';
+import 'package:common/arch/ui/vm/vm_auth.dart';
 import 'package:core/domain/model/result.dart';
 import 'package:core/ui/base/async_vm.dart';
 import 'package:core/ui/base/live_data.dart';
+import 'package:flutter/material.dart';
 import 'package:home/core/domain/usecase/notif_and_message_use_case.dart';
 
-class NotifAndMessageVm extends AsyncVm {
+class NotifAndMessageVm extends AsyncAuthVm {
   static const getNotifListKey = "getNotifList";
   static const getMessageListKey = "getMessageList";
 
   NotifAndMessageVm({
+    BuildContext? context,
     required GetCurrentEmail getCurrentEmail,
     required GetNotifList getNotifList,
     required GetMessageList getMessageList,
   }):
     _getCurrentEmail = getCurrentEmail,
     _getMessageList = getMessageList,
-    _getNotifList = getNotifList
+    _getNotifList = getNotifList, super(context: context)
   ;
   final GetCurrentEmail _getCurrentEmail;
   final GetNotifList _getNotifList;

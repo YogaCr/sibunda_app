@@ -3,19 +3,22 @@ import 'package:common/arch/domain/dummy_form_field_data.dart';
 import 'package:common/arch/domain/model/profile_data.dart';
 import 'package:common/arch/ui/model/form_data.dart';
 import 'package:common/arch/ui/vm/form_vm_group.dart';
+import 'package:common/arch/ui/vm/vm_auth.dart';
 import 'package:common/res/string/_string.dart';
 import 'package:common/util/data_mapper.dart';
 import 'package:common/util/validators.dart';
 import 'package:common/value/const_values.dart';
 import 'package:core/domain/model/result.dart';
 import 'package:core/ui/base/live_data.dart';
+import 'package:flutter/material.dart';
 import 'package:profile/core/domain/usecase/profile_edit_usecase.dart';
 
-class ProfileEditVm extends FormVmGroup {
+class ProfileEditVm extends FormAuthVmGroup {
   ProfileEditVm({
+    BuildContext? context,
     required SaveProfile saveProfile,
   }):
-    _saveProfile = saveProfile
+    _saveProfile = saveProfile, super(context: context)
   ;
   final SaveProfile _saveProfile;
 

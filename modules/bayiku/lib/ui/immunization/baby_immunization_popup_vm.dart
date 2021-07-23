@@ -5,15 +5,18 @@ import 'package:common/arch/domain/model/profile_data.dart';
 import 'package:common/arch/domain/usecase/baby_usecase.dart';
 import 'package:common/arch/ui/model/form_data.dart';
 import 'package:common/arch/ui/vm/form_vm_group.dart';
+import 'package:common/arch/ui/vm/vm_auth.dart';
 import 'package:common/value/const_values.dart';
 import 'package:core/domain/model/result.dart';
 import 'package:core/ui/base/live_data.dart';
 import 'package:core/util/_consoles.dart';
+import 'package:flutter/material.dart';
 
-class BabyImmunizationPopupVm extends FormVmGroup {
+class BabyImmunizationPopupVm extends FormAuthVmGroup {
   //static const confirmImmunizationKey = "confirmImmunization";
 
   BabyImmunizationPopupVm({
+    BuildContext? context,
     required this.immunization,
     required this.credential,
     required GetBabyImmunizationConfirmForm getBabyImmunizationConfirmForm,
@@ -22,7 +25,7 @@ class BabyImmunizationPopupVm extends FormVmGroup {
   }):
     //_getBabyNik = getBabyNik,
     _getBabyImmunizationConfirmForm = getBabyImmunizationConfirmForm,
-    _confirmBabyImmunization = confirmBabyImmunization
+    _confirmBabyImmunization = confirmBabyImmunization, super(context: context)
   ;
 
   //final GetBabyNik _getBabyNik;

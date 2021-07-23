@@ -27,7 +27,7 @@ _$_BatchProfileServer _$_$_BatchProfileServerFromJson(
   return _$_BatchProfileServer(
     mother: json['mother'],
     father: json['father'],
-    children: json['children'] as List<ProfileEntity>,
+    children: json['children'] as List<dynamic>,
     motherHpl: json['motherHpl'] == null
         ? null
         : DateTime.parse(json['motherHpl'] as String),

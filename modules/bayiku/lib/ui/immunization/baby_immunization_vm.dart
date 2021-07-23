@@ -3,22 +3,25 @@ import 'package:common/arch/domain/model/immunization.dart';
 import 'package:common/arch/domain/model/profile_data.dart';
 import 'package:common/arch/ui/model/immunization.dart';
 import 'package:common/arch/ui/model/immunization_data.dart';
+import 'package:common/arch/ui/vm/vm_auth.dart';
 import 'package:core/domain/model/result.dart';
 import 'package:core/ui/base/async_vm.dart';
 import 'package:core/ui/base/live_data.dart';
 import 'package:core/util/_consoles.dart';
+import 'package:flutter/material.dart';
 
-class BabyImmunizationVm extends AsyncVm {
+class BabyImmunizationVm extends AsyncAuthVm {
   static const getImmunizationGroupsKey = "getImmunizationGroups";
   static const getImmunizationOverviewKey = "getImmunizationOverview";
 
   BabyImmunizationVm({
+    BuildContext? context,
     required this.credential,
     required GetBabyImmunizationGroupList getBabyImmunizationGroupList,
     required GetBabyImmunizationOverview getBabyImmunizationOverview,
   }):
     _getBabyImmunizationGroupList = getBabyImmunizationGroupList,
-    _getBabyImmunizationOverview = getBabyImmunizationOverview
+    _getBabyImmunizationOverview = getBabyImmunizationOverview, super(context: context)
   ;
 
   final GetBabyImmunizationGroupList _getBabyImmunizationGroupList;

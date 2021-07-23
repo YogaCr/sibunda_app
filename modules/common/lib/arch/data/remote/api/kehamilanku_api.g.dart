@@ -47,6 +47,27 @@ class _KehamilankuApi implements KehamilankuApi {
   }
 
   @override
+  Future<CommonResponse> sendPregnancyCheckUsg(checkUpId, imgFile) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = FormData();
+    _data.fields
+        .add(MapEntry('weekly_trisemester_checkup_id', checkUpId.toString()));
+    _data.files.add(MapEntry(
+        'img_usg',
+        MultipartFile.fromFileSync(imgFile.path,
+            filename: imgFile.path.split(Platform.pathSeparator).last)));
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<CommonResponse>(
+            Options(method: 'POST', headers: <String, dynamic>{}, extra: _extra)
+                .compose(_dio.options, '/create-weekly-report/usg',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = CommonResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
   Future<PregnancyCheckBody> getPregnancyCheckForm(body) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};

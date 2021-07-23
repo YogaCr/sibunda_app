@@ -3,6 +3,7 @@ import 'package:common/arch/domain/dummy_data.dart';
 import 'package:common/arch/domain/model/form_data.dart';
 import 'package:common/arch/ui/model/form_data.dart';
 import 'package:common/arch/ui/vm/form_vm_group.dart';
+import 'package:common/arch/ui/vm/vm_auth.dart';
 import 'package:common/util/data_mapper.dart';
 import 'package:common/util/type_util.dart';
 import 'package:core/domain/model/result.dart';
@@ -10,15 +11,16 @@ import 'package:core/ui/base/live_data.dart';
 import 'package:core/util/_consoles.dart';
 import 'package:flutter/material.dart';
 
-class NeonatalServiceVm extends FormVmGroup {
+class NeonatalServiceVm extends FormAuthVmGroup {
   static const getAnswerKey = "getAnswer";
 
   NeonatalServiceVm({
+    BuildContext? context,
     required SaveNeonatalForm saveNeonatalForm,
     required GetNeonatalFormData getNeonatalFormData,
   }):
     _saveNeonatalForm = saveNeonatalForm,
-    _getNeonatalFormData = getNeonatalFormData
+    _getNeonatalFormData = getNeonatalFormData, super(context: context)
   {
     _formAnswer.observe(this, (data) {
       if(data != null) {

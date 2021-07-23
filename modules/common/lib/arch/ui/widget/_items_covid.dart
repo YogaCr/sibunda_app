@@ -86,7 +86,7 @@ class ItemCovidCheckHistory extends StatelessWidget {
     final txtList = <Widget>[
       Text(
         title,
-        style: SibTextStyles.size_min_1,
+        style: SibTextStyles.size_0_bold_colorPrimary,
       ),
       Expanded(
         child: Row(

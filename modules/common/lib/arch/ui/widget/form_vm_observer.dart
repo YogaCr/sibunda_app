@@ -1,4 +1,5 @@
 import 'package:common/arch/domain/model/form_data.dart';
+import 'package:common/arch/domain/model/img_data.dart';
 import 'package:common/arch/ui/model/form_data.dart';
 import 'package:common/arch/ui/vm/form_vm.dart';
 import 'package:common/arch/ui/widget/_basic_widget.dart';

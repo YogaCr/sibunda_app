@@ -1,22 +1,25 @@
 import 'package:common/arch/domain/model/education_data.dart';
 import 'package:common/arch/domain/usecase/mother_usecase.dart';
+import 'package:common/arch/ui/vm/vm_auth.dart';
 import 'package:core/domain/model/result.dart';
 import 'package:core/ui/base/async_vm.dart';
 import 'package:core/ui/base/live_data.dart';
 import 'package:education/core/domain/usecase/education_home_usecase.dart';
+import 'package:flutter/material.dart';
 
-class EducationHomeVm extends AsyncVm {
+class EducationHomeVm extends AsyncAuthVm {
   static const getMainPanelKey = "getMainPanel";
   static const getTipsListKey = "getTipsList";
 
   EducationHomeVm({
+    BuildContext? context,
     required GetEducationMainPanelData getEducationMainPanelData,
     required GetEducationHomeTipsData getEducationHomeTipsData,
     required GetMotherNik getMotherNik,
   }):
     _getEducationMainPanelData = getEducationMainPanelData,
     _getEducationHomeTipsData = getEducationHomeTipsData,
-    _getMotherNik = getMotherNik
+    _getMotherNik = getMotherNik, super(context: context)
   ;
   final GetMotherNik _getMotherNik;
   final GetEducationMainPanelData _getEducationMainPanelData;

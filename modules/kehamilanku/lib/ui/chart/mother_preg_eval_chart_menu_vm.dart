@@ -1,17 +1,20 @@
 import 'package:common/arch/domain/model/chart_data.dart';
 import 'package:common/arch/domain/model/chart_data_mother.dart';
+import 'package:common/arch/ui/vm/vm_auth.dart';
 import 'package:core/domain/model/result.dart';
 import 'package:core/ui/base/async_vm.dart';
 import 'package:core/ui/base/live_data.dart';
+import 'package:flutter/material.dart';
 import 'package:kehamilanku/core/domain/usecase/mother_graph_menu_usecase.dart';
 
-class MotherPregEvalChartMenuVm extends AsyncVm {
+class MotherPregEvalChartMenuVm extends AsyncAuthVm {
   static const getMenuListKey = "getMenuList";
 
   MotherPregEvalChartMenuVm({
+    BuildContext? context,
     required GetMotherPregEvalGraphMenu getMotherPregEvalGraphMenu,
   }):
-    _getMotherPregEvalGraphMenu = getMotherPregEvalGraphMenu
+    _getMotherPregEvalGraphMenu = getMotherPregEvalGraphMenu, super(context: context)
   ;
   final GetMotherPregEvalGraphMenu _getMotherPregEvalGraphMenu;
 

@@ -22,7 +22,7 @@ main() async {
   await ConfigUtil.init();
   await DbDi.checkUpIdDao.deleteAll();
 
-  _vm = KehamilankuVmDi.checkFormVm..init();
+  _vm = KehamilankuVmDi.checkFormVm()..init();
   _vm.currentTrimesterId = _currentTrimesterId;
 
   _group1();

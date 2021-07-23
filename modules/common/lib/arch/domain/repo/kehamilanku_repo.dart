@@ -1,5 +1,7 @@
 
 
+import 'dart:io';
+
 import 'package:common/arch/data/local/source/account_local_source.dart';
 import 'package:common/arch/data/local/source/check_up_local_source.dart';
 import 'package:common/arch/data/remote/api/kehamilanku_api.dart';
@@ -8,6 +10,7 @@ import 'package:common/arch/data/remote/model/kehamilanku_form_warning_api_model
 import 'package:common/arch/di/config_di.dart';
 import 'package:common/arch/domain/model/chart_data_mother.dart';
 import 'package:common/arch/domain/model/form_warning_status.dart';
+import 'package:common/arch/domain/model/img_data.dart';
 import 'package:common/arch/domain/model/kehamilanku_data.dart';
 import 'package:common/util/data_mapper.dart';
 import 'package:core/domain/model/result.dart';
@@ -27,7 +30,15 @@ mixin PregnancyRepo {
   Future<Result<int>> getPregnancyCheckId(String motherNik, int week);
   Future<Result<bool>> savePregnancyCheckId(PregnancyCheckUpId checkUpId);
   Future<Result<PregnancyCheck>> getPregnancyCheck(PregnancyCheckUpId checkUpId);
-  Future<Result<bool>> savePregnancyCheck(String motherNik, PregnancyCheck data, int trimesterId);
+  /// Returns the check up id.
+  Future<Result<int>> savePregnancyCheck(String motherNik, PregnancyCheck data, int trimesterId);
+  /// Returns the final storage of [imgFile]. If null, it means [imgFile] is not
+  /// stored in persistent storage.
+  Future<Result<File?>> saveUsgImg({
+    required String motherNik,
+    required ImgData imgFile,
+    required int checkUpId,
+  });
   /// Returns null if there's no available [PregnancyBabySize] for [pregnancyWeekAge].
   Future<Result<PregnancyBabySize?>> getPregnancyBabySize(PregnancyCheckUpId checkUpId);
   Future<Result<List<FormWarningStatus>>> getMotherWarningStatus(PregnancyCheckUpId checkUpId);
@@ -129,7 +140,7 @@ class PregnancyRepoImpl with PregnancyRepo {
     }
   }
   @override
-  Future<Result<bool>> savePregnancyCheck(
+  Future<Result<int>> savePregnancyCheck(
     String motherNik, PregnancyCheck data, int trimesterId,
   ) async {
     final body = PregnancyCheckBody.fromModel(model: data, trimesterId: trimesterId);
@@ -142,14 +153,37 @@ class PregnancyRepoImpl with PregnancyRepo {
       ));
       prind("savePregnancyCheck() motherNik= $motherNik res2 = $res2 data.pregnancyAge = ${data.pregnancyAge} res.checkupId = ${res.checkupId}");
       if(res2 is! Success<bool>) {
-        return res2 as Fail<bool>;
+        return (res2 as Fail<bool>).copy();
       }
-      return res2;
+      return Success(res.checkupId.id);
     } catch(e, stack) {
       final msg = "`savePregnancyCheck()` error";
       prine("$msg; e= $e");
       prine(stack);
       return Fail(msg: msg, error: e);
+    }
+  }
+  @override
+  Future<Result<File?>> saveUsgImg({
+    required String motherNik,
+    required ImgData imgFile,
+    required int checkUpId,
+  }) async {
+    if(imgFile.src != ImgSrc.file) {
+      throw "Can't send image with source besides `ImgSrc.file`";
+    }
+    try {
+      final file = File(imgFile.link);
+      final res = await _api.sendPregnancyCheckUsg(checkUpId, file);
+      if(res.code != 200) {
+        return Fail(msg: "Can't upload USG img", code: res.code);
+      }
+      return Success(null);
+    } catch(e, stack) {
+      final msg = "Error calling `saveUsgImg()`";
+      prine("$msg; e= $e");
+      prine(stack);
+      return Fail(msg: msg, error: e,);
     }
   }
   /// Returns null if there's no available [PregnancyBabySize] for [pregnancyWeekAge].
@@ -216,7 +250,13 @@ class PregnancyRepoDummy with PregnancyRepo {
   @override
   Future<Result<PregnancyCheck>> getPregnancyCheck(PregnancyCheckUpId checkUpId) async => Success(dummyPregnancyCheck(checkUpId.week));
   @override
-  Future<Result<bool>> savePregnancyCheck(String motherNik, PregnancyCheck data, int trimester) async => Success(true);
+  Future<Result<int>> savePregnancyCheck(String motherNik, PregnancyCheck data, int trimester) async => Success(1);
+  @override
+  Future<Result<File?>> saveUsgImg({
+    required String motherNik,
+    required ImgData imgFile,
+    required int checkUpId,
+  }) async => Success(null);
   @override
   Future<Result<PregnancyBabySize?>> getPregnancyBabySize(PregnancyCheckUpId checkUpId) async => Success(dummyPregnancyBabySize(checkUpId.week));
   @override

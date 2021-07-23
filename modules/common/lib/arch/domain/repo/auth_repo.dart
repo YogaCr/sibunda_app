@@ -35,6 +35,7 @@ mixin AuthRepo {
   });
   Future<Result<SessionData>> login(LoginData data);
   Future<Result<bool>> logout(SessionData data);
+  Future<Result<bool>> clearUserData();
   Future<Result<bool>> saveSession(SessionData data);
   /// Returns null if user hasn't logged in yet.
   Future<Result<SessionData?>> getSession();
@@ -128,6 +129,7 @@ class AuthRepoImpl with AuthRepo {
       }
       final session = SessionData(token: res.data.token, tokenType: res.data.tokenType,);
       VarDi.session = session;
+      VarDi.isSessionValid.value = true;
 
       final bioRes = await getBio();
       if(bioRes is! Success<List<BatchProfileServer>>) {
@@ -193,7 +195,17 @@ class AuthRepoImpl with AuthRepo {
       if(res.code != 200) {
         return Fail(code: res.code, msg: res.message);
       }
-
+      return await clearUserData();
+    } catch(e, stack) {
+      final msg = "Error calling `logout()`";
+      prine("$msg, e= $e");
+      prine(stack);
+      return Fail(msg: msg, error: e);
+    }
+  }
+  @override
+  Future<Result<bool>> clearUserData() async {
+    try {
       var locRes = await _pregnancyLocalSrc.clear();
       if(locRes is! Success<bool>) {
         return Fail(msg: "Can't delete `hpl` and `hpht` in local");
@@ -207,7 +219,6 @@ class AuthRepoImpl with AuthRepo {
         return Fail(msg: "Can't delete `pregnancy` data in local");
       }
  */
-
       locRes = await _accountLocalSrc.deleteSession();
       if(locRes is! Success<bool>) {
         return Fail(msg: "Can't delete `session` in local");
@@ -221,9 +232,9 @@ class AuthRepoImpl with AuthRepo {
       if(locRes is! Success<bool>) {
         return Fail(msg: "Can't clear all `profile` and `credential` in local");
       }
-      return Success(true, 200);
+      return Success(true);
     } catch(e, stack) {
-      final msg = "Error calling `logout()`";
+      final msg = "Error calling `clearUserData()`";
       prine("$msg, e= $e");
       prine(stack);
       return Fail(msg: msg, error: e);
@@ -338,7 +349,11 @@ class AuthDummyRepo with AuthRepo {
     required DateTime? motherHpl,
   }) async => Success(true, 200);
 
+  @override
   Future<Result<bool>> logout(SessionData data) async => Success(true, 200);
+
+  @override
+  Future<Result<bool>> clearUserData() async => Success(true);
 
   @override
   Future<Result<SessionData?>> getSession() async => Success(dummySessionData1);

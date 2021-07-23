@@ -27,7 +27,7 @@ class ProfileRoutes extends ModuleRoute {
 
   static final profileHomePage = SibRoute("ProfileHomePage", ProfileHomePage, (ctx) => MainFrame(
     body: ProfileHomePage().inVmProvider([
-      (ctx) => ProfileVmDi.profileHomeVm,
+      (ctx) => ProfileVmDi.profileHomeVm(context: ctx),
     ]),
   ));
   static final profileEditPage = _ProfileEditPageRoute.obj;
@@ -40,7 +40,7 @@ class _ProfileEditPageRoute {
 
   final _route = SibRoute("ProfileEditPage", ProfileEditPage, (ctx) => MainFrame(
     body: ProfileEditPage().inVmProvider([
-          (ctx) => ProfileVmDi.profileEditVm,
+          (ctx) => ProfileVmDi.profileEditVm(context: ctx),
     ]),
   ));
 

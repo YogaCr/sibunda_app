@@ -19,7 +19,7 @@ class HomeStatus {
   factory HomeStatus.fromResponse(HomeDashboardDataWarningResponse response) => HomeStatus(
     desc: response.desc,
     img: response.img_url != null
-        ? ImgData(link: response.img_url!, isLocal: false)
+        ? ImgData(link: response.img_url!, src: ImgSrc.network,)
         : dummyImg,
     color: Colors.white, //For now, it's white, cuz the server doesn't serve it.
   );

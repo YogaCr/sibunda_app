@@ -6,6 +6,7 @@ import 'package:common/arch/domain/model/profile_data.dart';
 import 'package:common/arch/domain/usecase/baby_usecase.dart';
 import 'package:common/arch/ui/model/form_data.dart';
 import 'package:common/arch/ui/vm/form_vm_group.dart';
+import 'package:common/arch/ui/vm/vm_auth.dart';
 import 'package:common/res/string/_string.dart';
 import 'package:common/util/data_mapper.dart';
 import 'package:common/util/type_util.dart';
@@ -13,12 +14,14 @@ import 'package:common/value/const_values.dart';
 import 'package:core/domain/model/result.dart';
 import 'package:core/ui/base/live_data.dart';
 import 'package:core/util/_consoles.dart';
+import 'package:flutter/material.dart';
 
-class BabyCheckFormVm extends FormVmGroup {
+class BabyCheckFormVm extends FormAuthVmGroup {
   static const getWarningListKey = "getWarningList";
   static const getBabyFormAnswerKey = "getBabyFormAnswer";
 
   BabyCheckFormVm({
+    BuildContext? context,
     required this.credential,
     //required GetBabyNik getBabyNik,
     required GetBabyCheckForm getBabyCheckForm,
@@ -31,7 +34,7 @@ class BabyCheckFormVm extends FormVmGroup {
     _getBabyCheckForm = getBabyCheckForm,
     _getBabyFromWarningStatus = getBabyFromWarningStatus,
     _saveBabyCheckForm = saveBabyCheckForm,
-    _getBabyCheckFormAnswer = getBabyCheckFormAnswer
+    _getBabyCheckFormAnswer = getBabyCheckFormAnswer, super(context: context)
     //_saveBabyCheckUpId = saveBabyCheckUpId
   {
     //canProceed.observe(this, (canProceed) { prind("BabyCheckFormVm canProceed = $canProceed _currentMonth= $_currentMonth"); });

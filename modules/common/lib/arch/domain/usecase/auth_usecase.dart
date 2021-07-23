@@ -19,10 +19,14 @@ mixin Logout {
   Future<Result<bool>> call(SessionData data);
 }
 
+mixin ClearUserData {
+  Future<Result<bool>> call();
+}
+
 mixin ToLoginPage {
   Future<Result<bool>> call({
     required BuildContext context,
-    required ModuleRoute moduleRoute,
+    //required ModuleRoute moduleRoute,
   });
 }
 
@@ -37,6 +41,7 @@ class IsLoggedInImpl with IsLoggedIn {
       final session = res.data;
       if(session != null) {
         VarDi.session = session;
+        VarDi.isSessionValid.value = true;
       }
       return Success(session != null);
     } else {
@@ -76,17 +81,31 @@ class LogoutImpl with Logout {
   Future<Result<bool>> call(SessionData data) => repo.logout(data);
 }
 
+class ClearUserDataImpl with ClearUserData {
+  final AuthRepo _repo;
+  ClearUserDataImpl(this._repo);
+  @override
+  Future<Result<bool>> call() => _repo.clearUserData();
+}
+
 class ToLoginPageImpl with ToLoginPage {
   @override
   Future<Result<bool>> call({
     required BuildContext context,
-    required ModuleRoute moduleRoute,
+    //required ModuleRoute moduleRoute,
   }) async {
     try {
+      GlobalRoutes.manager.getExternalRoute(GlobalRoutes.home_LoginPage)
+          .goToPage(
+            context,
+            clearPrevs: true,
+          );
+      /*
       moduleRoute.goToExternalRoute(
         context, GlobalRoutes.home_LoginPage,
         clearPrevs: true,
       );
+       */
       return Success(true);
     } catch(e, stack) {
       final msg = "Can't go to login page";

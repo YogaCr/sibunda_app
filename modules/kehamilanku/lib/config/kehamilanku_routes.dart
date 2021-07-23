@@ -40,19 +40,19 @@ class KehamilankuRoutes extends ModuleRoute {
 
   static final kehamilankuHomePage = SibRoute("KehamilankuHomePage", KehamilankuHomePage, (ctx) => MainFrame(
     body: KehamilankuHomePage().inVmProvider([
-      (ctx) => KehamilankuVmDi.kehamilankuHomeVm,
+      (ctx) => KehamilankuVmDi.kehamilankuHomeVm(context: ctx),
     ]),
   ));
   static final pregnancyCheckPage = _PregnancyCheckPageRoute.obj;
   static final immunizationPage = SibRoute("PregnancyImmunizationPage", PregnancyImmunizationPage, (ctx) => MainFrame(
     body: PregnancyImmunizationPage().inVmProvider([
-      (ctx) => KehamilankuVmDi.immunizationVm,
+      (ctx) => KehamilankuVmDi.immunizationVm(context: ctx),
     ]),
   ));
 
   static final pregEvalChartMenuPage = SibRoute("MotherPregEvalChartMenuPage", MotherPregEvalChartMenuPage, (ctx) => MainFrame(
     body: MotherPregEvalChartMenuPage().inVmProvider([
-      (ctx) => KehamilankuVmDi.pregEvalChartMenuVm,
+      (ctx) => KehamilankuVmDi.pregEvalChartMenuVm(context: ctx),
     ]),
   ));
   static final chartPage = _MotherChartPageRoute.obj;
@@ -72,7 +72,7 @@ class _PregnancyCheckPageRoute {
       body: FormFaker(
         interceptor: interceptor,
         child: KehamilankuTrimesterFormPage(interceptor: interceptor,).inVmProvider([
-              (ctx) => KehamilankuVmDi.checkFormVm,
+              (ctx) => KehamilankuVmDi.checkFormVm(context: ctx),
         ]),
       ),
     );
@@ -99,7 +99,10 @@ class _PregnancyImmunizationPopupRoute {
     //_route.goToPage(context, args: {Const.KEY_TRIMESTER : data});
     final _route = SibRoute("PregnancyImmunizationPopup", PregnancyImmunizationPopupPage, (ctx) => MainFrame(
       body: PregnancyImmunizationPopupPage().inVmProvider([
-            (ctx) => KehamilankuVmDi.immunizationPopupVm(immunization),
+            (ctx) => KehamilankuVmDi.immunizationPopupVm(
+              immunization: immunization,
+              context: ctx,
+            ),
       ]),
     ));
     return _route.showAsDialog<String>(context);
@@ -116,7 +119,7 @@ class _MotherChartPageRoute {
 
   final _route = SibRoute("MotherChartPage", MotherChartPage, (ctx) => MainFrame(
     body: MotherChartPage().inVmProvider([
-      (ctx) => KehamilankuVmDi.motherChartVm,
+      (ctx) => KehamilankuVmDi.motherChartVm(context: ctx),
     ]),
   ));
 

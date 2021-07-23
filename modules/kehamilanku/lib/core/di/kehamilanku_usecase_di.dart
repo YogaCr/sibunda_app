@@ -17,6 +17,7 @@ class KehamilankuUseCaseDi {
 
   static GetPregnancyCheckForm get getPregnancyCheckForm => GetPregnancyCheckFormImpl(RepoDi.formFieldRepo);
   static SavePregnancyCheck get savePregnancyCheck => SavePregnancyCheckImpl(RepoDi.pregnancyRepo);
+  static SaveUsgImg get saveUsgImg => SaveUsgImgImpl(RepoDi.pregnancyRepo);
   static GetPregnancyCheck get getPregnancyCheck => GetPregnancyCheckImpl(RepoDi.pregnancyRepo);
   static GetMotherFormWarningStatus get getMotherFormWarningStatus => GetMotherFormWarningStatusImpl(RepoDi.pregnancyRepo);
   static GetPregnancyBabySize get getPregnancyBabySize => GetPregnancyBabySizeImpl(RepoDi.pregnancyRepo);

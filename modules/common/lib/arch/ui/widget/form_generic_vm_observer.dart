@@ -142,6 +142,30 @@ class _FormGenericVmObserverState<Vm extends FormGenericVmMixin>
                   selectedAnswerIndices.value = selectedAnswers;
                 }
                 break;
+              case FormType.imgPick:
+                final imgController = MutableLiveData<ImgData>();
+                itemLiveDatas[key] = imgController;
+
+                //final enabled = this.enabled && itemData.isInputEnabled;
+                //interceptor?.isEnabled = enabled;
+
+                field = ImgPickerField(
+                  itemData: itemData as FormUiImgPicker,
+                  isValid: vm.isResponseValidList[i],
+                  //isEnabledController: vm.isFormEnabled,
+                  invalidMsgGenerator: (response) => vm.getInvalidMsg(key, imgController.value),
+                  imgController: imgController,
+                  //enabled: enabled,
+                  //controller: interceptor as FieldController<Set<int>>?,
+                );
+                /*
+                vmLiveData.observe(this, (data) {
+                  imgController.value = data;
+                });
+                 */
+
+                vm.registerField(i, field as SibFormField,);
+                break;
             }
 
             return Container(

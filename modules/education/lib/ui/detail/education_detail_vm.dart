@@ -1,16 +1,19 @@
 import 'package:common/arch/domain/model/education_data.dart';
+import 'package:common/arch/ui/vm/vm_auth.dart';
 import 'package:common/util/times.dart';
 import 'package:core/domain/model/result.dart';
 import 'package:core/ui/base/async_vm.dart';
 import 'package:core/ui/base/live_data.dart';
 import 'package:education/core/domain/usecase/education_detail_usecase.dart';
+import 'package:flutter/material.dart';
 
-class EducationDetailVm extends AsyncVm {
+class EducationDetailVm extends AsyncAuthVm {
   static const getDetailKey = "getDetail";
 
   EducationDetailVm({
+    BuildContext? context,
     required GetEducationDetail getEducationDetail,
-  }): _getEducationDetail = getEducationDetail {
+  }): _getEducationDetail = getEducationDetail, super(context: context) {
     _detail.observe(this, (data) {
       if(data != null) {
         formatTime(data.date).then((str) {

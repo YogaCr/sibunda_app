@@ -12,7 +12,7 @@ late CovidCheckVm _vm;
 
 main() async {
   await ConfigUtil.init();
-  _vm = CovidVmDi.checkVm;
+  _vm = CovidVmDi.checkVm();
 
   _group1();
   print("");

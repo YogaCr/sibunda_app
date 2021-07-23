@@ -2,17 +2,19 @@ import 'package:common/arch/di/config_di.dart';
 import 'package:common/arch/domain/model/profile_data.dart';
 import 'package:common/arch/domain/usecase/auth_usecase.dart';
 import 'package:common/arch/domain/usecase/profile_usecase.dart';
+import 'package:common/arch/ui/vm/vm_auth.dart';
 import 'package:core/domain/model/result.dart';
 import 'package:core/ui/base/async_vm.dart';
 import 'package:core/ui/base/live_data.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:profile/config/profile_routes.dart';
 
-class ProfileHomeVm extends AsyncVm {
+class ProfileHomeVm extends AsyncAuthVm {
   static const getProfileKey = "getProfile";
   static const logoutKey = "logout";
 
   ProfileHomeVm({
+    BuildContext? context,
     required GetProfile getProfile,
     required GetCurrentEmail getCurrentEmail,
     required Logout logout,
@@ -21,7 +23,7 @@ class ProfileHomeVm extends AsyncVm {
       _getProfile = getProfile,
       _getCurrentEmail = getCurrentEmail,
       _logout = logout,
-      _toLoginPage = toLoginPage
+      _toLoginPage = toLoginPage, super(context: context)
   ;
 
   final GetProfile _getProfile;
@@ -69,6 +71,6 @@ class ProfileHomeVm extends AsyncVm {
   }
 
   void toLoginPage(BuildContext context) {
-    _toLoginPage(context: context, moduleRoute: ProfileRoutes.obj);
+    _toLoginPage(context: context,); //moduleRoute: ProfileRoutes.obj);
   }
 }

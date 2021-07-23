@@ -26,7 +26,7 @@ final motherHomeImmunization_ui = HomeImmunizationData(
   img: ImgData(
     link: "kehamilanku_imunisasipng.png",
     package: GlobalRoutes.common,
-    isLocal: true,
+    src: ImgSrc.asset,
   ),
 );
 
@@ -36,7 +36,7 @@ final babyHomeImmunization_ui = HomeImmunizationData(
   img: ImgData(
     link: "bayi_imunisasi.png",
     package: GlobalRoutes.common,
-    isLocal: true,
+    src: ImgSrc.asset,
   ),
 );
 

@@ -3,6 +3,7 @@ import 'package:common/arch/domain/model/baby_data.dart';
 import 'package:common/arch/domain/model/kehamilanku_data.dart';
 import 'package:common/arch/domain/usecase/baby_usecase.dart';
 import 'package:common/arch/domain/usecase/mother_usecase.dart';
+import 'package:common/arch/ui/vm/vm_auth.dart';
 import 'package:core/domain/model/result.dart';
 import 'package:core/ui/base/async_vm.dart';
 import 'package:core/ui/base/live_data.dart';
@@ -11,13 +12,14 @@ import 'package:core/util/val_util.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:kehamilanku/core/domain/usecase/home_usecase.dart';
 
-class KehamilankuHomeVm extends AsyncVm {
+class KehamilankuHomeVm extends AsyncAuthVm {
   static const getAgeOverviewKey = "getAgeOverview";
   static const getTrimesterListKey = "getTrimesterList";
   static const getFoodRecomListKey = "getFoodRecomList";
   static const getBabyOverlayKey = "getBabyOverlay";
 
   KehamilankuHomeVm({
+    BuildContext? context,
     //required GetMotherNik getMotherNik,
     required GetPregnancyAgeOverview getPregnancyAgeOverview,
     required GetTrimesterList getTrimesterList,
@@ -30,7 +32,7 @@ class KehamilankuHomeVm extends AsyncVm {
       _getTrimesterList = getTrimesterList,
       _getMotherFoodRecomList = getMotherFoodRecomList,
       _getBornBabyList = getBornBabyList,
-      _getUnbornBabyList = getUnbornBabyList
+      _getUnbornBabyList = getUnbornBabyList, super(context: context)
   ;
 
   //final GetMotherNik _getMotherNik;

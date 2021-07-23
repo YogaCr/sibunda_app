@@ -3,16 +3,20 @@ import 'package:common/arch/domain/model/profile_data.dart';
 import 'package:common/arch/domain/usecase/baby_usecase.dart';
 import 'package:common/arch/domain/model/chart_data_baby.dart';
 import 'package:common/arch/domain/model/form_warning_status.dart';
+import 'package:common/arch/ui/vm/vm_auth.dart';
 import 'package:core/domain/model/result.dart';
 import 'package:core/ui/base/async_vm.dart';
 import 'package:core/ui/base/live_data.dart';
 import 'package:core/util/_consoles.dart';
+import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
-class BabyChartVm extends AsyncVm {
+class BabyChartVm extends AsyncAuthVm {
   static const loadChartKey = "loadChart";
 
   BabyChartVm({
+    BuildContext? context,
+
     required this.credential,
 
     required GetBabyWeightChart getBabyWeightChart,
@@ -44,7 +48,7 @@ class BabyChartVm extends AsyncVm {
     _getBabyWeightToLenChartWarning = getBabyWeightToLenChartWarning,
     _getBabyHeadCircumChartWarning = getBabyHeadCircumChartWarning,
     _getBabyBmiChartWarning = getBabyBmiChartWarning,
-    _getBabyDevChartWarning = getBabyDevChartWarning
+    _getBabyDevChartWarning = getBabyDevChartWarning, super(context: context)
   ;
 
   final GetBabyWeightChart _getBabyWeightChart;

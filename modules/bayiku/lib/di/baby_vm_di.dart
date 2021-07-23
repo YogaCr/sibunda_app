@@ -9,53 +9,70 @@ import 'package:bayiku/ui/neonatal_service/neonatal_service_vm.dart';
 import 'package:common/arch/di/usecase_di.dart';
 import 'package:common/arch/domain/model/immunization.dart';
 import 'package:common/arch/domain/model/profile_data.dart';
+import 'package:flutter/material.dart';
 
 class BabyVmDi {
   BabyVmDi._();
   static final obj = BabyVmDi._();
 
-  static BabyHomeVm get babyHomeVm => BabyHomeVm(
+  static BabyHomeVm babyHomeVm({BuildContext? context,}) => BabyHomeVm(
+    context: context,
     getBabyAgeOverview: BabyUseCaseDi.getBabyAgeOverview,
     getBabyFormMenuList: BabyUseCaseDi.getBabyFormMenuList,
     getBornBabyList: UseCaseDi.getBornBabyList,
     getUnbornBabyList: UseCaseDi.getUnbornBabyList,
   );
   static BabyCheckFormVm babyCheckFormVm({
+    BuildContext? context,
     required ProfileCredential babyCredential,
   }) => BabyCheckFormVm(
+    context: context,
     credential: babyCredential,
     getBabyCheckForm: BabyUseCaseDi.getBabyCheckForm,
     getBabyCheckFormAnswer: BabyUseCaseDi.getBabyCheckFormAnswer,
     getBabyFromWarningStatus: BabyUseCaseDi.getBabyFormWarningStatus,
     saveBabyCheckForm: BabyUseCaseDi.saveBabyCheckForm,
   );
-  static NeonatalServiceVm get neonatalServiceVm => NeonatalServiceVm(
+  static NeonatalServiceVm neonatalServiceVm({
+    BuildContext? context,
+  }) => NeonatalServiceVm(
+    context: context,
     getNeonatalFormData: BabyUseCaseDi.getNeonatalFormData,
     saveNeonatalForm: BabyUseCaseDi.saveNeonatalForm,
   );
   static BabyImmunizationVm babyImmunizationVm({
+    BuildContext? context,
     required ProfileCredential babyCredential,
   }) => BabyImmunizationVm(
+    context: context,
     credential: babyCredential,
     getBabyImmunizationGroupList: BabyUseCaseDi.getBabyImmunizationGroupList,
     getBabyImmunizationOverview: BabyUseCaseDi.getBabyImmunizationOverview,
   );
   static BabyImmunizationPopupVm immunizationPopupVm({
+    BuildContext? context,
     required ImmunizationData immunization,
     required ProfileCredential babyCredential,
   }) => BabyImmunizationPopupVm(
+    context: context,
     credential: babyCredential,
     immunization: immunization,
     getBabyImmunizationConfirmForm: BabyUseCaseDi.getBabyImmunizationConfirmForm,
     confirmBabyImmunization: BabyUseCaseDi.confirmBabyImmunization,
   );
-  static BabyGrowthChartMenuVm growthChartMenuVm(ProfileCredential babyCredential) => BabyGrowthChartMenuVm(
+  static BabyGrowthChartMenuVm growthChartMenuVm({
+    BuildContext? context,
+    required ProfileCredential babyCredential,
+  }) => BabyGrowthChartMenuVm(
+    context: context,
     credential: babyCredential,
     getBabyGrowthGraphMenu: BabyUseCaseDi.getBabyGrowthGraphMenu,
   );
   static BabyChartVm chartVm({
+    BuildContext? context,
     required ProfileCredential babyCredential,
   }) => BabyChartVm(
+    context: context,
     credential: babyCredential,
     getBabyWeightChart: BabyUseCaseDi.getBabyWeightChart,
     getBabyKmsChart: BabyUseCaseDi.getBabyKmsChart,

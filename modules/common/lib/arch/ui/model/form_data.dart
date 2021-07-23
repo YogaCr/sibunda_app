@@ -57,6 +57,47 @@ abstract class FormUiData extends Equatable {
   List<Object> get props => [type, key, question, img ?? "<null>", isInputEnabled];
 }
 
+class FormUiImgPicker extends FormUiData {
+  final ImgData? pickedImg;
+
+  FormUiImgPicker({
+    required String key,
+    required String question,
+    this.pickedImg,
+    bool isInputEnabled = true,
+    FieldInputMethod input = FieldInputMethod.direct,
+    List<ImgData>? img,
+  }) : super(
+    type: FormType.text,
+    key: key,
+    question: question,
+    img: img,
+    input: input,
+    isInputEnabled: isInputEnabled,
+  );
+
+  factory FormUiImgPicker.fromModel(FormData data,) {
+    final options = data.options?.map((e) => e.label).toList(growable: false);
+    final selectedItems = <int>{};
+    if(options == null) {
+      print("!!! FormUiCheck doesn't have option. !!!");
+    } else {
+      for(int i = 0; i < options.length; i++) {
+        if(data.options![i].isSelected) {
+          selectedItems.add(i);
+        }
+      }
+    }
+    return FormUiImgPicker(
+      key: data.key,
+      question: data.question,
+      img: data.img,
+      input: data.input,
+      isInputEnabled: data.isInputEnabled,
+    );
+  }
+}
+
 class FormUiTxt extends FormUiData {
   final String? answer;
   final InputType inputType;
@@ -200,6 +241,7 @@ class FormUiGroupData extends Equatable {
         case FormType.text: return FormUiTxt.fromModel(e);
         case FormType.check: return FormUiCheck.fromModel(e);
         case FormType.radio: return FormUiRadio.fromModel(e);
+        case FormType.imgPick: return FormUiImgPicker.fromModel(e);
       }
     }).toList(growable: false);
     return FormUiGroupData._(

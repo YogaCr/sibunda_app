@@ -53,7 +53,7 @@ class BabyFormMenuData {
     id: response.id,
     img: ImgData(
       link: response.img_url,
-      isLocal: false,
+      src: ImgSrc.network,
     ),
   );
 }

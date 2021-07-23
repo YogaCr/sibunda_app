@@ -3,19 +3,22 @@ import 'package:common/arch/domain/model/home_data.dart';
 import 'package:common/arch/domain/model/profile_data.dart';
 import 'package:common/arch/domain/usecase/mother_usecase.dart';
 import 'package:common/arch/domain/usecase/profile_usecase.dart';
+import 'package:common/arch/ui/vm/vm_auth.dart';
 import 'package:core/domain/model/result.dart';
 import 'package:core/ui/base/async_vm.dart';
 import 'package:core/ui/base/live_data.dart';
 import 'package:core/util/_consoles.dart';
+import 'package:flutter/material.dart';
 import 'package:home/core/domain/usecase/home_page_use_case.dart';
 
-class HomeVm extends AsyncVm {
+class HomeVm extends AsyncAuthVm {
   static const getProfileKey = "getProfile";
   static const getStatusListKey = "getStatusList";
   static const getMenuListKey = "getMenuList";
   static const getTipsListKey = "getTipsList";
 
   HomeVm({
+    BuildContext? context,
     required GetHomeStatusList getHomeStatusList,
     required GetHomeMenuList getHomeMenuList,
     required GetHomeTipsList getHomeTipsList,
@@ -28,7 +31,7 @@ class HomeVm extends AsyncVm {
     _getHomeTipsList = getHomeTipsList,
     _getMotherNik = getMotherNik,
     _getProfile = getProfile,
-    _getCurrentEmail = getCurrentEmail
+    _getCurrentEmail = getCurrentEmail, super(context: context)
   ;
   final GetMotherNik _getMotherNik;
   final GetProfile _getProfile;

@@ -22,11 +22,18 @@ class VarDi {
   //TODO: VarDi.motherNik: blum ada yg meng-init nilainya. Hapus GetMotherNik, pindah di sini aja.
   static final motherNik = MutableLiveData<String>();
 
-  static clear() {
+  static final isSessionValid = MutableLiveData<bool>();
+
+  static clear({
+    bool includeSession = true,
+  }) {
     prind("VarDi.clear() start");
     _session = null;
     pregnancyWeek.value = null;
     motherNik.value = null;
+    if(includeSession) {
+      isSessionValid.value = null;
+    }
     prind("VarDi.clear() end");
   }
 }

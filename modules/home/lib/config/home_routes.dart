@@ -121,12 +121,12 @@ class HomeRoutes extends ModuleRoute {
 
   static final homePage = SibRoute("HomePage", HomePage, (ctx) =>  MainFrame(
     body: HomePage().inVmProvider([
-      (ctx) => HomeVmDi.homeVm,
+      (ctx) => HomeVmDi.homeVm(context: ctx),
     ]), //.inVmProvider([(ctx) =
   ));
   static final homeNotifAndMessagePage = SibRoute("HomeNotifAndMessagePage", HomeNotifAndMessagePage, (ctx) =>  MainFrame(
     body: HomeNotifAndMessagePage().inVmProvider([
-      (ctx) => HomeVmDi.notifAndMessageVm,
+      (ctx) => HomeVmDi.notifAndMessageVm(context: ctx),
     ]), //.inVmProvider([(ctx) => H
   ));
 }

@@ -1,4 +1,5 @@
 
+import 'package:common/arch/di/config_di.dart';
 import 'package:common/arch/domain/model/auth.dart';
 import 'package:common/value/const_values.dart';
 import 'package:core/util/_consoles.dart';
@@ -38,6 +39,7 @@ class SibDio {
     LogInterceptor? interceptor,
   }) {
     final dio = preExisting ?? Dio(SibDio.defaultBaseOptions());
+    dio.interceptors.add(AuthInterceptor());
     if(session != null) {
       dio.options.headers[Const.HEADER_AUTH] = session.toAuthString();
     }
@@ -63,4 +65,12 @@ class SibDio {
     //validateStatus: (code) => true, //So that every response, even errors, is returned.
     headers: defaultHeaders,
   );
+}
+
+
+class AuthInterceptor extends Interceptor {
+  @override
+  void onResponse(Response response, ResponseInterceptorHandler handler) {
+    VarDi.isSessionValid.value = response.statusCode != 401;
+  }
 }

@@ -37,6 +37,8 @@ class Strings {
   static const covid_check_form = "Form Pemeriksaan Gejala Covid-19";
 
   static const submit_check_form = "Simpan Data Pemeriksaan";
+  static const pick_img = "Pilih Gambar";
+  static const session_expired = "Sesi Anda telah habis. Harap login ulang.";
 
   static const mother = "Bunda";
   static const baby = "Bayi";
@@ -111,6 +113,7 @@ class Strings {
   static const drug_allergy =  "Alergi Obat";
   static const disease_history =  "Riwayat Penyakit";
   static const special_note =  "Catatan Khusus";
+  static const img_usg =  "Foto USG";
 
   static const immunization_date = "Tanggal Imunisasi";
   static const immunization_place = "Tempat Imunisasi";
