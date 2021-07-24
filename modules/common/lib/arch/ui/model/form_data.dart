@@ -68,7 +68,7 @@ class FormUiImgPicker extends FormUiData {
     FieldInputMethod input = FieldInputMethod.direct,
     List<ImgData>? img,
   }) : super(
-    type: FormType.text,
+    type: FormType.imgPick,
     key: key,
     question: question,
     img: img,

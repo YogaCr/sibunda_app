@@ -149,6 +149,7 @@ class KehamilankuCheckFormVm extends FormAuthVmGroup {
     final submitRes = await _savePregnancyCheck(motherNik, data, currentTrimesterId);
     if(submitRes is Success<int>) {
       final checkUpId = submitRes.data;
+      prind("responseMap[Const.KEY_IMG_USG]= ${responseMap[Const.KEY_IMG_USG]}");
       final res2 = await _saveUsgImg(
         motherNik: motherNik,
         checkUpId: checkUpId,

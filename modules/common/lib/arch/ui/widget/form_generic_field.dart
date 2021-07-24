@@ -12,6 +12,7 @@ import 'package:common/res/string/_string.dart';
 import 'package:common/res/theme/_theme.dart';
 import 'package:common/util/assets.dart';
 import 'package:common/util/form_util.dart';
+import 'package:common/util/navigations.dart';
 import 'package:common/util/times.dart';
 import 'package:common/value/enums.dart';
 import 'package:core/domain/model/wrapper.dart';
@@ -658,12 +659,15 @@ class ImgPickerField extends SibFormField {
                 onTap: () {
                   showDialog(
                     context: ctx,
-                    builder: (ctx) => Container(
-                      color: black_trans_most,
-                      child: Padding(
-                        padding: EdgeInsets.all(20),
-                        child: InteractiveViewer(
-                          child: SibImages.resolve(data,),
+                    builder: (ctx) => GestureDetector(
+                      onTap: () => backPage(ctx),
+                      child: Container(
+                        color: black_trans_most,
+                        child: Padding(
+                          padding: EdgeInsets.all(50),
+                          child: InteractiveViewer(
+                            child: SibImages.resolve(data,),
+                          ),
                         ),
                       ),
                     ),

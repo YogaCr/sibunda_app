@@ -128,6 +128,8 @@ class _FormFakerState extends State<FormFaker> {
                 default: prinw("Can't fill automatically to `TxtField` with `input` of `FieldInputMethod.pick`, `key` = '${fieldData.key}'");
               }
               break;
+            case FormType.imgPick:
+              prinw("Can't fill automatically to `ImgPickerField`, `key` = '${fieldData.key}'");
           }
           //prind("fillForm() fieldInterceptor.value = ${fieldInterceptor.value}");
         }
