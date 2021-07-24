@@ -31,6 +31,7 @@ PregnancyCheckBody _$PregnancyCheckBodyFromJson(Map<String, dynamic> json) {
     diseaseHistory: json['riwayat_penyakit'] as String,
     note: json['catatan_khusus'] as String,
     trimesterId: json['trisemester_id'] as int,
+    img_usg: json['img_usg'] as String?,
   );
 }
 
@@ -59,6 +60,7 @@ Map<String, dynamic> _$PregnancyCheckBodyToJson(PregnancyCheckBody instance) =>
       'riwayat_penyakit': instance.diseaseHistory,
       'catatan_khusus': instance.note,
       'trisemester_id': instance.trimesterId,
+      'img_usg': instance.img_usg,
     };
 
 PregnancyShowCheckBody _$PregnancyShowCheckBodyFromJson(

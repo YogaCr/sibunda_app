@@ -359,6 +359,31 @@ abstract class FormVmGroup extends AsyncVm with FormVmGroupMixin {
       );
     }
   }
+  @protected
+  void setFieldValidity(int group, String key, bool isValid) {
+    if(_isFormReady.value == true) {
+      if(_responseGroupList[group][key] == null) {
+        throw "No such `key` '$key' in group '$group' in this '$runtimeType'";
+      }
+      //_isReseting = true;
+      _responseGroupList[group][key]!.isValid.value = isValid;
+      //_isReseting = false;
+    } else {
+      _isFormReady.observeOnce((isReady) {
+        //prind("FormVmGroup setResponse() NOT READY group= $group key= $key response= $response isReady = $isReady");
+        if(isReady == true) {
+          if(_responseGroupList[group][key] == null) {
+            throw "No such `key` '$key' in group '$group' in this '$runtimeType'";
+          }
+          //_isReseting = true;
+          _responseGroupList[group][key]!.isValid.value = isValid;
+          //_isReseting = false;
+        }
+      }, immediatelyGet: false //Cuz, the init value of `_isFormReady.value` is false, thus it will available immediately
+        // but that's not the case we want here.
+      );
+    }
+  }
 
   @override
   void dispose() {

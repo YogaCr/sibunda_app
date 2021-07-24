@@ -245,6 +245,8 @@ class _$TipsDataResponseTearOff {
       required String img_url,
       required String desc,
       required int? user_id,
+      required TipsCategoryResponse tips_category,
+      required String content,
       required String created_at,
       required String updated_at}) {
     return _TipsDataResponse(
@@ -252,6 +254,8 @@ class _$TipsDataResponseTearOff {
       img_url: img_url,
       desc: desc,
       user_id: user_id,
+      tips_category: tips_category,
+      content: content,
       created_at: created_at,
       updated_at: updated_at,
     );
@@ -271,6 +275,8 @@ mixin _$TipsDataResponse {
   String get img_url => throw _privateConstructorUsedError;
   String get desc => throw _privateConstructorUsedError;
   int? get user_id => throw _privateConstructorUsedError;
+  TipsCategoryResponse get tips_category => throw _privateConstructorUsedError;
+  String get content => throw _privateConstructorUsedError;
   String get created_at => throw _privateConstructorUsedError;
   String get updated_at => throw _privateConstructorUsedError;
 
@@ -290,8 +296,12 @@ abstract class $TipsDataResponseCopyWith<$Res> {
       String img_url,
       String desc,
       int? user_id,
+      TipsCategoryResponse tips_category,
+      String content,
       String created_at,
       String updated_at});
+
+  $TipsCategoryResponseCopyWith<$Res> get tips_category;
 }
 
 /// @nodoc
@@ -309,6 +319,8 @@ class _$TipsDataResponseCopyWithImpl<$Res>
     Object? img_url = freezed,
     Object? desc = freezed,
     Object? user_id = freezed,
+    Object? tips_category = freezed,
+    Object? content = freezed,
     Object? created_at = freezed,
     Object? updated_at = freezed,
   }) {
@@ -329,6 +341,14 @@ class _$TipsDataResponseCopyWithImpl<$Res>
           ? _value.user_id
           : user_id // ignore: cast_nullable_to_non_nullable
               as int?,
+      tips_category: tips_category == freezed
+          ? _value.tips_category
+          : tips_category // ignore: cast_nullable_to_non_nullable
+              as TipsCategoryResponse,
+      content: content == freezed
+          ? _value.content
+          : content // ignore: cast_nullable_to_non_nullable
+              as String,
       created_at: created_at == freezed
           ? _value.created_at
           : created_at // ignore: cast_nullable_to_non_nullable
@@ -338,6 +358,13 @@ class _$TipsDataResponseCopyWithImpl<$Res>
           : updated_at // ignore: cast_nullable_to_non_nullable
               as String,
     ));
+  }
+
+  @override
+  $TipsCategoryResponseCopyWith<$Res> get tips_category {
+    return $TipsCategoryResponseCopyWith<$Res>(_value.tips_category, (value) {
+      return _then(_value.copyWith(tips_category: value));
+    });
   }
 }
 
@@ -353,8 +380,13 @@ abstract class _$TipsDataResponseCopyWith<$Res>
       String img_url,
       String desc,
       int? user_id,
+      TipsCategoryResponse tips_category,
+      String content,
       String created_at,
       String updated_at});
+
+  @override
+  $TipsCategoryResponseCopyWith<$Res> get tips_category;
 }
 
 /// @nodoc
@@ -374,6 +406,8 @@ class __$TipsDataResponseCopyWithImpl<$Res>
     Object? img_url = freezed,
     Object? desc = freezed,
     Object? user_id = freezed,
+    Object? tips_category = freezed,
+    Object? content = freezed,
     Object? created_at = freezed,
     Object? updated_at = freezed,
   }) {
@@ -394,6 +428,14 @@ class __$TipsDataResponseCopyWithImpl<$Res>
           ? _value.user_id
           : user_id // ignore: cast_nullable_to_non_nullable
               as int?,
+      tips_category: tips_category == freezed
+          ? _value.tips_category
+          : tips_category // ignore: cast_nullable_to_non_nullable
+              as TipsCategoryResponse,
+      content: content == freezed
+          ? _value.content
+          : content // ignore: cast_nullable_to_non_nullable
+              as String,
       created_at: created_at == freezed
           ? _value.created_at
           : created_at // ignore: cast_nullable_to_non_nullable
@@ -414,6 +456,8 @@ class _$_TipsDataResponse implements _TipsDataResponse {
       required this.img_url,
       required this.desc,
       required this.user_id,
+      required this.tips_category,
+      required this.content,
       required this.created_at,
       required this.updated_at});
 
@@ -429,13 +473,17 @@ class _$_TipsDataResponse implements _TipsDataResponse {
   @override
   final int? user_id;
   @override
+  final TipsCategoryResponse tips_category;
+  @override
+  final String content;
+  @override
   final String created_at;
   @override
   final String updated_at;
 
   @override
   String toString() {
-    return 'TipsDataResponse(id: $id, img_url: $img_url, desc: $desc, user_id: $user_id, created_at: $created_at, updated_at: $updated_at)';
+    return 'TipsDataResponse(id: $id, img_url: $img_url, desc: $desc, user_id: $user_id, tips_category: $tips_category, content: $content, created_at: $created_at, updated_at: $updated_at)';
   }
 
   @override
@@ -452,6 +500,12 @@ class _$_TipsDataResponse implements _TipsDataResponse {
             (identical(other.user_id, user_id) ||
                 const DeepCollectionEquality()
                     .equals(other.user_id, user_id)) &&
+            (identical(other.tips_category, tips_category) ||
+                const DeepCollectionEquality()
+                    .equals(other.tips_category, tips_category)) &&
+            (identical(other.content, content) ||
+                const DeepCollectionEquality()
+                    .equals(other.content, content)) &&
             (identical(other.created_at, created_at) ||
                 const DeepCollectionEquality()
                     .equals(other.created_at, created_at)) &&
@@ -467,6 +521,8 @@ class _$_TipsDataResponse implements _TipsDataResponse {
       const DeepCollectionEquality().hash(img_url) ^
       const DeepCollectionEquality().hash(desc) ^
       const DeepCollectionEquality().hash(user_id) ^
+      const DeepCollectionEquality().hash(tips_category) ^
+      const DeepCollectionEquality().hash(content) ^
       const DeepCollectionEquality().hash(created_at) ^
       const DeepCollectionEquality().hash(updated_at);
 
@@ -487,6 +543,8 @@ abstract class _TipsDataResponse implements TipsDataResponse {
       required String img_url,
       required String desc,
       required int? user_id,
+      required TipsCategoryResponse tips_category,
+      required String content,
       required String created_at,
       required String updated_at}) = _$_TipsDataResponse;
 
@@ -502,11 +560,186 @@ abstract class _TipsDataResponse implements TipsDataResponse {
   @override
   int? get user_id => throw _privateConstructorUsedError;
   @override
+  TipsCategoryResponse get tips_category => throw _privateConstructorUsedError;
+  @override
+  String get content => throw _privateConstructorUsedError;
+  @override
   String get created_at => throw _privateConstructorUsedError;
   @override
   String get updated_at => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$TipsDataResponseCopyWith<_TipsDataResponse> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+TipsCategoryResponse _$TipsCategoryResponseFromJson(Map<String, dynamic> json) {
+  return _TipsCategoryResponse.fromJson(json);
+}
+
+/// @nodoc
+class _$TipsCategoryResponseTearOff {
+  const _$TipsCategoryResponseTearOff();
+
+  _TipsCategoryResponse call({required int id, required String name}) {
+    return _TipsCategoryResponse(
+      id: id,
+      name: name,
+    );
+  }
+
+  TipsCategoryResponse fromJson(Map<String, Object> json) {
+    return TipsCategoryResponse.fromJson(json);
+  }
+}
+
+/// @nodoc
+const $TipsCategoryResponse = _$TipsCategoryResponseTearOff();
+
+/// @nodoc
+mixin _$TipsCategoryResponse {
+  int get id => throw _privateConstructorUsedError;
+  String get name => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $TipsCategoryResponseCopyWith<TipsCategoryResponse> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $TipsCategoryResponseCopyWith<$Res> {
+  factory $TipsCategoryResponseCopyWith(TipsCategoryResponse value,
+          $Res Function(TipsCategoryResponse) then) =
+      _$TipsCategoryResponseCopyWithImpl<$Res>;
+  $Res call({int id, String name});
+}
+
+/// @nodoc
+class _$TipsCategoryResponseCopyWithImpl<$Res>
+    implements $TipsCategoryResponseCopyWith<$Res> {
+  _$TipsCategoryResponseCopyWithImpl(this._value, this._then);
+
+  final TipsCategoryResponse _value;
+  // ignore: unused_field
+  final $Res Function(TipsCategoryResponse) _then;
+
+  @override
+  $Res call({
+    Object? id = freezed,
+    Object? name = freezed,
+  }) {
+    return _then(_value.copyWith(
+      id: id == freezed
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
+      name: name == freezed
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+abstract class _$TipsCategoryResponseCopyWith<$Res>
+    implements $TipsCategoryResponseCopyWith<$Res> {
+  factory _$TipsCategoryResponseCopyWith(_TipsCategoryResponse value,
+          $Res Function(_TipsCategoryResponse) then) =
+      __$TipsCategoryResponseCopyWithImpl<$Res>;
+  @override
+  $Res call({int id, String name});
+}
+
+/// @nodoc
+class __$TipsCategoryResponseCopyWithImpl<$Res>
+    extends _$TipsCategoryResponseCopyWithImpl<$Res>
+    implements _$TipsCategoryResponseCopyWith<$Res> {
+  __$TipsCategoryResponseCopyWithImpl(
+      _TipsCategoryResponse _value, $Res Function(_TipsCategoryResponse) _then)
+      : super(_value, (v) => _then(v as _TipsCategoryResponse));
+
+  @override
+  _TipsCategoryResponse get _value => super._value as _TipsCategoryResponse;
+
+  @override
+  $Res call({
+    Object? id = freezed,
+    Object? name = freezed,
+  }) {
+    return _then(_TipsCategoryResponse(
+      id: id == freezed
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
+      name: name == freezed
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$_TipsCategoryResponse implements _TipsCategoryResponse {
+  const _$_TipsCategoryResponse({required this.id, required this.name});
+
+  factory _$_TipsCategoryResponse.fromJson(Map<String, dynamic> json) =>
+      _$_$_TipsCategoryResponseFromJson(json);
+
+  @override
+  final int id;
+  @override
+  final String name;
+
+  @override
+  String toString() {
+    return 'TipsCategoryResponse(id: $id, name: $name)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is _TipsCategoryResponse &&
+            (identical(other.id, id) ||
+                const DeepCollectionEquality().equals(other.id, id)) &&
+            (identical(other.name, name) ||
+                const DeepCollectionEquality().equals(other.name, name)));
+  }
+
+  @override
+  int get hashCode =>
+      runtimeType.hashCode ^
+      const DeepCollectionEquality().hash(id) ^
+      const DeepCollectionEquality().hash(name);
+
+  @JsonKey(ignore: true)
+  @override
+  _$TipsCategoryResponseCopyWith<_TipsCategoryResponse> get copyWith =>
+      __$TipsCategoryResponseCopyWithImpl<_TipsCategoryResponse>(
+          this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$_$_TipsCategoryResponseToJson(this);
+  }
+}
+
+abstract class _TipsCategoryResponse implements TipsCategoryResponse {
+  const factory _TipsCategoryResponse({required int id, required String name}) =
+      _$_TipsCategoryResponse;
+
+  factory _TipsCategoryResponse.fromJson(Map<String, dynamic> json) =
+      _$_TipsCategoryResponse.fromJson;
+
+  @override
+  int get id => throw _privateConstructorUsedError;
+  @override
+  String get name => throw _privateConstructorUsedError;
+  @override
+  @JsonKey(ignore: true)
+  _$TipsCategoryResponseCopyWith<_TipsCategoryResponse> get copyWith =>
       throw _privateConstructorUsedError;
 }

@@ -36,8 +36,7 @@ HomeDashboardDataResponse _$HomeDashboardDataResponseFromJson(
             e as Map<String, dynamic>))
         .toList(),
     tips_dan_info: (json['tips_dan_info'] as List<dynamic>)
-        .map((e) =>
-            HomeDashboardDataTipsResponse.fromJson(e as Map<String, dynamic>))
+        .map((e) => TipsDataResponse.fromJson(e as Map<String, dynamic>))
         .toList(),
   );
 }
@@ -72,6 +71,7 @@ HomeDashboardDataWarningResponse _$HomeDashboardDataWarningResponseFromJson(
   return HomeDashboardDataWarningResponse(
     img_url: json['img_url'] as String?,
     desc: json['desc'] as String,
+    is_normal: json['is_normal'] as bool,
   );
 }
 
@@ -80,19 +80,5 @@ Map<String, dynamic> _$HomeDashboardDataWarningResponseToJson(
     <String, dynamic>{
       'img_url': instance.img_url,
       'desc': instance.desc,
-    };
-
-HomeDashboardDataTipsResponse _$HomeDashboardDataTipsResponseFromJson(
-    Map<String, dynamic> json) {
-  return HomeDashboardDataTipsResponse(
-    img_url: json['img_url'] as String?,
-    desc: json['desc'] as String,
-  );
-}
-
-Map<String, dynamic> _$HomeDashboardDataTipsResponseToJson(
-        HomeDashboardDataTipsResponse instance) =>
-    <String, dynamic>{
-      'img_url': instance.img_url,
-      'desc': instance.desc,
+      'is_normal': instance.is_normal,
     };

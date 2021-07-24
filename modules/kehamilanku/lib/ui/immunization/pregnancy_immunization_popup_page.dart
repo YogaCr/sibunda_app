@@ -17,24 +17,26 @@ class PregnancyImmunizationPopupPage extends StatelessWidget {
     final vm = ViewModelProvider.of<PregnancyImmunizationPopupVm>(context)
       ..init();
 
-    return FormVmGroupObserver<PregnancyImmunizationPopupVm>(
-      vm: vm,
-      onPreSubmit: (ctx, canProceed) {
-        if(canProceed != true) {
-          showSnackBar(ctx, "Terdapat beberapa isian yang belum valid");
-        }
-      },
-      onSubmit: (ctx, success) {
-        if(success) {
-          KehamilankuRoutes.immunizationPopup.backPage(ctx, syncFormatTime(vm.date.value!));
-          //showSnackBar(ctx, "Berhasil mengonfirmasi");
-        } else {
-          showSnackBar(ctx, "Terjadi kesalahan saat mengonfirmasi");
-        }
-      },
-      submitBtnBuilder: (ctx, canProceed) => TxtBtn(
-        "Konfirmasi Imunisasi",
-        color: canProceed == true ? Manifest.theme.colorPrimary : grey,
+    return SingleChildScrollView(
+      child: FormVmGroupObserver<PregnancyImmunizationPopupVm>(
+        vm: vm,
+        onPreSubmit: (ctx, canProceed) {
+          if(canProceed != true) {
+            showSnackBar(ctx, "Terdapat beberapa isian yang belum valid");
+          }
+        },
+        onSubmit: (ctx, success) {
+          if(success) {
+            KehamilankuRoutes.immunizationPopup.backPage(ctx, syncFormatTime(vm.date.value!));
+            //showSnackBar(ctx, "Berhasil mengonfirmasi");
+          } else {
+            showSnackBar(ctx, "Terjadi kesalahan saat mengonfirmasi");
+          }
+        },
+        submitBtnBuilder: (ctx, canProceed) => TxtBtn(
+          "Konfirmasi Imunisasi",
+          color: canProceed == true ? Manifest.theme.colorPrimary : grey,
+        ),
       ),
     );
   }

@@ -36,8 +36,11 @@ class PopupSuccess extends StatelessWidget {
 
     return SingleChildScrollView(
       child: Container(
+        constraints: BoxConstraints(
+          maxHeight: height,
+        ),
         width: width,
-        height: height,
+        //height: height,
         //constraints: BoxConstraints(minHeight: 400, minWidth: 200,),
         decoration: BoxDecoration(
           color: Colors.white,
@@ -45,6 +48,7 @@ class PopupSuccess extends StatelessWidget {
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisSize: MainAxisSize.min,
           children: [
             Container(
               margin: EdgeInsets.only(bottom: 20),

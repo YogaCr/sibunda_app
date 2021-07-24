@@ -22,8 +22,19 @@ class TipsDataResponse with _$TipsDataResponse {
     required String img_url,
     required String desc,
     required int? user_id,
+    required TipsCategoryResponse tips_category,
+    required String content,
     required String created_at,
     required String updated_at,
   }) = _TipsDataResponse;
   factory TipsDataResponse.fromJson(Map<String, dynamic> map) = _TipsDataResponse.fromJson;
+}
+
+@freezed
+class TipsCategoryResponse with _$TipsCategoryResponse {
+  const factory TipsCategoryResponse({
+    required int id,
+    required String name,
+  }) = _TipsCategoryResponse;
+  factory TipsCategoryResponse.fromJson(Map<String, dynamic> map) = _TipsCategoryResponse.fromJson;
 }

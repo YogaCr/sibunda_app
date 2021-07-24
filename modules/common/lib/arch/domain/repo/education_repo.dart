@@ -1,8 +1,9 @@
 import 'package:common/arch/data/remote/api/home_api.dart';
+import 'package:common/arch/data/remote/model/home_tips_api_model.dart';
 import 'package:common/arch/domain/model/education_data.dart';
-import 'package:common/arch/domain/model/home_data.dart';
 import 'package:core/domain/model/result.dart';
 import 'package:core/util/_consoles.dart';
+import 'package:collection/collection.dart';
 
 import '../dummy_data.dart';
 
@@ -23,6 +24,9 @@ class EducationRepoImpl with EducationRepo {
     _homeApi = homeApi
   ;
 
+  TipsResponse? _carouselTips;
+  TipsResponse? _latestTips;
+
   @override
   Future<Result<List<Tips>>> getEducationMainPanelDataList(String motherNik) async {
     try {
@@ -30,6 +34,7 @@ class EducationRepoImpl with EducationRepo {
       if(res.code != 200) {
         return Fail(msg: "`getEducationMainPanelDataList()` msg= ${res.message} status= ${res.status}", code: res.code);
       }
+      _carouselTips = res;
       final list = res.data.map((e) => Tips.fromTipsResponse(e)).toList(growable: false);
       return Success(list);
     } catch(e, stack) {
@@ -44,6 +49,7 @@ class EducationRepoImpl with EducationRepo {
       if(res.code != 200) {
         return Fail(msg: "`getEducationHomeTipsList()` msg= ${res.message} status= ${res.status}", code: res.code);
       }
+      _latestTips = res;
       final list = res.data.map((e) => Tips.fromTipsResponse(e)).toList(growable: false);
       return Success(list);
     } catch(e, stack) {
@@ -53,11 +59,19 @@ class EducationRepoImpl with EducationRepo {
   }
   @override
   Future<Result<TipsDetail>> getEducationDetail(Tips data) async {
-    //TODO: Msh dummy, omongi Amir buat endpoint detailnya.
-    final i = dummyTipsList.indexOf(data);
-    return i >= 0
-        ? Success(dummyTipsDetailList[i])
-        : Fail();
+    try {
+      var foundRaw = _carouselTips?.data.firstWhereOrNull((e) => e.id == data.id)
+          ?? _latestTips?.data.firstWhereOrNull((e) => e.id == data.id);
+      if(foundRaw == null) {
+        foundRaw = await _homeApi.getInfoDetail(data.id);
+      }
+      return Success(TipsDetail.fromTipsResponse(foundRaw));
+    } catch(e, stack) {
+      final msg = "Error calling `getEducationDetail()`";
+      prine("$msg; e= $e");
+      prine(stack);
+      return Fail(msg: msg, error: e);
+    }
   }
 
   @override
@@ -67,7 +81,7 @@ class EducationRepoImpl with EducationRepo {
       if(res.code != 200) {
         return Fail(msg: "`getHomeTipsList()` msg= ${res.message} status= ${res.status}", code: res.code);
       }
-      final list = res.data.tips_dan_info.map((e) => Tips.fromHomeResponse(e)).toList(growable: false);
+      final list = res.data.tips_dan_info.map((e) => Tips.fromTipsResponse(e)).toList(growable: false);
       return Success(list);
     } catch(e, stack) {
       prine(stack);

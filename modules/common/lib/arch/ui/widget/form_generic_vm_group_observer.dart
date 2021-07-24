@@ -184,6 +184,7 @@ class _FormVmGroupObserverState<VM extends FormVmGroup>
         });
 
         return Column(
+          mainAxisSize: MainAxisSize.min,
           children: formGroupList,
         );
       } else {
@@ -264,6 +265,7 @@ class _FormVmGroupObserverState<VM extends FormVmGroup>
     });
 
     return Column(
+      mainAxisSize: MainAxisSize.min,
       children: outerChildren,
     );
   }

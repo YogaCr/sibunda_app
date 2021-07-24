@@ -1,5 +1,6 @@
 import 'package:common/arch/data/remote/model/home_dashboard_api_model.dart';
 import 'package:common/arch/domain/dummy_data.dart';
+import 'package:common/res/theme/_theme.dart';
 import 'package:core/domain/model/range.dart';
 import 'package:flutter/material.dart';
 
@@ -21,7 +22,7 @@ class HomeStatus {
     img: response.img_url != null
         ? ImgData(link: response.img_url!, src: ImgSrc.network,)
         : dummyImg,
-    color: Colors.white, //For now, it's white, cuz the server doesn't serve it.
+    color: response.is_normal ? green_safe : red_warning,
   );
 }
 

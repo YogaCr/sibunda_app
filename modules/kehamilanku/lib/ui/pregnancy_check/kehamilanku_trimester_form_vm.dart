@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:common/arch/di/config_di.dart';
 import 'package:common/arch/domain/model/form_data.dart';
 import 'package:common/arch/domain/model/form_warning_status.dart';
+import 'package:common/arch/domain/model/img_data.dart';
 import 'package:common/arch/domain/model/kehamilanku_data.dart';
 import 'package:common/arch/domain/usecase/mother_usecase.dart';
 import 'package:common/arch/ui/model/form_data.dart';
@@ -70,6 +71,14 @@ class KehamilankuCheckFormVm extends FormAuthVmGroup {
     _pregnancyCheck.observe(this, (data) {
       if(data != null) {
         final map = data.toJson();
+        final usgUrl = map[Const.KEY_IMG_USG];
+        prind("KehamilankuCheckFormVm usgUrl= $usgUrl");
+        if(usgUrl is String) {
+          map[Const.KEY_IMG_USG] = ImgData(
+            link: usgUrl,
+            src: ImgData.getSrcFromLink(usgUrl),
+          );
+        }
         patchResponse([map]);
       } else {
         resetResponses(skippedKeys: {
@@ -77,6 +86,7 @@ class KehamilankuCheckFormVm extends FormAuthVmGroup {
           Const.KEY_HPHT,
           Const.KEY_WEEK,
         });
+        setFieldValidity(0, Const.KEY_IMG_USG, true);
       }
       setFormEnabled(isEnabled: data == null);
       //Future.sync(() async {});
@@ -84,6 +94,18 @@ class KehamilankuCheckFormVm extends FormAuthVmGroup {
     });
     _pregnancyBabySize.observe(this, (data) {
       _isBabySizeInit.value = true;
+    });
+    isFormReady.observe(this, (isReady) {
+      if(isReady == true) {
+        /*
+        responseGroupList[0][Const.KEY_IMG_USG]!.isValid.observe(this, (isValid) {
+          prind("Trimester VM isFormReady.observe isValid= $isValid");
+        });
+         */
+        prind("Trimester VM isFormReady.observe isReady= $isReady");
+        setFieldValidity(0, Const.KEY_IMG_USG, true);
+        prind("Trimester VM _responseGroupList[group][key]!.isValid = ${responseGroupList[0][Const.KEY_IMG_USG]!.isValid}");
+      }
     });
     _lateInit();
   }
@@ -130,7 +152,9 @@ class KehamilankuCheckFormVm extends FormAuthVmGroup {
     final res2 = await _getCurrentMotherHpl();
     final res3 = await _getCurrentMotherHpht();
 
-    if(res2 is Success<DateTime> && res3 is Success<DateTime>) {
+    prind("MotherCHeckFormVm._lateInit() res2= $res2 res3= $res3");
+
+    if(res2 is Success<DateTime?> && res3 is Success<DateTime?>) {
       final hpl = res2.data;
       final hpht = res3.data;
 
@@ -144,6 +168,8 @@ class KehamilankuCheckFormVm extends FormAuthVmGroup {
     //prind("KehamilankuCheckFormVm doSubmitJob() ==== AWAL");
     final response = getResponse();
     final responseMap = response.responseGroups.values.first;
+    final imgFile = responseMap.remove(Const.KEY_IMG_USG);
+
     //prind("KehamilankuCheckFormVm doSubmitJob() ==== responseMap = ${responseMap.responseGroups}");
     final data = PregnancyCheck.fromJson(responseMap);
     //prind("KehamilankuCheckFormVm doSubmitJob() ==== data = ${data.toJson()}");
@@ -151,17 +177,20 @@ class KehamilankuCheckFormVm extends FormAuthVmGroup {
     final submitRes = await _savePregnancyCheck(motherNik, data, currentTrimesterId);
     if(submitRes is Success<int>) {
       final checkUpId = submitRes.data;
-      prind("responseMap[Const.KEY_IMG_USG]= ${responseMap[Const.KEY_IMG_USG]}");
-      final res2 = await _saveUsgImg(
-        motherNik: motherNik,
-        checkUpId: checkUpId,
-        imgFile: responseMap[Const.KEY_IMG_USG],
-      );
-      if(res2 is Success<File?>) {
-        return Success("ok");
-      } else {
-        return Fail(msg: "Can't submit USG img");
+      prind("imgFile= $imgFile");
+      if(imgFile != null) {
+        final res2 = await _saveUsgImg(
+          motherNik: motherNik,
+          checkUpId: checkUpId,
+          imgFile: imgFile,
+        );
+        if(res2 is Success<File?>) {
+          return Success("ok");
+        } else {
+          return Fail(msg: "Can't submit USG img");
+        }
       }
+      return Success("ok");
     } else {
       return Fail(msg: "Can't submit pregnancy check form");
     }
@@ -221,6 +250,7 @@ class KehamilankuCheckFormVm extends FormAuthVmGroup {
       case Const.KEY_SYSTOLIC_PRESSURE:
       case Const.KEY_DIASTOLIC_PRESSURE:
       case Const.KEY_MAP: return tryParseInt(response) != null;
+      case Const.KEY_IMG_USG: return true; // this param is optional.
     }
     return super.validateField(groupPosition, inputKey, response);
   }

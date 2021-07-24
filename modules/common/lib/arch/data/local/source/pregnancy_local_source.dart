@@ -146,18 +146,26 @@ class PregnancyLocalSrcImpl with PregnancyLocalSrc {
 
   @override
   Future<Result<bool>> clear() async {
-    final res1 = await deleteCurrentMotherHpl();
-    if(res1 is Fail<bool>) {
-      return res1;
+    try {
+      final res1 = await deleteCurrentMotherHpl();
+      if(res1 is Fail<bool>) {
+        return res1;
+      }
+      final res2 = await deleteCurrentMotherHpht();
+      if(res2 is Fail<bool>) {
+        return res2;
+      }
+      final deleted = await _pregnancyDao.deleteAll();
+      return Success(
+          (res1 as Success<bool>).data
+              && (res2 as Success<bool>).data
+      );
+    } catch(e, stack) {
+      final msg = "Error calling `clear()`";
+      prine("$msg; e= $e");
+      prine(stack);
+      return Fail(msg: msg, error: e);
     }
-    final res2 = await deleteCurrentMotherHpht();
-    if(res2 is Fail<bool>) {
-      return res2;
-    }
-    return Success(
-        (res1 as Success<bool>).data
-            && (res2 as Success<bool>).data
-    );
   }
 }
 

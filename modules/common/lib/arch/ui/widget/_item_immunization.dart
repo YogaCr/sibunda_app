@@ -5,6 +5,7 @@ import 'package:common/arch/ui/model/immunization.dart';
 import 'package:common/arch/ui/widget/_item_template.dart';
 import 'package:common/config/_config.dart';
 import 'package:common/res/theme/_theme.dart';
+import 'package:common/util/assets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -176,17 +177,17 @@ class ItemImmunizationFill extends StatelessWidget {
 
 
 class ImmunizationOverviewView extends StatelessWidget {
-  final Widget image;
+  final ImgData img;
   final String text;
 
   ImmunizationOverviewView({
-    required this.image,
+    required this.img,
     required this.text,
   });
 
   ImmunizationOverviewView.fromData(ImmunizationOverview data):
      text = data.text,
-     image = Container(color: Manifest.theme.colorPrimary,)
+     img = data.img
   ;
 
   @override
@@ -206,7 +207,7 @@ class ImmunizationOverviewView extends StatelessWidget {
             borderRadius: BorderRadius.all(Radius.circular(10)),
             child: SizedBox(
               width: 80,
-              child: image,
+              child: SibImages.resolve(img),
             ),
           ),
           SizedBox(width: 10,),

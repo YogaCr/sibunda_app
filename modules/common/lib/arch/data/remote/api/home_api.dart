@@ -26,4 +26,6 @@ abstract class HomeApi {
   Future<TipsResponse> getInfoCarousel();
   @GET("/tips-dan-info/latest")
   Future<TipsResponse> getInfoLatest();
+  @GET("/tips-dan-info/{id}")
+  Future<TipsDataResponse> getInfoDetail(@Path("id") int id);
 }

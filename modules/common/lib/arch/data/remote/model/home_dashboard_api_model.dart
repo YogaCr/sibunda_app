@@ -1,6 +1,8 @@
 import 'package:common/value/const_values.dart';
 import 'package:json_annotation/json_annotation.dart';
 
+import 'home_tips_api_model.dart';
+
 part 'home_dashboard_api_model.g.dart';
 
 @JsonSerializable()
@@ -25,7 +27,7 @@ class HomeDashboardResponse {
 class HomeDashboardDataResponse {
   final HomeDashboardDataHeaderResponse header;
   final List<HomeDashboardDataWarningResponse> kesehatan_keluarga;
-  final List<HomeDashboardDataTipsResponse> tips_dan_info;
+  final List<TipsDataResponse> tips_dan_info;
 
   HomeDashboardDataResponse({
     required this.header,
@@ -58,16 +60,19 @@ class HomeDashboardDataHeaderResponse {
 class HomeDashboardDataWarningResponse {
   final String? img_url;
   final String desc;
+  final bool is_normal;
 
   HomeDashboardDataWarningResponse({
     required this.img_url,
     required this.desc,
+    required this.is_normal,
   });
 
   factory HomeDashboardDataWarningResponse.fromJson(Map<String, dynamic> map) => _$HomeDashboardDataWarningResponseFromJson(map);
   Map<String, dynamic> toJson() => _$HomeDashboardDataWarningResponseToJson(this);
 }
 
+/*
 @JsonSerializable()
 class HomeDashboardDataTipsResponse {
   final String? img_url;
@@ -81,3 +86,4 @@ class HomeDashboardDataTipsResponse {
   factory HomeDashboardDataTipsResponse.fromJson(Map<String, dynamic> map) => _$HomeDashboardDataTipsResponseFromJson(map);
   Map<String, dynamic> toJson() => _$HomeDashboardDataTipsResponseToJson(this);
 }
+ */

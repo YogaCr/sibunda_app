@@ -11,6 +11,7 @@ import 'package:core/ui/base/live_data_observer.dart';
 import 'package:core/ui/base/view_model.dart';
 import 'package:education/ui/detail/education_detail_vm.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_html/flutter_html.dart';
 
 class EducationDetailPage extends StatelessWidget {
 
@@ -57,9 +58,9 @@ class EducationDetailPage extends StatelessWidget {
     final desc = LiveDataObserver<TipsDetail>(
       liveData: vm.detail,
       builder: (ctx, data) => data != null
-          ? Text(
-              data.desc,
-              style: SibTextStyles.size_min_1,
+          ? Html(
+              data: data.desc,
+              //style: SibTextStyles.size_min_1,
           ) : defaultLoading(),
     );
 

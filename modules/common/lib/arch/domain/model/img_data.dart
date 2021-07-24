@@ -19,6 +19,15 @@ class ImgData extends Equatable {
     required this.src,
   });
 
+  static ImgSrc getSrcFromLink(String link) {
+    if(
+    link.startsWith("http")
+    || link.startsWith("https")
+    || link.startsWith("ftp")
+    ) return ImgSrc.network;
+    return ImgSrc.file;
+  }
+
   @override
   List<Object?> get props => [link, package, src];
 }

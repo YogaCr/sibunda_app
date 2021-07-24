@@ -30,6 +30,7 @@ PregnancyCheck _$PregnancyCheckFromJson(Map<String, dynamic> json) {
     drugAllergy: json['alergi_obat'] as String,
     diseaseHistory: json['riwayat_penyakit'] as String,
     note: json['catatan_khusus'] as String,
+    usgUrl: json['img_usg'] as String?,
   );
 }
 
@@ -57,4 +58,5 @@ Map<String, dynamic> _$PregnancyCheckToJson(PregnancyCheck instance) =>
       'alergi_obat': instance.drugAllergy,
       'riwayat_penyakit': instance.diseaseHistory,
       'catatan_khusus': instance.note,
+      'img_usg': instance.usgUrl,
     };

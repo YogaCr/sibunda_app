@@ -26,32 +26,34 @@ class BabyImmunizationPopupPage extends StatelessWidget {
     final vm = ViewModelProvider.of<BabyImmunizationPopupVm>(context)
       ..init();
 
-    return FormVmGroupObserver<BabyImmunizationPopupVm>(
-      vm: vm,
-      onPreSubmit: (ctx, canProceed) {
-        if(canProceed != true) {
-          showSnackBar(ctx, "Terdapat beberapa isian yang belum valid");
-        }
-      },
-      onSubmit: (ctx, success) async {
-        if(success) {
-          //final resp = vm.getResponse().responseGroups.values.first;
-          final date = vm.responseGroupList[0][Const.KEY_IMMUNIZATION_DATE]!.response.value! as DateTime;
-          final noBatch = parseInt(vm.responseGroupList[0][Const.KEY_NO_BATCH]!.response.value);
+    return SingleChildScrollView(
+      child: FormVmGroupObserver<BabyImmunizationPopupVm>(
+        vm: vm,
+        onPreSubmit: (ctx, canProceed) {
+          if(canProceed != true) {
+            showSnackBar(ctx, "Terdapat beberapa isian yang belum valid");
+          }
+        },
+        onSubmit: (ctx, success) async {
+          if(success) {
+            //final resp = vm.getResponse().responseGroups.values.first;
+            final date = vm.responseGroupList[0][Const.KEY_IMMUNIZATION_DATE]!.response.value! as DateTime;
+            final noBatch = parseInt(vm.responseGroupList[0][Const.KEY_NO_BATCH]!.response.value);
 
-          final res = BabyImmunizationPopupResult(
-            date: syncFormatTime(date),
-            noBatch: noBatch,
-          );
-          BabyRoutes.immunizationPopup.backPage(ctx, res);
-          //showSnackBar(ctx, "Berhasil mengonfirmasi");
-        } else {
-          showSnackBar(ctx, "Terjadi kesalahan saat mengonfirmasi");
-        }
-      },
-      submitBtnBuilder: (ctx, canProceed) => TxtBtn(
-        "Konfirmasi Imunisasi",
-        color: canProceed == true ? Manifest.theme.colorPrimary : grey,
+            final res = BabyImmunizationPopupResult(
+              date: syncFormatTime(date),
+              noBatch: noBatch,
+            );
+            BabyRoutes.immunizationPopup.backPage(ctx, res);
+            //showSnackBar(ctx, "Berhasil mengonfirmasi");
+          } else {
+            showSnackBar(ctx, "Terjadi kesalahan saat mengonfirmasi");
+          }
+        },
+        submitBtnBuilder: (ctx, canProceed) => TxtBtn(
+          "Konfirmasi Imunisasi",
+          color: canProceed == true ? Manifest.theme.colorPrimary : grey,
+        ),
       ),
     );
   }

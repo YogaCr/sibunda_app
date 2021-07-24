@@ -59,7 +59,7 @@ class KehamilankuHomePage extends StatelessWidget {
               replaceCurrent: true,
             );
           }
-          showSnackBar(context, "Nama= ${baby.name} isBorn= $isBorn");
+          //showSnackBar(context, "Nama= ${baby.name} isBorn= $isBorn");
         },
       ),
       body: Padding(

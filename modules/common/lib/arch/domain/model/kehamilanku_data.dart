@@ -57,6 +57,8 @@ class PregnancyCheck {
   final String diseaseHistory;
   @JsonKey(name: Const.KEY_SPECIAL_NOTE)
   final String note;
+  @JsonKey(name: Const.KEY_IMG_USG)
+  final String? usgUrl;
 
   PregnancyCheck({
     required this.visitDate,
@@ -81,6 +83,7 @@ class PregnancyCheck {
     required this.drugAllergy,
     required this.diseaseHistory,
     required this.note,
+    this.usgUrl,
   });
 
 
@@ -107,6 +110,7 @@ class PregnancyCheck {
     drugAllergy: map[Const.KEY_DRUG_ALLERGY]!,
     diseaseHistory: map[Const.KEY_DISEASE_HISTORY]!,
     note: map[Const.KEY_SPECIAL_NOTE]!,
+    usgUrl: map[Const.KEY_IMG_USG],
   );
 
   factory PregnancyCheck.fromJson(Map<String, dynamic> json) {

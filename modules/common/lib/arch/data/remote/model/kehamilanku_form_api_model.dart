@@ -55,6 +55,7 @@ class PregnancyCheckBody {
   final String note;
   @JsonKey(name: Const.KEY_TRIMESTER_ID)
   final int trimesterId;
+  final String? img_usg;
 
   PregnancyCheckBody({
     required this.visitDate,
@@ -80,6 +81,7 @@ class PregnancyCheckBody {
     required this.diseaseHistory,
     required this.note,
     required this.trimesterId,
+    required this.img_usg,
   });
 
   factory PregnancyCheckBody.fromJson(Map<String, dynamic> map) {

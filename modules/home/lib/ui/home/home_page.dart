@@ -150,6 +150,7 @@ class HomePage extends StatelessWidget {
               Expanded(
                 child: SibImages.get("ic_home_mid_btn.png", package: GlobalRoutes.common,),
               ),
+              SizedBox(height: 2,),
               Text(
                 "Info",
                 style: SibTextStyles.size_min_2.copyWith(
@@ -167,7 +168,10 @@ class HomePage extends StatelessWidget {
           ),
           BottomNavigationBarItem(
             label: "Profil",
-            icon: Icon(Icons.person),
+            icon: InkResponse(
+              onTap: () => HomeRoutes.obj.goToModule(context, GlobalRoutes.profile,),
+              child: Icon(Icons.person),
+            ),
           ),
         ],
       ),

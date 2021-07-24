@@ -1,9 +1,13 @@
 import 'package:common/arch/di/config_di.dart';
 import 'package:common/arch/di/usecase_di.dart';
 import 'package:common/res/string/_string.dart';
+import 'package:common/res/theme/_theme.dart';
 import 'package:common/util/ui.dart';
 import 'package:core/ui/base/async_vm.dart';
+import 'package:core/util/_consoles.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:tuple/tuple.dart';
 
 import 'form_vm.dart';
@@ -11,6 +15,7 @@ import 'form_vm_group.dart';
 
 mixin AuthVm {
   BuildContext? get _context;
+  BuildContext? get context => _context;
 }
 
 abstract class AsyncAuthVm extends AsyncVm with AuthVm {
@@ -25,6 +30,12 @@ abstract class AsyncAuthVm extends AsyncVm with AuthVm {
           await UseCaseDi.toLoginPage(context: _context!);
         }
       });
+      addOnFailTask(this, (key, failure) {
+        final msg = "Error when call async task in VM `$runtimeType`, `key` = '$key', `failure` = '$failure'";
+        prine(msg);
+        Fluttertoast.showToast(msg: msg, backgroundColor: red);
+        //showSnackBar(_context!, failure.toString());
+      },);
     }
   }
   @override
@@ -53,6 +64,12 @@ abstract class FormAuthVm extends FormVm with AuthVm {
           await UseCaseDi.toLoginPage(context: _context!);
         }
       });
+      addOnFailTask(this, (key, failure) {
+        final msg = "Error when call async task in VM `$runtimeType`, `key` = '$key', `failure` = '$failure'";
+        prine(msg);
+        Fluttertoast.showToast(msg: msg, backgroundColor: red);
+        //showSnackBar(_context!, failure.toString());
+      },);
     }
   }
   @override
@@ -79,6 +96,12 @@ abstract class FormAuthVmGroup extends FormVmGroup with AuthVm {
           await UseCaseDi.toLoginPage(context: _context!);
         }
       });
+      addOnFailTask(this, (key, failure) {
+        final msg = "Error when call async task in VM `$runtimeType`, `key` = '$key', `failure` = '$failure'";
+        prine(msg);
+        Fluttertoast.showToast(msg: msg, backgroundColor: red);
+        //showSnackBar(_context!, failure.toString());
+      },);
     }
   }
   @override

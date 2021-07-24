@@ -72,7 +72,7 @@ class BabyHomePage extends StatelessWidget {
               overlayVisibility.value = false;
             }
           }
-          showSnackBar(context, "Nama= ${baby.name} isBorn= $isBorn");
+          //showSnackBar(context, "Nama= ${baby.name} isBorn= $isBorn");
         },
       ),
       body: Padding(

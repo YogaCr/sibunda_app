@@ -17,4 +17,6 @@ class PregnancyDao extends DatabaseAccessor<AppDatabase> with _$PregnancyDaoMixi
 
   Future<int> insert(Insertable<PregnancyEntity> e) => into(pregnancyEntities).insert(e);
   Future<void> insertAll(List<Insertable<PregnancyEntity>> e) => batch((batch) => batch.insertAll(pregnancyEntities, e));
+
+  Future<int> deleteAll() => delete(pregnancyEntities).go();
 }
