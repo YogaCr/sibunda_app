@@ -47,20 +47,6 @@ class RoundedTopNavBarTitleAndBack extends StatelessWidget {
     return RoundedTopNavBarBg(
       children: [
         Align(
-          alignment: Alignment.topLeft,
-          child: SizedBox(
-            width: 50,
-            height: 50,
-            child: InkWell(
-              child: Icon(
-                Icons.arrow_back_rounded,
-                color: onPrimaryColor,
-              ),
-              onTap: () => Navigator.pop(context),
-            ),
-          ),
-        ), //Back
-        Align(
           alignment: Alignment.topCenter,
           child: Container(
             margin: EdgeInsets.symmetric(horizontal: 20).copyWith(top: 20,),
@@ -80,6 +66,20 @@ class RoundedTopNavBarTitleAndBack extends StatelessWidget {
             ),
           ),
         ),
+        Align(
+          alignment: Alignment.topLeft,
+          child: SizedBox(
+            width: 50,
+            height: 50,
+            child: InkWell(
+              child: Icon(
+                Icons.arrow_back_rounded,
+                color: onPrimaryColor,
+              ),
+              onTap: () => Navigator.pop(context),
+            ),
+          ),
+        ), //Back
       ],
     );
   }
