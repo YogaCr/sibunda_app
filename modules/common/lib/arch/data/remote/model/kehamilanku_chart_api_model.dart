@@ -1,7 +1,92 @@
-import 'package:common/value/const_values.dart';
-import 'package:json_annotation/json_annotation.dart';
+import 'package:common/arch/domain/model/chart_data_mother.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-//part 'kehamilanku_chart_api_model.g.dart';
+import 'common_chart_api_model.dart';
+
+part 'kehamilanku_chart_api_model.g.dart';
+part 'kehamilanku_chart_api_model.freezed.dart';
+
+
+@freezed
+class MotherTfuChartResponse with _$MotherTfuChartResponse {
+  const factory MotherTfuChartResponse({
+    required String message,
+    required String status,
+    required int code,
+    required MotherTfuChartResponseData data,
+  }) = _MotherTfuChartResponse;
+  factory MotherTfuChartResponse.fromJson(Map<String, dynamic> map) = _MotherTfuChartResponse.fromJson;
+}
+@freezed
+class MotherTfuChartResponseData with _$MotherTfuChartResponseData {
+  const factory MotherTfuChartResponseData({
+    required List<MotherTfuChartData> data,
+    required ChartWarningResponse? desc,
+  }) = _MotherTfuChartResponseData;
+  factory MotherTfuChartResponseData.fromJson(Map<String, dynamic> map) = _MotherTfuChartResponseData.fromJson;
+}
+
+
+@freezed
+class MotherDjjChartResponse with _$MotherDjjChartResponse {
+  const factory MotherDjjChartResponse({
+    required String message,
+    required String status,
+    required int code,
+    required MotherDjjChartResponseData data,
+  }) = _MotherDjjChartResponse;
+  factory MotherDjjChartResponse.fromJson(Map<String, dynamic> map) = _MotherDjjChartResponse.fromJson;
+}
+@freezed
+class MotherDjjChartResponseData with _$MotherDjjChartResponseData {
+  const factory MotherDjjChartResponseData({
+    required List<MotherDjjChartData> data,
+    required ChartWarningResponse? desc,
+  }) = _MotherDjjChartResponseData;
+  factory MotherDjjChartResponseData.fromJson(Map<String, dynamic> map) = _MotherDjjChartResponseData.fromJson;
+}
+
+
+@freezed
+class MotherMapChartResponse with _$MotherMapChartResponse {
+  const factory MotherMapChartResponse({
+    required String message,
+    required String status,
+    required int code,
+    required MotherMapChartResponseData data,
+  }) = _MotherMapChartResponse;
+  factory MotherMapChartResponse.fromJson(Map<String, dynamic> map) = _MotherMapChartResponse.fromJson;
+}
+@freezed
+class MotherMapChartResponseData with _$MotherMapChartResponseData {
+  const factory MotherMapChartResponseData({
+    required List<MotherMapChartData> data,
+    required ChartWarningResponse? desc,
+  }) = _MotherMapChartResponseData;
+  factory MotherMapChartResponseData.fromJson(Map<String, dynamic> map) = _MotherMapChartResponseData.fromJson;
+}
+
+
+@freezed
+class MotherBmiChartResponse with _$MotherBmiChartResponse {
+  const factory MotherBmiChartResponse({
+    required String message,
+    required String status,
+    required int code,
+    required MotherBmiChartResponseData data,
+  }) = _MotherBmiChartResponse;
+  factory MotherBmiChartResponse.fromJson(Map<String, dynamic> map) = _MotherBmiChartResponse.fromJson;
+}
+@freezed
+class MotherBmiChartResponseData with _$MotherBmiChartResponseData {
+  const factory MotherBmiChartResponseData({
+    required List<MotherBmiChartData> data,
+    required ChartWarningResponse? desc,
+  }) = _MotherBmiChartResponseData;
+  factory MotherBmiChartResponseData.fromJson(Map<String, dynamic> map) = _MotherBmiChartResponseData.fromJson;
+}
+
+
 
 /*
 @JsonSerializable()

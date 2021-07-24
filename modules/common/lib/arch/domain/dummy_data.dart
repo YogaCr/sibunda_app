@@ -70,7 +70,7 @@ final imgCovidFormOverview = ImgData(
   src: ImgSrc.asset,
 );
 
-final imgPlaceholder = ImgData(link: "img_placeholder.png", src: ImgSrc.asset);
+final imgPlaceholder = ImgData(link: "img_placeholder.png", package: GlobalRoutes.common, src: ImgSrc.asset);
 
 final dummyImg = ImgData(link: "", src: ImgSrc.asset,);
 final dummyImg_smillingCat = ImgData(link: "_smiling_cat.jpg", package: GlobalRoutes.common, src: ImgSrc.asset,);
@@ -870,6 +870,9 @@ final dummyBatchProfile = BatchProfileServer(
     dummyProfileChild2,
     dummyProfileChild3,
     dummyProfileChild4,
+  ],
+  pregnancies: [
+    PregnancyEntity(id: 1, credentialId: 1, hpl: DateTime.now()),
   ],
   motherHpl: getHpl(),
 );

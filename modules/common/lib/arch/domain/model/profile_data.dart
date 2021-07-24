@@ -27,6 +27,7 @@ class ProfileCredential with _$ProfileCredential {
 }
 
 class Profile {
+  /// Server id
   final int id;
   final String nik;
   final String name;
@@ -98,9 +99,10 @@ class BatchProfileServer with _$BatchProfileServer {
     required ProfileEntity mother,
     required ProfileEntity father,
     required List<ProfileEntity> children,
+    required List<PregnancyEntity> pregnancies,
     required DateTime? motherHpl,
   }) = _BatchProfileServer;
-  factory BatchProfileServer.fromJson(Map<String, dynamic> map) = _BatchProfileServer.fromJson;
+  //factory BatchProfileServer.fromJson(Map<String, dynamic> map) = _BatchProfileServer.fromJson;
   factory BatchProfileServer.fromBioResponse(BioMotherResponse response) {
     final userId = response.user_id;
     final mother = ProfileEntity(
@@ -135,6 +137,13 @@ class BatchProfileServer with _$BatchProfileServer {
       birthPlace: e.tempat_lahir!,
     )).toList(growable: false);
 
+    final pregnancies = response.kia_anak.where((e) => e.hpl != null)
+        .map<PregnancyEntity>((e) => PregnancyEntity(
+      id: e.id,
+      credentialId: userId,
+      hpl: parseDate(e.hpl)
+    )).toList(growable: false);
+
     final unbornChild = childrenItr.firstWhereOrNull((e) => e.is_janin);
     final hpl = tryParseDate(unbornChild?.hpl);
 
@@ -142,6 +151,7 @@ class BatchProfileServer with _$BatchProfileServer {
       mother: mother,
       father: father,
       children: children,
+      pregnancies: pregnancies,
       motherHpl: hpl,
     );
   }

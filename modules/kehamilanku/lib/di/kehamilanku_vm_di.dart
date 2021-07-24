@@ -29,8 +29,8 @@ class KehamilankuVmDi {
     getMotherFormWarningStatus: KehamilankuUseCaseDi.getMotherFormWarningStatus,
     getPregnancyBabySize: KehamilankuUseCaseDi.getPregnancyBabySize,
     getPregnancyCheckForm: KehamilankuUseCaseDi.getPregnancyCheckForm,
-    getMotherHpl: UseCaseDi.getMotherHpl,
-    getMotherHpht: UseCaseDi.getMotherHpht,
+    getCurrentMotherHpl: UseCaseDi.getCurrentMotherHpl,
+    getCurrentMotherHpht: UseCaseDi.getCurrentMotherHpht,
     getMotherNik: UseCaseDi.getMotherNik,
   );
   static PregnancyImmunizationVm immunizationVm({BuildContext? context,}) => PregnancyImmunizationVm(
@@ -55,6 +55,7 @@ class KehamilankuVmDi {
   static MotherChartVm motherChartVm({BuildContext? context,}) => MotherChartVm(
     context: context,
     getMotherNik: UseCaseDi.getMotherNik,
+    getCurrentMotherPregnancyId: UseCaseDi.getCurrentMotherPregnancyId,
     getMotherTfuChart: KehamilankuUseCaseDi.getMotherTfuChart,
     getMotherDjjChart: KehamilankuUseCaseDi.getMotherDjjChart,
     getMotherBmiChart: KehamilankuUseCaseDi.getMotherBmiChart,

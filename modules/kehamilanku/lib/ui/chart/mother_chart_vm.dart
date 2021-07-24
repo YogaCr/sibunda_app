@@ -16,6 +16,7 @@ class MotherChartVm extends AsyncAuthVm {
   MotherChartVm({
     BuildContext? context,
     required GetMotherNik getMotherNik,
+    required GetCurrentMotherPregnancyId getCurrentMotherPregnancyId,
     required GetMotherTfuChart getMotherTfuChart,
     required GetMotherDjjChart getMotherDjjChart,
     required GetMotherBmiChart getMotherBmiChart,
@@ -26,6 +27,7 @@ class MotherChartVm extends AsyncAuthVm {
     required GetMotherMapChartWarning getMotherMapChartWarning,
   }):
     _getMotherNik = getMotherNik,
+    _getCurrentMotherPregnancyId = getCurrentMotherPregnancyId,
     _getMotherBmiChart = getMotherBmiChart,
     _getMotherDjjChart = getMotherDjjChart,
     _getMotherMapChart = getMotherMapChart,
@@ -36,6 +38,7 @@ class MotherChartVm extends AsyncAuthVm {
     _getMotherMapChartWarning = getMotherMapChartWarning, super(context: context)
   ;
   final GetMotherNik _getMotherNik;
+  final GetCurrentMotherPregnancyId _getCurrentMotherPregnancyId;
   final GetMotherTfuChart _getMotherTfuChart;
   final GetMotherDjjChart _getMotherDjjChart;
   final GetMotherBmiChart _getMotherBmiChart;
@@ -62,25 +65,28 @@ class MotherChartVm extends AsyncAuthVm {
     if(!forceLoad && type == _currentType) return;
     //prind("MotherChartVm res2 = $res2 \n res3 = $res3");
     startJob(loadChartKey, (isActive) async {
-      final res1 = await _getMotherNik();
-      if(res1 is Success<String>) {
-        final motherNik = res1.data;
+      final res1 = await _getCurrentMotherPregnancyId();
+      if(res1 is Success<int?>) {
+        final pregnancyId = res1.data;
+        if(pregnancyId == null) {
+          throw "Currently mother is not pregnant (pregnancyId == null)";
+        }
         Result res2;
 
         Result<List<FormWarningStatus>> res3;
 
         switch(type) {
-          case MotherChartType.tfu: res2 = await _getMotherTfuChart(motherNik);
-            res3 = await _getMotherTfuChartWarning(motherNik);
+          case MotherChartType.tfu: res2 = await _getMotherTfuChart(pregnancyId);
+            res3 = await _getMotherTfuChartWarning(pregnancyId);
             break;
-          case MotherChartType.djj: res2 = await _getMotherDjjChart(motherNik);
-            res3 = await _getMotherDjjChartWarning(motherNik);
+          case MotherChartType.djj: res2 = await _getMotherDjjChart(pregnancyId);
+            res3 = await _getMotherDjjChartWarning(pregnancyId);
             break;
-          case MotherChartType.map: res2 = await _getMotherMapChart(motherNik);
-            res3 = await _getMotherMapChartWarning(motherNik);
+          case MotherChartType.map: res2 = await _getMotherMapChart(pregnancyId);
+            res3 = await _getMotherMapChartWarning(pregnancyId);
             break;
-          case MotherChartType.bmi: res2 = await _getMotherBmiChart(motherNik);
-            res3 = await _getMotherBmiChartWarning(motherNik);
+          case MotherChartType.bmi: res2 = await _getMotherBmiChart(pregnancyId);
+            res3 = await _getMotherBmiChartWarning(pregnancyId);
             break;
         }
 

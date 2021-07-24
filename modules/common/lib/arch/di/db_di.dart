@@ -1,6 +1,7 @@
 import 'package:common/arch/data/local/dao/account_dao.dart';
 import 'package:common/arch/data/local/dao/data_dao.dart';
 import 'package:common/arch/data/local/dao/check_up_dao.dart';
+import 'package:common/arch/data/local/dao/pregnancy_dao.dart';
 import 'package:common/arch/data/local/db/app_db.dart';
 import 'package:common/arch/data/local/db/executor/shared.dart';
 import 'package:core/util/_consoles.dart';
@@ -30,4 +31,5 @@ class DbDi {
   static ProfileTypeDao get profileTypeDao => db.profileTypeDao;
   static CityDao get cityDao => db.cityDao;
   static CheckUpIdDao get checkUpIdDao => db.checkUpIdDao;
+  static PregnancyDao get pregnancyDao => db.pregnancyDao;
 }

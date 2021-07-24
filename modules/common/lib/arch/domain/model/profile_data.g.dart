@@ -21,24 +21,3 @@ Map<String, dynamic> _$_$_BatchProfileIdsToJson(_$_BatchProfileIds instance) =>
       'fatherId': instance.fatherId,
       'childrenId': instance.childrenId,
     };
-
-_$_BatchProfileServer _$_$_BatchProfileServerFromJson(
-    Map<String, dynamic> json) {
-  return _$_BatchProfileServer(
-    mother: json['mother'],
-    father: json['father'],
-    children: json['children'] as List<ProfileEntity>,
-    motherHpl: json['motherHpl'] == null
-        ? null
-        : DateTime.parse(json['motherHpl'] as String),
-  );
-}
-
-Map<String, dynamic> _$_$_BatchProfileServerToJson(
-        _$_BatchProfileServer instance) =>
-    <String, dynamic>{
-      'mother': instance.mother,
-      'father': instance.father,
-      'children': instance.children,
-      'motherHpl': instance.motherHpl?.toIso8601String(),
-    };

@@ -12,10 +12,14 @@ class LocalSrcDi {
     credentialDao: DbDi.credentialDao,
     profileDao: DbDi.profileDao,
     profileTypeDao: DbDi.profileTypeDao,
+    pregnancyDao: DbDi.pregnancyDao,
     sharedPref: Prefs.prefs,
+    pregnancyLocalSrc: LocalSrcDi.pregnancySrc,
   );
   static PregnancyLocalSrc get pregnancySrc => PregnancyLocalSrcImpl(
     sharedPref: Prefs.prefs,
+    profileDao: DbDi.profileDao,
+    pregnancyDao: DbDi.pregnancyDao,
   );
   static CheckUpLocalSrc get checkUpSrc => CheckUpLocalSrcImpl(
     checkUpIdDao: DbDi.checkUpIdDao,

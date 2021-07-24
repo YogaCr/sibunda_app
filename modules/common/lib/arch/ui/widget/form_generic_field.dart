@@ -647,6 +647,15 @@ class ImgPickerField extends SibFormField {
               maxHeight: 100,
               maxWidth: 180,
             ),
+            decoration: BoxDecoration(
+              boxShadow: [
+                BoxShadow(
+                  color: black_trans_most2,
+                  blurRadius: 5,
+                  offset: Offset(5,5,),
+                ),
+              ]
+            ),
             child: SibImages.resolve(
               data ?? imgPlaceholder,
               fit: data != null ? BoxFit.cover : BoxFit.contain,
@@ -663,14 +672,30 @@ class ImgPickerField extends SibFormField {
                       onTap: () => backPage(ctx),
                       child: Container(
                         color: black_trans_most,
-                        child: Padding(
-                          padding: EdgeInsets.all(50),
-                          child: InteractiveViewer(
-                            child: SibImages.resolve(
-                              data,
-                              fit: BoxFit.contain,
+                        child: Stack(
+                          fit: StackFit.expand,
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.all(50),
+                              child: InteractiveViewer(
+                                child: SibImages.resolve(
+                                  data,
+                                  fit: BoxFit.contain,
+                                ),
+                              ),
                             ),
-                          ),
+                            Align(
+                              alignment: Alignment.topRight,
+                              child: Container(
+                                margin: EdgeInsets.all(15),
+                                child: Icon(
+                                  Icons.clear_rounded,
+                                  size: 35,
+                                  color: red,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
@@ -684,38 +709,59 @@ class ImgPickerField extends SibFormField {
     );
     final iconSize = 30.0;
     final btnPicker = Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
+        /*
         Text(
           Strings.pick_img,
           style: SibTextStyles.size_min_1_colorPrimary,
         ),
         SizedBox(width: 12,),
-        InkResponse(
-          onTap: () async {
+         */
+        ActionChip(
+          labelPadding: EdgeInsets.symmetric(
+            horizontal: 5,
+            vertical: 10,
+          ),
+          backgroundColor: Manifest.theme.colorPrimary,
+          avatar: Icon(
+            Icons.add_photo_alternate_outlined,
+            size: iconSize,
+            color: white,
+          ),
+          label: Text(
+            Strings.pick_img_gallery,
+            style: TextStyle(color: white),
+          ),
+          onPressed: () async {
             final res = await picker.pickImage(source: ImageSource.gallery);
             imgController.value = res != null
                 ? ImgData(link: res.path, src: ImgSrc.file)
                 : null;
           },
-          child: Icon(
-            Icons.add_photo_alternate_outlined,
-            size: iconSize,
-            color: Manifest.theme.colorPrimary,
-          ),
         ),
-        SizedBox(width: 10,),
-        InkResponse(
-          onTap: () async {
+        //SizedBox(width: 15,),
+        ActionChip(
+          labelPadding: EdgeInsets.symmetric(
+            horizontal: 5,
+            vertical: 10,
+          ),
+          backgroundColor: Manifest.theme.colorPrimary,
+          avatar: Icon(
+            Icons.add_a_photo_outlined,
+            size: iconSize,
+            color: white,
+          ),
+          label: Text(
+            Strings.pick_img_camera,
+            style: TextStyle(color: white),
+          ),
+          onPressed: () async {
             final res = await picker.pickImage(source: ImageSource.camera);
             imgController.value = res != null
                 ? ImgData(link: res.path, src: ImgSrc.file)
                 : null;
           },
-          child: Icon(
-            Icons.add_a_photo_outlined,
-            size: iconSize,
-            color: Manifest.theme.colorPrimary,
-          ),
         ),
       ],
     );
@@ -735,13 +781,15 @@ class ImgPickerField extends SibFormField {
     ];
 
     if(isValid != null) {
-      children.insert(3, Container(
+      children.insert(4, Container(
         margin: EdgeInsets.only(bottom: 10,),
         child: LiveDataObserver<bool>(
           liveData: isValid!,
           builder: (ctx, isValid) => isValid == false
-              ? Text( invalidMsgGenerator?.call(imgController.value) ?? invalidMsg,
-            style: SibTextStyles.size_min_2.copyWith(color: red),
+              ? Center(
+            child: Text( invalidMsgGenerator?.call(imgController.value) ?? invalidMsg,
+              style: SibTextStyles.size_min_2.copyWith(color: red),
+            ),
           ) : SizedBox(),
         ),
       ));

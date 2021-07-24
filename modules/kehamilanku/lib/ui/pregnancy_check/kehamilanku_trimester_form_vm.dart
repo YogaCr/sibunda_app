@@ -26,8 +26,8 @@ class KehamilankuCheckFormVm extends FormAuthVmGroup {
   KehamilankuCheckFormVm({
     BuildContext? context,
     required GetMotherNik getMotherNik,
-    required GetMotherHpl getMotherHpl,
-    required GetMotherHpht getMotherHpht,
+    required GetCurrentMotherHpl getCurrentMotherHpl,
+    required GetCurrentMotherHpht getCurrentMotherHpht,
     required GetPregnancyCheckUpId getPregnancyCheckUpId,
     required SavePregnancyCheck savePregnancyCheck,
     required SaveUsgImg saveUsgImg,
@@ -37,8 +37,8 @@ class KehamilankuCheckFormVm extends FormAuthVmGroup {
     required GetPregnancyCheckForm getPregnancyCheckForm,
   }):
     _getMotherNik = getMotherNik,
-    _getMotherHpl = getMotherHpl,
-    _getMotherHpht = getMotherHpht,
+    _getCurrentMotherHpl = getCurrentMotherHpl,
+    _getCurrentMotherHpht = getCurrentMotherHpht,
     _getPregnancyCheckUpId = getPregnancyCheckUpId,
     _savePregnancyCheck = savePregnancyCheck,
     _saveUsgImg = saveUsgImg,
@@ -96,8 +96,8 @@ class KehamilankuCheckFormVm extends FormAuthVmGroup {
   final GetPregnancyBabySize _getPregnancyBabySize;
   final GetPregnancyCheckForm _getPregnancyCheckForm;
   final GetMotherNik _getMotherNik;
-  final GetMotherHpl _getMotherHpl;
-  final GetMotherHpht _getMotherHpht;
+  final GetCurrentMotherHpl _getCurrentMotherHpl;
+  final GetCurrentMotherHpht _getCurrentMotherHpht;
 
   final MutableLiveData<PregnancyCheck> _pregnancyCheck = MutableLiveData();
   final MutableLiveData<List<FormWarningStatus>> _formWarningStatusList = MutableLiveData();
@@ -121,19 +121,21 @@ class KehamilankuCheckFormVm extends FormAuthVmGroup {
   ];
 
   void _lateInit() async {
+    /*
     final res1 = await _getMotherNik();
     if(res1 is Success<String>) {
-      final motherNik = res1.data;
-      final res2 = await _getMotherHpl(motherNik);
-      final res3 = await _getMotherHpht(motherNik);
+      //final motherNik = res1.data;
+    }
+    */
+    final res2 = await _getCurrentMotherHpl();
+    final res3 = await _getCurrentMotherHpht();
 
-      if(res2 is Success<DateTime> && res3 is Success<DateTime>) {
-        final hpl = res2.data;
-        final hpht = res3.data;
+    if(res2 is Success<DateTime> && res3 is Success<DateTime>) {
+      final hpl = res2.data;
+      final hpht = res3.data;
 
-        setResponse(0, Const.KEY_HPL, hpl);
-        setResponse(0, Const.KEY_HPHT, hpht);
-      }
+      setResponse(0, Const.KEY_HPL, hpl);
+      setResponse(0, Const.KEY_HPHT, hpht);
     }
   }
 

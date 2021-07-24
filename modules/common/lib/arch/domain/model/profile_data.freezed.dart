@@ -362,10 +362,6 @@ abstract class _BatchProfileIds implements BatchProfileIds {
       throw _privateConstructorUsedError;
 }
 
-BatchProfileServer _$BatchProfileServerFromJson(Map<String, dynamic> json) {
-  return _BatchProfileServer.fromJson(json);
-}
-
 /// @nodoc
 class _$BatchProfileServerTearOff {
   const _$BatchProfileServerTearOff();
@@ -374,17 +370,15 @@ class _$BatchProfileServerTearOff {
       {required ProfileEntity mother,
       required ProfileEntity father,
       required List<ProfileEntity> children,
+      required List<PregnancyEntity> pregnancies,
       required DateTime? motherHpl}) {
     return _BatchProfileServer(
       mother: mother,
       father: father,
       children: children,
+      pregnancies: pregnancies,
       motherHpl: motherHpl,
     );
-  }
-
-  BatchProfileServer fromJson(Map<String, Object> json) {
-    return BatchProfileServer.fromJson(json);
   }
 }
 
@@ -396,9 +390,9 @@ mixin _$BatchProfileServer {
   ProfileEntity get mother => throw _privateConstructorUsedError;
   ProfileEntity get father => throw _privateConstructorUsedError;
   List<ProfileEntity> get children => throw _privateConstructorUsedError;
+  List<PregnancyEntity> get pregnancies => throw _privateConstructorUsedError;
   DateTime? get motherHpl => throw _privateConstructorUsedError;
 
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   $BatchProfileServerCopyWith<BatchProfileServer> get copyWith =>
       throw _privateConstructorUsedError;
@@ -413,6 +407,7 @@ abstract class $BatchProfileServerCopyWith<$Res> {
       {ProfileEntity mother,
       ProfileEntity father,
       List<ProfileEntity> children,
+      List<PregnancyEntity> pregnancies,
       DateTime? motherHpl});
 }
 
@@ -430,6 +425,7 @@ class _$BatchProfileServerCopyWithImpl<$Res>
     Object? mother = freezed,
     Object? father = freezed,
     Object? children = freezed,
+    Object? pregnancies = freezed,
     Object? motherHpl = freezed,
   }) {
     return _then(_value.copyWith(
@@ -445,6 +441,10 @@ class _$BatchProfileServerCopyWithImpl<$Res>
           ? _value.children
           : children // ignore: cast_nullable_to_non_nullable
               as List<ProfileEntity>,
+      pregnancies: pregnancies == freezed
+          ? _value.pregnancies
+          : pregnancies // ignore: cast_nullable_to_non_nullable
+              as List<PregnancyEntity>,
       motherHpl: motherHpl == freezed
           ? _value.motherHpl
           : motherHpl // ignore: cast_nullable_to_non_nullable
@@ -464,6 +464,7 @@ abstract class _$BatchProfileServerCopyWith<$Res>
       {ProfileEntity mother,
       ProfileEntity father,
       List<ProfileEntity> children,
+      List<PregnancyEntity> pregnancies,
       DateTime? motherHpl});
 }
 
@@ -483,6 +484,7 @@ class __$BatchProfileServerCopyWithImpl<$Res>
     Object? mother = freezed,
     Object? father = freezed,
     Object? children = freezed,
+    Object? pregnancies = freezed,
     Object? motherHpl = freezed,
   }) {
     return _then(_BatchProfileServer(
@@ -498,6 +500,10 @@ class __$BatchProfileServerCopyWithImpl<$Res>
           ? _value.children
           : children // ignore: cast_nullable_to_non_nullable
               as List<ProfileEntity>,
+      pregnancies: pregnancies == freezed
+          ? _value.pregnancies
+          : pregnancies // ignore: cast_nullable_to_non_nullable
+              as List<PregnancyEntity>,
       motherHpl: motherHpl == freezed
           ? _value.motherHpl
           : motherHpl // ignore: cast_nullable_to_non_nullable
@@ -507,16 +513,14 @@ class __$BatchProfileServerCopyWithImpl<$Res>
 }
 
 /// @nodoc
-@JsonSerializable()
+
 class _$_BatchProfileServer implements _BatchProfileServer {
   const _$_BatchProfileServer(
       {required this.mother,
       required this.father,
       required this.children,
+      required this.pregnancies,
       required this.motherHpl});
-
-  factory _$_BatchProfileServer.fromJson(Map<String, dynamic> json) =>
-      _$_$_BatchProfileServerFromJson(json);
 
   @override
   final ProfileEntity mother;
@@ -525,11 +529,13 @@ class _$_BatchProfileServer implements _BatchProfileServer {
   @override
   final List<ProfileEntity> children;
   @override
+  final List<PregnancyEntity> pregnancies;
+  @override
   final DateTime? motherHpl;
 
   @override
   String toString() {
-    return 'BatchProfileServer(mother: $mother, father: $father, children: $children, motherHpl: $motherHpl)';
+    return 'BatchProfileServer(mother: $mother, father: $father, children: $children, pregnancies: $pregnancies, motherHpl: $motherHpl)';
   }
 
   @override
@@ -543,6 +549,9 @@ class _$_BatchProfileServer implements _BatchProfileServer {
             (identical(other.children, children) ||
                 const DeepCollectionEquality()
                     .equals(other.children, children)) &&
+            (identical(other.pregnancies, pregnancies) ||
+                const DeepCollectionEquality()
+                    .equals(other.pregnancies, pregnancies)) &&
             (identical(other.motherHpl, motherHpl) ||
                 const DeepCollectionEquality()
                     .equals(other.motherHpl, motherHpl)));
@@ -554,17 +563,13 @@ class _$_BatchProfileServer implements _BatchProfileServer {
       const DeepCollectionEquality().hash(mother) ^
       const DeepCollectionEquality().hash(father) ^
       const DeepCollectionEquality().hash(children) ^
+      const DeepCollectionEquality().hash(pregnancies) ^
       const DeepCollectionEquality().hash(motherHpl);
 
   @JsonKey(ignore: true)
   @override
   _$BatchProfileServerCopyWith<_BatchProfileServer> get copyWith =>
       __$BatchProfileServerCopyWithImpl<_BatchProfileServer>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$_$_BatchProfileServerToJson(this);
-  }
 }
 
 abstract class _BatchProfileServer implements BatchProfileServer {
@@ -572,10 +577,8 @@ abstract class _BatchProfileServer implements BatchProfileServer {
       {required ProfileEntity mother,
       required ProfileEntity father,
       required List<ProfileEntity> children,
+      required List<PregnancyEntity> pregnancies,
       required DateTime? motherHpl}) = _$_BatchProfileServer;
-
-  factory _BatchProfileServer.fromJson(Map<String, dynamic> json) =
-      _$_BatchProfileServer.fromJson;
 
   @override
   ProfileEntity get mother => throw _privateConstructorUsedError;
@@ -583,6 +586,8 @@ abstract class _BatchProfileServer implements BatchProfileServer {
   ProfileEntity get father => throw _privateConstructorUsedError;
   @override
   List<ProfileEntity> get children => throw _privateConstructorUsedError;
+  @override
+  List<PregnancyEntity> get pregnancies => throw _privateConstructorUsedError;
   @override
   DateTime? get motherHpl => throw _privateConstructorUsedError;
   @override

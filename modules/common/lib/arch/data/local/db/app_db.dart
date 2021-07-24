@@ -1,9 +1,11 @@
 import 'package:common/arch/data/local/dao/account_dao.dart';
 import 'package:common/arch/data/local/dao/data_dao.dart';
 import 'package:common/arch/data/local/dao/check_up_dao.dart';
+import 'package:common/arch/data/local/dao/pregnancy_dao.dart';
 import 'package:common/arch/data/local/entity/account_entity.dart';
 import 'package:common/arch/data/local/entity/data_entity.dart';
 import 'package:common/arch/data/local/entity/check_up_entity.dart';
+import 'package:common/arch/data/local/entity/pregnancy_entity.dart';
 import 'package:core/util/_consoles.dart';
 import 'package:moor/backends.dart';
 import 'package:moor/moor.dart';
@@ -18,6 +20,7 @@ part 'app_db.g.dart';
     RoleEntities,
     CityEntities,
     CheckUpIdEntities,
+    PregnancyEntities,
     //BabyCheckUpIdEntities,
   ],
   daos: [
@@ -27,6 +30,7 @@ part 'app_db.g.dart';
     RoleDao,
     CityDao,
     CheckUpIdDao,
+    PregnancyDao,
     //BabyCheckUpIdDao,
   ],
 )

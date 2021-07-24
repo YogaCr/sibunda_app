@@ -41,12 +41,12 @@ abstract class KehamilankuApi {
 
   // ======= Chart =========
 
-  @GET("/graph/tfu")
-  Future<List<MotherTfuChartData>> getPregnancyTfuChart();
-  @GET("/graph/djj")
-  Future<List<MotherDjjChartData>> getPregnancyDjjChart();
-  @GET("/graph/map")
-  Future<List<MotherMapChartData>> getPregnancyMapChart();
-  @GET("/graph/mom-weight")
-  Future<List<MotherBmiChartData>> getPregnancyWeightChart();
+  @GET("/graph/tfu/{pregnancy_id}")
+  Future<MotherTfuChartResponse> getPregnancyTfuChart(@Path("pregnancy_id") int pregnancyId);
+  @GET("/graph/djj/{pregnancy_id}")
+  Future<MotherDjjChartResponse> getPregnancyDjjChart(@Path("pregnancy_id") int pregnancyId);
+  @GET("/graph/map/{pregnancy_id}")
+  Future<MotherMapChartResponse> getPregnancyMapChart(@Path("pregnancy_id") int pregnancyId);
+  @GET("/graph/mom-weight/{pregnancy_id}")
+  Future<MotherBmiChartResponse> getPregnancyWeightChart(@Path("pregnancy_id") int pregnancyId);
 }

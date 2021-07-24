@@ -38,6 +38,8 @@ class Strings {
 
   static const submit_check_form = "Simpan Data Pemeriksaan";
   static const pick_img = "Pilih Gambar";
+  static const pick_img_gallery = "Dari Galeri";
+  static const pick_img_camera = "Dari Kamera";
   static const session_expired = "Sesi Anda telah habis. Harap login ulang.";
 
   static const mother = "Bunda";

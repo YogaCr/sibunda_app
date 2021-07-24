@@ -1,5 +1,6 @@
 import 'package:common/arch/data/local/source/account_local_source.dart';
 import 'package:common/arch/data/remote/api/baby_api.dart';
+import 'package:common/arch/data/remote/model/baby_chart_api_model.dart';
 import 'package:common/arch/domain/dummy_chart_data.dart';
 import 'package:common/arch/domain/model/chart_data_baby.dart';
 import 'package:common/arch/domain/model/form_warning_status.dart';
@@ -36,6 +37,16 @@ class BabyChartRepoImpl with BabyChartRepo {
     _accountLocalSrc = accountLocalSrc
   ;
 
+  final _babyChartResponse = <BabyChartType, dynamic>{};
+  int? _currentId;
+  int? get currentId => _currentId;
+  set currentId(v) {
+    if(v != _currentId) {
+      _babyChartResponse.clear();
+      _currentId = v;
+    }
+  }
+
   @override
   Future<Result<List<BabyWeightChartData>>> getBabyWeightChartData(String babyNik) async {
     try {
@@ -43,7 +54,10 @@ class BabyChartRepoImpl with BabyChartRepo {
       prind("getBabyWeightChartData() res = $res");
       if(res is Success<int>) {
         final id = res.data;
-        return Success(await _api.getWeightChart(id));
+        final BabyWeightChartResponse resp =
+          _babyChartResponse[BabyChartType.weight] ??= await _api.getWeightChart(id);
+        currentId = id;
+        return Success(resp.data.data);
       } else {
         return Fail();
       }
@@ -57,7 +71,10 @@ class BabyChartRepoImpl with BabyChartRepo {
       final res = await _accountLocalSrc.getChildId(babyNik);
       if(res is Success<int>) {
         final id = res.data;
-        return Success(await _api.getKmsChart(id));
+        final BabyKmsChartResponse resp =
+          _babyChartResponse[BabyChartType.kms] ??= await _api.getKmsChart(id);
+        currentId = id;
+        return Success(resp.data.data);
       } else {
         return Fail();
       }
@@ -71,7 +88,10 @@ class BabyChartRepoImpl with BabyChartRepo {
       final res = await _accountLocalSrc.getChildId(babyNik);
       if(res is Success<int>) {
         final id = res.data;
-        return Success(await _api.getLenChart(id));
+        final BabyLenChartResponse resp =
+          _babyChartResponse[BabyChartType.len] ??= await _api.getLenChart(id);
+        currentId = id;
+        return Success(resp.data.data);
       } else {
         return Fail();
       }
@@ -85,7 +105,11 @@ class BabyChartRepoImpl with BabyChartRepo {
       final res = await _accountLocalSrc.getChildId(babyNik);
       if(res is Success<int>) {
         final id = res.data;
-        return Success(await _api.getWeightToLenChart(id));
+        final BabyWeightToLenChartResponse resp =
+          _babyChartResponse[BabyChartType.weightToLen] ??= await _api.getWeightToLenChart(id);
+        currentId = id;
+        return Success(resp.data.data);
+        //return Success(await _api.getWeightToLenChart(id));
       } else {
         return Fail();
       }
@@ -99,7 +123,10 @@ class BabyChartRepoImpl with BabyChartRepo {
       final res = await _accountLocalSrc.getChildId(babyNik);
       if(res is Success<int>) {
         final id = res.data;
-        return Success(await _api.getHeadCircumChart(id));
+        final BabyHeadCircumChartResponse resp =
+          _babyChartResponse[BabyChartType.head] ??= await _api.getHeadCircumChart(id);
+        currentId = id;
+        return Success(resp.data.data);
       } else {
         return Fail();
       }
@@ -113,7 +140,10 @@ class BabyChartRepoImpl with BabyChartRepo {
       final res = await _accountLocalSrc.getChildId(babyNik);
       if(res is Success<int>) {
         final id = res.data;
-        return Success(await _api.getBmiChart(id));
+        final BabyBmiChartResponse resp =
+          _babyChartResponse[BabyChartType.bmi] ??= await _api.getBmiChart(id);
+        currentId = id;
+        return Success(resp.data.data);
       } else {
         return Fail();
       }
@@ -127,7 +157,10 @@ class BabyChartRepoImpl with BabyChartRepo {
       final res = await _accountLocalSrc.getChildId(babyNik);
       if(res is Success<int>) {
         final id = res.data;
-        return Success(await _api.getDevChart(id));
+        final BabyDevChartResponse resp =
+          _babyChartResponse[BabyChartType.dev] ??= await _api.getDevChart(id);
+        currentId = id;
+        return Success(resp.data.data);
       } else {
         return Fail();
       }
@@ -137,19 +170,159 @@ class BabyChartRepoImpl with BabyChartRepo {
   }
 
   @override
-  Future<Result<List<FormWarningStatus>>> getBabyWeightChartWarning(String babyNik) async => Success(babyWeightWarning);
+  Future<Result<List<FormWarningStatus>>> getBabyWeightChartWarning(String babyNik) async {
+    try {
+      final res = await _accountLocalSrc.getChildId(babyNik);
+      if(res is Success<int>) {
+        final id = res.data;
+        final BabyWeightChartResponse resp =
+          _babyChartResponse[BabyChartType.weight] ??= await _api.getWeightChart(id);
+        currentId = id;
+        final raw = resp.data.desc;
+        if(raw == null) {
+          return Success(List.empty());
+        }
+        final data = FormWarningStatus.fromChartResponse(raw);
+        return Success([data]);
+      } else {
+        return Fail();
+      }
+    } catch(e) {
+      return Fail();
+    }
+  } //async => Success(babyWeightWarning);
   @override
-  Future<Result<List<FormWarningStatus>>> getBabyKmsChartWarning(String babyNik) async => Success(babyKmsWarning);
+  Future<Result<List<FormWarningStatus>>> getBabyKmsChartWarning(String babyNik) async {
+    try {
+      final res = await _accountLocalSrc.getChildId(babyNik);
+      if(res is Success<int>) {
+        final id = res.data;
+        final BabyKmsChartResponse resp =
+        _babyChartResponse[BabyChartType.kms] ??= await _api.getKmsChart(id);
+        currentId = id;
+        final raw = resp.data.desc;
+        if(raw == null) {
+          return Success(List.empty());
+        }
+        final data = FormWarningStatus.fromChartResponse(raw);
+        return Success([data]);
+      } else {
+        return Fail();
+      }
+    } catch(e) {
+      return Fail();
+    }
+  } //async => Success(babyKmsWarning);
   @override
-  Future<Result<List<FormWarningStatus>>> getBabyLenChartWarning(String babyNik) async => Success(babyLenWarning);
+  Future<Result<List<FormWarningStatus>>> getBabyLenChartWarning(String babyNik) async {
+    try {
+      final res = await _accountLocalSrc.getChildId(babyNik);
+      if(res is Success<int>) {
+        final id = res.data;
+        final BabyLenChartResponse resp =
+        _babyChartResponse[BabyChartType.len] ??= await _api.getLenChart(id);
+        currentId = id;
+        final raw = resp.data.desc;
+        if(raw == null) {
+          return Success(List.empty());
+        }
+        final data = FormWarningStatus.fromChartResponse(raw);
+        return Success([data]);
+      } else {
+        return Fail();
+      }
+    } catch(e) {
+      return Fail();
+    }
+  } //async => Success(babyLenWarning);
   @override
-  Future<Result<List<FormWarningStatus>>> getBabyWeightToLenChartWarning(String babyNik) async => Success(babyWeightToLenWarning);
+  Future<Result<List<FormWarningStatus>>> getBabyWeightToLenChartWarning(String babyNik) async {
+    try {
+      final res = await _accountLocalSrc.getChildId(babyNik);
+      if(res is Success<int>) {
+        final id = res.data;
+        final BabyWeightToLenChartResponse resp =
+        _babyChartResponse[BabyChartType.weightToLen] ??= await _api.getWeightToLenChart(id);
+        currentId = id;
+        final raw = resp.data.desc;
+        if(raw == null) {
+          return Success(List.empty());
+        }
+        final data = FormWarningStatus.fromChartResponse(raw);
+        return Success([data]);
+      } else {
+        return Fail();
+      }
+    } catch(e) {
+      return Fail();
+    }
+  } //async => Success(babyWeightToLenWarning);
   @override
-  Future<Result<List<FormWarningStatus>>> getBabyHeadCircumChartWarning(String babyNik) async => Success(babyHeadCircumWarning);
+  Future<Result<List<FormWarningStatus>>> getBabyHeadCircumChartWarning(String babyNik) async {
+    try {
+      final res = await _accountLocalSrc.getChildId(babyNik);
+      if(res is Success<int>) {
+        final id = res.data;
+        final BabyHeadCircumChartResponse resp =
+        _babyChartResponse[BabyChartType.head] ??= await _api.getHeadCircumChart(id);
+        currentId = id;
+        final raw = resp.data.desc;
+        if(raw == null) {
+          return Success(List.empty());
+        }
+        final data = FormWarningStatus.fromChartResponse(raw);
+        return Success([data]);
+      } else {
+        return Fail();
+      }
+    } catch(e) {
+      return Fail();
+    }
+  } //async => Success(babyHeadCircumWarning);
   @override
-  Future<Result<List<FormWarningStatus>>> getBabyBmiChartWarning(String babyNik) async => Success(babyBmiWarning);
+  Future<Result<List<FormWarningStatus>>> getBabyBmiChartWarning(String babyNik) async {
+    try {
+      final res = await _accountLocalSrc.getChildId(babyNik);
+      if(res is Success<int>) {
+        final id = res.data;
+        final BabyBmiChartResponse resp =
+        _babyChartResponse[BabyChartType.bmi] ??= await _api.getBmiChart(id);
+        currentId = id;
+        final raw = resp.data.desc;
+        if(raw == null) {
+          return Success(List.empty());
+        }
+        final data = FormWarningStatus.fromChartResponse(raw);
+        return Success([data]);
+      } else {
+        return Fail();
+      }
+    } catch(e) {
+      return Fail();
+    }
+  } //async => Success(babyBmiWarning);
   @override
-  Future<Result<List<FormWarningStatus>>> getBabyDevChartWarning(String babyNik) async => Success(babyDevWarning);
+  Future<Result<List<FormWarningStatus>>> getBabyDevChartWarning(String babyNik) async {
+    try {
+      final res = await _accountLocalSrc.getChildId(babyNik);
+      if(res is Success<int>) {
+        final id = res.data;
+        final BabyDevChartResponse resp =
+        _babyChartResponse[BabyChartType.dev] ??= await _api.getDevChart(id);
+        currentId = id;
+        final raw = resp.data.desc;
+        if(raw == null) {
+          return Success(List.empty());
+        }
+        final data = FormWarningStatus.fromChartResponse(raw);
+        return Success([data]);
+      } else {
+        return Fail();
+      }
+    } catch(e) {
+      return Fail();
+    }
+  } //async => Success(babyDevWarning);
 }
 
 

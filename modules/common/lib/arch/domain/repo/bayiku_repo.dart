@@ -20,6 +20,7 @@ import 'package:common/value/db_const.dart';
 import 'package:core/domain/model/result.dart';
 import 'package:core/util/_consoles.dart';
 import 'package:collection/collection.dart';
+import 'package:flutter/cupertino.dart';
 
 mixin MyBabyRepo {
   Future<Result<Map<int, String>>> getBabyNik();
@@ -95,7 +96,6 @@ class MyBabyRepoImpl with MyBabyRepo {
     }
   }
 
-  //TODO: getBornBabyOverlayData(): Dummy;
   @override
   Future<Result<List<BabyOverlayData>>> getBornBabyOverlayData(String motherNik) async {
     final rawProfs = await _accountLocalSrc.getChildrenProfilesByMotherNik(motherNik);
@@ -109,19 +109,27 @@ class MyBabyRepoImpl with MyBabyRepo {
   }
   @override
   Future<Result<List<BabyOverlayData>>> getUnbornBabyOverlayData(String motherNik) async {
-    final hplRes = await _pregnancyLocalSrc.getCurrentMotherHpl();
-    if(hplRes is Success<DateTime>) {
-      final hpl = hplRes.data;
-      final motherRes = await _accountLocalSrc.getProfileByNik(motherNik, type: DbConst.TYPE_MOTHER);
-      if(motherRes is Success<ProfileEntity>) {
-        final mother = motherRes.data;
-        final data = BabyOverlayData.fromProfileEntityAsUnborn(
-          profile: mother,
-          hpl: hpl,
-        );
-        return Success([data]);
+    final pregRes = await _pregnancyLocalSrc.getPregnancyOfUser(motherNik);
+    if(pregRes is Success<List<PregnancyEntity>>) {
+      final preg = pregRes.data;
+      final nowBornProfilesRes = await _accountLocalSrc.getProfilesByPregnancies(preg);
+      final emailRes = await _accountLocalSrc.getCurrentEmail();
+
+      if(nowBornProfilesRes is Success<List<ProfileEntity>> && emailRes is Success<String>) {
+        final email = emailRes.data;
+        final nowBornProfiles = nowBornProfilesRes.data;
+        final babyOverlays = preg.map<BabyOverlayData>((e1) {
+          final eProf = nowBornProfiles.firstWhereOrNull((e2) => e2.serverId == e1.id);
+          final prof = eProf != null ? Profile.fromEntity(entity: eProf, email: email) : null;
+          return BabyOverlayData.fromPregnancyEntity(
+            entity: e1,
+            profile: prof,
+          );
+        }).toList(growable: false);
+
+        return Success(babyOverlays);
       } else {
-        return Fail(msg: "Can't get mother profile with `motherNik` of '$motherNik' in `getUnbornBabyOverlayData()`");
+        return Fail(msg: "Can't get profiles or email with `motherNik` of '$motherNik' in `getUnbornBabyOverlayData()`");
       }
     } else {
       return Fail(msg: "Can't get mother hpl with `motherNik` of '$motherNik' in `getUnbornBabyOverlayData()`");

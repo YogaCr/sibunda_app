@@ -1,29 +1,49 @@
+import 'package:common/arch/data/local/dao/account_dao.dart';
 import 'package:common/arch/data/local/dao/check_up_dao.dart';
+import 'package:common/arch/data/local/dao/pregnancy_dao.dart';
 import 'package:common/arch/data/local/db/app_db.dart';
+import 'package:common/arch/data/local/source/account_local_source.dart';
 import 'package:common/value/const_values.dart';
+import 'package:common/value/db_const.dart';
 import 'package:core/domain/model/result.dart';
 import 'package:core/util/_consoles.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 mixin PregnancyLocalSrc {
   Future<Result<bool>> saveMotherHpl(DateTime date);
-  Future<Result<DateTime>> getCurrentMotherHpl();
+  Future<Result<DateTime?>> getCurrentMotherHpl();
   Future<Result<bool>> deleteCurrentMotherHpl();
 
   Future<Result<bool>> saveMotherHpht(DateTime date);
-  Future<Result<DateTime>> getCurrentMotherHpht();
+  Future<Result<DateTime?>> getCurrentMotherHpht();
   Future<Result<bool>> deleteCurrentMotherHpht();
+
+  Future<Result<int?>> getCurrentPregnancyId();
+  Future<Result<bool>> saveCurrentPregnancyId(int pregnancyId);
+
+  Future<Result<List<PregnancyEntity>>> getPregnancyOfUser(String motherNik,);
+  Future<Result<bool>> savePregnancy({
+    required int id,
+    required String motherNik,
+    required DateTime hpl,
+  });
 
   Future<Result<bool>> clear();
 }
 
 class PregnancyLocalSrcImpl with PregnancyLocalSrc {
   final SharedPreferences _sharedPref;
+  final ProfileDao _profileDao;
+  final PregnancyDao _pregnancyDao;
 
   PregnancyLocalSrcImpl({
     required SharedPreferences sharedPref,
+    required ProfileDao profileDao,
+    required PregnancyDao pregnancyDao,
   }):
-    _sharedPref = sharedPref
+    _sharedPref = sharedPref,
+    _profileDao = profileDao,
+    _pregnancyDao = pregnancyDao
   ;
 
   @override
@@ -36,10 +56,10 @@ class PregnancyLocalSrcImpl with PregnancyLocalSrc {
     }
   }
   @override
-  Future<Result<DateTime>> getCurrentMotherHpl() async {
+  Future<Result<DateTime?>> getCurrentMotherHpl() async {
     final hpl = _sharedPref.getString(Const.KEY_HPL);
     if(hpl == null) {
-      return Fail();
+      return Success(null);
     }
     return Success(DateTime.parse(hpl));
   }
@@ -65,10 +85,10 @@ class PregnancyLocalSrcImpl with PregnancyLocalSrc {
     }
   }
   @override
-  Future<Result<DateTime>> getCurrentMotherHpht() async {
+  Future<Result<DateTime?>> getCurrentMotherHpht() async {
     final hpl = _sharedPref.getString(Const.KEY_HPHT);
     if(hpl == null) {
-      return Fail();
+      return Success(null);
     }
     return Success(DateTime.parse(hpl));
   }
@@ -82,6 +102,46 @@ class PregnancyLocalSrcImpl with PregnancyLocalSrc {
       prine(stack);
       return Fail(msg: "Error calling `deleteCurrentMotherHpht()`", error: e);
     }
+  }
+
+  @override
+  Future<Result<int?>> getCurrentPregnancyId() async {
+    final pregnancyId = _sharedPref.getInt(Const.KEY_CURRENT_PREGNANCY_ID);
+    return Success(pregnancyId);
+  }
+
+  @override
+  Future<Result<bool>> saveCurrentPregnancyId(int pregnancyId) async {
+    try {
+      final res = await _sharedPref.setInt(Const.KEY_CURRENT_PREGNANCY_ID, pregnancyId);
+      return Success(res);
+    } catch(e) {
+      return Fail();
+    }
+  }
+
+  @override
+  Future<Result<List<PregnancyEntity>>> getPregnancyOfUser(String motherNik,) async {
+    final credId = await _profileDao.getCredentialIdByNik(motherNik, type: DbConst.TYPE_MOTHER);
+    if(credId == null) {
+      return Fail(msg: "Can't get credential id of mother with `motherNik` = '$motherNik', in `getPregnancyOfUser()`");
+    }
+    final list = await _pregnancyDao.getPregnancyOfUser(credId);
+    return Success(list);
+  }
+  @override
+  Future<Result<bool>> savePregnancy({
+    required int id,
+    required String motherNik,
+    required DateTime hpl,
+  }) async {
+    final credId = await _profileDao.getCredentialIdByNik(motherNik, type: DbConst.TYPE_MOTHER);
+    if(credId == null) {
+      return Fail(msg: "Can't get credential id of mother with `motherNik` = '$motherNik', in `savePregnancy()`");
+    }
+    final pregnancy = PregnancyEntity(id: id, credentialId: credId, hpl: hpl);
+    final res = await _pregnancyDao.insert(pregnancy);
+    return Success(res >= 0);
   }
 
   @override

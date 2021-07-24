@@ -259,6 +259,7 @@ class $CredentialEntitiesTable extends CredentialEntities
 class ProfileEntity extends DataClass implements Insertable<ProfileEntity> {
   final int userId;
   final int type;
+  final int? pregnancyId;
   final int serverId;
   final String name;
   final String nik;
@@ -267,6 +268,7 @@ class ProfileEntity extends DataClass implements Insertable<ProfileEntity> {
   ProfileEntity(
       {required this.userId,
       required this.type,
+      this.pregnancyId,
       required this.serverId,
       required this.name,
       required this.nik,
@@ -281,6 +283,8 @@ class ProfileEntity extends DataClass implements Insertable<ProfileEntity> {
           .mapFromDatabaseResponse(data['${effectivePrefix}user_id'])!,
       type: const IntType()
           .mapFromDatabaseResponse(data['${effectivePrefix}type'])!,
+      pregnancyId: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}pregnancy_id']),
       serverId: const IntType()
           .mapFromDatabaseResponse(data['${effectivePrefix}server_id'])!,
       name: const StringType()
@@ -298,6 +302,9 @@ class ProfileEntity extends DataClass implements Insertable<ProfileEntity> {
     final map = <String, Expression>{};
     map['user_id'] = Variable<int>(userId);
     map['type'] = Variable<int>(type);
+    if (!nullToAbsent || pregnancyId != null) {
+      map['pregnancy_id'] = Variable<int?>(pregnancyId);
+    }
     map['server_id'] = Variable<int>(serverId);
     map['name'] = Variable<String>(name);
     map['nik'] = Variable<String>(nik);
@@ -310,6 +317,9 @@ class ProfileEntity extends DataClass implements Insertable<ProfileEntity> {
     return ProfileEntitiesCompanion(
       userId: Value(userId),
       type: Value(type),
+      pregnancyId: pregnancyId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(pregnancyId),
       serverId: Value(serverId),
       name: Value(name),
       nik: Value(nik),
@@ -324,6 +334,7 @@ class ProfileEntity extends DataClass implements Insertable<ProfileEntity> {
     return ProfileEntity(
       userId: serializer.fromJson<int>(json['userId']),
       type: serializer.fromJson<int>(json['type']),
+      pregnancyId: serializer.fromJson<int?>(json['pregnancyId']),
       serverId: serializer.fromJson<int>(json['serverId']),
       name: serializer.fromJson<String>(json['name']),
       nik: serializer.fromJson<String>(json['nik']),
@@ -337,6 +348,7 @@ class ProfileEntity extends DataClass implements Insertable<ProfileEntity> {
     return <String, dynamic>{
       'userId': serializer.toJson<int>(userId),
       'type': serializer.toJson<int>(type),
+      'pregnancyId': serializer.toJson<int?>(pregnancyId),
       'serverId': serializer.toJson<int>(serverId),
       'name': serializer.toJson<String>(name),
       'nik': serializer.toJson<String>(nik),
@@ -348,6 +360,7 @@ class ProfileEntity extends DataClass implements Insertable<ProfileEntity> {
   ProfileEntity copyWith(
           {int? userId,
           int? type,
+          int? pregnancyId,
           int? serverId,
           String? name,
           String? nik,
@@ -356,6 +369,7 @@ class ProfileEntity extends DataClass implements Insertable<ProfileEntity> {
       ProfileEntity(
         userId: userId ?? this.userId,
         type: type ?? this.type,
+        pregnancyId: pregnancyId ?? this.pregnancyId,
         serverId: serverId ?? this.serverId,
         name: name ?? this.name,
         nik: nik ?? this.nik,
@@ -367,6 +381,7 @@ class ProfileEntity extends DataClass implements Insertable<ProfileEntity> {
     return (StringBuffer('ProfileEntity(')
           ..write('userId: $userId, ')
           ..write('type: $type, ')
+          ..write('pregnancyId: $pregnancyId, ')
           ..write('serverId: $serverId, ')
           ..write('name: $name, ')
           ..write('nik: $nik, ')
@@ -382,17 +397,20 @@ class ProfileEntity extends DataClass implements Insertable<ProfileEntity> {
       $mrjc(
           type.hashCode,
           $mrjc(
-              serverId.hashCode,
+              pregnancyId.hashCode,
               $mrjc(
-                  name.hashCode,
-                  $mrjc(nik.hashCode,
-                      $mrjc(birthDate.hashCode, birthPlace.hashCode)))))));
+                  serverId.hashCode,
+                  $mrjc(
+                      name.hashCode,
+                      $mrjc(nik.hashCode,
+                          $mrjc(birthDate.hashCode, birthPlace.hashCode))))))));
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is ProfileEntity &&
           other.userId == this.userId &&
           other.type == this.type &&
+          other.pregnancyId == this.pregnancyId &&
           other.serverId == this.serverId &&
           other.name == this.name &&
           other.nik == this.nik &&
@@ -403,6 +421,7 @@ class ProfileEntity extends DataClass implements Insertable<ProfileEntity> {
 class ProfileEntitiesCompanion extends UpdateCompanion<ProfileEntity> {
   final Value<int> userId;
   final Value<int> type;
+  final Value<int?> pregnancyId;
   final Value<int> serverId;
   final Value<String> name;
   final Value<String> nik;
@@ -411,6 +430,7 @@ class ProfileEntitiesCompanion extends UpdateCompanion<ProfileEntity> {
   const ProfileEntitiesCompanion({
     this.userId = const Value.absent(),
     this.type = const Value.absent(),
+    this.pregnancyId = const Value.absent(),
     this.serverId = const Value.absent(),
     this.name = const Value.absent(),
     this.nik = const Value.absent(),
@@ -420,6 +440,7 @@ class ProfileEntitiesCompanion extends UpdateCompanion<ProfileEntity> {
   ProfileEntitiesCompanion.insert({
     required int userId,
     required int type,
+    this.pregnancyId = const Value.absent(),
     required int serverId,
     required String name,
     required String nik,
@@ -435,6 +456,7 @@ class ProfileEntitiesCompanion extends UpdateCompanion<ProfileEntity> {
   static Insertable<ProfileEntity> custom({
     Expression<int>? userId,
     Expression<int>? type,
+    Expression<int?>? pregnancyId,
     Expression<int>? serverId,
     Expression<String>? name,
     Expression<String>? nik,
@@ -444,6 +466,7 @@ class ProfileEntitiesCompanion extends UpdateCompanion<ProfileEntity> {
     return RawValuesInsertable({
       if (userId != null) 'user_id': userId,
       if (type != null) 'type': type,
+      if (pregnancyId != null) 'pregnancy_id': pregnancyId,
       if (serverId != null) 'server_id': serverId,
       if (name != null) 'name': name,
       if (nik != null) 'nik': nik,
@@ -455,6 +478,7 @@ class ProfileEntitiesCompanion extends UpdateCompanion<ProfileEntity> {
   ProfileEntitiesCompanion copyWith(
       {Value<int>? userId,
       Value<int>? type,
+      Value<int?>? pregnancyId,
       Value<int>? serverId,
       Value<String>? name,
       Value<String>? nik,
@@ -463,6 +487,7 @@ class ProfileEntitiesCompanion extends UpdateCompanion<ProfileEntity> {
     return ProfileEntitiesCompanion(
       userId: userId ?? this.userId,
       type: type ?? this.type,
+      pregnancyId: pregnancyId ?? this.pregnancyId,
       serverId: serverId ?? this.serverId,
       name: name ?? this.name,
       nik: nik ?? this.nik,
@@ -479,6 +504,9 @@ class ProfileEntitiesCompanion extends UpdateCompanion<ProfileEntity> {
     }
     if (type.present) {
       map['type'] = Variable<int>(type.value);
+    }
+    if (pregnancyId.present) {
+      map['pregnancy_id'] = Variable<int?>(pregnancyId.value);
     }
     if (serverId.present) {
       map['server_id'] = Variable<int>(serverId.value);
@@ -503,6 +531,7 @@ class ProfileEntitiesCompanion extends UpdateCompanion<ProfileEntity> {
     return (StringBuffer('ProfileEntitiesCompanion(')
           ..write('userId: $userId, ')
           ..write('type: $type, ')
+          ..write('pregnancyId: $pregnancyId, ')
           ..write('serverId: $serverId, ')
           ..write('name: $name, ')
           ..write('nik: $nik, ')
@@ -530,6 +559,13 @@ class $ProfileEntitiesTable extends ProfileEntities
       typeName: 'INTEGER',
       requiredDuringInsert: true,
       $customConstraints: 'REFERENCES profile_types(id)');
+  final VerificationMeta _pregnancyIdMeta =
+      const VerificationMeta('pregnancyId');
+  late final GeneratedColumn<int?> pregnancyId = GeneratedColumn<int?>(
+      'pregnancy_id', aliasedName, true,
+      typeName: 'INTEGER',
+      requiredDuringInsert: false,
+      $customConstraints: 'REFERENCES pregnancies(id)');
   final VerificationMeta _serverIdMeta = const VerificationMeta('serverId');
   late final GeneratedColumn<int?> serverId = GeneratedColumn<int?>(
       'server_id', aliasedName, false,
@@ -554,7 +590,7 @@ class $ProfileEntitiesTable extends ProfileEntities
       $customConstraints: 'REFERENCES cities(id)');
   @override
   List<GeneratedColumn> get $columns =>
-      [userId, type, serverId, name, nik, birthDate, birthPlace];
+      [userId, type, pregnancyId, serverId, name, nik, birthDate, birthPlace];
   @override
   String get aliasedName => _alias ?? 'profiles';
   @override
@@ -575,6 +611,12 @@ class $ProfileEntitiesTable extends ProfileEntities
           _typeMeta, type.isAcceptableOrUnknown(data['type']!, _typeMeta));
     } else if (isInserting) {
       context.missing(_typeMeta);
+    }
+    if (data.containsKey('pregnancy_id')) {
+      context.handle(
+          _pregnancyIdMeta,
+          pregnancyId.isAcceptableOrUnknown(
+              data['pregnancy_id']!, _pregnancyIdMeta));
     }
     if (data.containsKey('server_id')) {
       context.handle(_serverIdMeta,
@@ -1348,6 +1390,220 @@ class $CheckUpIdEntitiesTable extends CheckUpIdEntities
   }
 }
 
+class PregnancyEntity extends DataClass implements Insertable<PregnancyEntity> {
+  /// This will be equivalent to [ProfileEntities.serverId]
+  final int id;
+  final int credentialId;
+  final DateTime hpl;
+  PregnancyEntity(
+      {required this.id, required this.credentialId, required this.hpl});
+  factory PregnancyEntity.fromData(
+      Map<String, dynamic> data, GeneratedDatabase db,
+      {String? prefix}) {
+    final effectivePrefix = prefix ?? '';
+    return PregnancyEntity(
+      id: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
+      credentialId: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}user_id'])!,
+      hpl: const DateTimeType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}hpl'])!,
+    );
+  }
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['user_id'] = Variable<int>(credentialId);
+    map['hpl'] = Variable<DateTime>(hpl);
+    return map;
+  }
+
+  PregnancyEntitiesCompanion toCompanion(bool nullToAbsent) {
+    return PregnancyEntitiesCompanion(
+      id: Value(id),
+      credentialId: Value(credentialId),
+      hpl: Value(hpl),
+    );
+  }
+
+  factory PregnancyEntity.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return PregnancyEntity(
+      id: serializer.fromJson<int>(json['id']),
+      credentialId: serializer.fromJson<int>(json['credentialId']),
+      hpl: serializer.fromJson<DateTime>(json['hpl']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'credentialId': serializer.toJson<int>(credentialId),
+      'hpl': serializer.toJson<DateTime>(hpl),
+    };
+  }
+
+  PregnancyEntity copyWith({int? id, int? credentialId, DateTime? hpl}) =>
+      PregnancyEntity(
+        id: id ?? this.id,
+        credentialId: credentialId ?? this.credentialId,
+        hpl: hpl ?? this.hpl,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('PregnancyEntity(')
+          ..write('id: $id, ')
+          ..write('credentialId: $credentialId, ')
+          ..write('hpl: $hpl')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode =>
+      $mrjf($mrjc(id.hashCode, $mrjc(credentialId.hashCode, hpl.hashCode)));
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is PregnancyEntity &&
+          other.id == this.id &&
+          other.credentialId == this.credentialId &&
+          other.hpl == this.hpl);
+}
+
+class PregnancyEntitiesCompanion extends UpdateCompanion<PregnancyEntity> {
+  final Value<int> id;
+  final Value<int> credentialId;
+  final Value<DateTime> hpl;
+  const PregnancyEntitiesCompanion({
+    this.id = const Value.absent(),
+    this.credentialId = const Value.absent(),
+    this.hpl = const Value.absent(),
+  });
+  PregnancyEntitiesCompanion.insert({
+    required int id,
+    required int credentialId,
+    required DateTime hpl,
+  })  : id = Value(id),
+        credentialId = Value(credentialId),
+        hpl = Value(hpl);
+  static Insertable<PregnancyEntity> custom({
+    Expression<int>? id,
+    Expression<int>? credentialId,
+    Expression<DateTime>? hpl,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (credentialId != null) 'user_id': credentialId,
+      if (hpl != null) 'hpl': hpl,
+    });
+  }
+
+  PregnancyEntitiesCompanion copyWith(
+      {Value<int>? id, Value<int>? credentialId, Value<DateTime>? hpl}) {
+    return PregnancyEntitiesCompanion(
+      id: id ?? this.id,
+      credentialId: credentialId ?? this.credentialId,
+      hpl: hpl ?? this.hpl,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (credentialId.present) {
+      map['user_id'] = Variable<int>(credentialId.value);
+    }
+    if (hpl.present) {
+      map['hpl'] = Variable<DateTime>(hpl.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('PregnancyEntitiesCompanion(')
+          ..write('id: $id, ')
+          ..write('credentialId: $credentialId, ')
+          ..write('hpl: $hpl')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $PregnancyEntitiesTable extends PregnancyEntities
+    with TableInfo<$PregnancyEntitiesTable, PregnancyEntity> {
+  final GeneratedDatabase _db;
+  final String? _alias;
+  $PregnancyEntitiesTable(this._db, [this._alias]);
+  final VerificationMeta _idMeta = const VerificationMeta('id');
+  late final GeneratedColumn<int?> id = GeneratedColumn<int?>(
+      'id', aliasedName, false,
+      typeName: 'INTEGER', requiredDuringInsert: true);
+  final VerificationMeta _credentialIdMeta =
+      const VerificationMeta('credentialId');
+  late final GeneratedColumn<int?> credentialId = GeneratedColumn<int?>(
+      'user_id', aliasedName, false,
+      typeName: 'INTEGER',
+      requiredDuringInsert: true,
+      $customConstraints: 'REFERENCES credentials(id)');
+  final VerificationMeta _hplMeta = const VerificationMeta('hpl');
+  late final GeneratedColumn<DateTime?> hpl = GeneratedColumn<DateTime?>(
+      'hpl', aliasedName, false,
+      typeName: 'INTEGER', requiredDuringInsert: true);
+  @override
+  List<GeneratedColumn> get $columns => [id, credentialId, hpl];
+  @override
+  String get aliasedName => _alias ?? 'pregnancies';
+  @override
+  String get actualTableName => 'pregnancies';
+  @override
+  VerificationContext validateIntegrity(Insertable<PregnancyEntity> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('user_id')) {
+      context.handle(
+          _credentialIdMeta,
+          credentialId.isAcceptableOrUnknown(
+              data['user_id']!, _credentialIdMeta));
+    } else if (isInserting) {
+      context.missing(_credentialIdMeta);
+    }
+    if (data.containsKey('hpl')) {
+      context.handle(
+          _hplMeta, hpl.isAcceptableOrUnknown(data['hpl']!, _hplMeta));
+    } else if (isInserting) {
+      context.missing(_hplMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => <GeneratedColumn>{};
+  @override
+  PregnancyEntity map(Map<String, dynamic> data, {String? tablePrefix}) {
+    return PregnancyEntity.fromData(data, _db,
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
+  }
+
+  @override
+  $PregnancyEntitiesTable createAlias(String alias) {
+    return $PregnancyEntitiesTable(_db, alias);
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
   late final $CredentialEntitiesTable credentialEntities =
@@ -1360,6 +1616,8 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $CityEntitiesTable cityEntities = $CityEntitiesTable(this);
   late final $CheckUpIdEntitiesTable checkUpIdEntities =
       $CheckUpIdEntitiesTable(this);
+  late final $PregnancyEntitiesTable pregnancyEntities =
+      $PregnancyEntitiesTable(this);
   late final CredentialDao credentialDao = CredentialDao(this as AppDatabase);
   late final ProfileDao profileDao = ProfileDao(this as AppDatabase);
   late final ProfileTypeDao profileTypeDao =
@@ -1367,6 +1625,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final RoleDao roleDao = RoleDao(this as AppDatabase);
   late final CityDao cityDao = CityDao(this as AppDatabase);
   late final CheckUpIdDao checkUpIdDao = CheckUpIdDao(this as AppDatabase);
+  late final PregnancyDao pregnancyDao = PregnancyDao(this as AppDatabase);
   @override
   Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
   @override
@@ -1376,6 +1635,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
         profileTypeEntities,
         roleEntities,
         cityEntities,
-        checkUpIdEntities
+        checkUpIdEntities,
+        pregnancyEntities
       ];
 }

@@ -4,6 +4,7 @@ import 'package:common/arch/domain/model/img_data.dart';
 import 'package:common/arch/domain/model/profile_data.dart';
 import 'package:common/res/string/_string.dart';
 import 'package:common/value/const_values.dart';
+import 'package:core/util/_consoles.dart';
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -99,6 +100,22 @@ class BabyOverlayData extends Equatable {
     date: hpl,
     img: dummyImg_profile,
   );
+  factory BabyOverlayData.fromPregnancyEntity({
+    required PregnancyEntity entity,
+    Profile? profile,
+  }) {
+    if(profile != null && profile.id != entity.id) {
+      prinw("`profile` != null but `profile.id` (${profile.id}) != `entity.id` (${entity.id}). Then, `profile` will be ignored.");
+      profile = null;
+    }
+    return BabyOverlayData(
+      id: entity.id,
+      nik: profile?.nik ?? "<fetus_nik>",
+      name: profile?.name ?? Strings.baby_candidate,
+      date: entity.hpl,
+      img: profile?.img ?? dummyImg_profile,
+    );
+  }
 
   @override
   List<Object?> get props => [id, name, date, img];

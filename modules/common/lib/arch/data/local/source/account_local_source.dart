@@ -1,5 +1,7 @@
 import 'package:common/arch/data/local/dao/account_dao.dart';
+import 'package:common/arch/data/local/dao/pregnancy_dao.dart';
 import 'package:common/arch/data/local/db/app_db.dart';
+import 'package:common/arch/data/local/source/pregnancy_local_source.dart';
 import 'package:common/arch/domain/dummy_data.dart';
 import 'package:common/arch/domain/model/auth.dart';
 import 'package:common/arch/domain/model/child.dart';
@@ -23,6 +25,7 @@ mixin AccountLocalSrc {
     required Mother mother,
     required Father father,
     required List<Child> children,
+    //required List<DateTime> motherHpl,
     required BatchProfileIds ids,
   });
   Future<Result<bool>> saveBatchProfileRaw({
@@ -37,6 +40,7 @@ mixin AccountLocalSrc {
   Future<Result<SessionData?>> getSession();
 
   Future<Result<ProfileEntity>> getProfileByNik(String nik, { int? type });
+  Future<Result<List<ProfileEntity>>> getProfilesByPregnancies(List<PregnancyEntity> pregnancies);
 
   Future<Result<String>> getMotherNik(String email);
   Future<Result<String>> getFatherNik(String email);
@@ -60,19 +64,25 @@ mixin AccountLocalSrc {
 class AccountLocalSrcImpl with AccountLocalSrc {
   final CredentialDao _credentialDao;
   final ProfileDao _profileDao;
+  final PregnancyDao _pregnancyDao;
   final ProfileTypeDao _profileTypeDao;
   final SharedPreferences _sharedPref;
+  final PregnancyLocalSrc _pregnancyLocalSrc;
 
   AccountLocalSrcImpl({
     required CredentialDao credentialDao,
     required ProfileDao profileDao,
+    required PregnancyDao pregnancyDao,
     required ProfileTypeDao profileTypeDao,
     required SharedPreferences sharedPref,
+    required PregnancyLocalSrc pregnancyLocalSrc,
   }):
     _credentialDao = credentialDao,
     _profileDao = profileDao,
+    _pregnancyDao = pregnancyDao,
     _profileTypeDao = profileTypeDao,
-    _sharedPref = sharedPref
+    _sharedPref = sharedPref,
+    _pregnancyLocalSrc = pregnancyLocalSrc
   ;
 
   @override
@@ -83,6 +93,7 @@ class AccountLocalSrcImpl with AccountLocalSrc {
     required Mother mother,
     required Father father,
     required List<Child> children,
+    //required List<DateTime> motherHpl,
     required BatchProfileIds ids,
   }) async {
     final motherProf = ProfileEntity(
@@ -125,6 +136,7 @@ class AccountLocalSrcImpl with AccountLocalSrc {
         father: fatherProf,
         children: childProfs,
         motherHpl: null, //TODO: Consider to save hpl via this local src.
+        pregnancies: [], //TODO: still unknown,
       ),
     );
   }
@@ -136,6 +148,7 @@ class AccountLocalSrcImpl with AccountLocalSrc {
     required SignUpData signup,
     required BatchProfileServer batchProfiles,
   }) async {
+    prind("saveBatchProfileRaw() batchProfiles= $batchProfiles");
     try {
       final credential = CredentialEntity(
         id: batchProfiles.mother.userId,
@@ -152,9 +165,23 @@ class AccountLocalSrcImpl with AccountLocalSrc {
 
       final credRowId = await _credentialDao.insert(credential);
       if(credRowId < 0) {
-        return Fail(msg: "Can't insert `credential` '$credential'");
+        final msg = "Can't insert `credential` '$credential'";
+        prinw(msg);
+        return Fail(msg: msg);
       }
       await _profileDao.insertAll(profiles);
+      await _pregnancyDao.insertAll(batchProfiles.pregnancies);
+
+      final currentLatestPreg = batchProfiles.pregnancies.lastOrNull;
+      if(currentLatestPreg != null) {
+        final res = await _pregnancyLocalSrc.saveCurrentPregnancyId(currentLatestPreg.id);
+        if(res is Fail<bool>) {
+          final msg = "Can't save latest pregnancy in local";
+          prinw(msg);
+          return Fail(msg: msg);
+        }
+      }
+
       return Success(true);
     } catch(e, stack) {
       final msg = "Error calling `saveBatchProfileRaw()`";
@@ -207,6 +234,20 @@ class AccountLocalSrcImpl with AccountLocalSrc {
     }
     return Success(profile);
   }
+  @override
+  Future<Result<List<ProfileEntity>>> getProfilesByPregnancies(List<PregnancyEntity> pregnancies) async {
+    final list = <ProfileEntity>[];
+    for(final preg in pregnancies) {
+      final prof = await _profileDao.getByServerId(preg.id);
+      if(prof == null) {
+        prinw("Can't get profile with `serverId` of '${preg.id}', then continue to next iteration");
+        continue;
+      }
+      list.add(prof);
+    }
+    return Success(list);
+  }
+
   @override
   Future<Result<String>> getMotherNik(String email) async {
     final niks = await _profileDao.getNiksByEmail(email);

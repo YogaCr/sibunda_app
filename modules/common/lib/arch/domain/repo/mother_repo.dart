@@ -21,11 +21,21 @@ mixin MotherRepo {
   //Future<Result<List<MotherHomeData>>> getMotherHomeData();
 
   Future<Result<bool>> saveMotherHpl(DateTime date);
-  Future<Result<DateTime>> getCurrentMotherHpl();
+  Future<Result<DateTime?>> getCurrentMotherHpl();
   Future<Result<bool>> deleteCurrentMotherHpl();
 
   Future<Result<bool>> saveMotherHpht(DateTime date);
-  Future<Result<DateTime>> getCurrentMotherHpht();
+  Future<Result<DateTime?>> getCurrentMotherHpht();
+
+  Future<Result<int?>> getCurrentPregnancyId();
+  Future<Result<bool>> saveCurrentPregnancyId(int pregnancyId);
+
+  Future<Result<List<PregnancyEntity>>> getPregnancyOfUser(String motherNik,);
+  Future<Result<bool>> savePregnancy({
+    required int id,
+    required String motherNik,
+    required DateTime hpl,
+  });
 }
 
 class MotherRepoImpl with MotherRepo {
@@ -73,14 +83,29 @@ class MotherRepoImpl with MotherRepo {
   @override
   Future<Result<bool>> saveMotherHpl(DateTime date) => _pregnancyLocalSrc.saveMotherHpl(date);
   @override
-  Future<Result<DateTime>> getCurrentMotherHpl() => _pregnancyLocalSrc.getCurrentMotherHpl();
+  Future<Result<DateTime?>> getCurrentMotherHpl() => _pregnancyLocalSrc.getCurrentMotherHpl();
   @override
   Future<Result<bool>> deleteCurrentMotherHpl() => _pregnancyLocalSrc.deleteCurrentMotherHpl();
 
   @override
   Future<Result<bool>> saveMotherHpht(DateTime date) => _pregnancyLocalSrc.saveMotherHpht(date);
   @override
-  Future<Result<DateTime>> getCurrentMotherHpht() => _pregnancyLocalSrc.getCurrentMotherHpht();
+  Future<Result<DateTime?>> getCurrentMotherHpht() => _pregnancyLocalSrc.getCurrentMotherHpht();
+
+  @override
+  Future<Result<int?>> getCurrentPregnancyId() => _pregnancyLocalSrc.getCurrentPregnancyId();
+  @override
+  Future<Result<bool>> saveCurrentPregnancyId(int pregnancyId) => _pregnancyLocalSrc.saveCurrentPregnancyId(pregnancyId);
+
+  @override
+  Future<Result<List<PregnancyEntity>>> getPregnancyOfUser(String motherNik,) =>
+      _pregnancyLocalSrc.getPregnancyOfUser(motherNik);
+  @override
+  Future<Result<bool>> savePregnancy({
+    required int id,
+    required String motherNik,
+    required DateTime hpl,
+  }) => _pregnancyLocalSrc.savePregnancy(id: id, motherNik: motherNik, hpl: hpl);
 }
 
 
@@ -101,12 +126,28 @@ class MotherRepoDummy with MotherRepo {
   @override
   Future<Result<bool>> saveMotherHpl(DateTime date) async => Success(true);
   @override
-  Future<Result<DateTime>> getCurrentMotherHpl() async => Success(dummyMotherHpl);
+  Future<Result<DateTime?>> getCurrentMotherHpl() async => Success(dummyMotherHpl);
   @override
   Future<Result<bool>> deleteCurrentMotherHpl() async => Success(true);
 
   @override
   Future<Result<bool>> saveMotherHpht(DateTime date) async => Success(true);
   @override
-  Future<Result<DateTime>> getCurrentMotherHpht() async => Success(dummyMotherHpht);
+  Future<Result<DateTime?>> getCurrentMotherHpht() async => Success(dummyMotherHpht);
+
+  @override
+  Future<Result<int?>> getCurrentPregnancyId() async => Success(1);
+  @override
+  Future<Result<bool>> saveCurrentPregnancyId(int pregnancyId) async => Success(true);
+
+  @override
+  Future<Result<List<PregnancyEntity>>> getPregnancyOfUser(String motherNik,) async => Success([
+    PregnancyEntity(id: 1, credentialId: 1, hpl: dummyMotherHpl)
+  ]);
+  @override
+  Future<Result<bool>> savePregnancy({
+    required int id,
+    required String motherNik,
+    required DateTime hpl,
+  }) async => Success(true);
 }

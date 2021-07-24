@@ -52,17 +52,17 @@ abstract class BabyApi {
   //============ Chart ==========
 
   @GET("/graph/bb-usia/{child_id}")
-  Future<List<BabyWeightChartData>> getWeightChart(@Path("child_id") int childId,);
+  Future<BabyWeightChartResponse> getWeightChart(@Path("child_id") int childId,);
   @GET("/graph/pb-usia/{child_id}")
-  Future<List<BabyLenChartData>> getLenChart(@Path("child_id") int childId,);
+  Future<BabyLenChartResponse> getLenChart(@Path("child_id") int childId,);
   @GET("/graph/bb-pb/{child_id}")
-  Future<List<BabyWeightToLenChartData>> getWeightToLenChart(@Path("child_id") int childId,);
+  Future<BabyWeightToLenChartResponse> getWeightToLenChart(@Path("child_id") int childId,);
   @GET("/graph/lingkar-kepala/{child_id}")
-  Future<List<BabyHeadCircumChartData>> getHeadCircumChart(@Path("child_id") int childId,);
+  Future<BabyHeadCircumChartResponse> getHeadCircumChart(@Path("child_id") int childId,);
   @GET("/graph/imt/{child_id}")
-  Future<List<BabyBmiChartData>> getBmiChart(@Path("child_id") int childId,);
+  Future<BabyBmiChartResponse> getBmiChart(@Path("child_id") int childId,);
   @GET("/graph/kms/{child_id}")
-  Future<List<BabyKmsChartData>> getKmsChart(@Path("child_id") int childId,);
+  Future<BabyKmsChartResponse> getKmsChart(@Path("child_id") int childId,);
   @GET("/graph/perkembangan/{child_id}")
-  Future<List<BabyDevChartData>> getDevChart(@Path("child_id") int childId,);
+  Future<BabyDevChartResponse> getDevChart(@Path("child_id") int childId,);
 }

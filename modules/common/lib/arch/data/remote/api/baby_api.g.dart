@@ -192,128 +192,107 @@ class _BabyApi implements BabyApi {
   }
 
   @override
-  Future<List<BabyWeightChartData>> getWeightChart(childId) async {
+  Future<BabyWeightChartResponse> getWeightChart(childId) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<List<dynamic>>(
-        _setStreamType<List<BabyWeightChartData>>(
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<BabyWeightChartResponse>(
             Options(method: 'GET', headers: <String, dynamic>{}, extra: _extra)
                 .compose(_dio.options, '/graph/bb-usia/$childId',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    var value = _result.data!
-        .map((dynamic i) =>
-            BabyWeightChartData.fromJson(i as Map<String, dynamic>))
-        .toList();
+    final value = BabyWeightChartResponse.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<List<BabyLenChartData>> getLenChart(childId) async {
+  Future<BabyLenChartResponse> getLenChart(childId) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<List<dynamic>>(
-        _setStreamType<List<BabyLenChartData>>(
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<BabyLenChartResponse>(
             Options(method: 'GET', headers: <String, dynamic>{}, extra: _extra)
                 .compose(_dio.options, '/graph/pb-usia/$childId',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    var value = _result.data!
-        .map(
-            (dynamic i) => BabyLenChartData.fromJson(i as Map<String, dynamic>))
-        .toList();
+    final value = BabyLenChartResponse.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<List<BabyWeightToLenChartData>> getWeightToLenChart(childId) async {
+  Future<BabyWeightToLenChartResponse> getWeightToLenChart(childId) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<List<dynamic>>(
-        _setStreamType<List<BabyWeightToLenChartData>>(
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<BabyWeightToLenChartResponse>(
             Options(method: 'GET', headers: <String, dynamic>{}, extra: _extra)
                 .compose(_dio.options, '/graph/bb-pb/$childId',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    var value = _result.data!
-        .map((dynamic i) =>
-            BabyWeightToLenChartData.fromJson(i as Map<String, dynamic>))
-        .toList();
+    final value = BabyWeightToLenChartResponse.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<List<BabyHeadCircumChartData>> getHeadCircumChart(childId) async {
+  Future<BabyHeadCircumChartResponse> getHeadCircumChart(childId) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<List<dynamic>>(
-        _setStreamType<List<BabyHeadCircumChartData>>(
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<BabyHeadCircumChartResponse>(
             Options(method: 'GET', headers: <String, dynamic>{}, extra: _extra)
                 .compose(_dio.options, '/graph/lingkar-kepala/$childId',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    var value = _result.data!
-        .map((dynamic i) =>
-            BabyHeadCircumChartData.fromJson(i as Map<String, dynamic>))
-        .toList();
+    final value = BabyHeadCircumChartResponse.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<List<BabyBmiChartData>> getBmiChart(childId) async {
+  Future<BabyBmiChartResponse> getBmiChart(childId) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<List<dynamic>>(
-        _setStreamType<List<BabyBmiChartData>>(
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<BabyBmiChartResponse>(
             Options(method: 'GET', headers: <String, dynamic>{}, extra: _extra)
                 .compose(_dio.options, '/graph/imt/$childId',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    var value = _result.data!
-        .map(
-            (dynamic i) => BabyBmiChartData.fromJson(i as Map<String, dynamic>))
-        .toList();
+    final value = BabyBmiChartResponse.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<List<BabyKmsChartData>> getKmsChart(childId) async {
+  Future<BabyKmsChartResponse> getKmsChart(childId) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<List<dynamic>>(
-        _setStreamType<List<BabyKmsChartData>>(
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<BabyKmsChartResponse>(
             Options(method: 'GET', headers: <String, dynamic>{}, extra: _extra)
                 .compose(_dio.options, '/graph/kms/$childId',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    var value = _result.data!
-        .map(
-            (dynamic i) => BabyKmsChartData.fromJson(i as Map<String, dynamic>))
-        .toList();
+    final value = BabyKmsChartResponse.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<List<BabyDevChartData>> getDevChart(childId) async {
+  Future<BabyDevChartResponse> getDevChart(childId) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<List<dynamic>>(
-        _setStreamType<List<BabyDevChartData>>(
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<BabyDevChartResponse>(
             Options(method: 'GET', headers: <String, dynamic>{}, extra: _extra)
                 .compose(_dio.options, '/graph/perkembangan/$childId',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    var value = _result.data!
-        .map(
-            (dynamic i) => BabyDevChartData.fromJson(i as Map<String, dynamic>))
-        .toList();
+    final value = BabyDevChartResponse.fromJson(_result.data!);
     return value;
   }
 
