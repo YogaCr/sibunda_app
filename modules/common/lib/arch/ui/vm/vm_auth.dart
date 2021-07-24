@@ -33,11 +33,17 @@ abstract class AsyncAuthVm extends AsyncVm with AuthVm {
       addOnFailTask(this, (key, failure) {
         final msg = "Error when call async task in VM `$runtimeType`, `key` = '$key', `failure` = '$failure'";
         prine(msg);
-        Fluttertoast.showToast(msg: msg, backgroundColor: red);
+        if(isAutoToastOnFail &&
+            (skippedKeyToToastOnFail == null || !skippedKeyToToastOnFail!.contains(key))
+        ) {
+          Fluttertoast.showToast(msg: msg, backgroundColor: red, toastLength: Toast.LENGTH_LONG);
+        }
         //showSnackBar(_context!, failure.toString());
       },);
     }
   }
+  bool isAutoToastOnFail = false;
+  Set<String>? skippedKeyToToastOnFail;
   @override
   BuildContext? _context;
   @override
@@ -67,11 +73,17 @@ abstract class FormAuthVm extends FormVm with AuthVm {
       addOnFailTask(this, (key, failure) {
         final msg = "Error when call async task in VM `$runtimeType`, `key` = '$key', `failure` = '$failure'";
         prine(msg);
-        Fluttertoast.showToast(msg: msg, backgroundColor: red);
+        if(isAutoToastOnFail &&
+            (skippedKeyToToastOnFail == null || !skippedKeyToToastOnFail!.contains(key))
+        ) {
+          Fluttertoast.showToast(msg: msg, backgroundColor: red, toastLength: Toast.LENGTH_LONG);
+        }
         //showSnackBar(_context!, failure.toString());
       },);
     }
   }
+  bool isAutoToastOnFail = false;
+  Set<String>? skippedKeyToToastOnFail;
   @override
   BuildContext? _context;
   @override
@@ -99,11 +111,17 @@ abstract class FormAuthVmGroup extends FormVmGroup with AuthVm {
       addOnFailTask(this, (key, failure) {
         final msg = "Error when call async task in VM `$runtimeType`, `key` = '$key', `failure` = '$failure'";
         prine(msg);
-        Fluttertoast.showToast(msg: msg, backgroundColor: red);
+        if(isAutoToastOnFail &&
+            (skippedKeyToToastOnFail == null || !skippedKeyToToastOnFail!.contains(key))
+        ) {
+          Fluttertoast.showToast(msg: msg, backgroundColor: red, toastLength: Toast.LENGTH_LONG);
+        }
         //showSnackBar(_context!, failure.toString());
       },);
     }
   }
+  bool isAutoToastOnFail = false;
+  Set<String>? skippedKeyToToastOnFail;
   @override
   BuildContext? _context;
   @override

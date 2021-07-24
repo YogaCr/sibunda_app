@@ -161,6 +161,11 @@ class HomePage extends StatelessWidget {
             ],
           ),
         ),
+        onTap: (index) {
+          if(index == 1) {
+            HomeRoutes.obj.goToModule(context, GlobalRoutes.profile,);
+          }
+        },
         items: [
           BottomNavigationBarItem(
             label: "Beranda",
@@ -168,10 +173,7 @@ class HomePage extends StatelessWidget {
           ),
           BottomNavigationBarItem(
             label: "Profil",
-            icon: InkResponse(
-              onTap: () => HomeRoutes.obj.goToModule(context, GlobalRoutes.profile,),
-              child: Icon(Icons.person),
-            ),
+            icon: Icon(Icons.person),
           ),
         ],
       ),
