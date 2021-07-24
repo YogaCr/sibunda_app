@@ -88,13 +88,15 @@ class _CovidHomeCheckHistoryList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SliverList(
-      delegate: SliverChildBuilderDelegate(
+      delegate: dataList.isNotEmpty ? SliverChildBuilderDelegate(
           (ctx, i) => Container(
             margin: EdgeInsets.symmetric(vertical: 5,),
             child: ItemCovidCheckHistory.fromData(dataList[i]),
           ),
         childCount: dataList.length,
-      ),
+      ) : SliverChildListDelegate.fixed([
+        defaultNoData(),
+      ]),
     );
   }
 }

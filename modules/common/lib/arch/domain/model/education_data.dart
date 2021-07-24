@@ -28,11 +28,10 @@ class Tips {
         : dummyImg,
   );
  */
-
   factory Tips.fromTipsResponse(TipsDataResponse response) => Tips(
     id: response.id,
     title: response.desc,
-    kind: "", //For now, it's the alternative, cuz serve doesn't serve it.
+    kind: response.tips_category.name,
     img: response.img_url != null
         ? ImgData(link: response.img_url!, src: ImgSrc.network,)
         : dummyImg,
