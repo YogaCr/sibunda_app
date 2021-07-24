@@ -666,7 +666,10 @@ class ImgPickerField extends SibFormField {
                         child: Padding(
                           padding: EdgeInsets.all(50),
                           child: InteractiveViewer(
-                            child: SibImages.resolve(data,),
+                            child: SibImages.resolve(
+                              data,
+                              fit: BoxFit.contain,
+                            ),
                           ),
                         ),
                       ),
