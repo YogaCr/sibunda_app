@@ -33,7 +33,7 @@ class ImmunizationListGroupView extends StatelessWidget {
   final List<UiImmunizationListGroup> dataList;
   final void Function(int groupIndex, int childIndex)? onBtnClick;
 
-  ImmunizationListGroupView(this.dataList,{
+  ImmunizationListGroupView(this.dataList, {
     this.onBtnClick,
   });
 

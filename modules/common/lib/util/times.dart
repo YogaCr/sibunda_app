@@ -34,3 +34,13 @@ String syncFormatTime(DateTime date, { String localeName = "id_ID" }) {
     return DateFormat.yMMMMd().format(date);
   }
 }
+
+
+String? trySyncFormatTimeFromStr(String datestr, { String localeName = "id_ID" }) {
+  try {
+    return syncFormatTime(parseDate(datestr), localeName: localeName);
+  } catch(e, stack) {
+    prine("Can't convert `dateStr` of '$datestr' to DateTime; e= $e");
+    prine(stack);
+  }
+}

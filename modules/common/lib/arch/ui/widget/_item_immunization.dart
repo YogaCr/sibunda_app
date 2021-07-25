@@ -6,6 +6,7 @@ import 'package:common/arch/ui/widget/_item_template.dart';
 import 'package:common/config/_config.dart';
 import 'package:common/res/theme/_theme.dart';
 import 'package:common/util/assets.dart';
+import 'package:common/util/times.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -73,9 +74,12 @@ class ItemImmunizationFill extends StatelessWidget {
       }
       descRight = "No. Batch: ${detail.batchNo ?? "-"}";
     }
+
     return ItemImmunizationFill(
       immunizationName: data.core.name,
-      date: data.core.date,
+      date: data.core.date != null
+          ? trySyncFormatTimeFromStr(data.core.date!) ?? data.core.date!
+          : null,
       descLeft: descLeft,
       descRight: descRight,
       onBtnClick: onBtnClick,

@@ -555,9 +555,33 @@ final motherHomeData = List<MotherHomeBabyData>.generate(3, (i) => MotherHomeBab
 
 
 final motherPregEvalGraphMenuList = <MotherChartMenuData>[
-  MotherChartMenuData(title: "Grafik Tinggi Fundus Uterus", img: dummyImg, type: MotherChartType.tfu),
-  MotherChartMenuData(title: "Grafik Denyut Jantung Janin", img: dummyImg, type: MotherChartType.djj),
-  MotherChartMenuData(title: "Grafik Denyut Nadi Bunda", img: dummyImg, type: MotherChartType.map),
+  MotherChartMenuData(
+    title: "Grafik Tinggi Fundus Uterus",
+    type: MotherChartType.tfu,
+    img: ImgData(
+      link: "kehamilanku_tfu.png",
+      package: GlobalRoutes.common,
+      src: ImgSrc.asset,
+    ),
+  ),
+  MotherChartMenuData(
+    title: "Grafik Denyut Jantung Janin",
+    type: MotherChartType.djj,
+    img: ImgData(
+      link: "kehamilanku_djj.png",
+      package: GlobalRoutes.common,
+      src: ImgSrc.asset,
+    ),
+  ),
+  MotherChartMenuData(
+    title: "Grafik Denyut Nadi Bunda",
+    type: MotherChartType.map,
+    img: ImgData(
+      link: "kehamilanku_map.png",
+      package: GlobalRoutes.common,
+      src: ImgSrc.asset,
+    ),
+  ),
 ];
 
 final motherWeightGraphMenuList = <MotherChartMenuData>[

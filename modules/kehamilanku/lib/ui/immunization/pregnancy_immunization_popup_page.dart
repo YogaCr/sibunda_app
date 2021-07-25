@@ -27,7 +27,9 @@ class PregnancyImmunizationPopupPage extends StatelessWidget {
         },
         onSubmit: (ctx, success) {
           if(success) {
-            KehamilankuRoutes.immunizationPopup.backPage(ctx, syncFormatTime(vm.date.value!));
+            //final dateStr = syncFormatTime(vm.date.value!);
+            final dateStr = vm.date.value!.toString();
+            KehamilankuRoutes.immunizationPopup.backPage(ctx, dateStr);
             //showSnackBar(ctx, "Berhasil mengonfirmasi");
           } else {
             showSnackBar(ctx, "Terjadi kesalahan saat mengonfirmasi");
