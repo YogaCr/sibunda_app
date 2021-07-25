@@ -62,12 +62,16 @@ class GetStartedFormMainPage extends StatelessWidget {
                 interceptor: interceptor,
               ),
               DoMotherHavePregnancyPage(pageControll: pageControl,), //3
-              MotherHplPage(pageControll: pageControl,),
+              MotherHplPage(
+                pageControll: pageControl,
+                onlySinglePage: false,
+              ),
               ChildrenCountPage(pageControll: pageControl,), //5
               ChildFormPage(
                 pageControll: pageControl,
                 nestedPageControll: nestedPageControl,
                 interceptor: interceptor,
+                onlySinglePage: false,
                 //childCount: vm.childrenCountVm.childrenCount,
               ),
               NewAccountConfirmPage(), //7

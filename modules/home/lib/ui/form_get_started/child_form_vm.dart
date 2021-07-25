@@ -51,8 +51,13 @@ class ChildFormVm extends FormAuthVmGroup {
           }
         }
       }
-      //prind("_currentPage.observe map= $map");
-      resetResponses();
+      prind("_currentPage.observe map= $map");
+      try {
+        resetResponses();
+      } catch(e, stack) {
+        prine("ChildFormVm rest response error; e= $e");
+        prine(stack);
+      }
       if(map != null) {
         patchResponse([map]);
         //return;

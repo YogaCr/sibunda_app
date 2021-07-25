@@ -2,6 +2,7 @@ import 'package:common/arch/ui/widget/_basic_widget.dart';
 import 'package:common/config/_config.dart';
 import 'package:common/res/string/_string.dart';
 import 'package:common/res/theme/_theme.dart';
+import 'package:common/util/navigations.dart';
 import 'package:common/util/ui.dart';
 import 'package:core/ui/base/live_data_observer.dart';
 import 'package:core/ui/base/view_model.dart';
@@ -12,7 +13,11 @@ import 'package:home/ui/form_get_started/mother_hpl_vm.dart';
 
 class MotherHplPage extends StatelessWidget {
   final PageController? pageControll;
-  MotherHplPage({ this.pageControll });
+  final bool onlySinglePage;
+  MotherHplPage({
+    this.pageControll,
+    this.onlySinglePage = true,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -109,12 +114,16 @@ class MotherHplPage extends StatelessWidget {
   }
 
   void _moveToNext(BuildContext context) {
-    pageControll == null
-        ? HomeRoutes.childrenCountPage.goToPage(context)
-        : pageControll!.animateToPage(
-          pageControll!.page!.toInt() +1,
-          duration: Duration(milliseconds: 500),
-          curve: Curves.easeOut,
-        );
+    if(!onlySinglePage) {
+      pageControll == null
+          ? HomeRoutes.childrenCountPage.goToPage(context)
+          : pageControll!.animateToPage(
+        pageControll!.page!.toInt() +1,
+        duration: Duration(milliseconds: 500),
+        curve: Curves.easeOut,
+      );
+    } else {
+      backPage(context, result: true);
+    }
   }
 }

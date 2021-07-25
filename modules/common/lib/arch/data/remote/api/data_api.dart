@@ -18,8 +18,8 @@ abstract class DataApi {
   Future<List<CityResponse>> getCity();
   @GET("/bio")
   Future<BioResponse> getBio();
-  @GET("/identitas-anak")
+  @POST("/identitas-anak")
   Future<BabyAddResponse> createChild(@Body() BabyAddBody body);
-  @GET("/identitas-anak")
+  @POST("/identitas-anak")
   Future<BabyAddResponse> createFetus(@Body() FetusAddBody body);
 }

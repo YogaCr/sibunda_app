@@ -71,6 +71,45 @@ class KehamilankuHomePage extends StatelessWidget {
           }
           //showSnackBar(context, "Nama= ${baby.name} isBorn= $isBorn");
         },
+        onAddItemClick: (isBorn) async {
+          prind("Kehamilanku baby overlay add isBorn= $isBorn");
+          if(isBorn) {
+            //final oldBabyCount = vm.bornBabyList.value?.length;
+            final isSaved = await KehamilankuRoutes.obj.goToExternalRouteBuilder(
+              context,
+              GlobalRoutes.home_childFormPage,
+              builderArgs: { Const.KEY_CTX: context, },
+            );
+            if(isSaved == true) {
+              vm..bornBabyList.observeOnce((babyList) {
+                if(babyList?.isNotEmpty == true) {
+                  final babyCred = ProfileCredential.fromBabyOverlay(babyList!.last);
+                  KehamilankuRoutes.obj.goToModule(
+                    context, GlobalRoutes.bayiku,
+                    replaceCurrent: true,
+                    args: {Const.KEY_DATA: babyCred},
+                  );
+                }
+              }, immediatelyGet: false)
+                ..getBabyOverlay(forceLoad: true);
+            }
+          } else {
+            final isSaved = await KehamilankuRoutes.obj.goToExternalRouteBuilder(
+              context,
+              GlobalRoutes.home_motherHplPage,
+              builderArgs: { Const.KEY_CTX: context, },
+            );
+            if(isSaved == true) {
+              vm..unbornBabyList.observeOnce((babyList) {
+                if(babyList?.isNotEmpty == true) {
+                  final babyCred = ProfileCredential.fromBabyOverlay(babyList!.last);
+                  vm.init(profile: babyCred);
+                }
+              }, immediatelyGet: false)
+                ..getBabyOverlay(forceLoad: true);
+            }
+          }
+        },
       ),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 15),

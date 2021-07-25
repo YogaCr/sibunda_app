@@ -24,12 +24,14 @@ class ChildFormPage extends StatelessWidget {
   final FormGroupInterceptor? interceptor;
   //final LiveData<int>? childCount;
   final int defaultChildCount = 1;
+  final bool onlySinglePage;
 
   ChildFormPage({
     this.pageControll,
     this.nestedPageControll,
     //this.childCount,
     this.interceptor,
+    this.onlySinglePage = true,
   });
 
   @override
@@ -51,14 +53,18 @@ class ChildFormPage extends StatelessWidget {
  */
       ..onSaveBatch.observeForever((canProceed) {
         if(canProceed == true) {
-          if(pageControll != null) {
-            pageControll!.animateToPage(
-              pageControll!.page!.toInt() +1,
-              duration: Duration(milliseconds: 500),
-              curve: Curves.easeOut,
-            );
+          if(!onlySinglePage) {
+            if(pageControll != null) {
+              pageControll!.animateToPage(
+                pageControll!.page!.toInt() +1,
+                duration: Duration(milliseconds: 500),
+                curve: Curves.easeOut,
+              );
+            } else {
+              HomeRoutes.newAccountConfirmPage.goToPage(context);
+            }
           } else {
-            HomeRoutes.newAccountConfirmPage.goToPage(context);
+            backPage(context, result: true);
           }
           //nestedPageControll?.value = null;
         }

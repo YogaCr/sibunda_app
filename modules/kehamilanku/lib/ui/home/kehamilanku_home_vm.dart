@@ -109,7 +109,11 @@ class KehamilankuHomeVm extends AsyncAuthVm {
     _foodRecomList.value = null;
     getAgeOverview(forceLoad: true,);
     getTrimesterList(forceLoad: true,);
-    getFoodRecomList(forceLoad: true);
+    _ageOverview.observeOnce((data) {
+      if(data != null) { //This way, pregnancy week is initialized first.
+        getFoodRecomList(forceLoad: true);
+      }
+    }, immediatelyGet: false);
   }
 
   @protected

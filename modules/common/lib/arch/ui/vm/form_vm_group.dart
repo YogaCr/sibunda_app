@@ -274,9 +274,10 @@ abstract class FormVmGroup extends AsyncVm with FormVmGroupMixin {
           }, tag: "FormVmGroup ${formData.key}",);
           final responseData = MutableLiveData();
           responseData.observe(this, (response) async {
+            prind("responseData.observe() AWAL _isReseting= $_isReseting");
             if(!_isReseting) {
               final isValid = await validateField(i2, formData.key, response);
-              //prind("responseData.observe() validateField() formData.key = ${formData.key} isValid = $isValid");
+              prind("responseData.observe() validateField() formData.key = ${formData.key} isValid = $isValid");
               isValidData.value = isValid;
             }
 /*
@@ -317,29 +318,36 @@ abstract class FormVmGroup extends AsyncVm with FormVmGroupMixin {
   @protected
   void resetResponses({ Set<String>? skippedKeys }) {
     _isReseting = true;
-    if(skippedKeys?.isNotEmpty != true) { //null or empty
-      //prind("resetResponses() skippedKeys= $skippedKeys _responseGroupList = $_responseGroupList");
-      for(final group in _responseGroupList) {
-        for(final e in group.values) {
-          e.response.value = null;
-          e.isValid.value = null;
-        }
-      }
-    } else {
-      for(final group in _responseGroupList) {
-        for(final e in group.entries) {
-          if(skippedKeys!.contains(e.key)) {
-            skippedKeys.remove(e.key);
-            continue;
+    //prind("FormVmGroup.resetResponses() AWAL");
+    try {
+      if(skippedKeys?.isNotEmpty != true) { //null or empty
+        //prind("resetResponses() skippedKeys= $skippedKeys _responseGroupList = $_responseGroupList");
+        for(final group in _responseGroupList) {
+          for(final e in group.values) {
+            e.response.value = null;
+            e.isValid.value = null;
           }
-          e.value.response.value = null;
-          e.value.isValid.value = null;
+        }
+      } else {
+        for(final group in _responseGroupList) {
+          for(final e in group.entries) {
+            if(skippedKeys!.contains(e.key)) {
+              skippedKeys.remove(e.key);
+              continue;
+            }
+            e.value.response.value = null;
+            e.value.isValid.value = null;
+          }
         }
       }
+    } catch(e, stack) {
+      prinw("An error occured when calling `resetResponses()`; e= $e");
+      prinw(stack);
     }
     _canProceed.value = null;
     _onSubmit.value = null;
     _isReseting = false;
+    //prind("FormVmGroup.resetResponses() AKHIR _isReseting= $_isReseting");
   }
   @protected
   void setResponse(int group, String key, response) {
