@@ -45,7 +45,8 @@ class IsLoggedInImpl with IsLoggedIn {
       }
       return Success(session != null);
     } else {
-      return Fail();
+      prine("Failure during `IsLoggedInImpl` call; failure = $res");
+      return (res as Fail<SessionData?>).copy();
     }
   }
 }
@@ -65,9 +66,11 @@ class InitConfigImpl with InitConfig {
         VarDi.motherNik.value = nik;
         return Success(true);
       } else {
+        prine("Failure during `InitConfigImpl` call; res = $res");
         msg = "Can't get local NIK with email of '$email'";
       }
     } else {
+      prine("Failure during `InitConfigImpl` call; emailRes = $emailRes");
       msg = "Can't get local email";
     }
     return Fail(msg: msg);

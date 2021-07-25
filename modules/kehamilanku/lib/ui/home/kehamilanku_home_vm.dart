@@ -101,7 +101,8 @@ class KehamilankuHomeVm extends AsyncAuthVm {
   }
   @protected
   void getFoodRecomList([bool forceLoad = false]) {
-    if(!forceLoad && _trimesterList.value != null) return;
+    prind("getFoodRecomList() forceLoad = $forceLoad _foodRecomList.value = ${_foodRecomList.value}");
+    if(!forceLoad && _foodRecomList.value != null) return;
     startJob(getFoodRecomListKey, (isActive) async {
       final week = VarDi.pregnancyWeek.getOrElse();
       final motherNik = VarDi.motherNik.getOrElse();

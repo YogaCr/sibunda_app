@@ -48,12 +48,16 @@ class SplashVm extends AsyncVm {
   }
   Future<void> checkLogIn() {
     return startJob(checkLogInKey, (isActive) async {
+      prind("SplashVm.checkLogIn() startJob");
       final res = await _isLoggedInUseCase();
+      prind("SplashVm.checkLogIn() res = $res");
       if(res is Success<bool>) {
         final isLoggedIn = res.data;
         _isLoggedIn.value = isLoggedIn;
 
+        prind("SplashVm.checkLogIn() _initConfig AWAL");
         final res2 = await _initConfig();
+        prind("SplashVm.checkLogIn() _initConfig res2 = $res2");
         if(res2 is Success<bool>) {
           _onInitConfig.value = res2.data;
         } else {
