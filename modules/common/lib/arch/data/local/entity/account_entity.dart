@@ -53,6 +53,7 @@ class ProfileTypeEntities extends Table {
 class ProfileEntities extends Table {
   IntColumn get userId => integer().named("user_id").customConstraint("REFERENCES credentials(id)")();
   IntColumn get type => integer().customConstraint("REFERENCES profile_types(id)")();
+  /// It means that someone whose fetus phase is recorded here.
   IntColumn get pregnancyId => integer().nullable().named("pregnancy_id").customConstraint("REFERENCES pregnancies(id)")();
   IntColumn get serverId => integer().named("server_id")(); // saves id of user from server.
   TextColumn get name => text()();

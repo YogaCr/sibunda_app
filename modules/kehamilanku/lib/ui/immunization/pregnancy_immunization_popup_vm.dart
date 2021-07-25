@@ -1,5 +1,6 @@
 import 'package:common/arch/domain/model/form_data.dart';
 import 'package:common/arch/domain/model/immunization.dart';
+import 'package:common/arch/domain/model/profile_data.dart';
 import 'package:common/arch/domain/usecase/mother_usecase.dart';
 import 'package:common/arch/ui/model/form_data.dart';
 import 'package:common/arch/ui/vm/vm_auth.dart';
@@ -14,6 +15,7 @@ class PregnancyImmunizationPopupVm extends FormAuthVmGroup {
 
   PregnancyImmunizationPopupVm({
     BuildContext? context,
+    required this.pregnancyId,
     required this.immunization,
     required GetPregnancyImmunizationConfirmForm getPregnancyImmunizationConfirmForm,
     required ConfirmMotherImmunization confirmMotherImmunization,
@@ -23,6 +25,7 @@ class PregnancyImmunizationPopupVm extends FormAuthVmGroup {
     _getPregnancyImmunizationConfirmForm = getPregnancyImmunizationConfirmForm,
     _confirmMotherImmunization = confirmMotherImmunization, super(context: context)
   ;
+  final ProfileCredential pregnancyId;
 
   final GetMotherNik _getMotherNik;
   final GetPregnancyImmunizationConfirmForm _getPregnancyImmunizationConfirmForm;

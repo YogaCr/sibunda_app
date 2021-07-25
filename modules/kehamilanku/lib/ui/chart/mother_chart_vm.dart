@@ -1,5 +1,6 @@
 import 'package:common/arch/domain/model/chart_data_mother.dart';
 import 'package:common/arch/domain/model/form_warning_status.dart';
+import 'package:common/arch/domain/model/profile_data.dart';
 import 'package:common/arch/domain/usecase/mother_usecase.dart';
 import 'package:common/arch/ui/vm/vm_auth.dart';
 import 'package:core/domain/model/result.dart';
@@ -15,8 +16,9 @@ class MotherChartVm extends AsyncAuthVm {
 
   MotherChartVm({
     BuildContext? context,
-    required GetMotherNik getMotherNik,
-    required GetCurrentMotherPregnancyId getCurrentMotherPregnancyId,
+    //required GetMotherNik getMotherNik,
+    //required GetCurrentMotherPregnancyId getCurrentMotherPregnancyId,
+    required this.pregnancyId,
     required GetMotherTfuChart getMotherTfuChart,
     required GetMotherDjjChart getMotherDjjChart,
     required GetMotherBmiChart getMotherBmiChart,
@@ -26,8 +28,8 @@ class MotherChartVm extends AsyncAuthVm {
     required GetMotherBmiChartWarning getMotherBmiChartWarning,
     required GetMotherMapChartWarning getMotherMapChartWarning,
   }):
-    _getMotherNik = getMotherNik,
-    _getCurrentMotherPregnancyId = getCurrentMotherPregnancyId,
+    //_getMotherNik = getMotherNik,
+    //_getCurrentMotherPregnancyId = getCurrentMotherPregnancyId,
     _getMotherBmiChart = getMotherBmiChart,
     _getMotherDjjChart = getMotherDjjChart,
     _getMotherMapChart = getMotherMapChart,
@@ -37,8 +39,10 @@ class MotherChartVm extends AsyncAuthVm {
     _getMotherBmiChartWarning = getMotherBmiChartWarning,
     _getMotherMapChartWarning = getMotherMapChartWarning, super(context: context)
   ;
-  final GetMotherNik _getMotherNik;
-  final GetCurrentMotherPregnancyId _getCurrentMotherPregnancyId;
+  final ProfileCredential pregnancyId;
+
+  //final GetMotherNik _getMotherNik;
+  //final GetCurrentMotherPregnancyId _getCurrentMotherPregnancyId;
   final GetMotherTfuChart _getMotherTfuChart;
   final GetMotherDjjChart _getMotherDjjChart;
   final GetMotherBmiChart _getMotherBmiChart;
@@ -65,64 +69,68 @@ class MotherChartVm extends AsyncAuthVm {
     if(!forceLoad && type == _currentType) return;
     //prind("MotherChartVm res2 = $res2 \n res3 = $res3");
     startJob(loadChartKey, (isActive) async {
-      final res1 = await _getCurrentMotherPregnancyId();
+      /*
+      //final res1 = await _getCurrentMotherPregnancyId();
       if(res1 is Success<int?>) {
-        final pregnancyId = res1.data;
-        if(pregnancyId == null) {
-          throw "Currently mother is not pregnant (pregnancyId == null)";
-        }
-        Result res2;
-
-        Result<List<FormWarningStatus>> res3;
-
-        switch(type) {
-          case MotherChartType.tfu: res2 = await _getMotherTfuChart(pregnancyId);
-            res3 = await _getMotherTfuChartWarning(pregnancyId);
-            break;
-          case MotherChartType.djj: res2 = await _getMotherDjjChart(pregnancyId);
-            res3 = await _getMotherDjjChartWarning(pregnancyId);
-            break;
-          case MotherChartType.map: res2 = await _getMotherMapChart(pregnancyId);
-            res3 = await _getMotherMapChartWarning(pregnancyId);
-            break;
-          case MotherChartType.bmi: res2 = await _getMotherBmiChart(pregnancyId);
-            res3 = await _getMotherBmiChartWarning(pregnancyId);
-            break;
-        }
-
-        prind("MotherChartVm res2 = $res2 \n res3 = $res3");
-
-        if(res3 is! Success<List<FormWarningStatus>>) {
-          return res3 as Fail; //TODO: Cek apakah operator is! itu benar
-        }
-
-        if(res2 is Success) {
-          //final List rawDataList = res2.data;
-          List<LineSeries<dynamic, num>> seriesList;
-
-          switch(type) {
-            case MotherChartType.tfu: seriesList = MotherChartLineSeries.getMotherTfuSeries(res2.data);
-            break;
-            case MotherChartType.djj: seriesList = MotherChartLineSeries.getMotherDjjSeries(res2.data);
-            break;
-            case MotherChartType.map: seriesList = MotherChartLineSeries.getMotherMapSeries(res2.data);
-            break;
-            case MotherChartType.bmi: seriesList = MotherChartLineSeries.getMotherBmiSeries(res2.data);
-            break;
-          }
-          _seriesList.value = seriesList;
-          _warningList.value = res3.data;
-          _currentType = type;
-
-          prind("MotherChartVm res3.data = ${res3.data}");
-
-        } else {
-          return res2 as Fail;
-        }
-
       } else {
         return res1 as Fail;
       }
+       */
+      final pregnancyId = this.pregnancyId.id;
+      /*
+      if(pregnancyId == null) {
+        throw "Currently mother is not pregnant (pregnancyId == null)";
+      }
+       */
+      Result res2;
+
+      Result<List<FormWarningStatus>> res3;
+
+      switch(type) {
+        case MotherChartType.tfu: res2 = await _getMotherTfuChart(pregnancyId);
+        res3 = await _getMotherTfuChartWarning(pregnancyId);
+        break;
+        case MotherChartType.djj: res2 = await _getMotherDjjChart(pregnancyId);
+        res3 = await _getMotherDjjChartWarning(pregnancyId);
+        break;
+        case MotherChartType.map: res2 = await _getMotherMapChart(pregnancyId);
+        res3 = await _getMotherMapChartWarning(pregnancyId);
+        break;
+        case MotherChartType.bmi: res2 = await _getMotherBmiChart(pregnancyId);
+        res3 = await _getMotherBmiChartWarning(pregnancyId);
+        break;
+      }
+
+      prind("MotherChartVm res2 = $res2 \n res3 = $res3");
+
+      if(res3 is! Success<List<FormWarningStatus>>) {
+        return res3 as Fail; //TODO: Cek apakah operator is! itu benar
+      }
+
+      if(res2 is Success) {
+        //final List rawDataList = res2.data;
+        List<LineSeries<dynamic, num>> seriesList;
+
+        switch(type) {
+          case MotherChartType.tfu: seriesList = MotherChartLineSeries.getMotherTfuSeries(res2.data);
+          break;
+          case MotherChartType.djj: seriesList = MotherChartLineSeries.getMotherDjjSeries(res2.data);
+          break;
+          case MotherChartType.map: seriesList = MotherChartLineSeries.getMotherMapSeries(res2.data);
+          break;
+          case MotherChartType.bmi: seriesList = MotherChartLineSeries.getMotherBmiSeries(res2.data);
+          break;
+        }
+        _seriesList.value = seriesList;
+        _warningList.value = res3.data;
+        _currentType = type;
+
+        prind("MotherChartVm res3.data = ${res3.data}");
+
+      } else {
+        return res2 as Fail;
+      }
+
     });
   }
 }

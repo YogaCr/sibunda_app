@@ -12,10 +12,12 @@ import 'package:common/arch/ui/widget/_items_kehamilanku.dart';
 import 'package:common/config/_config.dart';
 import 'package:common/res/string/_string.dart';
 import 'package:common/res/theme/_theme.dart';
+import 'package:common/util/navigations.dart';
 import 'package:common/util/ui.dart';
 import 'package:common/value/const_values.dart';
 import 'package:core/ui/base/async_view_model_observer.dart';
 import 'package:core/ui/base/live_data.dart';
+import 'package:core/ui/base/live_data_observer.dart';
 import 'package:core/ui/base/view_model.dart';
 import 'package:core/util/_consoles.dart';
 import 'package:flutter/cupertino.dart';
@@ -33,9 +35,17 @@ class KehamilankuHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     prind("KehamilankuHomePage build()");
+
+    final selectedPreg = getArgs<ProfileCredential>(context, Const.KEY_DATA);
+
     final vm = ViewModelProvider.of<KehamilankuHomeVm>(context)
-      ..init();
+      ..getBabyOverlay();
+      //..init();
     prind("KehamilankuHomePage build() 2");
+
+    if(selectedPreg != null) {
+      vm.init(profile: selectedPreg);
+    }
 
     return TopBarTitleAndBackFrame(
       title: Strings.my_pregnancy,
@@ -86,13 +96,22 @@ class KehamilankuHomePage extends StatelessWidget {
                 ),
               ]),
             ),
+            MultiLiveDataObserver<dynamic>(
+              liveDataList: [vm.trimesterList, vm.selectedProfile],
+              builder: (ctx, dataList) => !dataList.any((e) => e == null)
+                  ? _MotherTrimesterList(
+                    dataList: dataList[0],
+                    selectedPregnancy: dataList[1],
+                  ): SliverToBoxAdapter(child: defaultLoading(),),
+            ),
+            /*
             AsyncVmObserver<KehamilankuHomeVm, List<MotherTrimester>>(
               vm: vm,
               liveDataGetter: (vm2) => vm2.trimesterList,
               builder: (ctx, data) => data != null
-                  ? _MotherTrimesterList(data)
-                  : SliverToBoxAdapter(child: defaultLoading(),),
+                  ,
             ),
+             */
             /*
               buildReactiveBloc<
                   PregnancyHomeBloc, PregnancyHomeState,
@@ -117,9 +136,15 @@ class KehamilankuHomePage extends StatelessWidget {
               delegate: SliverChildListDelegate.fixed([
                 Container(
                   margin: EdgeInsets.only(top: 5),
-                  child: ItemHomeImmunization.fromData(
-                    motherHomeImmunization_ui,
-                    onBtnClick: () => KehamilankuRoutes.immunizationPage.goToPage(context),
+                  child: LiveDataObserver<ProfileCredential>(
+                    liveData: vm.selectedProfile,
+                    builder: (ctx, data) => ItemHomeImmunization.fromData(
+                      motherHomeImmunization_ui,
+                      onBtnClick: data != null ? () => KehamilankuRoutes.immunizationPage.go(
+                        context: context,
+                        pregnancyCred: data,
+                      ) : null,
+                    ),
                   ),
                 ),
                 Container(
@@ -132,25 +157,35 @@ class KehamilankuHomePage extends StatelessWidget {
                 ),
 
                 ///*
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Flexible(
-                      flex: 10,
-                      child: ItemHomeGraphMenu.fromData(
-                        pregnancyHomeGraphMenu[0],
-                        onClick: () => KehamilankuRoutes.pregEvalChartMenuPage.goToPage(context),
+                LiveDataObserver<ProfileCredential>(
+                  liveData: vm.selectedProfile,
+                  builder: (ctx, data) => data != null ? Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Flexible(
+                        flex: 10,
+                        child: ItemHomeGraphMenu.fromData(
+                          pregnancyHomeGraphMenu[0],
+                          onClick: () => KehamilankuRoutes.pregEvalChartMenuPage.go(
+                            context: ctx,
+                            pregnancyCred: data,
+                          ),
+                        ),
                       ),
-                    ),
-                    Spacer(flex: 1,),
-                    Flexible(
-                      flex: 10,
-                      child: ItemHomeGraphMenu.fromData(
-                        pregnancyHomeGraphMenu[1],
-                        onClick: () => KehamilankuRoutes.chartPage.go(context, MotherChartType.bmi),
+                      Spacer(flex: 1,),
+                      Flexible(
+                        flex: 10,
+                        child: ItemHomeGraphMenu.fromData(
+                          pregnancyHomeGraphMenu[1],
+                          onClick: () => KehamilankuRoutes.chartPage.go(
+                            context: ctx,
+                            type: MotherChartType.bmi,
+                            pregnancyCred: data,
+                          ),
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ) : defaultLoading(),
                 ),
 // */
                 Container(
@@ -211,8 +246,12 @@ class KehamilankuHomePage extends StatelessWidget {
 
 class _MotherTrimesterList extends StatelessWidget {
   final List<MotherTrimester> dataList;
+  final ProfileCredential selectedPregnancy;
 
-  _MotherTrimesterList(this.dataList);
+  _MotherTrimesterList({
+    required this.dataList,
+    required this.selectedPregnancy,
+  });
   //_MotherTrimesterList.def(): dataList = dummyTrimesterList;
 
   @override
@@ -224,7 +263,11 @@ class _MotherTrimesterList extends StatelessWidget {
           margin: EdgeInsets.symmetric(vertical: 5),
           child: ItemMotherTrimester.fromData(
             data,
-            onClick: () => KehamilankuRoutes.pregnancyCheckPage.go(context, data,),
+            onClick: () => KehamilankuRoutes.pregnancyCheckPage.go(
+              context: c,
+              data: data,
+              pregnancyCred: selectedPregnancy,
+            ),
           ),
         );
       },

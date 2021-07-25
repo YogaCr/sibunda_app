@@ -53,7 +53,7 @@ class BabyHomeVm extends AsyncAuthVm {
             throw "Something error. `ageOverview.value` is not null, but there's no selected baby";
           }
           selectedBabyData = _bornBabyList.value![bornIndex];
-          selectedIndex.value = bornIndex +1;
+          selectedIndex.value = bornIndex +(_unbornBabyList.value?.length ?? 0);
         }
         prind("BabyHomeVm selectedIndex= $selectedIndex");
       }
@@ -78,7 +78,7 @@ class BabyHomeVm extends AsyncAuthVm {
 
   //String get babyNik => dummyProfileChild.nik; //TODO: babyNik: tuk smtr ini kyk gini.
 
-  final MutableLiveData<int> selectedIndex = MutableLiveData(1);
+  final MutableLiveData<int> selectedIndex = MutableLiveData();
   BabyOverlayData? selectedBabyData;
 
   @override

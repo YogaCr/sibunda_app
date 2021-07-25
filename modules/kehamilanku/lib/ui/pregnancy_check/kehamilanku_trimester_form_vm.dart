@@ -5,6 +5,7 @@ import 'package:common/arch/domain/model/form_data.dart';
 import 'package:common/arch/domain/model/form_warning_status.dart';
 import 'package:common/arch/domain/model/img_data.dart';
 import 'package:common/arch/domain/model/kehamilanku_data.dart';
+import 'package:common/arch/domain/model/profile_data.dart';
 import 'package:common/arch/domain/usecase/mother_usecase.dart';
 import 'package:common/arch/ui/model/form_data.dart';
 import 'package:common/arch/ui/vm/vm_auth.dart';
@@ -26,7 +27,8 @@ class KehamilankuCheckFormVm extends FormAuthVmGroup {
 
   KehamilankuCheckFormVm({
     BuildContext? context,
-    required GetMotherNik getMotherNik,
+    required this.pregnancyId,
+    //required GetMotherNik getMotherNik,
     required GetCurrentMotherHpl getCurrentMotherHpl,
     required GetCurrentMotherHpht getCurrentMotherHpht,
     required GetPregnancyCheckUpId getPregnancyCheckUpId,
@@ -37,7 +39,7 @@ class KehamilankuCheckFormVm extends FormAuthVmGroup {
     required GetPregnancyBabySize getPregnancyBabySize,
     required GetPregnancyCheckForm getPregnancyCheckForm,
   }):
-    _getMotherNik = getMotherNik,
+    //_getMotherNik = getMotherNik,
     _getCurrentMotherHpl = getCurrentMotherHpl,
     _getCurrentMotherHpht = getCurrentMotherHpht,
     _getPregnancyCheckUpId = getPregnancyCheckUpId,
@@ -110,6 +112,8 @@ class KehamilankuCheckFormVm extends FormAuthVmGroup {
     _lateInit();
   }
 
+  final ProfileCredential pregnancyId;
+
   final GetPregnancyCheckUpId _getPregnancyCheckUpId;
   final SavePregnancyCheck _savePregnancyCheck;
   final SaveUsgImg _saveUsgImg;
@@ -117,7 +121,7 @@ class KehamilankuCheckFormVm extends FormAuthVmGroup {
   final GetMotherFormWarningStatus _getMotherFormWarningStatus;
   final GetPregnancyBabySize _getPregnancyBabySize;
   final GetPregnancyCheckForm _getPregnancyCheckForm;
-  final GetMotherNik _getMotherNik;
+  //final GetMotherNik _getMotherNik;
   final GetCurrentMotherHpl _getCurrentMotherHpl;
   final GetCurrentMotherHpht _getCurrentMotherHpht;
 
@@ -173,14 +177,14 @@ class KehamilankuCheckFormVm extends FormAuthVmGroup {
     //prind("KehamilankuCheckFormVm doSubmitJob() ==== responseMap = ${responseMap.responseGroups}");
     final data = PregnancyCheck.fromJson(responseMap);
     //prind("KehamilankuCheckFormVm doSubmitJob() ==== data = ${data.toJson()}");
-    final motherNik = VarDi.motherNik.getOrElse();
-    final submitRes = await _savePregnancyCheck(motherNik, data, currentTrimesterId);
+    //final motherNik = VarDi.motherNik.getOrElse();
+    final submitRes = await _savePregnancyCheck(pregnancyId.id, data, currentTrimesterId);
     if(submitRes is Success<int>) {
       final checkUpId = submitRes.data;
       prind("imgFile= $imgFile");
       if(imgFile != null) {
         final res2 = await _saveUsgImg(
-          motherNik: motherNik,
+          pregnancyId: pregnancyId.id,
           checkUpId: checkUpId,
           imgFile: imgFile,
         );
@@ -320,21 +324,21 @@ class KehamilankuCheckFormVm extends FormAuthVmGroup {
   }) {
     if(!forceLoad && _pregnancyCheck.value != null) return;
     startJob(getPregnancyCheckKey, (isActive) async {
-      final motherNik = VarDi.motherNik.getOrElse();
-      final res = await _getPregnancyCheckUpId(motherNik, week);
-      final checkUpId = tryGetResultValue(res);
-      prind("getPregnancyCheck() checkUpId = $checkUpId motherNik = $motherNik week = $week res = $res");
-      if(checkUpId != null) {
-        _getPregnancyCheck(checkUpId).then((value) {
-          prind("getPregnancyCheck() _getPregnancyCheck() value = $value");
-          if(value is Success<PregnancyCheck>) {
-            final data = value.data;
-            _pregnancyCheck.value = data;
-          }
-        });
-      } else {
-        _pregnancyCheck.value = null;
-      }
+      //final motherNik = VarDi.motherNik.getOrElse();
+      //final res = await _getPregnancyCheckUpId(pregnancyId.id, week);
+      //final checkUpId = tryGetResultValue(res);
+      //prind("getPregnancyCheck() checkUpId = $checkUpId pregnancyId = $pregnancyId week = $week res = $res");
+      //if(checkUpId != null) {}
+      final checkUpWeek = PregnancyCheckUpWeek(trimesterId: currentTrimesterId, week: week);
+      _getPregnancyCheck(checkUpWeek).then((value) {
+        prind("getPregnancyCheck() _getPregnancyCheck() value = $value");
+        if(value is Success<PregnancyCheck>) {
+          final data = value.data;
+          _pregnancyCheck.value = data;
+        } else {
+          _pregnancyCheck.value = null;
+        }
+      });
     });
   }
   void getMotherFormWarningStatus({
@@ -344,18 +348,23 @@ class KehamilankuCheckFormVm extends FormAuthVmGroup {
   }) {
     if(!forceLoad && _formWarningStatusList.value != null) return;
     startJob(getMotherFormWarningStatusKey, (isActive) async {
-      final motherNik = VarDi.motherNik.getOrElse();
-      final checkUpId = tryGetResultValue(await _getPregnancyCheckUpId(motherNik, week));
+      //final motherNik = VarDi.motherNik.getOrElse();
+      /*
+      final checkUpId = tryGetResultValue(await _getPregnancyCheckUpId(pregnancyId.id, week));
       if(checkUpId != null) {
-        _getMotherFormWarningStatus(checkUpId).then((value) {
-          if(value is Success<List<FormWarningStatus>>) {
-            final data = value.data;
-            _formWarningStatusList.value = data;
-          }
-        });
       } else {
         _formWarningStatusList.value = List.empty();
       }
+       */
+      final checkUpWeek = PregnancyCheckUpWeek(trimesterId: currentTrimesterId, week: week);
+      _getMotherFormWarningStatus(checkUpWeek).then((value) {
+        if(value is Success<List<FormWarningStatus>>) {
+          final data = value.data;
+          _formWarningStatusList.value = data;
+        } else {
+          _formWarningStatusList.value = List.empty();
+        }
+      });
     });
   }
   void getPregnancyBabySize({
@@ -364,11 +373,12 @@ class KehamilankuCheckFormVm extends FormAuthVmGroup {
   }) {
     if(!forceLoad && _pregnancyBabySize.value != null) return;
     startJob(getPregnancyBabySizeKey, (isActive) async {
-      final motherNik = VarDi.motherNik.getOrElse();
-      final checkUpId = tryGetResultValue(await _getPregnancyCheckUpId(motherNik, week));
-      prind("KehamilankuCheckFormVm.getPregnancyBabySize() motherNik = $motherNik checkUpId = $checkUpId");
+      //final motherNik = VarDi.motherNik.getOrElse();
+      final checkUpId = tryGetResultValue(await _getPregnancyCheckUpId(pregnancyId.id, week));
+      prind("KehamilankuCheckFormVm.getPregnancyBabySize() pregnancyId = $pregnancyId checkUpId = $checkUpId");
       if(checkUpId != null) {
-        _getPregnancyBabySize(checkUpId).then((value) {
+        final checkUpWeek = PregnancyCheckUpWeek(trimesterId: currentTrimesterId, week: week);
+        _getPregnancyBabySize(checkUpWeek).then((value) {
           prind("KehamilankuCheckFormVm.getPregnancyBabySize() _getPregnancyBabySize(checkUpId).then week = $week value = $value");
           if(value is Success<PregnancyBabySize?>) {
             prind("KehamilankuCheckFormVm.getPregnancyBabySize() MASUK _getPregnancyBabySize(checkUpId).then week = $week value = $value");

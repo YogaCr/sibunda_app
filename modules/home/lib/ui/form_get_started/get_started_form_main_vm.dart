@@ -4,6 +4,7 @@ import 'package:common/arch/domain/model/father.dart';
 import 'package:common/arch/domain/model/mother.dart';
 import 'package:common/arch/domain/usecase/auth_usecase.dart';
 import 'package:common/arch/domain/usecase/mother_usecase.dart';
+import 'package:common/arch/domain/usecase/profile_usecase.dart';
 import 'package:core/domain/model/result.dart';
 import 'package:core/ui/base/async_vm.dart';
 import 'package:core/ui/base/live_data.dart';
@@ -42,6 +43,7 @@ class GetStartedFormMainVm extends AsyncVm {
       //saveLastChildBirthDate: _saveLastChildBirthDate,
     );
     childVm = ChildFormVm(
+      getCurrentEmail: _GetCurrentEmailDummy(),
       childCount: childrenCountVm.childrenCount,
       saveChildrenData: _saveChildrenData,
     );
@@ -164,7 +166,11 @@ class GetStartedFormMainVm extends AsyncVm {
 // */
 
 
-
+/// 'Cause in this context (signup), email isn't needed.
+class _GetCurrentEmailDummy with GetCurrentEmail {
+  @override
+  Future<Result<String>> call() async => Success("<dummy>");
+}
 
 class _SignupImpl with SaveSignUpData {
   final MutableLiveData<SignUpData> _data = MutableLiveData();
@@ -182,7 +188,10 @@ class _SaveChildrenDataImpl with SaveChildrenData {
   final MutableLiveData<List<Child>> _data = MutableLiveData([]); // default is empty, in case of child form page isn't visited at all.
   LiveData<List<Child>> get data => _data;
   @override
-  Future<Result<bool>> call(List<Child> data) async {
+  Future<Result<bool>> call({
+    required List<Child> data,
+    required String email,
+  }) async {
     _data.value = data;
     return Success(true); // We return `Success` in intention cuz, in this context, the 'save' means save locally before collective submission in the end of get started related forms.
   }

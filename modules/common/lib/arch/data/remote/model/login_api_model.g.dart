@@ -11,7 +11,9 @@ LoginResponse _$LoginResponseFromJson(Map<String, dynamic> json) {
     message: json['message'] as String,
     code: json['code'] as int,
     status: json['status'] as String,
-    data: LoginDataResponse.fromJson(json['data'] as Map<String, dynamic>),
+    data: json['data'] == null
+        ? null
+        : LoginDataResponse.fromJson(json['data'] as Map<String, dynamic>),
   );
 }
 

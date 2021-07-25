@@ -16,6 +16,7 @@ class NeonatalServiceVm extends FormAuthVmGroup {
 
   NeonatalServiceVm({
     BuildContext? context,
+    required this.monthlyCheckUpId,
     required SaveNeonatalForm saveNeonatalForm,
     required GetNeonatalFormData getNeonatalFormData,
   }):
@@ -62,7 +63,7 @@ class NeonatalServiceVm extends FormAuthVmGroup {
 
   final MutableLiveData<int> _currentPage = MutableLiveData();
   LiveData<int> get currentPage => _currentPage;
-  late int monthlyCheckUpId;
+  final int monthlyCheckUpId;
 
   @override
   List<LiveData> get liveDatas => [];

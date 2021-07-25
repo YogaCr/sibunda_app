@@ -14,10 +14,10 @@ class HomeUseCaseDi {
   //static Logout get logout => LogoutImpl(RepoDi.authRepo);
   static SaveMotherData get saveMotherData => SaveMotherDataImpl(RepoDi.motherRepo);
   static SaveFatherData get saveFatherData => SaveFatherDataImpl(RepoDi.fatherRepo);
-  static SaveChildData get saveChildData => SaveChildDataImpl(RepoDi.childRepo);
+  //static SaveChildData get saveChildData => SaveChildDataImpl(RepoDi.childRepo);
   static SaveChildrenData get saveChildrenData => SaveChildrenDataImpl(RepoDi.childRepo);
   static SaveMotherHpl get saveMotherHpl => SaveMotherHplImpl(RepoDi.motherRepo);
-  static SaveLastChildBirthDate get saveLastChildBirthDate => SaveLastChildBirthDateImpl(RepoDi.childRepo);
+  //static SaveLastChildBirthDate get saveLastChildBirthDate => SaveLastChildBirthDateImpl(RepoDi.childRepo);
   static SaveChildrenCount get saveChildrenCount => SaveChildrenCountImpl(RepoDi.childRepo);
 
   static GetHomeStatusList get getHomeStatusList => GetHomeStatusListImpl(RepoDi.homeStatusRepo);

@@ -72,7 +72,7 @@ class DoMotherHavePregnancyPage extends StatelessWidget {
                         curve: Curves.easeOut,
                       );
                     } else {
-                      HomeRoutes.motherHplPage.goToPage(context);
+                      HomeRoutes.motherHplPage.go(context: context);
                     }
                     vm.isHplDeleted = false;
                   },

@@ -1,3 +1,4 @@
+import 'package:core/domain/model/range.dart';
 import 'package:flutter/material.dart';
 
 int parseInt(source, { int radix = 10, int Function(dynamic)? onError }) {
@@ -104,7 +105,17 @@ TimeOfDay? tryParseTimeOfDay(source, { TimeOfDay Function(dynamic)? onError }) {
   }
 }
 
-timeOfDayToString(TimeOfDay time) => "${time.hour}:${time.minute}";
+timeOfDayToString(TimeOfDay time) => "${numStr(time.hour)}:${numStr(time.minute)}";
+String numStr(num n, { int len = 2 }) {
+  var str = n.toString();
+  if(str.length < len) {
+    final diff = len - str.length;
+    for(final i in range(diff)) {
+      str = "0$str";
+    }
+  }
+  return str;
+}
 
 
 bool boolAll(Iterable<bool?> bools) {

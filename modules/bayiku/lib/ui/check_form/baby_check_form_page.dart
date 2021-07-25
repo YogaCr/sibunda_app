@@ -1,7 +1,9 @@
 import 'package:bayiku/config/baby_routes.dart';
+import 'package:common/arch/data/remote/model/baby_check_form_api_model.dart';
 import 'package:common/arch/domain/dummy_data.dart';
 import 'package:common/arch/domain/model/baby_data.dart';
 import 'package:common/arch/domain/model/form_warning_status.dart';
+import 'package:common/arch/domain/model/img_data.dart';
 import 'package:common/arch/ui/adapter/form_warning_adp.dart';
 import 'package:common/arch/ui/adapter/top_bar_item_list_adp.dart';
 import 'package:common/arch/ui/page/secondary_frames.dart';
@@ -121,9 +123,13 @@ class _MonthlyCheckFormPage extends StatelessWidget {
       slivers: [SliverList(delegate: SliverChildListDelegate.fixed([
         year == 1 && month == 0 ? MultiLiveDataObserver(
           liveDataList: [vm.formAnswer, vm.onSubmit,],
-          builder: (ctx, dataList) => dataList[0] != null || dataList[1] is Success<String>
-              ? _NeonatalServicePanel()
-              : defaultEmptyWidget(),
+          builder: (ctx, dataList) {
+            final checkUpId = (dataList[0] as BabyMonthlyFormBody?)?.id;
+            prind("_MonthlyCheckFormPage checkUpId= $checkUpId dataList[1]= ${dataList[1]}");
+            return checkUpId != null //&& dataList[1] is Success<String>
+                ? _NeonatalServicePanel(checkUpId)
+                : defaultEmptyWidget();
+          },
         ) : defaultEmptyWidget(),
         LiveDataObserver<List<FormWarningStatus>>(
           liveData: vm.warningList,
@@ -193,15 +199,24 @@ class _MonthlyCheckFormPage extends StatelessWidget {
 
 
 class _NeonatalServicePanel extends StatelessWidget {
+  final int checkUpId;
+  _NeonatalServicePanel(this.checkUpId);
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 10,),
       child: ItemPanelWithButton(
-        img: dummyImg, //TODO: _NeonatalServicePanel: img
+        img: ImgData(
+          link: "bayiku_neonatal.png",
+          package: GlobalRoutes.common,
+          src: ImgSrc.asset,
+        ),
         title: "Selamat untuk Kelahiran si Kecil ya Bun",
         action: "Isi Pelayanan Neonatus",
-        onBtnClick: () => BabyRoutes.neonatalServicePage.goToPage(context),
+        onBtnClick: () => BabyRoutes.neonatalServicePage.go(
+          context: context,
+          checkUpId: checkUpId,
+        ),
       ),
     );
   }

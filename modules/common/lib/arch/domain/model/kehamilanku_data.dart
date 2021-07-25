@@ -130,24 +130,37 @@ class PregnancyCheck {
 }
 
 class PregnancyCheckUpId extends Equatable {
-  final String motherNik;
+  final int pregnancyId;
   final int week;
   final int id;
 
   PregnancyCheckUpId({
-    required this.motherNik,
+    required this.pregnancyId,
     required this.week,
     required this.id,
   });
 
   PregnancyCheckUpId.fromResponse({
-    required this.motherNik,
+    required this.pregnancyId,
     required this.week,
     required PregnancyCreateCheckIdResponse response,
   }): id = response.id;
 
   @override
-  List<Object?> get props => [motherNik, week, id];
+  List<Object?> get props => [pregnancyId, week, id];
+}
+
+class PregnancyCheckUpWeek extends Equatable {
+  final int week;
+  final int trimesterId;
+
+  PregnancyCheckUpWeek({
+    required this.trimesterId,
+    required this.week,
+  });
+
+  @override
+  List<Object?> get props => [trimesterId, week];
 }
 
 /*

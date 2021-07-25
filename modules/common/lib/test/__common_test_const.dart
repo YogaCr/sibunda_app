@@ -3,6 +3,7 @@ import 'package:common/arch/di/data_source_di.dart';
 import 'package:common/arch/di/db_di.dart';
 import 'package:common/arch/domain/dummy_data.dart';
 import 'package:common/arch/domain/model/auth.dart';
+import 'package:common/arch/ui/widget/form_controller.dart';
 import 'package:common/util/net.dart';
 import 'package:common/util/prefs.dart';
 import 'package:common/value/const_values.dart';
@@ -12,9 +13,12 @@ import 'package:intl/date_symbol_data_local.dart';
 class ConfigUtil {
   ConfigUtil._();
 
+  static FormGroupInterceptor? get formInterceptor => TestUtil.isDebug
+      ? FormGroupInterceptor() : null;
+
   static init() async {
     await initializeDateFormatting("id_ID");
-    if(TestUtil.isDebug) {
+    if(TestUtil.isDummy) {
       await TestUtil.init();
       await TestUtil.initDummyPrefs();
       await TestUtil.initDummyDb();
@@ -28,7 +32,8 @@ class ConfigUtil {
 class TestUtil {
   TestUtil._();
 
-  static bool isDebug = false;
+  static bool isDebug = true;
+  static bool isDummy = false;
   //static bool isTest = false;
   static String testOutputDir = "test/_out/signup_data.txt";
 

@@ -35,7 +35,11 @@ class MotherPregEvalChartMenuPage extends StatelessWidget {
                 builder: (ctx, data) => data != null
                     ? ChartMenuList<MotherChartMenuData>(
                       data,
-                      onItemClick: (it) => KehamilankuRoutes.chartPage.go(context, it.type),
+                      onItemClick: (it) => KehamilankuRoutes.chartPage.go(
+                        context: context,
+                        type: it.type,
+                        pregnancyCred: vm.pregnancyId,
+                      ),
                     ): defaultLoading(),
               ),
             ]),

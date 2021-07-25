@@ -435,6 +435,7 @@ class BabySelectionOverlay extends StatelessWidget {
   final LiveData<List<BabyOverlayData>> unbornBabyList;
   final void Function()? onCancel;
   final void Function(BabyOverlayData, bool isBorn)? onItemClick;
+  final void Function(bool isBorn)? onAddItemClick;
   /// For all born and unborn baby.
   final LiveData<int>? selectedIndex;
   final bool isSelectedIndexOwner;
@@ -445,6 +446,7 @@ class BabySelectionOverlay extends StatelessWidget {
     required this.unbornBabyList,
     this.onCancel,
     this.onItemClick,
+    this.onAddItemClick,
     this.selectedIndex,
     bool? isSelectedIndexOwner,
   }): isSelectedIndexOwner = isSelectedIndexOwner ?? selectedIndex == null;
@@ -467,6 +469,7 @@ class BabySelectionOverlay extends StatelessWidget {
                   unbornBabyList: lists[0]!,
                   bornBabyList: lists[1]!,
                   onItemClick: onItemClick,
+                  onAddItemClick: onAddItemClick,
                 ) : defaultLoading(height: double.infinity),
           ),
         )

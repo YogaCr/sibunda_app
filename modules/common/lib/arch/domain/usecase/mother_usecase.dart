@@ -9,7 +9,7 @@ mixin GetMotherNik {
 }
 
 mixin GetPregnancyCheckUpId {
-  Future<Result<PregnancyCheckUpId>> call(String motherNik, int week);
+  Future<Result<PregnancyCheckUpId>> call(int pregnancyId, int week);
 }
 
 mixin GetCurrentMotherHpl {
@@ -52,16 +52,16 @@ class GetPregnancyCheckUpIdImpl with GetPregnancyCheckUpId {
   final PregnancyRepo _repo;
   GetPregnancyCheckUpIdImpl(this._repo);
   @override
-  Future<Result<PregnancyCheckUpId>> call(String motherNik, int week) async {
+  Future<Result<PregnancyCheckUpId>> call(int pregnancyId, int week) async {
     //prind("GetPregnancyCheckUpIdImpl motherNik = $motherNik week = $week");
-    final res = await _repo.getPregnancyCheckId(motherNik, week);
+    final res = await _repo.getPregnancyCheckId(pregnancyId, week);
     prind("GetPregnancyCheckUpIdImpl res = $res");
     if(res is! Success<int>) {
       res as Fail<int>;
       return Fail(msg: res.msg, error: res.error, code: res.code);
     }
     return Success(
-      PregnancyCheckUpId(motherNik: motherNik, week: week, id: res.data),
+      PregnancyCheckUpId(pregnancyId: pregnancyId, week: week, id: res.data),
     );
   }
 }

@@ -35,8 +35,10 @@ class BabyVmDi {
   );
   static NeonatalServiceVm neonatalServiceVm({
     BuildContext? context,
+    required int checkUpId,
   }) => NeonatalServiceVm(
     context: context,
+    monthlyCheckUpId: checkUpId,
     getNeonatalFormData: BabyUseCaseDi.getNeonatalFormData,
     saveNeonatalForm: BabyUseCaseDi.saveNeonatalForm,
   );

@@ -51,7 +51,11 @@ class PregnancyImmunizationPage extends StatelessWidget {
                           showSnackBar(context, "Immunisasi sudah dilakukan", backgroundColor: Colors.green);
                           return;
                         }
-                        final date = await KehamilankuRoutes.immunizationPopup.popup(ctx, immData,);
+                        final date = await KehamilankuRoutes.immunizationPopup.popup(
+                          context: ctx,
+                          immunization: immData,
+                          pregnancyCred: vm.pregnancyId,
+                        );
                         if(date != null) {
                           vm.onConfirmSuccess(group: group, child: child, date: date);
                           showSnackBar(context, "Berhasil mengonfirmasi", backgroundColor: Colors.green);

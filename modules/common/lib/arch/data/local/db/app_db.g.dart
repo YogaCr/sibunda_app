@@ -259,6 +259,8 @@ class $CredentialEntitiesTable extends CredentialEntities
 class ProfileEntity extends DataClass implements Insertable<ProfileEntity> {
   final int userId;
   final int type;
+
+  /// It means that someone whose fetus phase is recorded here.
   final int? pregnancyId;
   final int serverId;
   final String name;
@@ -1184,8 +1186,12 @@ class $CityEntitiesTable extends CityEntities
 class CheckUpIdEntity extends DataClass implements Insertable<CheckUpIdEntity> {
   final int id;
   final int period;
-  final String nik;
-  CheckUpIdEntity({required this.id, required this.period, required this.nik});
+
+  /// It can reference to either pregnancy id or profile serverId (for baby).
+  /// We know this is not the best solution, yet.
+  final int refId;
+  CheckUpIdEntity(
+      {required this.id, required this.period, required this.refId});
   factory CheckUpIdEntity.fromData(
       Map<String, dynamic> data, GeneratedDatabase db,
       {String? prefix}) {
@@ -1195,8 +1201,8 @@ class CheckUpIdEntity extends DataClass implements Insertable<CheckUpIdEntity> {
           .mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
       period: const IntType()
           .mapFromDatabaseResponse(data['${effectivePrefix}period'])!,
-      nik: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}nik'])!,
+      refId: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}ref_id'])!,
     );
   }
   @override
@@ -1204,7 +1210,7 @@ class CheckUpIdEntity extends DataClass implements Insertable<CheckUpIdEntity> {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
     map['period'] = Variable<int>(period);
-    map['nik'] = Variable<String>(nik);
+    map['ref_id'] = Variable<int>(refId);
     return map;
   }
 
@@ -1212,7 +1218,7 @@ class CheckUpIdEntity extends DataClass implements Insertable<CheckUpIdEntity> {
     return CheckUpIdEntitiesCompanion(
       id: Value(id),
       period: Value(period),
-      nik: Value(nik),
+      refId: Value(refId),
     );
   }
 
@@ -1222,7 +1228,7 @@ class CheckUpIdEntity extends DataClass implements Insertable<CheckUpIdEntity> {
     return CheckUpIdEntity(
       id: serializer.fromJson<int>(json['id']),
       period: serializer.fromJson<int>(json['period']),
-      nik: serializer.fromJson<String>(json['nik']),
+      refId: serializer.fromJson<int>(json['refId']),
     );
   }
   @override
@@ -1231,72 +1237,72 @@ class CheckUpIdEntity extends DataClass implements Insertable<CheckUpIdEntity> {
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
       'period': serializer.toJson<int>(period),
-      'nik': serializer.toJson<String>(nik),
+      'refId': serializer.toJson<int>(refId),
     };
   }
 
-  CheckUpIdEntity copyWith({int? id, int? period, String? nik}) =>
+  CheckUpIdEntity copyWith({int? id, int? period, int? refId}) =>
       CheckUpIdEntity(
         id: id ?? this.id,
         period: period ?? this.period,
-        nik: nik ?? this.nik,
+        refId: refId ?? this.refId,
       );
   @override
   String toString() {
     return (StringBuffer('CheckUpIdEntity(')
           ..write('id: $id, ')
           ..write('period: $period, ')
-          ..write('nik: $nik')
+          ..write('refId: $refId')
           ..write(')'))
         .toString();
   }
 
   @override
   int get hashCode =>
-      $mrjf($mrjc(id.hashCode, $mrjc(period.hashCode, nik.hashCode)));
+      $mrjf($mrjc(id.hashCode, $mrjc(period.hashCode, refId.hashCode)));
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is CheckUpIdEntity &&
           other.id == this.id &&
           other.period == this.period &&
-          other.nik == this.nik);
+          other.refId == this.refId);
 }
 
 class CheckUpIdEntitiesCompanion extends UpdateCompanion<CheckUpIdEntity> {
   final Value<int> id;
   final Value<int> period;
-  final Value<String> nik;
+  final Value<int> refId;
   const CheckUpIdEntitiesCompanion({
     this.id = const Value.absent(),
     this.period = const Value.absent(),
-    this.nik = const Value.absent(),
+    this.refId = const Value.absent(),
   });
   CheckUpIdEntitiesCompanion.insert({
     required int id,
     required int period,
-    required String nik,
+    required int refId,
   })  : id = Value(id),
         period = Value(period),
-        nik = Value(nik);
+        refId = Value(refId);
   static Insertable<CheckUpIdEntity> custom({
     Expression<int>? id,
     Expression<int>? period,
-    Expression<String>? nik,
+    Expression<int>? refId,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (period != null) 'period': period,
-      if (nik != null) 'nik': nik,
+      if (refId != null) 'ref_id': refId,
     });
   }
 
   CheckUpIdEntitiesCompanion copyWith(
-      {Value<int>? id, Value<int>? period, Value<String>? nik}) {
+      {Value<int>? id, Value<int>? period, Value<int>? refId}) {
     return CheckUpIdEntitiesCompanion(
       id: id ?? this.id,
       period: period ?? this.period,
-      nik: nik ?? this.nik,
+      refId: refId ?? this.refId,
     );
   }
 
@@ -1309,8 +1315,8 @@ class CheckUpIdEntitiesCompanion extends UpdateCompanion<CheckUpIdEntity> {
     if (period.present) {
       map['period'] = Variable<int>(period.value);
     }
-    if (nik.present) {
-      map['nik'] = Variable<String>(nik.value);
+    if (refId.present) {
+      map['ref_id'] = Variable<int>(refId.value);
     }
     return map;
   }
@@ -1320,7 +1326,7 @@ class CheckUpIdEntitiesCompanion extends UpdateCompanion<CheckUpIdEntity> {
     return (StringBuffer('CheckUpIdEntitiesCompanion(')
           ..write('id: $id, ')
           ..write('period: $period, ')
-          ..write('nik: $nik')
+          ..write('refId: $refId')
           ..write(')'))
         .toString();
   }
@@ -1339,14 +1345,12 @@ class $CheckUpIdEntitiesTable extends CheckUpIdEntities
   late final GeneratedColumn<int?> period = GeneratedColumn<int?>(
       'period', aliasedName, false,
       typeName: 'INTEGER', requiredDuringInsert: true);
-  final VerificationMeta _nikMeta = const VerificationMeta('nik');
-  late final GeneratedColumn<String?> nik = GeneratedColumn<String?>(
-      'nik', aliasedName, false,
-      typeName: 'TEXT',
-      requiredDuringInsert: true,
-      $customConstraints: 'REFERENCES profiles(nik)');
+  final VerificationMeta _refIdMeta = const VerificationMeta('refId');
+  late final GeneratedColumn<int?> refId = GeneratedColumn<int?>(
+      'ref_id', aliasedName, false,
+      typeName: 'INTEGER', requiredDuringInsert: true);
   @override
-  List<GeneratedColumn> get $columns => [id, period, nik];
+  List<GeneratedColumn> get $columns => [id, period, refId];
   @override
   String get aliasedName => _alias ?? 'check_up_ids';
   @override
@@ -1367,11 +1371,11 @@ class $CheckUpIdEntitiesTable extends CheckUpIdEntities
     } else if (isInserting) {
       context.missing(_periodMeta);
     }
-    if (data.containsKey('nik')) {
+    if (data.containsKey('ref_id')) {
       context.handle(
-          _nikMeta, nik.isAcceptableOrUnknown(data['nik']!, _nikMeta));
+          _refIdMeta, refId.isAcceptableOrUnknown(data['ref_id']!, _refIdMeta));
     } else if (isInserting) {
-      context.missing(_nikMeta);
+      context.missing(_refIdMeta);
     }
     return context;
   }

@@ -4,6 +4,8 @@ import 'package:common/arch/ui/widget/form_faker.dart';
 import 'package:common/config/_config.dart';
 import 'package:common/test/__common_test_const.dart';
 import 'package:common/util/providers.dart';
+import 'package:common/value/const_values.dart';
+import 'package:core/ui/base/live_data.dart';
 import 'package:flutter/material.dart';
 import 'package:home/di/home_vm_di.dart';
 import 'package:home/ui/form_get_started/child_form_page.dart';
@@ -23,7 +25,20 @@ import 'package:home/ui/splash/splash_page.dart';
 
 class HomeRoutes extends ModuleRoute {
   HomeRoutes._(): super(GlobalRoutes.manager) {
-    exportRoute(GlobalRoutes.home_LoginPage, HomeRoutes.loginPage);
+    exportRoute(GlobalRoutes.home_loginPage, HomeRoutes.loginPage);
+    exportRouteBuilder(
+      GlobalRoutes.home_childFormPage,
+      (args) => HomeRoutes.childFormPage.getRoute(
+        context: args[Const.KEY_CTX],
+        childCount: args[Const.KEY_DATA],
+      ),
+    );
+    exportRouteBuilder(
+      GlobalRoutes.home_motherHplPage,
+      (args) => HomeRoutes.motherHplPage.getRoute(
+        context: args[Const.KEY_CTX],
+      ),
+    );
   }
   static final obj = HomeRoutes._();
 
@@ -34,8 +49,8 @@ class HomeRoutes extends ModuleRoute {
   @override
   Set<SibRoute> get routes => {
     introPage, signUpPage, loginPage,
-    motherFormPage, fatherFormPage, childFormPage,
-    doMotherHavePregnancyPage, motherHplPage, childrenCountPage,
+    motherFormPage, fatherFormPage,
+    doMotherHavePregnancyPage, childrenCountPage,
     homePage, homeNotifAndMessagePage,
   };
 
@@ -58,7 +73,7 @@ class HomeRoutes extends ModuleRoute {
   ));
 
   static final getStartedFormMainPage = SibRoute("GetStartedFormMainPage", GetStartedFormMainPage, (ctx) {
-    final FormGroupInterceptor? interceptor = FormGroupInterceptor();
+    final FormGroupInterceptor? interceptor = ConfigUtil.formInterceptor;
     return MainFrame(
       body: FormFaker(
         interceptor: interceptor,
@@ -93,24 +108,14 @@ class HomeRoutes extends ModuleRoute {
     ]),
     padding: EdgeInsets.all(20),
   ));
-  static final motherHplPage = SibRoute("MotherHplPage", MotherHplPage, (ctx) =>  PlainBackFrame(
-    body: MotherHplPage().inVmProvider([
-      (ctx) => HomeVmDi.motherHplVm,
-    ]), //.inVmProvider([(ctx) => HomeVmDi.childFormVm,]),
-    padding: EdgeInsets.all(20),
-  ));
+  static final motherHplPage = _MotherHplPageRoute.obj;
   static final childrenCountPage = SibRoute("ChildrenCountPage", ChildrenCountPage, (ctx) =>  PlainBackFrame(
     body: ChildrenCountPage().inVmProvider([
           (ctx) => HomeVmDi.childrenCountVm,
     ]), //.inVmProvider([(ctx) => HomeVmDi.childFormVm,]),
     padding: EdgeInsets.all(20),
   ));
-  static final childFormPage = SibRoute("ChildFormPage", ChildFormPage, (ctx) =>  PlainBackFrame(
-    body: ChildFormPage().inVmProvider([
-      (ctx) => HomeVmDi.childFormVm,
-    ]),
-    padding: EdgeInsets.all(20),
-  ));
+  static final childFormPage = _ChildFormPageRoute.obj;
   static final newAccountConfirmPage = SibRoute("NewAccountConfirmPage", NewAccountConfirmPage, (ctx) =>  PlainBackFrame(
     body: NewAccountConfirmPage().inVmProvider([
       (ctx) => HomeVmDi.getStartedFormMainVm,
@@ -129,4 +134,55 @@ class HomeRoutes extends ModuleRoute {
       (ctx) => HomeVmDi.notifAndMessageVm(context: ctx),
     ]), //.inVmProvider([(ctx) => H
   ));
+}
+
+
+class _ChildFormPageRoute {
+  _ChildFormPageRoute._();
+  static final obj = _ChildFormPageRoute._();
+
+  SibRoute getRoute({
+    required BuildContext context,
+    LiveData<int>? childCount,
+  }) {
+    final interceptor = ConfigUtil.formInterceptor;
+    return SibRoute("ChildFormPage", ChildFormPage, (ctx) =>  PlainBackFrame(
+      padding: EdgeInsets.all(20),
+      body: FormFaker(
+        interceptor: interceptor,
+        child: ChildFormPage(interceptor: interceptor,).inVmProvider([
+          (ctx) => HomeVmDi.childFormVm(
+            context: ctx,
+            childCount: childCount,
+          ),
+        ]),
+      ),
+    ));
+  }
+
+  /// Return future `true` if children data in this route is saved successfully.
+  Future<bool?> go({
+    required BuildContext context,
+    LiveData<int>? childCount,
+  }) => getRoute(context: context, childCount: childCount).goToPage(context);
+}
+
+class _MotherHplPageRoute {
+  _MotherHplPageRoute._();
+  static final obj = _MotherHplPageRoute._();
+
+  SibRoute getRoute({
+    required BuildContext context,
+  }) => SibRoute("MotherHplPage", MotherHplPage, (ctx) =>  PlainBackFrame(
+    body: MotherHplPage().inVmProvider([
+          (ctx) => HomeVmDi.motherHplVm(
+        context: context,
+      ),
+    ]), //.inVmProvider([(ctx) => HomeVmDi.childFormVm,]),
+    padding: EdgeInsets.all(20),
+  ));
+  /// Return future `true` if HPL data in this route is saved successfully.
+  Future<bool?> go({
+    required BuildContext context,
+  }) => getRoute(context: context).goToPage(context);
 }

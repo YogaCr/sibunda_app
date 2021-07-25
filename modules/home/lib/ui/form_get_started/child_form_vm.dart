@@ -1,9 +1,11 @@
 import 'package:common/arch/domain/dummy_form_field_data.dart';
 import 'package:common/arch/domain/model/_model_template.dart';
 import 'package:common/arch/domain/model/child.dart';
+import 'package:common/arch/domain/usecase/profile_usecase.dart';
 import 'package:common/arch/ui/model/form_data.dart';
 import 'package:common/arch/ui/vm/form_vm.dart';
 import 'package:common/arch/ui/vm/form_vm_group.dart';
+import 'package:common/arch/ui/vm/vm_auth.dart';
 import 'package:common/res/string/_string.dart';
 import 'package:common/util/collections.dart';
 import 'package:common/util/data_mapper.dart';
@@ -13,20 +15,24 @@ import 'package:core/domain/model/range.dart';
 import 'package:core/domain/model/result.dart';
 import 'package:core/ui/base/live_data.dart';
 import 'package:core/util/_consoles.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:home/core/domain/usecase/form_get_started_usecase.dart';
 import 'package:tuple/tuple.dart';
 
 
-class ChildFormVm extends FormVmGroup {
+class ChildFormVm extends FormAuthVmGroup {
   static const saveBatchChildrenKey = "saveBatchChildren";
 
   ChildFormVm({
+    BuildContext? context,
     //required SaveChildData saveChildData,
     required SaveChildrenData saveChildrenData,
+    required GetCurrentEmail getCurrentEmail,
     required this.childCount,
   }):
     //_saveChildData = saveChildData,
-    _saveChildrenData = saveChildrenData
+    _saveChildrenData = saveChildrenData,
+    _getCurrentEmail = getCurrentEmail, super(context: context)
   {
     _currentPage.observe(this, (page) {
       Map<String, dynamic>? map;
@@ -72,6 +78,7 @@ class ChildFormVm extends FormVmGroup {
   }
   //final SaveChildData _saveChildData; //Now, we use `SaveChildrenData` for batch saving
   final SaveChildrenData _saveChildrenData;
+  final GetCurrentEmail _getCurrentEmail;
 /*
   int? _childCount;
   int get childCount {
@@ -202,6 +209,7 @@ class ChildFormVm extends FormVmGroup {
 
   @override
   Future<bool> validateField(int groupPosition, String inputKey, response) async {
+    prind("ChildFormVm groupPosition= $groupPosition inputKey= $inputKey response= $response");
     switch(inputKey) {
       case Const.KEY_CHILD_ORDER: return tryParseInt(response) != null;
     }
@@ -226,13 +234,24 @@ class ChildFormVm extends FormVmGroup {
       throw "`_children.value` can't have any null value";
     }
     startJob(saveBatchChildrenKey, (isActive) async {
-      final newList = _children.value!.map<Child>((e) => e!).toList(growable: false);
-      final res = await _saveChildrenData(newList);
-      if(res is Success<bool>) {
-        _onSaveBatch.value = res.data;
-        return null;
+      final emailRes = await _getCurrentEmail();
+      Fail? fail;
+      if(emailRes is Success<String>) {
+        final email = emailRes.data;
+        final newList = _children.value!.map<Child>((e) => e!).toList(growable: false);
+        final res = await _saveChildrenData(
+          data: newList,
+          email: email,
+        );
+        if(res is Success<bool>) {
+          _onSaveBatch.value = res.data;
+          return null;
+        }
+        fail = (res as Fail<bool>);
+      } else {
+        fail = (emailRes as Fail<String>);
       }
-      return res as Fail;
+      return fail;
     });
   }
 }

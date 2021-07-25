@@ -27,7 +27,7 @@ class LoginResponse extends Equatable {
   final String message;
   final String status;
   final int code;
-  final LoginDataResponse data;
+  final LoginDataResponse? data;
 
   LoginResponse({
     required this.message,

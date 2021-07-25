@@ -31,6 +31,7 @@ class Strings {
   static const form_submission_fail = "Terjadi kesalahan saat mengirim form. Harap ulangi.";
   static const error_occurred_when_saving_data = "Terjadi kesalahan saat menyimpan. Harap ulangi.";
   static const error_occurred_when_logout = "Terjadi kesalahan saat keluar dari akun. Harap ulangi.";
+  static const invalid_email_or_pswd = "Email atau password salah";
   static const no_data = "Tidak ada data";
   static const baby_dev_form = "Form Pemeriksaan Perkembangan Bayi";
   static const baby_growth_form = "Form Pemeriksaan Pertumbuhan Bayi";
@@ -45,6 +46,8 @@ class Strings {
   static const mother = "Bunda";
   static const baby = "Bayi";
   static const baby_candidate = "Calon Bayi";
+  static const add_baby = "Tambah Bayi";
+  static const add_pregnancy = "Tambah Kehamilan";
 
   static const ready_to_be_mother_assistant = "Siap Jadi Asisten Bunda";
   static const splash_motto_desc = "Dengan aplikasi kami, Bunda akan serasa memiliki asisten untuk merawat buah hati";

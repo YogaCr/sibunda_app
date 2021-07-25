@@ -2,6 +2,7 @@ import 'package:common/arch/ui/page/_page.dart';
 import 'package:common/arch/ui/widget/form_controller.dart';
 import 'package:common/arch/ui/widget/form_faker.dart';
 import 'package:common/config/_config.dart';
+import 'package:common/test/__common_test_const.dart';
 import 'package:common/util/providers.dart';
 import 'package:common/value/const_values.dart';
 import 'package:covid19/di/covid_vm_di.dart';
@@ -38,7 +39,7 @@ class _CovidCheckPageRoute {
   static final obj = _CovidCheckPageRoute._();
 
   final _route = SibRoute("CovidCheckPage", CovidCheckPage, (ctx) {
-    final FormGroupInterceptor? interceptor = FormGroupInterceptor();
+    final FormGroupInterceptor? interceptor = ConfigUtil.formInterceptor;
     return MainFrame(
       body: FormFaker(
         interceptor: interceptor,

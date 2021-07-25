@@ -98,7 +98,7 @@ class ToLoginPageImpl with ToLoginPage {
     //required ModuleRoute moduleRoute,
   }) async {
     try {
-      GlobalRoutes.manager.getExternalRoute(GlobalRoutes.home_LoginPage)
+      GlobalRoutes.manager.getExternalRoute(GlobalRoutes.home_loginPage)
           .goToPage(
             context,
             clearPrevs: true,

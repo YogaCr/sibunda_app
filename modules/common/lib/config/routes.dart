@@ -22,7 +22,9 @@ class GlobalRoutes {
   static const education = "education";
   static const profile = "profile";
 
-  static const home_LoginPage = "$home.loginPage";
+  static const home_loginPage = "$home.loginPage";
+  static const home_childFormPage = "$home.childFormPage";
+  static const home_motherHplPage = "$home.motherHplPage";
   static const education_detailPage = "$education.detailPage";
 
   static Map<String, dynamic> makeEducationDetailPageData(Tips data) => {

@@ -150,6 +150,7 @@ abstract class AsyncVm extends ViewModel {
     final isActive = Var(true);
     final pair = Tuple2(CancelableOperation.fromFuture(
         (future = block(isActive)).then((fail) {
+          //prind("AsyncVm startJob then after type= $runtimeType key= $key fail= $fail");
           if(fail != null) {
             doOnFailTask(key, fail);
           } else {

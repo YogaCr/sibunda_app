@@ -1,4 +1,5 @@
 import 'package:common/arch/domain/model/immunization.dart';
+import 'package:common/arch/domain/model/profile_data.dart';
 import 'package:common/arch/ui/model/immunization.dart';
 import 'package:common/arch/ui/vm/vm_auth.dart';
 import 'package:core/domain/model/result.dart';
@@ -16,12 +17,14 @@ class PregnancyImmunizationVm extends AsyncAuthVm {
 
   PregnancyImmunizationVm({
     BuildContext? context,
+    required this.pregnancyId,
     required GetMotherImmunizationGroupList getMotherImmunizationGroupList,
     required GetMotherImmunizationOverview getMotherImmunizationOverview,
   }):
     _getMotherImmunizationGroupList = getMotherImmunizationGroupList,
     _getMotherImmunizationOverview = getMotherImmunizationOverview, super(context: context)
   ;
+  final ProfileCredential pregnancyId;
 
   final GetMotherImmunizationGroupList _getMotherImmunizationGroupList;
   final GetMotherImmunizationOverview _getMotherImmunizationOverview;

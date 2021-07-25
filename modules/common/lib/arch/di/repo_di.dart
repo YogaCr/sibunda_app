@@ -47,7 +47,11 @@ class RepoDi {
     pregnancyLocalSrc: LocalSrcDi.pregnancySrc,
   ); //MotherRepoDummy.obj;
   static FatherRepo get fatherRepo => FatherRepoDummy.obj;
-  static ChildRepo get childRepo => ChildRepoDummy.obj;
+  static ChildRepo get childRepo => ChildRepoImpl(
+    profileDao: DbDi.profileDao,
+    pregnancyDao: DbDi.pregnancyDao,
+    dataApi: ApiDi.dataApi,
+  ); //ChildRepoDummy.obj;
   static PregnancyRepo get pregnancyRepo => PregnancyRepoImpl(
     api: ApiDi.kehamilankuApi,
     checkUpLocalSrc: LocalSrcDi.checkUpSrc,

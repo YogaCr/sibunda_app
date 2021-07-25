@@ -110,11 +110,13 @@ class PregnancyCheckBody {
 
 @JsonSerializable()
 class PregnancyShowCheckBody {
-  @JsonKey(name: Const.KEY_PREGNANCY_CHECKUP_ID)
-  final int checkId;
+  //@JsonKey(name: Const.KEY_PREGNANCY_CHECKUP_ID)
+  final int trisemester_id;
+  final int week;
 
   PregnancyShowCheckBody({
-    required this.checkId,
+    required this.trisemester_id,
+    required this.week,
   });
 
   factory PregnancyShowCheckBody.fromJson(Map<String, dynamic> map) => _$PregnancyShowCheckBodyFromJson(map);

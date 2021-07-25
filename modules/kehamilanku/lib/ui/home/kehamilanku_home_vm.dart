@@ -1,6 +1,7 @@
 import 'package:common/arch/di/config_di.dart';
 import 'package:common/arch/domain/model/baby_data.dart';
 import 'package:common/arch/domain/model/kehamilanku_data.dart';
+import 'package:common/arch/domain/model/profile_data.dart';
 import 'package:common/arch/domain/usecase/baby_usecase.dart';
 import 'package:common/arch/domain/usecase/mother_usecase.dart';
 import 'package:common/arch/ui/vm/vm_auth.dart';
@@ -33,7 +34,39 @@ class KehamilankuHomeVm extends AsyncAuthVm {
       _getMotherFoodRecomList = getMotherFoodRecomList,
       _getBornBabyList = getBornBabyList,
       _getUnbornBabyList = getUnbornBabyList, super(context: context)
-  ;
+  {
+    _unbornBabyList.observe(this, (babyList) {
+      if(babyList?.isNotEmpty == true) {
+        if(_selectedProfile.value == null) {
+          final cred = ProfileCredential.fromBabyOverlay(babyList!.first);
+          init(profile: cred);
+        }
+      }
+    });
+    _ageOverview.observe(this, (overview) {
+      if(overview != null) {
+        final babyCred = _selectedProfile.value;
+        if(babyCred == null) {
+          throw "Something error. `babyCred` is null";
+        }
+        final unbornIndex = _unbornBabyList.value!.indexWhere((e) => e.id == babyCred.id);
+        prind("BabyHomeVm unbornIndex= $unbornIndex");
+        if(unbornIndex == 0) {
+          selectedIndex.value = 0;
+          //selectedBabyData = _unbornBabyList.value![unbornIndex];
+        } else {
+          final bornIndex = _bornBabyList.value!.indexWhere((e) => e.id == babyCred.id);
+          prind("BabyHomeVm bornIndex= $bornIndex");
+          if(bornIndex < 0) {
+            throw "Something error. `ageOverview.value` is not null, but there's no selected baby";
+          }
+          //selectedBabyData = _bornBabyList.value![bornIndex];
+          selectedIndex.value = bornIndex +(_unbornBabyList.value?.length ?? 0);
+        }
+        prind("BabyHomeVm selectedIndex= $selectedIndex");
+      }
+    });
+  }
 
   //final GetMotherNik _getMotherNik;
   final GetPregnancyAgeOverview _getPregnancyAgeOverview;
@@ -47,35 +80,46 @@ class KehamilankuHomeVm extends AsyncAuthVm {
   final MutableLiveData<List<MotherFoodRecom>> _foodRecomList = MutableLiveData();
   final MutableLiveData<List<BabyOverlayData>> _bornBabyList = MutableLiveData();
   final MutableLiveData<List<BabyOverlayData>> _unbornBabyList = MutableLiveData();
+  final MutableLiveData<ProfileCredential> _selectedProfile = MutableLiveData();
 
   LiveData<MotherPregnancyAgeOverview> get ageOverview => _ageOverview;
   LiveData<List<MotherTrimester>> get trimesterList => _trimesterList;
   LiveData<List<MotherFoodRecom>> get foodRecomList => _foodRecomList;
   LiveData<List<BabyOverlayData>> get bornBabyList => _bornBabyList;
   LiveData<List<BabyOverlayData>> get unbornBabyList => _unbornBabyList;
+  LiveData<ProfileCredential> get selectedProfile => _selectedProfile;
 
   @override
-  List<LiveData> get liveDatas => [_ageOverview, _trimesterList, _foodRecomList,];
+  List<LiveData> get liveDatas => [
+    _ageOverview, _trimesterList, _foodRecomList,
+    _selectedProfile,
+  ];
 
-  void init() {
-    getAgeOverview(VarDi.motherNik.getOrElse());
-    getTrimesterList();
-    getBabyOverlay();
-    _ageOverview.observeOnce((age) {
-      if(age != null) { //This way, pregnancy week age will be instantiated first.
-        getFoodRecomList();
-      }
-    }, immediatelyGet: false);
+  final MutableLiveData<int> selectedIndex = MutableLiveData(0);
+  //BabyOverlayData? _currentProfile;
+
+  void init({
+    required ProfileCredential profile,
+    bool forceLoad = false,
+  }) {
+    if(!forceLoad && profile == _selectedProfile.value) return;
+    _selectedProfile.value = profile;
+    _ageOverview.value = null;
+    _trimesterList.value = null;
+    _foodRecomList.value = null;
+    getAgeOverview(forceLoad: true,);
+    getTrimesterList(forceLoad: true,);
+    getFoodRecomList(forceLoad: true);
   }
 
   @protected
-  void getAgeOverview(String motherNik, [bool forceLoad = false]) {
-    prind("getAgeOverview() motherNik= $motherNik forceLoad = $forceLoad _ageOverview.value = ${_ageOverview.value}");
+  void getAgeOverview({bool forceLoad = false}) {
+    prind("getAgeOverview() _selectedProfile= $_selectedProfile forceLoad = $forceLoad _ageOverview.value = ${_ageOverview.value}");
     if(!forceLoad && _ageOverview.value != null) return;
     prind("getAgeOverview() LANJUT =====");
     startJob(getAgeOverviewKey, (isActive) async {
       prind("getAgeOverview() startJob");
-      _getPregnancyAgeOverview(motherNik).then((value){
+      _getPregnancyAgeOverview(_selectedProfile.value!.id).then((value){
         prind("getAgeOverview() startJob then value = $value");
         if(value is Success<MotherPregnancyAgeOverview>) {
           final data = value.data;
@@ -85,12 +129,12 @@ class KehamilankuHomeVm extends AsyncAuthVm {
     });
   }
   @protected
-  void getTrimesterList([bool forceLoad = false]) {
+  void getTrimesterList({bool forceLoad = false}) {
     prind("getTrimesterList() forceLoad = $forceLoad _trimesterList.value = ${_trimesterList.value}");
     if(!forceLoad && _trimesterList.value != null) return;
     startJob(getTrimesterListKey, (isActive) async {
       prind("getTrimesterList() start");
-      _getTrimesterList().then((value){
+      _getTrimesterList(_selectedProfile.value!.id).then((value){
         prind("getTrimesterList() start then value= $value");
         if(value is Success<List<MotherTrimester>>) {
           final data = value.data;
@@ -100,14 +144,14 @@ class KehamilankuHomeVm extends AsyncAuthVm {
     });
   }
   @protected
-  void getFoodRecomList([bool forceLoad = false]) {
+  void getFoodRecomList({bool forceLoad = false}) {
     prind("getFoodRecomList() forceLoad = $forceLoad _foodRecomList.value = ${_foodRecomList.value}");
     if(!forceLoad && _foodRecomList.value != null) return;
     startJob(getFoodRecomListKey, (isActive) async {
       final week = VarDi.pregnancyWeek.getOrElse();
-      final motherNik = VarDi.motherNik.getOrElse();
+      //final motherNik = VarDi.motherNik.getOrElse();
 
-      _getMotherFoodRecomList(motherNik, week).then((value) {
+      _getMotherFoodRecomList(_selectedProfile.value!.id, week).then((value) {
         if(value is Success<List<MotherFoodRecom>>) {
           final data = value.data;
           _foodRecomList.value = data;
@@ -115,7 +159,7 @@ class KehamilankuHomeVm extends AsyncAuthVm {
       });
     });
   }
-  @protected
+  //@protected
   void getBabyOverlay({ bool forceLoad = false }) {
     prind("`getBabyOverlay` MULAI forceLoad= $forceLoad");
     if(!forceLoad

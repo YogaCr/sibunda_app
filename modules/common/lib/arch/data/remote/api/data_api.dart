@@ -1,3 +1,4 @@
+import 'package:common/arch/data/remote/model/baby_add_api_model.dart';
 import 'package:common/arch/data/remote/model/data_api_model.dart';
 import 'package:common/arch/domain/model/auth.dart';
 import 'package:common/util/net.dart';
@@ -17,4 +18,8 @@ abstract class DataApi {
   Future<List<CityResponse>> getCity();
   @GET("/bio")
   Future<BioResponse> getBio();
+  @GET("/identitas-anak")
+  Future<BabyAddResponse> createChild(@Body() BabyAddBody body);
+  @GET("/identitas-anak")
+  Future<BabyAddResponse> createFetus(@Body() FetusAddBody body);
 }

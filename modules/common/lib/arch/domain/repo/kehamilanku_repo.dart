@@ -21,27 +21,27 @@ import '../dummy_data.dart';
 
 mixin PregnancyRepo {
   // ====== Home ==========
-  Future<Result<List<MotherHomeBabyData>>> getMotherHomeData(String motherNik);
-  Future<Result<List<MotherTrimester>>> getMotherTrimester();
-  Future<Result<List<MotherFoodRecom>>> getMotherFoodRecoms(String motherNik, int pregnancyWeekAge);
-  Future<Result<MotherPregnancyAgeOverview>> getMotherPregnancyAgeOverview(String motherNik);
+  Future<Result<List<MotherHomeBabyData>>> getMotherHomeData(int pregnancyId);
+  Future<Result<List<MotherTrimester>>> getMotherTrimester(int pregnancyId);
+  Future<Result<List<MotherFoodRecom>>> getMotherFoodRecoms(int pregnancyId, int pregnancyWeekAge);
+  Future<Result<MotherPregnancyAgeOverview>> getMotherPregnancyAgeOverview(int pregnancyId);
 
   // ====== Check ==========
-  Future<Result<int>> getPregnancyCheckId(String motherNik, int week);
+  Future<Result<int>> getPregnancyCheckId(int pregnancyId, int week);
   Future<Result<bool>> savePregnancyCheckId(PregnancyCheckUpId checkUpId);
-  Future<Result<PregnancyCheck>> getPregnancyCheck(PregnancyCheckUpId checkUpId);
+  Future<Result<PregnancyCheck>> getPregnancyCheck(PregnancyCheckUpWeek checkUpWeek);
   /// Returns the check up id.
-  Future<Result<int>> savePregnancyCheck(String motherNik, PregnancyCheck data, int trimesterId);
+  Future<Result<int>> savePregnancyCheck(int pregnancyId, PregnancyCheck data, int trimesterId);
   /// Returns the final storage of [imgFile]. If null, it means [imgFile] is not
   /// stored in persistent storage.
   Future<Result<File?>> saveUsgImg({
-    required String motherNik,
+    required int pregnancyId,
     required ImgData imgFile,
     required int checkUpId,
   });
   /// Returns null if there's no available [PregnancyBabySize] for [pregnancyWeekAge].
-  Future<Result<PregnancyBabySize?>> getPregnancyBabySize(PregnancyCheckUpId checkUpId);
-  Future<Result<List<FormWarningStatus>>> getMotherWarningStatus(PregnancyCheckUpId checkUpId);
+  Future<Result<PregnancyBabySize?>> getPregnancyBabySize(PregnancyCheckUpWeek checkUpWeek);
+  Future<Result<List<FormWarningStatus>>> getMotherWarningStatus(PregnancyCheckUpWeek checkUpWeek);
 
   // ====== Chart ==========
   Future<Result<List<MotherChartMenuData>>> getMotherPregnancyEvalGraphMenu();
@@ -69,7 +69,7 @@ class PregnancyRepoImpl with PregnancyRepo {
   List<MotherHomeBabyData>? _homeDataList;
 
   @override
-  Future<Result<List<MotherHomeBabyData>>> getMotherHomeData(@notUsedYet String motherNik) async {
+  Future<Result<List<MotherHomeBabyData>>> getMotherHomeData(@notUsedYet int pregnancyId) async {
     try {
       final res = await _api.getHomeData();
       final rawHomeData = res.data;
@@ -83,11 +83,11 @@ class PregnancyRepoImpl with PregnancyRepo {
     }
   }
   @override
-  Future<Result<List<MotherTrimester>>> getMotherTrimester() async {
+  Future<Result<List<MotherTrimester>>> getMotherTrimester(int pregnancyId) async {
     if(_homeDataList == null) {
-      @mayChangeInFuture
-      final motherNik = VarDi.motherNik.getOrElse();
-      final res = await getMotherHomeData(motherNik);
+      //@mayChangeInFuture
+      //final motherNik = VarDi.motherNik.getOrElse();
+      final res = await getMotherHomeData(pregnancyId);
       if(res is Fail<List<MotherHomeBabyData>>) {
         return res.copy();
       }
@@ -95,16 +95,16 @@ class PregnancyRepoImpl with PregnancyRepo {
     return Success(_homeDataList!.first.trimesterList); //For now, we only use the first one.
   }
   @override
-  Future<Result<List<MotherFoodRecom>>> getMotherFoodRecoms(String motherNik, int pregnancyWeekAge) async {
-    final res = await getMotherHomeData(motherNik);
+  Future<Result<List<MotherFoodRecom>>> getMotherFoodRecoms(int pregnancyId, int pregnancyWeekAge) async {
+    final res = await getMotherHomeData(pregnancyId);
     if(res is Fail<List<MotherHomeBabyData>>) {
       return Fail();
     }
     return Success(_homeDataList!.first.foodRecomList); //For now, we only use the first one.
   }
   @override
-  Future<Result<MotherPregnancyAgeOverview>> getMotherPregnancyAgeOverview(String motherNik) async {
-    final res = await getMotherHomeData(motherNik);
+  Future<Result<MotherPregnancyAgeOverview>> getMotherPregnancyAgeOverview(int pregnancyId) async {
+    final res = await getMotherHomeData(pregnancyId);
     if(res is Fail<List<MotherHomeBabyData>>) {
       return Fail();
     }
@@ -114,22 +114,25 @@ class PregnancyRepoImpl with PregnancyRepo {
 
   PregnancyCheckBody? _checkBody;
   PregnancyCheckFormWarningDataResponse? _checkUpAnalysis;
-  PregnancyCheckUpId? _currentCheckUpId;
+  PregnancyCheckUpWeek? _currentCheckUpWeek;
 
   // ====== Check ==========
   @override
-  Future<Result<int>> getPregnancyCheckId(String motherNik, int week) => _checkUpLocalSrc.getCheckUpId(period: week, nik: motherNik);
+  Future<Result<int>> getPregnancyCheckId(int pregnancyId, int week) => _checkUpLocalSrc.getCheckUpId(period: week, refId: pregnancyId);
   @override
   Future<Result<bool>> savePregnancyCheckId(PregnancyCheckUpId checkUpId) => _checkUpLocalSrc.saveCheckUpId(
     id: checkUpId.id,
     period: checkUpId.week,
-    nik: checkUpId.motherNik,
+    refId: checkUpId.pregnancyId,
   );
   @override
-  Future<Result<PregnancyCheck>> getPregnancyCheck(PregnancyCheckUpId checkUpId) async {
+  Future<Result<PregnancyCheck>> getPregnancyCheck(PregnancyCheckUpWeek checkUpWeek) async {
     try {
-      final checkId = checkUpId.id;
-      final body = PregnancyShowCheckBody(checkId: checkId);
+      //final checkId = checkUpId.id;
+      final body = PregnancyShowCheckBody(
+        trisemester_id: checkUpWeek.trimesterId,
+        week: checkUpWeek.week,
+      );
       _checkBody = await _api.getPregnancyCheckForm(body);
       return Success(PregnancyCheck.fromResponse(_checkBody!));
     } catch(e, stack) {
@@ -141,17 +144,17 @@ class PregnancyRepoImpl with PregnancyRepo {
   }
   @override
   Future<Result<int>> savePregnancyCheck(
-    String motherNik, PregnancyCheck data, int trimesterId,
+      int pregnancyId, PregnancyCheck data, int trimesterId,
   ) async {
     final body = PregnancyCheckBody.fromModel(model: data, trimesterId: trimesterId);
     try {
       final res = await _api.sendPregnancyCheckForm(body);
       final res2 = await savePregnancyCheckId(PregnancyCheckUpId.fromResponse(
-        motherNik: motherNik,
+        pregnancyId: pregnancyId,
         week: data.pregnancyAge,
         response: res.checkupId,
       ));
-      prind("savePregnancyCheck() motherNik= $motherNik res2 = $res2 data.pregnancyAge = ${data.pregnancyAge} res.checkupId = ${res.checkupId}");
+      prind("savePregnancyCheck() pregnancyId= $pregnancyId res2 = $res2 data.pregnancyAge = ${data.pregnancyAge} res.checkupId = ${res.checkupId}");
       if(res2 is! Success<bool>) {
         return (res2 as Fail<bool>).copy();
       }
@@ -165,7 +168,7 @@ class PregnancyRepoImpl with PregnancyRepo {
   }
   @override
   Future<Result<File?>> saveUsgImg({
-    required String motherNik,
+    required int pregnancyId,
     required ImgData imgFile,
     required int checkUpId,
   }) async {
@@ -188,11 +191,14 @@ class PregnancyRepoImpl with PregnancyRepo {
   }
   /// Returns null if there's no available [PregnancyBabySize] for [pregnancyWeekAge].
   @override
-  Future<Result<PregnancyBabySize?>> getPregnancyBabySize(PregnancyCheckUpId checkUpId) async {
-    if(checkUpId != _currentCheckUpId) {
+  Future<Result<PregnancyBabySize?>> getPregnancyBabySize(PregnancyCheckUpWeek checkUpWeek) async {
+    if(checkUpWeek != _currentCheckUpWeek) {
       try {
-        final checkId = checkUpId.id;
-        final body = PregnancyShowCheckBody(checkId: checkId);
+        //final checkId = checkUpId.id;
+        final body = PregnancyShowCheckBody(
+          trisemester_id: checkUpWeek.trimesterId,
+          week: checkUpWeek.week,
+        );
         _checkUpAnalysis = (await _api.getPregnancyCheckWarning(body)).data;
         //_checkBody = await _api.getPregnancyCheckWarning(body);
       } catch(e, stack) {
@@ -200,7 +206,7 @@ class PregnancyRepoImpl with PregnancyRepo {
         prine(stack);
         return Fail(msg: "Error calling `getPregnancyBabySize()`", error: e);
       }
-      _currentCheckUpId = checkUpId;
+      _currentCheckUpWeek = checkUpWeek;
     }
     if(_checkUpAnalysis!.fetusGrowth.desc == null) {
       return Success(null);
@@ -208,11 +214,14 @@ class PregnancyRepoImpl with PregnancyRepo {
     return Success(PregnancyBabySize.fromResponse(_checkUpAnalysis!.fetusGrowth));
   }
   @override
-  Future<Result<List<FormWarningStatus>>> getMotherWarningStatus(PregnancyCheckUpId checkUpId) async {
-    if(checkUpId != _currentCheckUpId) {
+  Future<Result<List<FormWarningStatus>>> getMotherWarningStatus(PregnancyCheckUpWeek checkUpWeek) async {
+    if(checkUpWeek != _currentCheckUpWeek) {
       try {
-        final checkId = checkUpId.id;
-        final body = PregnancyShowCheckBody(checkId: checkId);
+        //final checkId = checkUpId.id;
+        final body = PregnancyShowCheckBody(
+          trisemester_id: checkUpWeek.trimesterId,
+          week: checkUpWeek.week,
+        );
         _checkUpAnalysis = (await _api.getPregnancyCheckWarning(body)).data;
         //_checkBody = await _api.getPregnancyCheckWarning(body);
       } catch(e, stack) {
@@ -221,7 +230,7 @@ class PregnancyRepoImpl with PregnancyRepo {
         prine(stack);
         return Fail(msg: msg, error: e);
       }
-      _currentCheckUpId = checkUpId;
+      _currentCheckUpWeek = checkUpWeek;
     }
     return Success(responseToMotherFormWarning(_checkUpAnalysis!));
   }
@@ -239,30 +248,30 @@ class PregnancyRepoDummy with PregnancyRepo {
   static final obj = PregnancyRepoDummy._();
 
   @override
-  Future<Result<List<MotherHomeBabyData>>> getMotherHomeData(String motherNik) async => Success(motherHomeData);
+  Future<Result<List<MotherHomeBabyData>>> getMotherHomeData(int pregnancyId) async => Success(motherHomeData);
   @override
-  Future<Result<List<MotherTrimester>>> getMotherTrimester() async => Success(dummyTrimesterList);
+  Future<Result<List<MotherTrimester>>> getMotherTrimester(int pregnancyId) async => Success(dummyTrimesterList);
   @override
-  Future<Result<List<MotherFoodRecom>>> getMotherFoodRecoms(String motherNik, int pregnancyWeekAge) async => Success(dummyFoodRecomList(pregnancyWeekAge));
+  Future<Result<List<MotherFoodRecom>>> getMotherFoodRecoms(int pregnancyId, int pregnancyWeekAge) async => Success(dummyFoodRecomList(pregnancyWeekAge));
   @override
-  Future<Result<MotherPregnancyAgeOverview>> getMotherPregnancyAgeOverview(String motherNik) async => Success(dummyPregnancyAgeOverview);
+  Future<Result<MotherPregnancyAgeOverview>> getMotherPregnancyAgeOverview(int pregnancyId) async => Success(dummyPregnancyAgeOverview);
 
   @override
-  Future<Result<PregnancyCheck>> getPregnancyCheck(PregnancyCheckUpId checkUpId) async => Success(dummyPregnancyCheck(checkUpId.week));
+  Future<Result<PregnancyCheck>> getPregnancyCheck(PregnancyCheckUpWeek checkUpWeek) async => Success(dummyPregnancyCheck(checkUpWeek.week));
   @override
-  Future<Result<int>> savePregnancyCheck(String motherNik, PregnancyCheck data, int trimester) async => Success(1);
+  Future<Result<int>> savePregnancyCheck(int pregnancyId, PregnancyCheck data, int trimester) async => Success(1);
   @override
   Future<Result<File?>> saveUsgImg({
-    required String motherNik,
+    required int pregnancyId,
     required ImgData imgFile,
     required int checkUpId,
   }) async => Success(null);
   @override
-  Future<Result<PregnancyBabySize?>> getPregnancyBabySize(PregnancyCheckUpId checkUpId) async => Success(dummyPregnancyBabySize(checkUpId.week));
+  Future<Result<PregnancyBabySize?>> getPregnancyBabySize(PregnancyCheckUpWeek checkUpWeek) async => Success(dummyPregnancyBabySize(checkUpWeek.week));
   @override
-  Future<Result<List<FormWarningStatus>>> getMotherWarningStatus(PregnancyCheckUpId checkUpId) async => Success(motherWarningStatusList);
+  Future<Result<List<FormWarningStatus>>> getMotherWarningStatus(PregnancyCheckUpWeek checkUpWeek) async => Success(motherWarningStatusList);
   @override
-  Future<Result<int>> getPregnancyCheckId(String motherNik, int week) async => Success(1);
+  Future<Result<int>> getPregnancyCheckId(int pregnancyId, int week) async => Success(1);
   @override
   Future<Result<bool>> savePregnancyCheckId(PregnancyCheckUpId checkUpId) async => Success(true);
 

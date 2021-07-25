@@ -15,6 +15,7 @@ import 'package:common/arch/ui/page/_page.dart';
 import 'package:common/arch/ui/widget/form_controller.dart';
 import 'package:common/arch/ui/widget/form_faker.dart';
 import 'package:common/config/_config.dart';
+import 'package:common/test/__common_test_const.dart';
 import 'package:common/util/providers.dart';
 import 'package:common/util/navigations.dart' as nav_ext;
 import 'package:common/value/const_values.dart';
@@ -41,17 +42,7 @@ class BabyRoutes extends ModuleRoute {
     ]),
   ));
   static final babyCheckPage = _BabyCheckFormPage.obj;
-  static final neonatalServicePage = SibRoute("NeonatalServicePage", NeonatalServicePage, (ctx) {
-    final FormGroupInterceptor? interceptor = FormGroupInterceptor();
-    return MainFrame(
-      body: FormFaker(
-        interceptor: interceptor,
-        child: NeonatalServicePage(interceptor: interceptor,).inVmProvider([
-              (ctx) => BabyVmDi.neonatalServiceVm(context: ctx),
-        ]),
-      ),
-    );
-  });
+  static final neonatalServicePage = _BabyNeonantalServicePageRoute.obj;
 
   static final babyImmunizationPage = _BabyImmunizationPageRoute.obj;
   static final growthChartMenuVm = _BabyGrowthChartPageRoute.obj;
@@ -72,7 +63,7 @@ class _BabyCheckFormPage {
     required ProfileCredential babyCredential,
   }) {
     final route = SibRoute("BabyCheckFormPage", BabyCheckFormPage, (ctx) {
-      final FormGroupInterceptor? interceptor = FormGroupInterceptor();
+      final FormGroupInterceptor? interceptor = ConfigUtil.formInterceptor;
       return MainFrame(
           body: FormFaker(
             interceptor: interceptor,
@@ -86,6 +77,32 @@ class _BabyCheckFormPage {
       );
     });
     route.goToPage(context, args: { Const.KEY_DATA: formData });
+  }
+}
+
+class _BabyNeonantalServicePageRoute {
+  _BabyNeonantalServicePageRoute._();
+  static final obj = _BabyNeonantalServicePageRoute._();
+
+  void go({
+    required BuildContext context,
+    required int checkUpId,
+  }) {
+    final route = SibRoute("NeonatalServicePage", NeonatalServicePage, (ctx) {
+      final FormGroupInterceptor? interceptor = ConfigUtil.formInterceptor;
+      return MainFrame(
+        body: FormFaker(
+          interceptor: interceptor,
+          child: NeonatalServicePage(interceptor: interceptor,).inVmProvider([
+                (ctx) => BabyVmDi.neonatalServiceVm(
+                  context: ctx,
+                  checkUpId: checkUpId,
+                ),
+          ]),
+        ),
+      );
+    });
+    route.goToPage(context);
   }
 }
 

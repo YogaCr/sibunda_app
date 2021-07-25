@@ -15,4 +15,7 @@ class DbConst {
   static const TYPE_MOTHER = 1;
   static const TYPE_FATHER = 2;
   static const TYPE_CHILD = 3;
+
+  static const TYPE_PREGNANCY_CHECK = 1;
+  static const TYPE_BABY_CHECK = 2;
 }

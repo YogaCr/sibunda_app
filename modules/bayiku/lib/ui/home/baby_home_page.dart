@@ -74,6 +74,44 @@ class BabyHomePage extends StatelessWidget {
           }
           //showSnackBar(context, "Nama= ${baby.name} isBorn= $isBorn");
         },
+        onAddItemClick: (isBorn) async {
+          if(isBorn) {
+            //final oldBabyCount = vm.bornBabyList.value?.length;
+            final isSaved = await BabyRoutes.obj.goToExternalRouteBuilder(
+              context,
+              GlobalRoutes.home_childFormPage,
+              builderArgs: { Const.KEY_CTX: context, },
+            );
+            if(isSaved == true) {
+              vm..bornBabyList.observeOnce((babyList) {
+                if(babyList?.isNotEmpty == true) {
+                  final babyCred = ProfileCredential.fromBabyOverlay(babyList!.last);
+                  vm.initHome(babyCredential: babyCred);
+                }
+              }, immediatelyGet: false)
+              ..getBabyOverlay(forceLoad: true);
+            }
+          } else {
+            final isSaved = await BabyRoutes.obj.goToExternalRouteBuilder(
+              context,
+              GlobalRoutes.home_motherHplPage,
+              builderArgs: { Const.KEY_CTX: context, },
+            );
+            if(isSaved == true) {
+              vm..unbornBabyList.observeOnce((babyList) {
+                if(babyList?.isNotEmpty == true) {
+                  final babyCred = ProfileCredential.fromBabyOverlay(babyList!.last);
+                  BabyRoutes.obj.goToModule(
+                    context, GlobalRoutes.kehamilanku,
+                    replaceCurrent: true,
+                    args: {Const.KEY_DATA: babyCred},
+                  );
+                }
+              }, immediatelyGet: false)
+                ..getBabyOverlay(forceLoad: true);
+            }
+          }
+        },
       ),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 10),

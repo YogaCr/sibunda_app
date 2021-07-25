@@ -15,6 +15,7 @@ class ChildrenListOverlay extends StatefulWidget {
   final List<BabyOverlayData> bornBabyList;
   final List<BabyOverlayData> unbornBabyList;
   final void Function(BabyOverlayData, bool isBorn)? onItemClick;
+  final void Function(bool isBorn)? onAddItemClick;
   final LiveData<int>? selectedIndex;
   final bool isSelectedIndexOwner;
 
@@ -22,6 +23,7 @@ class ChildrenListOverlay extends StatefulWidget {
     required this.bornBabyList,
     required this.unbornBabyList,
     this.onItemClick,
+    this.onAddItemClick,
     this.selectedIndex,
     bool? isSelectedIndexOwner,
   }): isSelectedIndexOwner = isSelectedIndexOwner ?? selectedIndex == null
@@ -32,6 +34,7 @@ class ChildrenListOverlay extends StatefulWidget {
     bornBabyList: bornBabyList,
     unbornBabyList: unbornBabyList,
     onItemClick: onItemClick,
+    onAddItemClick: onAddItemClick,
     selectedIndex: selectedIndex,
     isSelectedIndexOwner: isSelectedIndexOwner,
   );
@@ -41,6 +44,7 @@ class _ChildrenListOverlayState extends State<ChildrenListOverlay> {
   final List<BabyOverlayData> bornBabyList;
   final List<BabyOverlayData> unbornBabyList;
   final void Function(BabyOverlayData, bool isBorn)? onItemClick;
+  final void Function(bool isBorn)? onAddItemClick;
   final LiveData<int>? selectedIndex;
   final bool isSelectedIndexOwner;
 
@@ -48,6 +52,7 @@ class _ChildrenListOverlayState extends State<ChildrenListOverlay> {
     required this.bornBabyList,
     required this.unbornBabyList,
     required this.onItemClick,
+    required this.onAddItemClick,
     required this.selectedIndex,
     required this.isSelectedIndexOwner,
   });
@@ -71,6 +76,10 @@ class _ChildrenListOverlayState extends State<ChildrenListOverlay> {
             selectedIndex: selectedIndex,
             dataList: unbornBabyList,
             datePrefix: "${Strings.hpl}: ",
+            addItemStr: Strings.add_pregnancy,
+            onAddItemClick: onAddItemClick != null ? () {
+              onAddItemClick!(false);
+            } : null,
             onItemClick: onItemClick != null
                 ? (data) => onItemClick!.call(data, false)
                 : null,
@@ -82,6 +91,10 @@ class _ChildrenListOverlayState extends State<ChildrenListOverlay> {
             selectedIndex: selectedIndex,
             dataList: bornBabyList,
             datePrefix: "${Strings.born}: ",
+            addItemStr: Strings.add_baby,
+            onAddItemClick: onAddItemClick != null ? () {
+              onAddItemClick!(true);
+            } : null,
             onItemClick:  onItemClick != null
                 ? (data) => onItemClick!.call(data, true)
                 : null,
@@ -99,6 +112,8 @@ class ChildrenSingleListOverlay extends StatelessWidget {
   final String datePrefix;
   final List<BabyOverlayData> dataList;
   final void Function(BabyOverlayData)? onItemClick;
+  final void Function()? onAddItemClick;
+  final String? addItemStr;
   final int startIndex;
   final LiveData<int>? selectedIndex;
 
@@ -108,6 +123,8 @@ class ChildrenSingleListOverlay extends StatelessWidget {
     this.startIndex = 0,
     this.datePrefix = "",
     this.onItemClick,
+    this.onAddItemClick,
+    this.addItemStr,
     this.selectedIndex
   });
 
@@ -177,6 +194,40 @@ class ChildrenSingleListOverlay extends StatelessWidget {
         ),
       );
     }) : <Widget>[defaultNoData()];
+
+    if(onAddItemClick != null) {
+      listWidget.add(
+        addItemStr != null ? ActionChip(
+          onPressed: onAddItemClick!,
+          backgroundColor: Manifest.theme.colorPrimary,
+          label: Text(
+            addItemStr!,
+            style: SibTextStyles.size_min_1_colorOnPrimary,
+          ),
+          avatar: Icon(
+            Icons.add_rounded,
+            size: 27,
+            color: white,
+          ),
+        ) : InkResponse(
+          onTap: onAddItemClick!,
+          child: Container(
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(
+                color: Manifest.theme.colorPrimary,
+                width: 2,
+              ),
+            ),
+            child: Icon(
+              Icons.add_rounded,
+              size: 27,
+              color: Manifest.theme.colorPrimary,
+            ),
+          ),
+        ),
+      );
+    }
 
     return Column(
       children: [

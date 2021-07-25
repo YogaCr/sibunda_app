@@ -42,12 +42,12 @@ mixin MyBabyRepo {
     required int month,
   });
   Future<Result<bool>> saveBabyCheckUpId({
-    required String babyNik,
+    required int babyId,
     required int month,
     required int id,
   });
   Future<Result<int>> getBabyCheckUpId({
-    required String babyNik,
+    required int babyId,
     required int month,
   });
   //Future<Result<Map<String, dynamic>>> getBabyMonthlyCheck(BabyMonthlyFormBody body);
@@ -243,16 +243,16 @@ class MyBabyRepoImpl with MyBabyRepo {
 
   @override
   Future<Result<bool>> saveBabyCheckUpId({
-    required String babyNik,
+    required int babyId,
     required int month,
     required int id,
-  }) => _checkUpLocalSrc.saveCheckUpId(id: id, period: month, nik: babyNik);
+  }) => _checkUpLocalSrc.saveCheckUpId(id: id, period: month, refId: babyId);
 
   @override
   Future<Result<int>> getBabyCheckUpId({
-    required String babyNik,
+    required int babyId,
     required int month,
-  }) => _checkUpLocalSrc.getCheckUpId(period: month, nik: babyNik);
+  }) => _checkUpLocalSrc.getCheckUpId(period: month, refId: babyId);
 
   @override
   Future<Result<bool>> saveNeonatalServiceForm({
@@ -329,14 +329,14 @@ class MyBabyRepoDummy with MyBabyRepo {
 
   @override
   Future<Result<bool>> saveBabyCheckUpId({
-    required String babyNik,
+    required int babyId,
     required int month,
     required int id,
   }) async => Success(true);
 
   @override
   Future<Result<int>> getBabyCheckUpId({
-    required String babyNik,
+    required int babyId,
     required int month,
   }) async => Success(1);
 }

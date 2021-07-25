@@ -1,5 +1,6 @@
 import 'package:common/arch/di/usecase_di.dart';
 import 'package:common/arch/domain/model/immunization.dart';
+import 'package:common/arch/domain/model/profile_data.dart';
 import 'package:flutter/material.dart';
 import 'package:kehamilanku/core/di/kehamilanku_usecase_di.dart';
 import 'package:kehamilanku/ui/chart/mother_chart_vm.dart';
@@ -20,8 +21,12 @@ class KehamilankuVmDi {
     getBornBabyList: UseCaseDi.getBornBabyList,
     getUnbornBabyList: UseCaseDi.getUnbornBabyList,
   );
-  static KehamilankuCheckFormVm checkFormVm({BuildContext? context,}) => KehamilankuCheckFormVm(
+  static KehamilankuCheckFormVm checkFormVm({
+    BuildContext? context,
+    required ProfileCredential pregnancyCred,
+  }) => KehamilankuCheckFormVm(
     context: context,
+    pregnancyId: pregnancyCred,
     getPregnancyCheckUpId: UseCaseDi.getPregnancyCheckUpId,
     getPregnancyCheck: KehamilankuUseCaseDi.getPregnancyCheck,
     savePregnancyCheck: KehamilankuUseCaseDi.savePregnancyCheck,
@@ -31,31 +36,45 @@ class KehamilankuVmDi {
     getPregnancyCheckForm: KehamilankuUseCaseDi.getPregnancyCheckForm,
     getCurrentMotherHpl: UseCaseDi.getCurrentMotherHpl,
     getCurrentMotherHpht: UseCaseDi.getCurrentMotherHpht,
-    getMotherNik: UseCaseDi.getMotherNik,
+    //getMotherNik: UseCaseDi.getMotherNik,
   );
-  static PregnancyImmunizationVm immunizationVm({BuildContext? context,}) => PregnancyImmunizationVm(
+  static PregnancyImmunizationVm immunizationVm({
+    BuildContext? context,
+    required ProfileCredential pregnancyCred,
+  }) => PregnancyImmunizationVm(
     context: context,
+    pregnancyId: pregnancyCred,
     getMotherImmunizationGroupList: KehamilankuUseCaseDi.getMotherImmunizationGroupList,
     getMotherImmunizationOverview: KehamilankuUseCaseDi.getMotherImmunizationOverview,
   );
   static PregnancyImmunizationPopupVm immunizationPopupVm({
     required ImmunizationData immunization,
+    required ProfileCredential pregnancyCred,
     BuildContext? context,
   }) => PregnancyImmunizationPopupVm(
     context: context,
+    pregnancyId: pregnancyCred,
     immunization: immunization,
     getMotherNik: UseCaseDi.getMotherNik,
     getPregnancyImmunizationConfirmForm: KehamilankuUseCaseDi.getPregnancyImmunizationConfirmForm,
     confirmMotherImmunization: KehamilankuUseCaseDi.confirmMotherImmunization,
   );
-  static MotherPregEvalChartMenuVm pregEvalChartMenuVm({BuildContext? context,}) => MotherPregEvalChartMenuVm(
+  static MotherPregEvalChartMenuVm pregEvalChartMenuVm({
+    BuildContext? context,
+    required ProfileCredential pregnancyCred,
+  }) => MotherPregEvalChartMenuVm(
     context: context,
+    pregnancyId: pregnancyCred,
     getMotherPregEvalGraphMenu: KehamilankuUseCaseDi.getMotherPregEvalGraphMenu,
   );
-  static MotherChartVm motherChartVm({BuildContext? context,}) => MotherChartVm(
+  static MotherChartVm motherChartVm({
+    BuildContext? context,
+    required ProfileCredential pregnancyCred,
+  }) => MotherChartVm(
     context: context,
-    getMotherNik: UseCaseDi.getMotherNik,
-    getCurrentMotherPregnancyId: UseCaseDi.getCurrentMotherPregnancyId,
+    pregnancyId: pregnancyCred,
+    //getMotherNik: UseCaseDi.getMotherNik,
+    //getCurrentMotherPregnancyId: UseCaseDi.getCurrentMotherPregnancyId,
     getMotherTfuChart: KehamilankuUseCaseDi.getMotherTfuChart,
     getMotherDjjChart: KehamilankuUseCaseDi.getMotherDjjChart,
     getMotherBmiChart: KehamilankuUseCaseDi.getMotherBmiChart,

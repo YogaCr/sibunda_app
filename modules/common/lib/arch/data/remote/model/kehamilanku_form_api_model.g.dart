@@ -66,14 +66,16 @@ Map<String, dynamic> _$PregnancyCheckBodyToJson(PregnancyCheckBody instance) =>
 PregnancyShowCheckBody _$PregnancyShowCheckBodyFromJson(
     Map<String, dynamic> json) {
   return PregnancyShowCheckBody(
-    checkId: json['weekly_trisemester_checkup_id'] as int,
+    trisemester_id: json['trisemester_id'] as int,
+    week: json['week'] as int,
   );
 }
 
 Map<String, dynamic> _$PregnancyShowCheckBodyToJson(
         PregnancyShowCheckBody instance) =>
     <String, dynamic>{
-      'weekly_trisemester_checkup_id': instance.checkId,
+      'trisemester_id': instance.trisemester_id,
+      'week': instance.week,
     };
 
 PregnancyCreateCheckResponse _$PregnancyCreateCheckResponseFromJson(

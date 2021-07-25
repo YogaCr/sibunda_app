@@ -28,7 +28,7 @@ class FormVmGroupObserver<VM extends FormVmGroup> extends StatefulWidget {
   final Widget? Function(BuildContext, String)? postSubmitBtnBuilder;
 
   /// The [String] in its parameter is for async key from [AsyncVm.doOnFailTask].
-  final Widget? Function(BuildContext, String, Fail)? onFailSubmitBtnBuilder;
+  final Widget? Function(BuildContext, String, Fail, Widget disabledSubmitBtn)? onFailSubmitBtnBuilder;
 
   /// This will be called after [Vm.submit] method is called.
   /// This callback parameter `true` if the [Vm.submit] is success.
@@ -108,7 +108,7 @@ class _FormVmGroupObserverState<VM extends FormVmGroup>
   final Widget? Function(BuildContext, String)? postSubmitBtnBuilder;
 
   /// The [String] in its parameter is for async key from [AsyncVm.doOnFailTask].
-  final Widget? Function(BuildContext, String, Fail)? onFailSubmitBtnBuilder;
+  final Widget? Function(BuildContext, String, Fail, Widget disabledSubmitBtn)? onFailSubmitBtnBuilder;
 
   /// This will be called after [Vm.submit] method is called.
   /// This callback parameter `true` if the [Vm.submit] is success.
@@ -251,8 +251,13 @@ class _FormVmGroupObserverState<VM extends FormVmGroup>
                 ? defaultLoading() : null,
             postAsyncBuilder: postSubmitBtnBuilder ?? (ctx, key) => key == FormVmGroupMixin.submitFormKey
                 ? submitBtnWrapperBuilder(ctx, true) /* Off course true after successfully sent data */ : null,
-            onFailBuilder: onFailSubmitBtnBuilder ?? (ctx, key, fail) => key == FormVmGroupMixin.submitFormKey
-                ? submitBtnWrapperBuilder(ctx, false) /* Off course false after failing sent data */ : null,
+            onFailBuilder: (ctx, key, fail) {
+               if(key == FormVmGroupMixin.submitFormKey) {
+                 final disabledSubmitBtn = submitBtnWrapperBuilder(ctx, false);
+                 return onFailSubmitBtnBuilder?.call(ctx, key, fail, disabledSubmitBtn)
+                    ?? disabledSubmitBtn;
+               }
+            },
           ),
         ) : defaultEmptyWidget(),
       ),

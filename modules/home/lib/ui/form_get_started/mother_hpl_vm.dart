@@ -1,3 +1,4 @@
+import 'package:common/arch/ui/vm/vm_auth.dart';
 import 'package:common/util/times.dart';
 import 'package:core/domain/model/result.dart';
 import 'package:core/ui/base/async_vm.dart';
@@ -5,12 +6,13 @@ import 'package:core/ui/base/live_data.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:home/core/domain/usecase/form_get_started_usecase.dart';
 
-class MotherHplVm extends AsyncVm {
+class MotherHplVm extends AsyncAuthVm {
   static const proceedKey = "proceed";
 
   MotherHplVm({
+    BuildContext? context,
     required SaveMotherHpl saveMotherHpl,
-  }): _saveMotherHpl = saveMotherHpl {
+  }): _saveMotherHpl = saveMotherHpl, super(context: context) {
     _init();
   }
   final SaveMotherHpl _saveMotherHpl;

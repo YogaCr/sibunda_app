@@ -24,7 +24,7 @@ mixin SaveBabyCheckForm {
 
 mixin SaveBabyCheckUpId {
   Future<Result<bool>> call({
-    required String babyNik,
+    required int babyId,
     required int month,
     required int id,
   });
@@ -32,7 +32,7 @@ mixin SaveBabyCheckUpId {
 
 mixin GetBabyCheckUpId {
   Future<Result<int>> call({
-    required String babyNik,
+    required int babyId,
     required int month,
   });
 }
@@ -76,10 +76,10 @@ class SaveBabyCheckUpIdImpl with SaveBabyCheckUpId {
   SaveBabyCheckUpIdImpl(this._repo);
   @override
   Future<Result<bool>> call({
-    required String babyNik,
+    required int babyId,
     required int month,
     required int id,
-  }) => _repo.saveBabyCheckUpId(babyNik: babyNik, month: month, id: id);
+  }) => _repo.saveBabyCheckUpId(babyId: babyId, month: month, id: id);
 }
 
 class GetBabyCheckUpIdImpl with GetBabyCheckUpId {
@@ -87,9 +87,9 @@ class GetBabyCheckUpIdImpl with GetBabyCheckUpId {
   GetBabyCheckUpIdImpl(this._repo);
   @override
   Future<Result<int>> call({
-    required String babyNik,
+    required int babyId,
     required int month,
-  }) => _repo.getBabyCheckUpId(babyNik: babyNik, month: month);
+  }) => _repo.getBabyCheckUpId(babyId: babyId, month: month);
 }
 
 class GetBabyCheckFormAnswerImpl with GetBabyCheckFormAnswer {
@@ -104,6 +104,11 @@ class GetBabyCheckFormAnswerImpl with GetBabyCheckFormAnswer {
     final res = await _repo.getBabyMonthlyCheck(yearId: yearId, month: month);
     if(res is Success<BabyMonthlyFormBody>) {
       final data = res.data;
+      final res3 = await _repo.saveBabyCheckUpId(babyId: babyId, month: month, id: data.id!);
+      if(res3 is! Success<bool>) {
+        return Fail(msg: "Can't save baby form check up id to local");
+      }
+      /*
       final res2 = await _repo.getBabyNik();
       if(res2 is Success<Map<int, String>>) {
         prind("GetBabyCheckFormAnswerImpl data = ${data.toJson()}");
@@ -114,11 +119,8 @@ class GetBabyCheckFormAnswerImpl with GetBabyCheckFormAnswer {
         if(babyNik == null) {
           throw "Can't get `babyNik` with `babyId` of '$babyId'";
         }
-        final res3 = await _repo.saveBabyCheckUpId(babyNik: babyNik, month: month, id: data.id!);
-        if(res3 is! Success<bool>) {
-          return Fail(msg: "Can't save baby form check up id to local");
-        }
-      } else {
+       */
+      else {
         return Fail(msg: "Can't get baby NIK to save form check up id to local");
       }
     }

@@ -7,11 +7,11 @@ mixin CheckUpLocalSrc {
   Future<Result<bool>> saveCheckUpId({
     required int id,
     required int period,
-    required String nik,
+    required int refId,
   });
   Future<Result<int>> getCheckUpId({
     required int period,
-    required String nik,
+    required int refId,
   });
   Future<Result<bool>> clear();
 }
@@ -29,10 +29,10 @@ class CheckUpLocalSrcImpl with CheckUpLocalSrc {
   Future<Result<bool>> saveCheckUpId({
     required int id,
     required int period,
-    required String nik,
+    required int refId,
   }) async {
     try {
-      final entity = CheckUpIdEntity(id: id, period: period, nik: nik);
+      final entity = CheckUpIdEntity(id: id, period: period, refId: refId);
       final rowId = await _checkUpIdDao.insert(entity);
       prind("CheckUpLocalSrc.saveCheckUpId() rowId= $rowId");
       if(rowId < 0) {
@@ -48,22 +48,22 @@ class CheckUpLocalSrcImpl with CheckUpLocalSrc {
   @override
   Future<Result<int>> getCheckUpId({
     required int period,
-    required String nik,
+    required int refId,
   }) async {
     try {
-      prind("getCheckUpId() period = $period nik = $nik");
+      prind("getCheckUpId() period = $period refId = $refId");
       final all = await _checkUpIdDao.getAll();
       prind("getCheckUpId() all = $all");
-      final e = await _checkUpIdDao.getByNikAndPeriod(nik: nik, period: period);
+      final e = await _checkUpIdDao.getByRefIdAndPeriod(refId: refId, period: period);
       prind("getCheckUpId() e = $e");
       if(e == null) {
-        return Fail(msg: "Can't get `CheckUpIdEntity` from DB with `period` '$period' and `nik` '$nik'",);
+        return Fail(msg: "Can't get `CheckUpIdEntity` from DB with `period` '$period' and `refId` '$refId'",);
       }
       return Success(e.id);
     } catch(e, stack) {
       prine(e);
       prine(stack);
-      return Fail(msg: "Can't get `CheckUpIdEntity` from DB with `period` '$period' and `nik` '$nik'", error: e);
+      return Fail(msg: "Can't get `CheckUpIdEntity` from DB with `period` '$period' and `refId` '$refId'", error: e);
     }
   }
   @override

@@ -6,15 +6,15 @@ import 'package:common/arch/domain/repo/bayiku_repo.dart';
 import 'package:core/domain/model/result.dart';
 
 mixin GetTrimesterList {
-  Future<Result<List<MotherTrimester>>> call();
+  Future<Result<List<MotherTrimester>>> call(int pregnancyId);
 }
 
 mixin GetMotherFoodRecomList {
-  Future<Result<List<MotherFoodRecom>>> call(String motherNik, int pregnancyWeekAge);
+  Future<Result<List<MotherFoodRecom>>> call(int pregnancyId, int pregnancyWeekAge);
 }
 
 mixin GetPregnancyAgeOverview {
-  Future<Result<MotherPregnancyAgeOverview>> call(String motherNik);
+  Future<Result<MotherPregnancyAgeOverview>> call(int pregnancyId);
 }
 
 
@@ -22,16 +22,16 @@ class GetTrimesterListImpl with GetTrimesterList {
   GetTrimesterListImpl(this._repo);
   final PregnancyRepo _repo;
   @override
-  Future<Result<List<MotherTrimester>>> call() => _repo.getMotherTrimester();
+  Future<Result<List<MotherTrimester>>> call(int pregnancyId) => _repo.getMotherTrimester(pregnancyId);
 }
 class GetMotherFoodRecomListImpl with GetMotherFoodRecomList {
   GetMotherFoodRecomListImpl(this._repo);
   final PregnancyRepo _repo;
   @override
-  Future<Result<List<MotherFoodRecom>>> call(String motherNik, int pregnancyWeekAge) => _repo.getMotherFoodRecoms(motherNik, pregnancyWeekAge);
+  Future<Result<List<MotherFoodRecom>>> call(int pregnancyId, int pregnancyWeekAge) => _repo.getMotherFoodRecoms(pregnancyId, pregnancyWeekAge);
 }
 class GetPregnancyAgeOverviewImpl with GetPregnancyAgeOverview {
   GetPregnancyAgeOverviewImpl(this._repo);
   final PregnancyRepo _repo;
-  Future<Result<MotherPregnancyAgeOverview>> call(String motherNik) => _repo.getMotherPregnancyAgeOverview(motherNik);
+  Future<Result<MotherPregnancyAgeOverview>> call(int pregnancyId) => _repo.getMotherPregnancyAgeOverview(pregnancyId);
 }

@@ -8,15 +8,16 @@ import 'package:common/util/data_mapper.dart';
 import 'package:common/value/const_values.dart';
 import 'package:core/domain/model/result.dart';
 import 'package:core/ui/base/live_data.dart';
+import 'package:core/util/_consoles.dart';
 import 'package:home/core/domain/usecase/_auth_usecase.dart';
 import 'package:tuple/tuple.dart';
 import 'package:email_validator/email_validator.dart';
 
 class LoginFormVm extends FormVmGroup {
-  LoginFormVm(this.useCase) {
+  LoginFormVm(this.login) {
     init();
   }
-  final Login useCase;
+  final Login login;
 
   @override
   List<LiveData> get liveDatas => [];
@@ -27,10 +28,12 @@ class LoginFormVm extends FormVmGroup {
     final email = respMap[Const.KEY_EMAIL] as String;
     final password = respMap[Const.KEY_PSWD] as String;
     final data = LoginData(email: email, password: password);
-    return await useCase(data).then<Result<String>>((value) => value is Success<SessionData>
-        ? Success("")
-        : (value as Fail<SessionData>).copy()
-    );
+    final res = await login(data);
+    prind("LoginVm.doSubmitJob() res= $res");
+    if(res is Success<SessionData>) {
+      return Success("ok");
+    }
+    return (res as Fail<SessionData>).copy();
   }
 
   @override

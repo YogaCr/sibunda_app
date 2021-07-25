@@ -1,10 +1,12 @@
 import 'package:common/arch/domain/model/chart_data_mother.dart';
 import 'package:common/arch/domain/model/immunization.dart';
 import 'package:common/arch/domain/model/kehamilanku_data.dart';
+import 'package:common/arch/domain/model/profile_data.dart';
 import 'package:common/arch/ui/page/_page.dart';
 import 'package:common/arch/ui/widget/form_controller.dart';
 import 'package:common/arch/ui/widget/form_faker.dart';
 import 'package:common/config/_config.dart';
+import 'package:common/test/__common_test_const.dart';
 import 'package:common/util/providers.dart';
 import 'package:common/util/navigations.dart' as nav_ext;
 import 'package:common/value/const_values.dart';
@@ -32,9 +34,6 @@ class KehamilankuRoutes extends ModuleRoute {
   @override
   Set<SibRoute> get routes => {
     kehamilankuHomePage,
-    pregnancyCheckPage._route,
-    immunizationPage,
-    chartPage._route,
   };
 
 
@@ -44,17 +43,9 @@ class KehamilankuRoutes extends ModuleRoute {
     ]),
   ));
   static final pregnancyCheckPage = _PregnancyCheckPageRoute.obj;
-  static final immunizationPage = SibRoute("PregnancyImmunizationPage", PregnancyImmunizationPage, (ctx) => MainFrame(
-    body: PregnancyImmunizationPage().inVmProvider([
-      (ctx) => KehamilankuVmDi.immunizationVm(context: ctx),
-    ]),
-  ));
+  static final immunizationPage = _PregnancyImmunizationPageRoute.obj;
 
-  static final pregEvalChartMenuPage = SibRoute("MotherPregEvalChartMenuPage", MotherPregEvalChartMenuPage, (ctx) => MainFrame(
-    body: MotherPregEvalChartMenuPage().inVmProvider([
-      (ctx) => KehamilankuVmDi.pregEvalChartMenuVm(context: ctx),
-    ]),
-  ));
+  static final pregEvalChartMenuPage = _PregnancyEvalChartMenuPageRoute.obj;
   static final chartPage = _MotherChartPageRoute.obj;
 
   // ================= POPUP ================
@@ -66,20 +57,46 @@ class _PregnancyCheckPageRoute {
   _PregnancyCheckPageRoute._();
   static final obj = _PregnancyCheckPageRoute._();
 
-  final SibRoute _route = SibRoute("PregnancyCheckPage", KehamilankuTrimesterFormPage, (ctx) {
-    final FormGroupInterceptor? interceptor = FormGroupInterceptor();
-    return MainFrame(
-      body: FormFaker(
-        interceptor: interceptor,
-        child: KehamilankuTrimesterFormPage(interceptor: interceptor,).inVmProvider([
-              (ctx) => KehamilankuVmDi.checkFormVm(context: ctx),
-        ]),
-      ),
-    );
-  });
-
-  void go(BuildContext context, MotherTrimester data) {
+  void go({
+    required BuildContext context,
+    required MotherTrimester data,
+    required ProfileCredential pregnancyCred,
+  }) {
+    final SibRoute _route = SibRoute("PregnancyCheckPage", KehamilankuTrimesterFormPage, (ctx) {
+      final FormGroupInterceptor? interceptor = ConfigUtil.formInterceptor;
+      return MainFrame(
+        body: FormFaker(
+          interceptor: interceptor,
+          child: KehamilankuTrimesterFormPage(interceptor: interceptor,).inVmProvider([
+                (ctx) => KehamilankuVmDi.checkFormVm(
+                  context: ctx,
+                  pregnancyCred: pregnancyCred,
+                ),
+          ]),
+        ),
+      );
+    });
     _route.goToPage(context, args: {Const.KEY_TRIMESTER : data});
+  }
+}
+
+class _PregnancyImmunizationPageRoute {
+  _PregnancyImmunizationPageRoute._();
+  static final obj = _PregnancyImmunizationPageRoute._();
+
+  void go({
+    required BuildContext context,
+    required ProfileCredential pregnancyCred,
+  }) {
+    final route = SibRoute("PregnancyImmunizationPage", PregnancyImmunizationPage, (ctx) => MainFrame(
+      body: PregnancyImmunizationPage().inVmProvider([
+            (ctx) => KehamilankuVmDi.immunizationVm(
+              context: ctx,
+              pregnancyCred: pregnancyCred
+            ),
+      ]),
+    ));
+    route.goToPage(context);
   }
 }
 
@@ -95,13 +112,18 @@ class _PregnancyImmunizationPopupRoute {
  */
   /// Returns future String. String is for date confirmation. If null, then
   /// it means the confirmation is not successful.
-  Future<String?> popup(BuildContext context, ImmunizationData immunization) {
+  Future<String?> popup({
+    required BuildContext context,
+    required ImmunizationData immunization,
+    required ProfileCredential pregnancyCred,
+  }) {
     //_route.goToPage(context, args: {Const.KEY_TRIMESTER : data});
     final _route = SibRoute("PregnancyImmunizationPopup", PregnancyImmunizationPopupPage, (ctx) => MainFrame(
       body: PregnancyImmunizationPopupPage().inVmProvider([
             (ctx) => KehamilankuVmDi.immunizationPopupVm(
               immunization: immunization,
               context: ctx,
+              pregnancyCred: pregnancyCred,
             ),
       ]),
     ));
@@ -112,18 +134,43 @@ class _PregnancyImmunizationPopupRoute {
   }
 }
 
+class _PregnancyEvalChartMenuPageRoute {
+  _PregnancyEvalChartMenuPageRoute._();
+  static final obj = _PregnancyEvalChartMenuPageRoute._();
+
+  void go({
+    required BuildContext context,
+    required ProfileCredential pregnancyCred,
+  }) {
+    final route = SibRoute("MotherPregEvalChartMenuPage", MotherPregEvalChartMenuPage, (ctx) => MainFrame(
+      body: MotherPregEvalChartMenuPage().inVmProvider([
+            (ctx) => KehamilankuVmDi.pregEvalChartMenuVm(
+              context: ctx,
+              pregnancyCred: pregnancyCred,
+            ),
+      ]),
+    ));
+    route.goToPage(context);
+  }
+}
 
 class _MotherChartPageRoute {
   _MotherChartPageRoute._();
   static final obj = _MotherChartPageRoute._();
 
-  final _route = SibRoute("MotherChartPage", MotherChartPage, (ctx) => MainFrame(
-    body: MotherChartPage().inVmProvider([
-      (ctx) => KehamilankuVmDi.motherChartVm(context: ctx),
-    ]),
-  ));
-
-  void go(BuildContext context, MotherChartType type) {
+  void go({
+    required BuildContext context,
+    required MotherChartType type,
+    required ProfileCredential pregnancyCred,
+  }) {
+    final _route = SibRoute("MotherChartPage", MotherChartPage, (ctx) => MainFrame(
+      body: MotherChartPage().inVmProvider([
+            (ctx) => KehamilankuVmDi.motherChartVm(
+              context: ctx,
+              pregnancyCred: pregnancyCred,
+            ),
+      ]),
+    ));
     _route.goToPage(context, args: { Const.KEY_DATA: type });
   }
 }

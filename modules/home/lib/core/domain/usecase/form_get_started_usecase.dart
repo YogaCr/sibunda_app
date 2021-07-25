@@ -3,12 +3,16 @@ import 'package:common/arch/domain/model/father.dart';
 import 'package:common/arch/domain/model/mother.dart';
 import 'package:common/arch/domain/repo/_repos.dart';
 import 'package:core/domain/model/result.dart';
-
+/*
 mixin SaveChildData {
   Future<Result<bool>> call(Child data, int page);
 }
+ */
 mixin SaveChildrenData {
-  Future<Result<bool>> call(List<Child> data);
+  Future<Result<bool>> call({
+    required List<Child> data,
+    required String email,
+  });
 }
 
 mixin SaveFatherData {
@@ -23,9 +27,11 @@ mixin SaveMotherHpl {
   Future<Result<bool>> call(DateTime date);
 }
 
+/*
 mixin SaveLastChildBirthDate {
   Future<Result<bool>> call(DateTime date);
 }
+ */
 
 mixin SaveChildrenCount {
   Future<Result<bool>> call(int count);
@@ -33,13 +39,14 @@ mixin SaveChildrenCount {
 
 
 
-
+/*
 class SaveChildDataImpl with SaveChildData {
   SaveChildDataImpl(this.repo);
   final ChildRepo repo;
   @override
   Future<Result<bool>> call(Child data, int page) => repo.saveChildData(data);
 }
+ */
 
 class SaveFatherDataImpl with SaveFatherData {
   SaveFatherDataImpl(this.repo);
@@ -60,12 +67,13 @@ class SaveMotherHplImpl with SaveMotherHpl {
   SaveMotherHplImpl(this._repo);
   Future<Result<bool>> call(DateTime date) => _repo.saveMotherHpl(date);
 }
-
+/*
 class SaveLastChildBirthDateImpl with SaveLastChildBirthDate {
   final ChildRepo _repo;
   SaveLastChildBirthDateImpl(this._repo);
   Future<Result<bool>> call(DateTime date) => _repo.saveLastChildBirthDate(date);
 }
+ */
 
 class SaveChildrenCountImpl with SaveChildrenCount {
   final ChildRepo _repo;
@@ -76,5 +84,11 @@ class SaveChildrenDataImpl with SaveChildrenData {
   final ChildRepo _repo;
   SaveChildrenDataImpl(this._repo);
   @override
-  Future<Result<bool>> call(List<Child> data) => _repo.saveChildrenData(data);
+  Future<Result<bool>> call({
+    required List<Child> data,
+    required String email,
+  }) => _repo.saveChildrenData(
+    data: data,
+    email: email,
+  );
 }

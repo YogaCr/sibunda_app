@@ -33,7 +33,12 @@ class HomeVmDi {
   static LoginFormVm get loginFormVm => LoginFormVm(HomeUseCaseDi.login);
   static MotherFormVm get motherFormVm => MotherFormVm(HomeUseCaseDi.saveMotherData);
   static FatherFormVm get fatherFormVm => FatherFormVm(HomeUseCaseDi.saveFatherData);
-  static MotherHplVm get motherHplVm => MotherHplVm(saveMotherHpl: HomeUseCaseDi.saveMotherHpl);
+  static MotherHplVm motherHplVm({
+    BuildContext? context,
+  }) => MotherHplVm(
+    context: context,
+    saveMotherHpl: HomeUseCaseDi.saveMotherHpl,
+  );
   static DoMotherHavePregnancyVm get doMotherHavePregnancyVm => DoMotherHavePregnancyVm(
     deleteCurrentMotherHpl: UseCaseDi.deleteCurrentMotherHpl,
   );
@@ -41,8 +46,13 @@ class HomeVmDi {
     //saveLastChildBirthDate: HomeUseCaseDi.saveLastChildBirthDate,
     saveChildrenCount: HomeUseCaseDi.saveChildrenCount,
   );
-  static ChildFormVm get childFormVm => ChildFormVm(
-    childCount: MutableLiveData(),
+  static ChildFormVm childFormVm({
+    BuildContext? context,
+    LiveData<int>? childCount,
+  }) => ChildFormVm(
+    context: context,
+    getCurrentEmail: UseCaseDi.getCurrentEmail,
+    childCount: childCount ?? MutableLiveData(1),
     saveChildrenData: HomeUseCaseDi.saveChildrenData,
   );
   static HomeVm homeVm({BuildContext? context,}) => HomeVm(

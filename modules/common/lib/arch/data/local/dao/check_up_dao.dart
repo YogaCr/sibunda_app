@@ -25,11 +25,11 @@ class CheckUpIdDao extends DatabaseAccessor<AppDatabase> with _$CheckUpIdDaoMixi
   Future<int> deleteData(Insertable<CheckUpIdEntity> e) => delete(checkUpIdEntities).delete(e);
   Future<int> deleteAll() => delete(checkUpIdEntities).go();
   Future<List<CheckUpIdEntity>> getAll() => select(checkUpIdEntities).get();
-  Future<CheckUpIdEntity?> getByNikAndPeriod({
-    required String nik,
+  Future<CheckUpIdEntity?> getByRefIdAndPeriod({
+    required int refId,
     required int period,
   }) => (select(checkUpIdEntities)
-        ..where((it) => it.nik.equals(nik))
+        ..where((it) => it.refId.equals(refId))
         ..where((it) => it.period.equals(period)))
       .getSingleOrNull();
 }

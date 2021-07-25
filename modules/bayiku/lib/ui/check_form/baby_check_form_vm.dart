@@ -82,9 +82,14 @@ class BabyCheckFormVm extends FormAuthVmGroup {
 
   final MutableLiveData<List<FormWarningStatus>> _warningList = MutableLiveData();
   final MutableLiveData<BabyMonthlyFormBody> _formAnswer = MutableLiveData();
+  //final MutableLiveData<int> _checkUpId = MutableLiveData();
 
   LiveData<List<FormWarningStatus>> get warningList => _warningList;
   LiveData<BabyMonthlyFormBody> get formAnswer => _formAnswer;
+  //LiveData<int> get checkUpId => _checkUpId;
+
+  @override
+  List<LiveData> get liveDatas => [_warningList, _formAnswer,];
 
   late int yearId;
   final MutableLiveData<int> _currentMonth = MutableLiveData();
@@ -142,9 +147,6 @@ class BabyCheckFormVm extends FormAuthVmGroup {
       return List.empty(growable: false);
     }
   }
-
-  @override
-  List<LiveData> get liveDatas => [];
 /*
 
   id: null,
@@ -271,9 +273,11 @@ class BabyCheckFormVm extends FormAuthVmGroup {
       if(res is Success<BabyMonthlyFormBody>) {
         final data = res.data;
         _formAnswer.value = data;
+        //_checkUpId.value = data.id;
         return null;
       } else {
         _formAnswer.value = null;
+        //_checkUpId.value = null;
       }
       return res as Fail;
     });

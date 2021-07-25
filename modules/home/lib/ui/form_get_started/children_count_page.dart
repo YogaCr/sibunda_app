@@ -20,7 +20,7 @@ class ChildrenCountPage extends StatelessWidget {
     final vm = ViewModelProvider.of<ChildrenCountVm>(context);
     vm.onSubmit.observeForever((success) {
       if(success == true) {
-        _moveToNext(context);
+        _moveToNext(context, vm);
       } else {
         showSnackBar(context, Strings.error_occurred_when_saving_data);
       }
@@ -81,7 +81,7 @@ class ChildrenCountPage extends StatelessWidget {
     );
   }
 
-  void _moveToNext(BuildContext context) {
+  void _moveToNext(BuildContext context, ChildrenCountVm vm) {
     if(pageControll != null) {
       pageControll!.animateToPage(
         pageControll!.page!.toInt() +1,
@@ -89,7 +89,10 @@ class ChildrenCountPage extends StatelessWidget {
         curve: Curves.easeOut,
       );
     } else {
-      HomeRoutes.childFormPage.goToPage(context);
+      HomeRoutes.childFormPage.go(
+        context: context,
+        childCount: vm.childrenCount,
+      );
     }
   }
 }

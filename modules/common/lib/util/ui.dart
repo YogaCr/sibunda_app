@@ -4,6 +4,7 @@ import 'package:common/arch/ui/widget/popup_widget.dart';
 import 'package:common/res/theme/_theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 extension SnackBarExt on SnackBar {
   void show(BuildContext context) {
@@ -37,6 +38,24 @@ void showSnackBar(
     );
   }
 }
+
+void showToast({
+  required String msg,
+  Toast? len,
+  Color? bgColor,
+  Color? textColor,
+}) {
+  Fluttertoast.showToast(
+    msg: msg,
+    toastLength: len,
+    backgroundColor: bgColor,
+    webBgColor: bgColor != null ? getColorRgbaRepr(bgColor) : "grey",
+    webPosition: "center",
+    textColor: textColor,
+  );//(context, , duration: Duration(seconds: 4));
+}
+
+String getColorRgbaRepr(Color color) => "rgba(${color.red}, ${color.green}, ${color.blue}, ${color.alpha})";
 
 void showIdStringPopup({
   required BuildContext context,

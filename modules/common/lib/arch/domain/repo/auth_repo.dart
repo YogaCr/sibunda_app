@@ -127,7 +127,7 @@ class AuthRepoImpl with AuthRepo {
       if(res.code != 200) {
         return Fail(code: res.code, msg: res.message);
       }
-      final session = SessionData(token: res.data.token, tokenType: res.data.tokenType,);
+      final session = SessionData(token: res.data!.token, tokenType: res.data!.tokenType,);
       VarDi.session = session;
       VarDi.isSessionValid.value = true;
 

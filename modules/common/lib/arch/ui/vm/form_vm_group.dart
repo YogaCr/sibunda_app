@@ -164,6 +164,9 @@ mixin FormVmGroupMixin implements AsyncVm {
       return await doSubmitJob().then((value) {
         //prind("FormVmGroupMixin() submit() value = $value");
         _onSubmit.value = value;
+        if(value is Fail<String>) {
+          return value;
+        }
       });
     });
   }
@@ -179,7 +182,7 @@ mixin FormVmGroupMixin implements AsyncVm {
   /// - For [FormType.check] : [Set<int>].
   Future<bool> validateField(int groupPosition, String inputKey, dynamic response) async {
     if(response is String) return response.isNotEmpty;
-    if(response is Set) return response.isNotEmpty;
+    if(response is Iterable) return response.isNotEmpty;
     return response != null;
   }
   String getResponseStringRepr(int groupPosition, String inputKey, dynamic response) =>

@@ -14,27 +14,27 @@ mixin GetPregnancyCheckForm {
 }
 
 mixin GetPregnancyBabySize {
-  Future<Result<PregnancyBabySize?>> call(PregnancyCheckUpId checkUpId);
+  Future<Result<PregnancyBabySize?>> call(PregnancyCheckUpWeek checkUpWeek);
 }
 
 mixin SavePregnancyCheck {
-  Future<Result<int>> call(String motherNik, PregnancyCheck data, int trimesterId);
+  Future<Result<int>> call(int pregnancyId, PregnancyCheck data, int trimesterId);
 }
 
 mixin SaveUsgImg {
   Future<Result<File?>> call({
-    required String motherNik,
+    required int pregnancyId,
     required ImgData imgFile,
     required int checkUpId,
   });
 }
 
 mixin GetPregnancyCheck {
-  Future<Result<PregnancyCheck>> call(PregnancyCheckUpId checkUpId);
+  Future<Result<PregnancyCheck>> call(PregnancyCheckUpWeek checkUpWeek);
 }
 
 mixin GetMotherFormWarningStatus {
-  Future<Result<List<FormWarningStatus>>> call(PregnancyCheckUpId checkUpId);
+  Future<Result<List<FormWarningStatus>>> call(PregnancyCheckUpWeek checkUpWeek);
 }
 
 
@@ -50,15 +50,15 @@ class GetPregnancyBabySizeImpl with GetPregnancyBabySize {
   GetPregnancyBabySizeImpl(this._repo);
   final PregnancyRepo _repo;
   @override
-  Future<Result<PregnancyBabySize?>> call(PregnancyCheckUpId checkUpId) => _repo.getPregnancyBabySize(checkUpId);
+  Future<Result<PregnancyBabySize?>> call(PregnancyCheckUpWeek checkUpWeek) => _repo.getPregnancyBabySize(checkUpWeek);
 }
 
 class SavePregnancyCheckImpl with SavePregnancyCheck {
   SavePregnancyCheckImpl(this._repo);
   final PregnancyRepo _repo;
   @override
-  Future<Result<int>> call(String motherNik, PregnancyCheck data, int trimesterId) =>
-      _repo.savePregnancyCheck(motherNik, data, trimesterId);
+  Future<Result<int>> call(int pregnancyId, PregnancyCheck data, int trimesterId) =>
+      _repo.savePregnancyCheck(pregnancyId, data, trimesterId);
 }
 
 class SaveUsgImgImpl with SaveUsgImg {
@@ -66,17 +66,17 @@ class SaveUsgImgImpl with SaveUsgImg {
   final PregnancyRepo _repo;
   @override
   Future<Result<File?>> call({
-    required String motherNik,
+    required int pregnancyId,
     required ImgData imgFile,
     required int checkUpId,
-  }) => _repo.saveUsgImg(motherNik: motherNik, imgFile: imgFile, checkUpId: checkUpId);
+  }) => _repo.saveUsgImg(pregnancyId: pregnancyId, imgFile: imgFile, checkUpId: checkUpId);
 }
 
 class GetPregnancyCheckImpl with GetPregnancyCheck {
   GetPregnancyCheckImpl(this._repo);
   final PregnancyRepo _repo;
   @override
-  Future<Result<PregnancyCheck>> call(PregnancyCheckUpId checkUpId) => _repo.getPregnancyCheck(checkUpId);
+  Future<Result<PregnancyCheck>> call(PregnancyCheckUpWeek checkUpWeek) => _repo.getPregnancyCheck(checkUpWeek);
 }
 
 
@@ -84,5 +84,5 @@ class GetMotherFormWarningStatusImpl with GetMotherFormWarningStatus {
   GetMotherFormWarningStatusImpl(this._repo);
   final PregnancyRepo _repo;
   @override
-  Future<Result<List<FormWarningStatus>>> call(PregnancyCheckUpId checkUpId) => _repo.getMotherWarningStatus(checkUpId);
+  Future<Result<List<FormWarningStatus>>> call(PregnancyCheckUpWeek checkUpWeek) => _repo.getMotherWarningStatus(checkUpWeek);
 }

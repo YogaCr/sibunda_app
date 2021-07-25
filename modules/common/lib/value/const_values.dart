@@ -7,6 +7,8 @@ class Const {
 
   static const SEPARATOR_ANSWER_ITEM = ";~;";
 
+  static const KEY_CTX = "context";
+
   static const REMOTE_HOST = "https://sibunda.amirmb.com";
   static const ENDPOINT_ROOT = "$REMOTE_HOST/api";
   static const ENDPOINT_AUTH = "$ENDPOINT_ROOT/auth";
