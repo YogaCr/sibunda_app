@@ -24,7 +24,10 @@ mixin SaveMotherData {
 }
 
 mixin SaveMotherHpl {
-  Future<Result<bool>> call(DateTime date);
+  Future<Result<bool>> call({
+    required DateTime date,
+    required String motherNik,
+  });
 }
 
 /*
@@ -35,6 +38,10 @@ mixin SaveLastChildBirthDate {
 
 mixin SaveChildrenCount {
   Future<Result<bool>> call(int count);
+}
+
+mixin DeleteCurrentMotherHpl {
+  Future<Result<bool>> call();
 }
 
 
@@ -65,7 +72,13 @@ class SaveMotherDataImpl with SaveMotherData {
 class SaveMotherHplImpl with SaveMotherHpl {
   final MotherRepo _repo;
   SaveMotherHplImpl(this._repo);
-  Future<Result<bool>> call(DateTime date) => _repo.saveMotherHpl(date);
+  Future<Result<bool>> call({
+    required DateTime date,
+    required String motherNik,
+  }) => _repo.saveMotherHpl(
+    date: date,
+    motherNik: motherNik,
+  );
 }
 /*
 class SaveLastChildBirthDateImpl with SaveLastChildBirthDate {
@@ -91,4 +104,11 @@ class SaveChildrenDataImpl with SaveChildrenData {
     data: data,
     email: email,
   );
+}
+
+class DeleteCurrentMotherHplImpl with DeleteCurrentMotherHpl {
+  final MotherRepo _repo;
+  DeleteCurrentMotherHplImpl(this._repo);
+  @override
+  Future<Result<bool>> call() => _repo.deleteCurrentMotherHpl();
 }

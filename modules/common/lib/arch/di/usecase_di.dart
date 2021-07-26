@@ -22,11 +22,14 @@ class UseCaseDi {
   static GetProfile get getProfile => GetProfileImpl(RepoDi.profileRepo);
   static GetCurrentEmail get getCurrentEmail => GetCurrentEmailImpl(RepoDi.profileRepo);
   static GetPregnancyCheckUpId get getPregnancyCheckUpId => GetPregnancyCheckUpIdImpl(RepoDi.pregnancyRepo);
+  /*
   static GetCurrentMotherHpl get getCurrentMotherHpl => GetMotherHplImpl(RepoDi.motherRepo);
   static DeleteCurrentMotherHpl get deleteCurrentMotherHpl => DeleteCurrentMotherHplImpl(RepoDi.motherRepo);
   static GetCurrentMotherHpht get getCurrentMotherHpht => GetCurrentMotherHphtImpl(RepoDi.motherRepo);
 
   static GetCurrentMotherPregnancyId get getCurrentMotherPregnancyId => GetCurrentMotherPregnancyIdImpl(RepoDi.motherRepo);
+   */
+  static GetMotherHpl get getMotherHpl => GetMotherHplImpl(RepoDi.motherRepo);
   static GetMotherPregnancy get getMotherPregnancy => GetMotherPregnancyImpl(RepoDi.motherRepo);
   static SaveMotherPregnancy get saveMotherPregnancy => SaveMotherPregnancyImpl(RepoDi.motherRepo);
 

@@ -27,7 +27,7 @@ class HomeVmDi {
     signUpAndRegisterOtherData: HomeUseCaseDi.signUpAndRegister,
     login: HomeUseCaseDi.login,
     initConfig: UseCaseDi.initConfig,
-    saveMotherHpl: HomeUseCaseDi.saveMotherHpl,
+    //saveMotherHpl: HomeUseCaseDi.saveMotherHpl,
   );
   static SignUpFormVm get signUpFormVm => SignUpFormVm(HomeUseCaseDi.signUp);
   static LoginFormVm get loginFormVm => LoginFormVm(HomeUseCaseDi.login);
@@ -37,10 +37,12 @@ class HomeVmDi {
     BuildContext? context,
   }) => MotherHplVm(
     context: context,
+    getMotherNik: UseCaseDi.getMotherNik,
+    //saveMotherPregnancy: UseCaseDi.saveMotherPregnancy,
     saveMotherHpl: HomeUseCaseDi.saveMotherHpl,
   );
   static DoMotherHavePregnancyVm get doMotherHavePregnancyVm => DoMotherHavePregnancyVm(
-    deleteCurrentMotherHpl: UseCaseDi.deleteCurrentMotherHpl,
+    deleteCurrentMotherHpl: HomeUseCaseDi.deleteCurrentMotherHpl,
   );
   static ChildrenCountVm get childrenCountVm => ChildrenCountVm(
     //saveLastChildBirthDate: HomeUseCaseDi.saveLastChildBirthDate,

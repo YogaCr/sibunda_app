@@ -29,8 +29,9 @@ class KehamilankuCheckFormVm extends FormAuthVmGroup {
     BuildContext? context,
     required this.pregnancyId,
     //required GetMotherNik getMotherNik,
-    required GetCurrentMotherHpl getCurrentMotherHpl,
-    required GetCurrentMotherHpht getCurrentMotherHpht,
+    //required GetCurrentMotherHpl getCurrentMotherHpl,
+    //required GetCurrentMotherHpht getCurrentMotherHpht,
+    required GetMotherHpl getMotherHpl,
     required GetPregnancyCheckUpId getPregnancyCheckUpId,
     required SavePregnancyCheck savePregnancyCheck,
     required SaveUsgImg saveUsgImg,
@@ -40,8 +41,9 @@ class KehamilankuCheckFormVm extends FormAuthVmGroup {
     required GetPregnancyCheckForm getPregnancyCheckForm,
   }):
     //_getMotherNik = getMotherNik,
-    _getCurrentMotherHpl = getCurrentMotherHpl,
-    _getCurrentMotherHpht = getCurrentMotherHpht,
+    //_getCurrentMotherHpl = getCurrentMotherHpl,
+    //_getCurrentMotherHpht = getCurrentMotherHpht,
+    _getMotherHpl = getMotherHpl,
     _getPregnancyCheckUpId = getPregnancyCheckUpId,
     _savePregnancyCheck = savePregnancyCheck,
     _saveUsgImg = saveUsgImg,
@@ -114,6 +116,7 @@ class KehamilankuCheckFormVm extends FormAuthVmGroup {
 
   final ProfileCredential pregnancyId;
 
+  final GetMotherHpl _getMotherHpl;
   final GetPregnancyCheckUpId _getPregnancyCheckUpId;
   final SavePregnancyCheck _savePregnancyCheck;
   final SaveUsgImg _saveUsgImg;
@@ -122,8 +125,8 @@ class KehamilankuCheckFormVm extends FormAuthVmGroup {
   final GetPregnancyBabySize _getPregnancyBabySize;
   final GetPregnancyCheckForm _getPregnancyCheckForm;
   //final GetMotherNik _getMotherNik;
-  final GetCurrentMotherHpl _getCurrentMotherHpl;
-  final GetCurrentMotherHpht _getCurrentMotherHpht;
+  //final GetCurrentMotherHpl _getCurrentMotherHpl;
+  //final GetCurrentMotherHpht _getCurrentMotherHpht;
 
   final MutableLiveData<PregnancyCheck> _pregnancyCheck = MutableLiveData();
   final MutableLiveData<List<FormWarningStatus>> _formWarningStatusList = MutableLiveData();
@@ -153,6 +156,19 @@ class KehamilankuCheckFormVm extends FormAuthVmGroup {
       //final motherNik = res1.data;
     }
     */
+
+    final hplRes = await _getMotherHpl(pregnancyId.id);
+
+    prind("MotherCHeckFormVm._lateInit() hplRes= $hplRes");
+
+    if(hplRes is Success<DateTime>) {
+      final hpl = hplRes.data;
+      final hpht = getHpht(hpl);
+
+      setResponse(0, Const.KEY_HPL, hpl);
+      setResponse(0, Const.KEY_HPHT, hpht);
+    }
+    /*
     final res2 = await _getCurrentMotherHpl();
     final res3 = await _getCurrentMotherHpht();
 
@@ -165,6 +181,7 @@ class KehamilankuCheckFormVm extends FormAuthVmGroup {
       setResponse(0, Const.KEY_HPL, hpl);
       setResponse(0, Const.KEY_HPHT, hpht);
     }
+     */
   }
 
   @override

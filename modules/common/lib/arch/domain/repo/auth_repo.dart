@@ -165,6 +165,7 @@ class AuthRepoImpl with AuthRepo {
         return Fail(msg: "Can't save `email` in local");
       }
 
+      /*
       //final unbornChild = bioData.first.children.firstWhereOrNull((e) => e.)
       final motherHpl = bioData.first.motherHpl;
       if(motherHpl != null) {
@@ -178,6 +179,7 @@ class AuthRepoImpl with AuthRepo {
           return Fail(msg: "Can't save `hpht` in local");
         }
       }
+       */
 
       return Success(session, 200);
     } catch(e, stack) {

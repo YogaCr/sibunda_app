@@ -42,6 +42,8 @@ mixin AccountLocalSrc {
   Future<Result<ProfileEntity>> getProfileByNik(String nik, { int? type });
   Future<Result<List<ProfileEntity>>> getProfilesByPregnancies(List<PregnancyEntity> pregnancies);
 
+  Future<Result<int>> getCredentialIdByNik(String nik);
+
   Future<Result<String>> getMotherNik(String email);
   Future<Result<String>> getFatherNik(String email);
   Future<Result<Map<int, String>>> getChildrenNik(String email);
@@ -171,7 +173,7 @@ class AccountLocalSrcImpl with AccountLocalSrc {
       }
       await _profileDao.insertAll(profiles);
       await _pregnancyDao.insertAll(batchProfiles.pregnancies);
-
+      /*
       final currentLatestPreg = batchProfiles.pregnancies.lastOrNull;
       if(currentLatestPreg != null) {
         final res = await _pregnancyLocalSrc.saveCurrentPregnancyId(currentLatestPreg.id);
@@ -181,6 +183,7 @@ class AccountLocalSrcImpl with AccountLocalSrc {
           return Fail(msg: msg);
         }
       }
+       */
 
       return Success(true);
     } catch(e, stack) {
@@ -246,6 +249,22 @@ class AccountLocalSrcImpl with AccountLocalSrc {
       list.add(prof);
     }
     return Success(list);
+  }
+
+  @override
+  Future<Result<int>> getCredentialIdByNik(String nik) async {
+    try {
+      final res = await _profileDao.getCredentialIdByNik(nik);
+      if(res == null) {
+        return Fail(msg: "Can't get credetial id with `nik` of '$nik'");
+      }
+      return Success(res);
+    } catch(e, stack) {
+      final msg = "Error calling `getCredentialIdByNik()`";
+      prine("$msg; e= $e");
+      prine(stack);
+      return Fail(msg: msg, error: e,);
+    }
   }
 
   @override

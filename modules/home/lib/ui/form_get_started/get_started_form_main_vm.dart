@@ -28,22 +28,26 @@ class GetStartedFormMainVm extends AsyncVm {
     required SignUpAndRegisterOtherData signUpAndRegisterOtherData,
     required Login login,
     required InitConfig initConfig,
-    required SaveMotherHpl saveMotherHpl,
-  }): _saveMotherHpl = saveMotherHpl,
+    //required SaveMotherHpl saveMotherHpl,
+  }): //_saveMotherHpl = saveMotherHpl,
       _signUpAndRegisterOtherData = signUpAndRegisterOtherData,
       _login = login,
       _initConfig = initConfig {
     signUpFormVm = SignUpFormVm(_signup);
     motherVm = MotherFormVm(_saveMotherData);
     fatherVm = FatherFormVm(_saveFatherData);
-    motherHplVm = MotherHplVm(saveMotherHpl: _saveMotherHplForChild);
+    motherHplVm = MotherHplVm(
+      getMotherNik: _getMotherNikDummy,
+      saveMotherHpl: _saveMotherHplForChild,
+      //saveMotherPregnancy:
+    );
     doMotherHavePregnancyVm = DoMotherHavePregnancyVm(deleteCurrentMotherHpl: _deleteCurrentMotherHpl);
     childrenCountVm = ChildrenCountVm(
       saveChildrenCount: _saveChildrenCount,
       //saveLastChildBirthDate: _saveLastChildBirthDate,
     );
     childVm = ChildFormVm(
-      getCurrentEmail: _GetCurrentEmailDummy(),
+      getCurrentEmail: _getCurrentEmailDummy,
       childCount: childrenCountVm.childrenCount,
       saveChildrenData: _saveChildrenData,
     );
@@ -73,7 +77,10 @@ class GetStartedFormMainVm extends AsyncVm {
   final SignUpAndRegisterOtherData _signUpAndRegisterOtherData;
   final Login _login;
   final InitConfig _initConfig;
-  final SaveMotherHpl _saveMotherHpl;
+  //final SaveMotherHpl _saveMotherHpl;
+
+  final _GetMotherNikDummy _getMotherNikDummy = _GetMotherNikDummy();
+  final _GetCurrentEmailDummy _getCurrentEmailDummy = _GetCurrentEmailDummy();
 
   final _SignupImpl _signup = _SignupImpl();
   final _SaveChildrenDataImpl _saveChildrenData = _SaveChildrenDataImpl();
@@ -131,6 +138,7 @@ class GetStartedFormMainVm extends AsyncVm {
       );
       prind("sendData() res1= $res1");
 
+      /*
       if(!doMotherHavePregnancyVm.isHplDeleted) {
         final hpl = _saveMotherHplForChild.data.value;
         if(hpl == null) {
@@ -144,6 +152,7 @@ class GetStartedFormMainVm extends AsyncVm {
           return res2.copy(msg: "Can't save mother HPL");
         }
       }
+       */
 
       _onSubmit.value = res1 is Success<bool>;
       if(res1 is Fail<bool>) {
@@ -168,6 +177,11 @@ class GetStartedFormMainVm extends AsyncVm {
 
 /// 'Cause in this context (signup), email isn't needed.
 class _GetCurrentEmailDummy with GetCurrentEmail {
+  @override
+  Future<Result<String>> call() async => Success("<dummy>");
+}
+
+class _GetMotherNikDummy with GetMotherNik {
   @override
   Future<Result<String>> call() async => Success("<dummy>");
 }
@@ -221,7 +235,10 @@ class _SaveMotherHplImpl with SaveMotherHpl {
   final MutableLiveData<DateTime> _data = MutableLiveData();
   LiveData<DateTime> get data => _data;
   @override
-  Future<Result<bool>> call(DateTime date) async {
+  Future<Result<bool>> call({
+    required DateTime date,
+    required String motherNik,
+  }) async {
     _data.value = date;
     return Success(true);
   }

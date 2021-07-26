@@ -10,6 +10,7 @@ import 'package:core/util/_consoles.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 mixin PregnancyLocalSrc {
+  /*
   Future<Result<bool>> saveMotherHpl(DateTime date);
   Future<Result<DateTime?>> getCurrentMotherHpl();
   Future<Result<bool>> deleteCurrentMotherHpl();
@@ -20,6 +21,9 @@ mixin PregnancyLocalSrc {
 
   Future<Result<int?>> getCurrentPregnancyId();
   Future<Result<bool>> saveCurrentPregnancyId(int pregnancyId);
+   */
+
+  Future<Result<DateTime>> getMotherHpl(int pregnancyId);
 
   Future<Result<List<PregnancyEntity>>> getPregnancyOfUser(String motherNik,);
   Future<Result<bool>> savePregnancy({
@@ -45,7 +49,7 @@ class PregnancyLocalSrcImpl with PregnancyLocalSrc {
     _profileDao = profileDao,
     _pregnancyDao = pregnancyDao
   ;
-
+  /*
   @override
   Future<Result<bool>> saveMotherHpl(DateTime date) async {
     try {
@@ -119,7 +123,23 @@ class PregnancyLocalSrcImpl with PregnancyLocalSrc {
       return Fail();
     }
   }
+  */
 
+  @override
+  Future<Result<DateTime>> getMotherHpl(int pregnancyId) async {
+    try {
+      final res = await _pregnancyDao.getById(pregnancyId);
+      if(res != null) {
+        return Success(res.hpl);
+      }
+      return Fail(msg: "Can't get HPL date with `pregnancyId` of '$pregnancyId'");
+    } catch(e, stack) {
+      final msg = "Error calling `getMotherHpl()`";
+      prine("$msg; e= $e");
+      prine(stack);
+      return Fail(msg: msg, error: e);
+    }
+  }
   @override
   Future<Result<List<PregnancyEntity>>> getPregnancyOfUser(String motherNik,) async {
     final credId = await _profileDao.getCredentialIdByNik(motherNik, type: DbConst.TYPE_MOTHER);
@@ -147,6 +167,7 @@ class PregnancyLocalSrcImpl with PregnancyLocalSrc {
   @override
   Future<Result<bool>> clear() async {
     try {
+      /*
       final res1 = await deleteCurrentMotherHpl();
       if(res1 is Fail<bool>) {
         return res1;
@@ -155,11 +176,13 @@ class PregnancyLocalSrcImpl with PregnancyLocalSrc {
       if(res2 is Fail<bool>) {
         return res2;
       }
-      final deleted = await _pregnancyDao.deleteAll();
       return Success(
           (res1 as Success<bool>).data
               && (res2 as Success<bool>).data
       );
+       */
+      final deleted = await _pregnancyDao.deleteAll();
+      return Success(true);
     } catch(e, stack) {
       final msg = "Error calling `clear()`";
       prine("$msg; e= $e");

@@ -61,9 +61,10 @@ class ChildRepoImpl with ChildRepo {
         final res = await _dataApi.createChild(body);
         if(res.code != 200) {
           final msg = "Can't upload baby data in index $i with data of ${child.toJson} \n res= $res";
+          prine(msg);
           return Fail(msg: msg);
         }
-        final serverId = res.anak_id;
+        final serverId = res.anak_id!;
         final childProfile = ProfileEntity(
           userId: userId,
           type: DbConst.TYPE_CHILD,
@@ -107,7 +108,7 @@ class ChildRepoImpl with ChildRepo {
           final msg = "Can't upload fetus data in index $i with hpl of $hpl \n res= $res";
           return Fail(msg: msg);
         }
-        final serverId = res.anak_id;
+        final serverId = res.anak_id!;
         final pregnancy = PregnancyEntity(
           id: serverId,
           credentialId: userId,

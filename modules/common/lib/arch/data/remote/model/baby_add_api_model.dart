@@ -45,7 +45,7 @@ class BabyAddResponse with _$BabyAddResponse {
     required int code,
     required String message,
     required String status,
-    required int anak_id,
+    required int? anak_id,
   }) = _BabyAddResponse;
   factory BabyAddResponse.fromJson(Map<String, dynamic> map) = _BabyAddResponse.fromJson;
 }

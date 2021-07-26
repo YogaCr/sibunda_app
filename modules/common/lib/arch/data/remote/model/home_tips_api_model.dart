@@ -19,7 +19,7 @@ class TipsResponse with _$TipsResponse {
 class TipsDataResponse with _$TipsDataResponse {
   const factory TipsDataResponse({
     required int id,
-    required String img_url,
+    required String? img_url,
     required String desc,
     required int? user_id,
     required TipsCategoryResponse tips_category,

@@ -87,7 +87,7 @@ class _ChildrenListOverlayState extends State<ChildrenListOverlay> {
           SizedBox(height: 10,),
           ChildrenSingleListOverlay(
             header: Strings.my_baby,
-            startIndex: 1,
+            startIndex: unbornBabyList.length,
             selectedIndex: selectedIndex,
             dataList: bornBabyList,
             datePrefix: "${Strings.born}: ",

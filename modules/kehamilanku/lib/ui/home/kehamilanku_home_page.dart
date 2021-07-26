@@ -43,6 +43,12 @@ class KehamilankuHomePage extends StatelessWidget {
       //..init();
     prind("KehamilankuHomePage build() 2");
 
+    vm.ageOverview.observe(vm, (data) {
+      if(data != null) {
+        overlayVisibility.value = false;
+      }
+    }, tag: toString());
+
     if(selectedPreg != null) {
       vm.init(profile: selectedPreg);
     }
@@ -56,12 +62,18 @@ class KehamilankuHomePage extends StatelessWidget {
       ),
       contentOverlay: BabySelectionOverlay(
         visibilityController: overlayVisibility,
-        selectedIndex: LiveData(0),
+        selectedIndex: vm.selectedIndex,
         bornBabyList: vm.bornBabyList,
         unbornBabyList: vm.unbornBabyList,
         onItemClick: (baby, isBorn) {
           if(!isBorn) { // unborn baby must always be 1. Off course though.
-            overlayVisibility.value = false;
+            final prof = ProfileCredential.fromBabyOverlay(baby);
+            prind("PregHomePage prof= $prof vm.selectedProfile.value= ${vm.selectedProfile.value}");
+            if(prof != vm.selectedProfile.value) {
+              vm.init(profile: prof);
+            } else {
+              overlayVisibility.value = false;
+            }
           } else {
             KehamilankuRoutes.obj.goToModule(
               context, GlobalRoutes.bayiku,
@@ -103,6 +115,7 @@ class KehamilankuHomePage extends StatelessWidget {
               vm..unbornBabyList.observeOnce((babyList) {
                 if(babyList?.isNotEmpty == true) {
                   final babyCred = ProfileCredential.fromBabyOverlay(babyList!.last);
+                  prind("PregHomePage add fetus babyCred= $babyCred vm.selectedProfile.value= ${vm.selectedProfile.value}");
                   vm.init(profile: babyCred);
                 }
               }, immediatelyGet: false)

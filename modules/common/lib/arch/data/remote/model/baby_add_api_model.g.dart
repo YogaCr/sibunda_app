@@ -11,7 +11,7 @@ _$_BabyAddResponse _$_$_BabyAddResponseFromJson(Map<String, dynamic> json) {
     code: json['code'] as int,
     message: json['message'] as String,
     status: json['status'] as String,
-    anak_id: json['anak_id'] as int,
+    anak_id: json['anak_id'] as int?,
   );
 }
 

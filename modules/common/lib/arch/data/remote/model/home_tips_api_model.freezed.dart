@@ -242,7 +242,7 @@ class _$TipsDataResponseTearOff {
 
   _TipsDataResponse call(
       {required int id,
-      required String img_url,
+      required String? img_url,
       required String desc,
       required int? user_id,
       required TipsCategoryResponse tips_category,
@@ -272,7 +272,7 @@ const $TipsDataResponse = _$TipsDataResponseTearOff();
 /// @nodoc
 mixin _$TipsDataResponse {
   int get id => throw _privateConstructorUsedError;
-  String get img_url => throw _privateConstructorUsedError;
+  String? get img_url => throw _privateConstructorUsedError;
   String get desc => throw _privateConstructorUsedError;
   int? get user_id => throw _privateConstructorUsedError;
   TipsCategoryResponse get tips_category => throw _privateConstructorUsedError;
@@ -293,7 +293,7 @@ abstract class $TipsDataResponseCopyWith<$Res> {
       _$TipsDataResponseCopyWithImpl<$Res>;
   $Res call(
       {int id,
-      String img_url,
+      String? img_url,
       String desc,
       int? user_id,
       TipsCategoryResponse tips_category,
@@ -332,7 +332,7 @@ class _$TipsDataResponseCopyWithImpl<$Res>
       img_url: img_url == freezed
           ? _value.img_url
           : img_url // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       desc: desc == freezed
           ? _value.desc
           : desc // ignore: cast_nullable_to_non_nullable
@@ -377,7 +377,7 @@ abstract class _$TipsDataResponseCopyWith<$Res>
   @override
   $Res call(
       {int id,
-      String img_url,
+      String? img_url,
       String desc,
       int? user_id,
       TipsCategoryResponse tips_category,
@@ -419,7 +419,7 @@ class __$TipsDataResponseCopyWithImpl<$Res>
       img_url: img_url == freezed
           ? _value.img_url
           : img_url // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       desc: desc == freezed
           ? _value.desc
           : desc // ignore: cast_nullable_to_non_nullable
@@ -467,7 +467,7 @@ class _$_TipsDataResponse implements _TipsDataResponse {
   @override
   final int id;
   @override
-  final String img_url;
+  final String? img_url;
   @override
   final String desc;
   @override
@@ -540,7 +540,7 @@ class _$_TipsDataResponse implements _TipsDataResponse {
 abstract class _TipsDataResponse implements TipsDataResponse {
   const factory _TipsDataResponse(
       {required int id,
-      required String img_url,
+      required String? img_url,
       required String desc,
       required int? user_id,
       required TipsCategoryResponse tips_category,
@@ -554,7 +554,7 @@ abstract class _TipsDataResponse implements TipsDataResponse {
   @override
   int get id => throw _privateConstructorUsedError;
   @override
-  String get img_url => throw _privateConstructorUsedError;
+  String? get img_url => throw _privateConstructorUsedError;
   @override
   String get desc => throw _privateConstructorUsedError;
   @override

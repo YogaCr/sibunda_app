@@ -43,6 +43,7 @@ class RepoDi {
 
   //static FamilyRepo getFamilyRepo() => FamilyDummyRepo();
   static MotherRepo get motherRepo => MotherRepoImpl(
+    dataApi: ApiDi.dataApi,
     accountLocalSrc: LocalSrcDi.accountSrc,
     pregnancyLocalSrc: LocalSrcDi.pregnancySrc,
   ); //MotherRepoDummy.obj;

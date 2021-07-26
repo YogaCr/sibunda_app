@@ -17,6 +17,7 @@ class HomeUseCaseDi {
   //static SaveChildData get saveChildData => SaveChildDataImpl(RepoDi.childRepo);
   static SaveChildrenData get saveChildrenData => SaveChildrenDataImpl(RepoDi.childRepo);
   static SaveMotherHpl get saveMotherHpl => SaveMotherHplImpl(RepoDi.motherRepo);
+  static DeleteCurrentMotherHpl get deleteCurrentMotherHpl => DeleteCurrentMotherHplImpl(RepoDi.motherRepo);
   //static SaveLastChildBirthDate get saveLastChildBirthDate => SaveLastChildBirthDateImpl(RepoDi.childRepo);
   static SaveChildrenCount get saveChildrenCount => SaveChildrenCountImpl(RepoDi.childRepo);
 

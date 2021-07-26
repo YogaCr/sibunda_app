@@ -28,7 +28,7 @@ Map<String, dynamic> _$_$_TipsResponseToJson(_$_TipsResponse instance) =>
 _$_TipsDataResponse _$_$_TipsDataResponseFromJson(Map<String, dynamic> json) {
   return _$_TipsDataResponse(
     id: json['id'] as int,
-    img_url: json['img_url'] as String,
+    img_url: json['img_url'] as String?,
     desc: json['desc'] as String,
     user_id: json['user_id'] as int?,
     tips_category: TipsCategoryResponse.fromJson(

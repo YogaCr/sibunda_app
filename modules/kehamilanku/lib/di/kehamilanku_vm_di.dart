@@ -27,6 +27,7 @@ class KehamilankuVmDi {
   }) => KehamilankuCheckFormVm(
     context: context,
     pregnancyId: pregnancyCred,
+    getMotherHpl: UseCaseDi.getMotherHpl,
     getPregnancyCheckUpId: UseCaseDi.getPregnancyCheckUpId,
     getPregnancyCheck: KehamilankuUseCaseDi.getPregnancyCheck,
     savePregnancyCheck: KehamilankuUseCaseDi.savePregnancyCheck,
@@ -34,8 +35,8 @@ class KehamilankuVmDi {
     getMotherFormWarningStatus: KehamilankuUseCaseDi.getMotherFormWarningStatus,
     getPregnancyBabySize: KehamilankuUseCaseDi.getPregnancyBabySize,
     getPregnancyCheckForm: KehamilankuUseCaseDi.getPregnancyCheckForm,
-    getCurrentMotherHpl: UseCaseDi.getCurrentMotherHpl,
-    getCurrentMotherHpht: UseCaseDi.getCurrentMotherHpht,
+    //getCurrentMotherHpl: UseCaseDi.getCurrentMotherHpl,
+    //getCurrentMotherHpht: UseCaseDi.getCurrentMotherHpht,
     //getMotherNik: UseCaseDi.getMotherNik,
   );
   static PregnancyImmunizationVm immunizationVm({

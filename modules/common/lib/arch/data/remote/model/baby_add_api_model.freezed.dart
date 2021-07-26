@@ -24,7 +24,7 @@ class _$BabyAddResponseTearOff {
       {required int code,
       required String message,
       required String status,
-      required int anak_id}) {
+      required int? anak_id}) {
     return _BabyAddResponse(
       code: code,
       message: message,
@@ -46,7 +46,7 @@ mixin _$BabyAddResponse {
   int get code => throw _privateConstructorUsedError;
   String get message => throw _privateConstructorUsedError;
   String get status => throw _privateConstructorUsedError;
-  int get anak_id => throw _privateConstructorUsedError;
+  int? get anak_id => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -59,7 +59,7 @@ abstract class $BabyAddResponseCopyWith<$Res> {
   factory $BabyAddResponseCopyWith(
           BabyAddResponse value, $Res Function(BabyAddResponse) then) =
       _$BabyAddResponseCopyWithImpl<$Res>;
-  $Res call({int code, String message, String status, int anak_id});
+  $Res call({int code, String message, String status, int? anak_id});
 }
 
 /// @nodoc
@@ -94,7 +94,7 @@ class _$BabyAddResponseCopyWithImpl<$Res>
       anak_id: anak_id == freezed
           ? _value.anak_id
           : anak_id // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
     ));
   }
 }
@@ -106,7 +106,7 @@ abstract class _$BabyAddResponseCopyWith<$Res>
           _BabyAddResponse value, $Res Function(_BabyAddResponse) then) =
       __$BabyAddResponseCopyWithImpl<$Res>;
   @override
-  $Res call({int code, String message, String status, int anak_id});
+  $Res call({int code, String message, String status, int? anak_id});
 }
 
 /// @nodoc
@@ -143,7 +143,7 @@ class __$BabyAddResponseCopyWithImpl<$Res>
       anak_id: anak_id == freezed
           ? _value.anak_id
           : anak_id // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
     ));
   }
 }
@@ -167,7 +167,7 @@ class _$_BabyAddResponse implements _BabyAddResponse {
   @override
   final String status;
   @override
-  final int anak_id;
+  final int? anak_id;
 
   @override
   String toString() {
@@ -213,7 +213,7 @@ abstract class _BabyAddResponse implements BabyAddResponse {
       {required int code,
       required String message,
       required String status,
-      required int anak_id}) = _$_BabyAddResponse;
+      required int? anak_id}) = _$_BabyAddResponse;
 
   factory _BabyAddResponse.fromJson(Map<String, dynamic> json) =
       _$_BabyAddResponse.fromJson;
@@ -225,7 +225,7 @@ abstract class _BabyAddResponse implements BabyAddResponse {
   @override
   String get status => throw _privateConstructorUsedError;
   @override
-  int get anak_id => throw _privateConstructorUsedError;
+  int? get anak_id => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$BabyAddResponseCopyWith<_BabyAddResponse> get copyWith =>
