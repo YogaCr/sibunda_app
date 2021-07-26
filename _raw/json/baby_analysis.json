@@ -1,0 +1,27 @@
+{
+  "message": "response success",
+  "status": "success",
+  "code": 200,
+  "data": {
+    "bb_usia_desc": {
+      "desc": "Bunda, berat badan bayi tidak normal ya Bun menurut usia bayi.",
+      "is_normal": false
+    },
+    "pb_usia_desc": {
+      "desc": "Bunda, panjang badan atau tinggi badan menurut usia bayi tidak normal.",
+      "is_normal": false
+    },
+    "bb_pb_desc": {
+      "desc": "Bunda, berat badan bayi menurut panjang/tinggi badan tidak normal.",
+      "is_normal": false
+    },
+    "lingkar_kepala_desc": {
+      "desc": "Bunda, ukuran lingkar kepala bayi tidak normal menurut usia bayi.",
+      "is_normal": false
+    },
+    "imt_desc": {
+      "desc": "Bunda, indeks massa tubuh bayi tidak normal ya Bun",
+      "is_normal": false
+    }
+  }
+}

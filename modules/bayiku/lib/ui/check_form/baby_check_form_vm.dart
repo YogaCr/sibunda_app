@@ -250,11 +250,11 @@ class BabyCheckFormVm extends FormAuthVmGroup {
       if(res2 is Success<List<FormWarningStatus>>) {
         final data = res2.data;
         _warningList.value = data;
-        return null;
+        //return null;
       } else {
         _warningList.value = List.empty();
       }
-      return res2 as Fail;
+      //return res2 as Fail;
     });
   }
 
@@ -274,12 +274,12 @@ class BabyCheckFormVm extends FormAuthVmGroup {
         final data = res.data;
         _formAnswer.value = data;
         //_checkUpId.value = data.id;
-        return null;
+        //return null;
       } else {
         _formAnswer.value = null;
         //_checkUpId.value = null;
       }
-      return res as Fail;
+      //return res as Fail;
     });
   }
 }

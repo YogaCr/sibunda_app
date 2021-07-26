@@ -48,7 +48,7 @@ class PregnancyImmunizationPage extends StatelessWidget {
                       onBtnClick: (group, child) async {
                         //showSnackBar(ctx, "group= $group child= $child");
                         final immData = data[group].immunizationList[child].core;
-                        prind("Immunization page group= $group child= $child immData= $immData");
+                        prind("Immunization page group= $group child= $child immData= $immData immData.date= ${immData.date}");
                         if(immData.date != null) {
                           showSnackBar(context, "Immunisasi sudah dilakukan", backgroundColor: Colors.green);
                           return;
