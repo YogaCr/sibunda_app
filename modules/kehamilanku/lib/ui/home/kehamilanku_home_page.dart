@@ -1,5 +1,6 @@
 import 'package:common/arch/di/config_di.dart';
 import 'package:common/arch/domain/dummy_data.dart';
+import 'package:common/arch/domain/model/baby_data.dart';
 import 'package:common/arch/domain/model/chart_data_mother.dart';
 import 'package:common/arch/domain/model/kehamilanku_data.dart';
 import 'package:common/arch/domain/model/profile_data.dart';
@@ -42,11 +43,16 @@ class KehamilankuHomePage extends StatelessWidget {
       //..init();
     prind("KehamilankuHomePage build() 2");
 
-    vm.ageOverview.observe(vm, (data) {
+    vm..ageOverview.observe(vm, (data) {
       if(data != null) {
         overlayVisibility.value = false;
       }
-    }, tag: toString());
+    }, tag: toString())
+    ..unbornBabyList.observe(vm, (data) {
+      if(data?.isEmpty == true) {
+
+      }
+    });
 
     if(selectedPreg != null) {
       vm.init(profile: selectedPreg);
@@ -124,167 +130,20 @@ class KehamilankuHomePage extends StatelessWidget {
       ),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 15),
-        child: BelowTopBarScrollContentArea(
-          slivers: [
-            SliverList(
-              delegate: SliverChildListDelegate.fixed([
-                Container(
-                  margin: EdgeInsets.symmetric(vertical: 15).copyWith(top: 20),
-                  child: AsyncVmObserver<KehamilankuHomeVm, MotherPregnancyAgeOverview>(
-                    vm: vm,
-                    liveDataGetter: (vm2) => vm2.ageOverview,
-                    builder: (ctx, data) => ItemMotherOverview.fromData(data),
-                  ),
+        child: LiveDataObserver<List<BabyOverlayData>>(
+          liveData: vm.unbornBabyList,
+          builder: (ctx, data) {
+            if(data?.isNotEmpty == true) return _PregnancyHomePageWithData(vm: vm,);
+            return BelowTopBarScrollContentArea(
+              slivers: [
+                SliverList(
+                  delegate: SliverChildListDelegate.fixed([
+                    data == null ? defaultLoading() : defaultNoData(),
+                  ]),
                 ),
-                Container(
-                  margin: EdgeInsets.only(bottom: 20),
-                  child: Text(
-                    "Yuk pantau usia kehamilan Bunda",
-                    style: SibTextStyles.size_0_bold,
-                    textAlign: TextAlign.start,
-                  ),
-                ),
-              ]),
-            ),
-            MultiLiveDataObserver<dynamic>(
-              liveDataList: [vm.trimesterList, vm.selectedProfile],
-              builder: (ctx, dataList) => !dataList.any((e) => e == null)
-                  ? _MotherTrimesterList(
-                    dataList: dataList[0],
-                    selectedPregnancy: dataList[1],
-                  ): SliverToBoxAdapter(child: defaultLoading(),),
-            ),
-            /*
-            AsyncVmObserver<KehamilankuHomeVm, List<MotherTrimester>>(
-              vm: vm,
-              liveDataGetter: (vm2) => vm2.trimesterList,
-              builder: (ctx, data) => data != null
-                  ,
-            ),
-             */
-            /*
-              buildReactiveBloc<
-                  PregnancyHomeBloc, PregnancyHomeState,
-                  OnPregnancyHomeTrimesterDataChanged, List<MotherTrimester>
-              >(
-                context, state,
-                stateDataGetter: (state) => state.data,
-                blocDataGetter: (bloc) => bloc.trimesterList,
-                builder: (data) => _MotherTrimesterList(data),
-                defaultWidget: defaultSliverLoading,
-              ),
-// */
-/*
-                (state is OnPregnancyHomeTrimesterDataChanged)
-                    ? _MotherTrimesterList((state.data as Success).data)
-                    : (bloc.trimesterList != null)
-                    ? _MotherTrimesterList(bloc.trimesterList!)
-                    : SliverToBoxAdapter(child: DefaultLoading(),),
-// */
-
-            SliverList(
-              delegate: SliverChildListDelegate.fixed([
-                Container(
-                  margin: EdgeInsets.only(top: 5),
-                  child: LiveDataObserver<ProfileCredential>(
-                    liveData: vm.selectedProfile,
-                    builder: (ctx, data) => ItemHomeImmunization.fromData(
-                      motherHomeImmunization_ui,
-                      onBtnClick: data != null ? () => KehamilankuRoutes.immunizationPage.go(
-                        context: context,
-                        pregnancyCred: data,
-                      ) : null,
-                    ),
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.symmetric(vertical: 20),
-                  child: Text(
-                    "Pantau perkembangan janin & kehamilan",
-                    style: SibTextStyles.size_0_bold,
-                    textAlign: TextAlign.start,
-                  ),
-                ),
-
-                ///*
-                LiveDataObserver<ProfileCredential>(
-                  liveData: vm.selectedProfile,
-                  builder: (ctx, data) => data != null ? Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Flexible(
-                        flex: 10,
-                        child: ItemHomeGraphMenu.fromData(
-                          pregnancyHomeGraphMenu[0],
-                          onClick: () => KehamilankuRoutes.pregEvalChartMenuPage.go(
-                            context: ctx,
-                            pregnancyCred: data,
-                          ),
-                        ),
-                      ),
-                      Spacer(flex: 1,),
-                      Flexible(
-                        flex: 10,
-                        child: ItemHomeGraphMenu.fromData(
-                          pregnancyHomeGraphMenu[1],
-                          onClick: () => KehamilankuRoutes.chartPage.go(
-                            context: ctx,
-                            type: MotherChartType.bmi,
-                            pregnancyCred: data,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ) : defaultLoading(),
-                ),
-// */
-                Container(
-                  margin: EdgeInsets.symmetric(vertical: 20),
-                  child: Text(
-                    "Rekomendasi makanan untuk Bunda",
-                    style: SibTextStyles.size_0_bold,
-                    textAlign: TextAlign.start,
-                  ),
-                ),
-/*
-                  BlocPreAsyncBuilder<
-                      PregnancyHomeBloc, PregnancyHomeState,
-                      OnPregnancyHomeFoodRecomDataChanged, List<MotherFoodRecom>
-                  >(
-                    stateDataGetter: (state) => state.data,
-                    blocDataGetter: (bloc) => bloc.foodRecomList,
-                    builder: (data) => _MotherFoodRecomList(data),
-                  ),
- */
-              ]),
-            ),
-            AsyncVmObserver<KehamilankuHomeVm, List<MotherFoodRecom>>(
-              vm: vm,
-              liveDataGetter: (vm2) => vm2.foodRecomList,
-              builder: (ctx, data) => data != null
-                  ? _MotherFoodRecomList(data)
-                  : SliverToBoxAdapter(child: defaultLoading(),),
-            ),
-            /*
-              buildReactiveBloc<
-                  PregnancyHomeBloc, PregnancyHomeState,
-                  OnPregnancyHomeFoodRecomDataChanged, List<MotherFoodRecom>
-              >(
-                context, state,
-                stateDataGetter: (state) => state.data,
-                blocDataGetter: (bloc) => bloc.foodRecomList,
-                builder: (data) => _MotherFoodRecomList(data),
-                defaultWidget: defaultSliverLoading,
-              ),
-// */
-/*
-                (state is OnPregnancyHomeFoodRecomDataChanged)
-                    ? _MotherFoodRecomList((state.data as Success).data)
-                    : (bloc.foodRecomList != null)
-                    ? _MotherFoodRecomList(bloc.foodRecomList!)
-                    : SliverToBoxAdapter(child: DefaultLoading(),),
-// */
-          ],
+              ],
+            );
+          },
         ),
       ),
     );
@@ -292,6 +151,122 @@ class KehamilankuHomePage extends StatelessWidget {
     //final foodList = ["Nasi", "Sego", "Nasi atau Makanan Pokok", "Bubur sego"];
   }
 }
+
+
+class _PregnancyHomePageWithData extends StatelessWidget {
+  final KehamilankuHomeVm vm;
+
+  _PregnancyHomePageWithData({
+    required this.vm,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return BelowTopBarScrollContentArea(
+      slivers: [
+        SliverList(
+          delegate: SliverChildListDelegate.fixed([
+            Container(
+              margin: EdgeInsets.symmetric(vertical: 15).copyWith(top: 20),
+              child: AsyncVmObserver<KehamilankuHomeVm, MotherPregnancyAgeOverview>(
+                vm: vm,
+                liveDataGetter: (vm2) => vm2.ageOverview,
+                builder: (ctx, data) => ItemMotherOverview.fromData(data),
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(bottom: 20),
+              child: Text(
+                "Yuk pantau usia kehamilan Bunda",
+                style: SibTextStyles.size_0_bold,
+                textAlign: TextAlign.start,
+              ),
+            ),
+          ]),
+        ),
+        MultiLiveDataObserver<dynamic>(
+          liveDataList: [vm.trimesterList, vm.selectedProfile],
+          builder: (ctx, dataList) => !dataList.any((e) => e == null)
+              ? _MotherTrimesterList(
+            dataList: dataList[0],
+            selectedPregnancy: dataList[1],
+          ): SliverToBoxAdapter(child: defaultLoading(),),
+        ),
+        SliverList(
+          delegate: SliverChildListDelegate.fixed([
+            Container(
+              margin: EdgeInsets.only(top: 5),
+              child: LiveDataObserver<ProfileCredential>(
+                liveData: vm.selectedProfile,
+                builder: (ctx, data) => ItemHomeImmunization.fromData(
+                  motherHomeImmunization_ui,
+                  onBtnClick: data != null ? () => KehamilankuRoutes.immunizationPage.go(
+                    context: context,
+                    pregnancyCred: data,
+                  ) : null,
+                ),
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.symmetric(vertical: 20),
+              child: Text(
+                "Pantau perkembangan janin & kehamilan",
+                style: SibTextStyles.size_0_bold,
+                textAlign: TextAlign.start,
+              ),
+            ),
+            LiveDataObserver<ProfileCredential>(
+              liveData: vm.selectedProfile,
+              builder: (ctx, data) => data != null ? Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Flexible(
+                    flex: 10,
+                    child: ItemHomeGraphMenu.fromData(
+                      pregnancyHomeGraphMenu[0],
+                      onClick: () => KehamilankuRoutes.pregEvalChartMenuPage.go(
+                        context: ctx,
+                        pregnancyCred: data,
+                      ),
+                    ),
+                  ),
+                  Spacer(flex: 1,),
+                  Flexible(
+                    flex: 10,
+                    child: ItemHomeGraphMenu.fromData(
+                      pregnancyHomeGraphMenu[1],
+                      onClick: () => KehamilankuRoutes.chartPage.go(
+                        context: ctx,
+                        type: MotherChartType.bmi,
+                        pregnancyCred: data,
+                      ),
+                    ),
+                  ),
+                ],
+              ) : defaultLoading(),
+            ),
+            Container(
+              margin: EdgeInsets.symmetric(vertical: 20),
+              child: Text(
+                "Rekomendasi makanan untuk Bunda",
+                style: SibTextStyles.size_0_bold,
+                textAlign: TextAlign.start,
+              ),
+            ),
+          ]),
+        ),
+        AsyncVmObserver<KehamilankuHomeVm, List<MotherFoodRecom>>(
+          vm: vm,
+          liveDataGetter: (vm2) => vm2.foodRecomList,
+          builder: (ctx, data) => data != null
+              ? _MotherFoodRecomList(data)
+              : SliverToBoxAdapter(child: defaultLoading(),),
+        ),
+      ],
+    );
+  }
+}
+
 
 
 class _MotherTrimesterList extends StatelessWidget {

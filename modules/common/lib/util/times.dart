@@ -20,7 +20,7 @@ Future<String> formatTime(DateTime date, { String localeName = "id_ID" }) async 
 }
 
 int calculateDayAge(DateTime birthDate) => DateTime.now().difference(birthDate).inDays;
-int calculateYearAge(DateTime birthDate) => Jiffy({ "day": calculateDayAge(birthDate) }).year;
+int calculateYearAge(DateTime birthDate) => parseInt(Jiffy().diff(birthDate, Units.YEAR));
 
 String syncFormatTimeFromStr(String datestr, { String localeName = "id_ID" }) =>
   syncFormatTime(parseDate(datestr), localeName: localeName);

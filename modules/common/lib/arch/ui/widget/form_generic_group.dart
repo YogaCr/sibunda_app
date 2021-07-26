@@ -128,13 +128,15 @@ class _FormGenericGroupState
             switch(itemData.input) {
               case FieldInputMethod.pickDate:
                 final dateNow = DateTime.now();
+                final dateFirst = DateTime(1800);
+                //final dateLast = DateTime(da);
                 suffixIcon = InkResponse(
                   onTap: () async {
                     final pickedDate = await showDatePicker(
                       context: context,
                       initialDate: dateNow,
-                      firstDate: dateNow.subtract(Duration(days: 356)),
-                      lastDate: dateNow.add(Duration(days: 356)),
+                      firstDate: dateFirst,
+                      lastDate: dateNow.add(Duration(days: 356 * 5)),
                     );
                     //prind("onTap pickedDate = $pickedDate LUAR");
                     vmLiveData.value = pickedDate;

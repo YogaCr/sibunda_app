@@ -20,6 +20,7 @@ import 'package:common/util/ui.dart';
 import 'package:common/value/const_values.dart';
 import 'package:core/ui/base/async_view_model_observer.dart';
 import 'package:core/ui/base/live_data.dart';
+import 'package:core/ui/base/live_data_observer.dart';
 import 'package:core/ui/base/view_model.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -120,97 +121,126 @@ class BabyHomePage extends StatelessWidget {
       ),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 10),
-        child: BelowTopBarScrollContentArea(
-          slivers: [SliverList(
-            delegate: SliverChildListDelegate.fixed([
-              Container(
-                margin: EdgeInsets.symmetric(vertical: 15).copyWith(top: 20),
-                child: AsyncVmObserver<BabyHomeVm, BabyAgeOverview>(
-                  vm: vm,
-                  liveDataGetter: (vm2) => vm2.ageOverview,
-                  builder: (ctx, data) => ItemBabyOverview.fromData(data, babyName: vm.selectedBabyData?.name,),
+        child: LiveDataObserver<List<BabyOverlayData>>(
+          liveData: vm.bornBabyList,
+          builder: (ctx, data) {
+            if(data?.isNotEmpty == true) return _BabyHomePageWithData(vm: vm,);
+            return BelowTopBarScrollContentArea(
+              slivers: [
+                SliverList(
+                  delegate: SliverChildListDelegate.fixed([
+                    data == null ? defaultLoading() : defaultNoData(),
+                  ]),
                 ),
-              ),
-              Container(
-                margin: EdgeInsets.only(bottom: 10, top: 20,),
-                child: Text(
-                  "Pantau pertumbuhan dan perkembangan bayi",
-                  style: SibTextStyles.size_0_bold,
-                  textAlign: TextAlign.start,
-                ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Flexible(
-                    flex: 10,
-                    child: AsyncVmObserver<BabyHomeVm, ProfileCredential>(
-                      liveDataGetter: (vm) => vm.babyCredential,
-                      builder: (ctx, data) => ItemHomeGraphMenu.fromData(
-                        babyHomeGraphMenu[0],
-                        onClick: data != null ? () => BabyRoutes.growthChartMenuVm.go(
-                            context: context,
-                            babyCredential: data,
-                        ) : null,
-                      ),
-                    ),
-                  ),
-                  Spacer(flex: 1,),
-                  Flexible(
-                    flex: 10,
-                    child: AsyncVmObserver<BabyHomeVm, ProfileCredential>(
-                      vm: vm,
-                      liveDataGetter: (vm) => vm.babyCredential,
-                      builder: (ctx, data) => ItemHomeGraphMenu.fromData(
-                        babyHomeGraphMenu[1],
-                        onClick: data != null ? () => BabyRoutes.chartPageRoute.go(
-                            context: context,
-                            type: BabyChartType.dev,
-                            babyCredential: data,
-                        ) : null,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              Container(
-                margin: EdgeInsets.only(bottom: 10, top: 20,),
-                child: Text(
-                  "Yuk pantau kesehatan Bayi Bunda",
-                  style: SibTextStyles.size_0_bold,
-                  textAlign: TextAlign.start,
-                ),
-              ),
-              AsyncVmObserver<BabyHomeVm, List<BabyFormMenuData>>(
-                vm: vm,
-                liveDataGetter: (vm2) => vm2.formMenuList,
-                builder: (ctx, data) => data != null
-                    ? _BabyFormMenuList(
-                      vm: vm,
-                      dataList: data,
-                    ) : defaultLoading(),
-              ),
-              Container(
-                margin: EdgeInsets.only(top: 5),
-                child: AsyncVmObserver<BabyHomeVm, ProfileCredential>(
-                  vm: vm,
-                  liveDataGetter: (vm) => vm.babyCredential,
-                  builder: (ctx, data) => ItemHomeImmunization.fromData(
-                    babyHomeImmunization_ui,
-                    onBtnClick: data != null ? () => BabyRoutes.babyImmunizationPage.go(
-                      context: context,
-                      babyCredential: data,
-                    ) : null,
-                  ),
-                ),
-              ),
-            ]),
-          ),
-        ]),
+              ],
+            );
+          },
+        ),
       ),
     );
   }
 }
+
+
+class _BabyHomePageWithData extends StatelessWidget {
+  final BabyHomeVm vm;
+
+  _BabyHomePageWithData({
+    required this.vm,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return BelowTopBarScrollContentArea(
+        slivers: [SliverList(
+          delegate: SliverChildListDelegate.fixed([
+            Container(
+              margin: EdgeInsets.symmetric(vertical: 15).copyWith(top: 20),
+              child: AsyncVmObserver<BabyHomeVm, BabyAgeOverview>(
+                vm: vm,
+                liveDataGetter: (vm2) => vm2.ageOverview,
+                builder: (ctx, data) => ItemBabyOverview.fromData(data, babyName: vm.selectedBabyData?.name,),
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(bottom: 10, top: 20,),
+              child: Text(
+                "Pantau pertumbuhan dan perkembangan bayi",
+                style: SibTextStyles.size_0_bold,
+                textAlign: TextAlign.start,
+              ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Flexible(
+                  flex: 10,
+                  child: AsyncVmObserver<BabyHomeVm, ProfileCredential>(
+                    liveDataGetter: (vm) => vm.babyCredential,
+                    builder: (ctx, data) => ItemHomeGraphMenu.fromData(
+                      babyHomeGraphMenu[0],
+                      onClick: data != null ? () => BabyRoutes.growthChartMenuVm.go(
+                        context: context,
+                        babyCredential: data,
+                      ) : null,
+                    ),
+                  ),
+                ),
+                Spacer(flex: 1,),
+                Flexible(
+                  flex: 10,
+                  child: AsyncVmObserver<BabyHomeVm, ProfileCredential>(
+                    vm: vm,
+                    liveDataGetter: (vm) => vm.babyCredential,
+                    builder: (ctx, data) => ItemHomeGraphMenu.fromData(
+                      babyHomeGraphMenu[1],
+                      onClick: data != null ? () => BabyRoutes.chartPageRoute.go(
+                        context: context,
+                        type: BabyChartType.dev,
+                        babyCredential: data,
+                      ) : null,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            Container(
+              margin: EdgeInsets.only(bottom: 10, top: 20,),
+              child: Text(
+                "Yuk pantau kesehatan Bayi Bunda",
+                style: SibTextStyles.size_0_bold,
+                textAlign: TextAlign.start,
+              ),
+            ),
+            AsyncVmObserver<BabyHomeVm, List<BabyFormMenuData>>(
+              vm: vm,
+              liveDataGetter: (vm2) => vm2.formMenuList,
+              builder: (ctx, data) => data != null
+                  ? _BabyFormMenuList(
+                vm: vm,
+                dataList: data,
+              ) : defaultLoading(),
+            ),
+            Container(
+              margin: EdgeInsets.only(top: 5),
+              child: AsyncVmObserver<BabyHomeVm, ProfileCredential>(
+                vm: vm,
+                liveDataGetter: (vm) => vm.babyCredential,
+                builder: (ctx, data) => ItemHomeImmunization.fromData(
+                  babyHomeImmunization_ui,
+                  onBtnClick: data != null ? () => BabyRoutes.babyImmunizationPage.go(
+                    context: context,
+                    babyCredential: data,
+                  ) : null,
+                ),
+              ),
+            ),
+          ]),
+        ),
+        ]);
+  }
+}
+
 
 
 class _BabyFormMenuList extends StatelessWidget {

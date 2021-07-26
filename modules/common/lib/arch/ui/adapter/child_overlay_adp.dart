@@ -182,7 +182,7 @@ class ChildrenSingleListOverlay extends StatelessWidget {
                 liveData: selectedIndex!,
                 builder: (ctx, u) {
                   prind("ChildrenSingleListOverlay u= $u i= $i getChildViewIndex(i)= ${getChildViewIndex(i)}");
-                  if(u == null) return defaultLoading();
+                  if(u == null) return defaultEmptyWidget();
                   return u == getChildViewIndex(i) ? Icon(
                     Icons.check_circle,
                     color: Manifest.theme.colorPrimary,
