@@ -82,17 +82,23 @@ class ChildrenCountPage extends StatelessWidget {
   }
 
   void _moveToNext(BuildContext context, ChildrenCountVm vm) {
+    final count = vm.childrenCount.value;
     if(pageControll != null) {
+      final add = count != null && count > 0 ? 1 : 2;
       pageControll!.animateToPage(
-        pageControll!.page!.toInt() +1,
+        pageControll!.page!.toInt() +add,
         duration: Duration(milliseconds: 500),
         curve: Curves.easeOut,
       );
     } else {
-      HomeRoutes.childFormPage.go(
-        context: context,
-        childCount: vm.childrenCount,
-      );
+      if(count != null && count > 0) {
+        HomeRoutes.childFormPage.go(
+          context: context,
+          childCount: vm.childrenCount,
+        );
+      } else {
+        HomeRoutes.newAccountConfirmPage.goToPage(context);
+      }
     }
   }
 }
