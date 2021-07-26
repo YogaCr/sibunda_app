@@ -35,7 +35,6 @@ class KehamilankuHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     prind("KehamilankuHomePage build()");
-
     final selectedPreg = getArgs<ProfileCredential>(context, Const.KEY_DATA);
 
     final vm = ViewModelProvider.of<KehamilankuHomeVm>(context)
@@ -71,9 +70,8 @@ class KehamilankuHomePage extends StatelessWidget {
             prind("PregHomePage prof= $prof vm.selectedProfile.value= ${vm.selectedProfile.value}");
             if(prof != vm.selectedProfile.value) {
               vm.init(profile: prof);
-            } else {
-              overlayVisibility.value = false;
             }
+            overlayVisibility.value = false;
           } else {
             KehamilankuRoutes.obj.goToModule(
               context, GlobalRoutes.bayiku,

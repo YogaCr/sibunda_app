@@ -55,7 +55,7 @@ class KehamilankuHomeVm extends AsyncAuthVm {
         });
         prind("BabyHomeVm unbornIndex= $unbornIndex");
         if(unbornIndex >= 0) {
-          selectedIndex.value = 0;
+          selectedIndex.value = unbornIndex;
           //selectedBabyData = _unbornBabyList.value![unbornIndex];
         } else {
           final bornIndex = _bornBabyList.value!.indexWhere((e) => e.id == babyCred.id);
@@ -98,7 +98,7 @@ class KehamilankuHomeVm extends AsyncAuthVm {
     _selectedProfile,
   ];
 
-  final MutableLiveData<int> selectedIndex = MutableLiveData(0);
+  final MutableLiveData<int> selectedIndex = MutableLiveData();
   //BabyOverlayData? _currentProfile;
 
   void init({
@@ -141,13 +141,12 @@ class KehamilankuHomeVm extends AsyncAuthVm {
     if(!forceLoad && _trimesterList.value != null) return;
     startJob(getTrimesterListKey, (isActive) async {
       prind("getTrimesterList() start");
-      _getTrimesterList(_selectedProfile.value!.id).then((value){
-        prind("getTrimesterList() start then value= $value");
-        if(value is Success<List<MotherTrimester>>) {
-          final data = value.data;
-          _trimesterList.value = data;
-        }
-      });
+      final res = await _getTrimesterList(_selectedProfile.value!.id);
+      prind("getTrimesterList() start then res= $res");
+      if(res is Success<List<MotherTrimester>>) {
+        final data = res.data;
+        _trimesterList.value = data;
+      }
     });
   }
   @protected
@@ -157,13 +156,11 @@ class KehamilankuHomeVm extends AsyncAuthVm {
     startJob(getFoodRecomListKey, (isActive) async {
       final week = VarDi.pregnancyWeek.getOrElse();
       //final motherNik = VarDi.motherNik.getOrElse();
-
-      _getMotherFoodRecomList(_selectedProfile.value!.id, week).then((value) {
-        if(value is Success<List<MotherFoodRecom>>) {
-          final data = value.data;
-          _foodRecomList.value = data;
-        }
-      });
+      final res = await _getMotherFoodRecomList(_selectedProfile.value!.id, week);
+      if(res is Success<List<MotherFoodRecom>>) {
+        final data = res.data;
+        _foodRecomList.value = data;
+      }
     });
   }
   //@protected

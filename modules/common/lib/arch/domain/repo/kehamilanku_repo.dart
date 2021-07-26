@@ -67,6 +67,7 @@ class PregnancyRepoImpl with PregnancyRepo {
   // ====== Home ==========
   /// We only use 1 home data because in endpoint only serve for one.
   List<MotherHomeBabyData>? _homeDataList;
+  int? _currentPregnancyId;
 
   @override
   Future<Result<List<MotherHomeBabyData>>> getMotherHomeData(@notUsedYet int pregnancyId) async {
@@ -74,6 +75,7 @@ class PregnancyRepoImpl with PregnancyRepo {
       final res = await _api.getHomeData();
       final rawHomeData = res.data;
       _homeDataList = rawHomeData.map((e) => MotherHomeBabyData.fromResponse(e)).toList(growable: false);
+      _currentPregnancyId = pregnancyId;
       return Success(_homeDataList!);
     } catch(e, stack) {
       final msg = "Error calling `getMotherHomeData()`";
@@ -84,7 +86,7 @@ class PregnancyRepoImpl with PregnancyRepo {
   }
   @override
   Future<Result<List<MotherTrimester>>> getMotherTrimester(int pregnancyId) async {
-    if(_homeDataList == null) {
+    if(_homeDataList == null || pregnancyId != _currentPregnancyId) {
       //@mayChangeInFuture
       //final motherNik = VarDi.motherNik.getOrElse();
       final res = await getMotherHomeData(pregnancyId);
@@ -96,17 +98,25 @@ class PregnancyRepoImpl with PregnancyRepo {
   }
   @override
   Future<Result<List<MotherFoodRecom>>> getMotherFoodRecoms(int pregnancyId, int pregnancyWeekAge) async {
-    final res = await getMotherHomeData(pregnancyId);
-    if(res is Fail<List<MotherHomeBabyData>>) {
-      return Fail();
+    if(_homeDataList == null || pregnancyId != _currentPregnancyId) {
+      //@mayChangeInFuture
+      //final motherNik = VarDi.motherNik.getOrElse();
+      final res = await getMotherHomeData(pregnancyId);
+      if(res is Fail<List<MotherHomeBabyData>>) {
+        return res.copy();
+      }
     }
     return Success(_homeDataList!.first.foodRecomList); //For now, we only use the first one.
   }
   @override
   Future<Result<MotherPregnancyAgeOverview>> getMotherPregnancyAgeOverview(int pregnancyId) async {
-    final res = await getMotherHomeData(pregnancyId);
-    if(res is Fail<List<MotherHomeBabyData>>) {
-      return Fail();
+    if(_homeDataList == null || pregnancyId != _currentPregnancyId) {
+      //@mayChangeInFuture
+      //final motherNik = VarDi.motherNik.getOrElse();
+      final res = await getMotherHomeData(pregnancyId);
+      if(res is Fail<List<MotherHomeBabyData>>) {
+        return res.copy();
+      }
     }
     VarDi.pregnancyWeek.value = _homeDataList!.first.pregnancyAge.weekAge; //For now, we only use the first one.
     return Success(_homeDataList!.first.pregnancyAge);

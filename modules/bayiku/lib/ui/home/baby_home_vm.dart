@@ -44,7 +44,7 @@ class BabyHomeVm extends AsyncAuthVm {
         final unbornIndex = _unbornBabyList.value!.indexWhere((e) => e.id == babyCred.id);
         prind("BabyHomeVm unbornIndex= $unbornIndex");
         if(unbornIndex >= 0) {
-          selectedIndex.value = 0;
+          selectedIndex.value = unbornIndex;
           selectedBabyData = _unbornBabyList.value![unbornIndex];
         } else {
           final bornIndex = _bornBabyList.value!.indexWhere((e) => e.id == babyCred.id);

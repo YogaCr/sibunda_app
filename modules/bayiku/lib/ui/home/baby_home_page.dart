@@ -58,7 +58,12 @@ class BabyHomePage extends StatelessWidget {
         onItemClick: (baby, isBorn) {
           if(!isBorn) { // unborn baby must always be 1. Off course though.
             //backPage(context);
-            BabyRoutes.obj.goToModule(context, GlobalRoutes.kehamilanku, replaceCurrent: true);
+            BabyRoutes.obj.goToModule(
+              context,
+              GlobalRoutes.kehamilanku,
+              replaceCurrent: true,
+              args: {Const.KEY_DATA: ProfileCredential.fromBabyOverlay(baby)},
+            );
             /*
             Future.delayed(Duration(milliseconds: 700), () {
               BabyRoutes.obj.goToModule(context, GlobalRoutes.kehamilanku);
