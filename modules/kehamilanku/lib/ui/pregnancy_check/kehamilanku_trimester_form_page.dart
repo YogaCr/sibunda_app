@@ -129,23 +129,24 @@ class _WeeklyFormPage extends StatelessWidget {
         SliverList(
           delegate: SliverChildListDelegate.fixed([
             MultiLiveDataObserver<dynamic>(
-              liveDataList: [vm.currentWeek, vm.isBabyBorn],
+              liveDataList: [vm.currentWeek, vm.isBabyBorn, vm.isBabySizeInit],
               builder: (ctx, dataList) {
                 final int? currentWeek = dataList[0];
                 if(currentWeek != week) return defaultLoading();
                 final bool? isBorn = dataList[1];
+                final bool? isBabySizeInit = dataList[2];
 
-                final babySize = MultiLiveDataObserver<dynamic>(
-                  liveDataList: [vm.pregnancyBabySize, vm.isBabySizeInit],
+                final babySize = LiveDataObserver<PregnancyBabySize>(
+                  liveData: vm.pregnancyBabySize,
                   //distinctUntilChanged: false,
                   predicate: (data) => currentWeek == week,
                   //initBuilder: (ctx) => defaultLoading(),
-                  //immediatelyBuildState: currentWeek == week && vm.isBabySizeInit.value == true,
-                  builder: (ctx, dataList2) {
+                  //immediatelyBuildState: currentWeek == week && isBabySizeInit == true,
+                  builder: (ctx, babySize) {
                     //if(currentWeek != wee)
-                    final bool? isBabySizeInit = dataList2[1];
-                    final PregnancyBabySize? babySize = dataList2[0];
-                    prind("LiveDataObserver<PregnancyBabySize> dataList2= $dataList2 dataList= $dataList week = $week");
+                    //final bool? isBabySizeInit = dataList2[1];
+                    //final PregnancyBabySize? babySize = dataList2[0];
+                    prind("LiveDataObserver<PregnancyBabySize> dataList= $dataList week = $week");
                     if(babySize == null) {
                       if(isBabySizeInit == true) return defaultEmptyWidget();
                       return defaultLoading();
@@ -198,7 +199,10 @@ class _WeeklyFormPage extends StatelessWidget {
                   babySize, analysis,
                 ];
 
-                if(isLastTrimester && isBorn != true) {
+                if(isLastTrimester
+                    && isBorn != true
+                    && vm.pregnancyBabySize.value != null
+                ) {
                   children.insert(1, Padding(
                     padding: EdgeInsets.only(top: 10,),
                     child: TxtBtn(
