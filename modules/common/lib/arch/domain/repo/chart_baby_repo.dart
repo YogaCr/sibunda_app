@@ -198,7 +198,7 @@ class BabyChartRepoImpl with BabyChartRepo {
       if(res is Success<int>) {
         final id = res.data;
         final BabyKmsChartResponse resp =
-        _babyChartResponse[BabyChartType.kms] ??= await _api.getKmsChart(id);
+          _babyChartResponse[BabyChartType.kms] ??= await _api.getKmsChart(id);
         currentId = id;
         final raw = resp.data.desc;
         if(raw == null) {
@@ -220,7 +220,7 @@ class BabyChartRepoImpl with BabyChartRepo {
       if(res is Success<int>) {
         final id = res.data;
         final BabyLenChartResponse resp =
-        _babyChartResponse[BabyChartType.len] ??= await _api.getLenChart(id);
+          _babyChartResponse[BabyChartType.len] ??= await _api.getLenChart(id);
         currentId = id;
         final raw = resp.data.desc;
         if(raw == null) {
@@ -242,7 +242,7 @@ class BabyChartRepoImpl with BabyChartRepo {
       if(res is Success<int>) {
         final id = res.data;
         final BabyWeightToLenChartResponse resp =
-        _babyChartResponse[BabyChartType.weightToLen] ??= await _api.getWeightToLenChart(id);
+          _babyChartResponse[BabyChartType.weightToLen] ??= await _api.getWeightToLenChart(id);
         currentId = id;
         final raw = resp.data.desc;
         if(raw == null) {
@@ -264,7 +264,7 @@ class BabyChartRepoImpl with BabyChartRepo {
       if(res is Success<int>) {
         final id = res.data;
         final BabyHeadCircumChartResponse resp =
-        _babyChartResponse[BabyChartType.head] ??= await _api.getHeadCircumChart(id);
+          _babyChartResponse[BabyChartType.head] ??= await _api.getHeadCircumChart(id);
         currentId = id;
         final raw = resp.data.desc;
         if(raw == null) {
@@ -286,7 +286,7 @@ class BabyChartRepoImpl with BabyChartRepo {
       if(res is Success<int>) {
         final id = res.data;
         final BabyBmiChartResponse resp =
-        _babyChartResponse[BabyChartType.bmi] ??= await _api.getBmiChart(id);
+          _babyChartResponse[BabyChartType.bmi] ??= await _api.getBmiChart(id);
         currentId = id;
         final raw = resp.data.desc;
         if(raw == null) {
@@ -308,7 +308,7 @@ class BabyChartRepoImpl with BabyChartRepo {
       if(res is Success<int>) {
         final id = res.data;
         final BabyDevChartResponse resp =
-        _babyChartResponse[BabyChartType.dev] ??= await _api.getDevChart(id);
+          _babyChartResponse[BabyChartType.dev] ??= await _api.getDevChart(id);
         currentId = id;
         final raw = resp.data.desc;
         if(raw == null) {

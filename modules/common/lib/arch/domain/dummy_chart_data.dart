@@ -193,7 +193,7 @@ final babyDevChartData = List<BabyDevChartData>.generate(21, (i) => BabyDevChart
 ));
 final babyDevWarning = <FormWarningStatus>[
   FormWarningStatus(
-    desc: "Bunda, perkembangan bayi bunda tidak normal ya Bun",
+    desc: "Bundaw q, perkembangan bayi bunda tidak normal ya Bundaw",
     action: "Cari Faskes terdekat",
     isSafe: false,
     img: dummyImg,

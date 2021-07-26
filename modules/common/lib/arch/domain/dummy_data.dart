@@ -92,7 +92,7 @@ final dummyChildNik3 = "9018391398";
 final dummyAccessToken = "aagajki1831huhf1i38y13";
 final dummyAccessTokenType = "Bearer";
 final dummySignUpData1 = SignUpData(name: dummyName, email: dummyEmail, password: dummyPswd);
-final dummyLoginData1 = LoginData(email: dummySignUpData1.email, password: dummySignUpData1.password);
+final dummyLoginData1 = LoginData(email: dummySignUpData1.email, password: dummySignUpData1.password, fcmToken: Const.FCM_TOKEN);
 final dummySessionData1 = SessionData(token: dummyAccessToken, tokenType: dummyAccessTokenType,);
 
 

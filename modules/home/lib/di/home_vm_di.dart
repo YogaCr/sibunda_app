@@ -30,7 +30,10 @@ class HomeVmDi {
     //saveMotherHpl: HomeUseCaseDi.saveMotherHpl,
   );
   static SignUpFormVm get signUpFormVm => SignUpFormVm(HomeUseCaseDi.signUp);
-  static LoginFormVm get loginFormVm => LoginFormVm(HomeUseCaseDi.login);
+  static LoginFormVm get loginFormVm => LoginFormVm(
+    login: HomeUseCaseDi.login,
+    getFcmToken: UseCaseDi.getFcmToken,
+  );
   static MotherFormVm get motherFormVm => MotherFormVm(HomeUseCaseDi.saveMotherData);
   static FatherFormVm get fatherFormVm => FatherFormVm(HomeUseCaseDi.saveFatherData);
   static MotherHplVm motherHplVm({

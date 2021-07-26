@@ -16,7 +16,7 @@ class LoginBody {
     Const.KEY_RE_PSWD: login.password,
     Const.KEY_CLIENT_ID: Const.CLIENT_ID,
     Const.KEY_CLIENT_SECRET: Const.CLIENT_SECRET,
-    Const.KEY_FCM_TOKEN: Const.FCM_TOKEN,
+    Const.KEY_FCM_TOKEN: login.fcmToken,
   };
 }
 

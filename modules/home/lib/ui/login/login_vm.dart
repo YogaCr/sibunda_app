@@ -1,5 +1,6 @@
 import 'package:common/arch/domain/dummy_form_field_data.dart';
 import 'package:common/arch/domain/model/auth.dart';
+import 'package:common/arch/domain/usecase/firebase_usecase.dart';
 import 'package:common/arch/ui/model/form_data.dart';
 import 'package:common/arch/ui/vm/form_vm.dart';
 import 'package:common/arch/ui/vm/form_vm_group.dart';
@@ -14,10 +15,18 @@ import 'package:tuple/tuple.dart';
 import 'package:email_validator/email_validator.dart';
 
 class LoginFormVm extends FormVmGroup {
-  LoginFormVm(this.login) {
+  LoginFormVm({
+    required Login login,
+    required GetFcmToken getFcmToken,
+    required
+  }):
+    _login = login,
+    _getFcmToken = getFcmToken
+  {
     init();
   }
-  final Login login;
+  final Login _login;
+  final GetFcmToken _getFcmToken;
 
   @override
   List<LiveData> get liveDatas => [];
@@ -27,13 +36,19 @@ class LoginFormVm extends FormVmGroup {
     final respMap = getResponse().responseGroups.values.first;
     final email = respMap[Const.KEY_EMAIL] as String;
     final password = respMap[Const.KEY_PSWD] as String;
-    final data = LoginData(email: email, password: password);
-    final res = await login(data);
-    prind("LoginVm.doSubmitJob() res= $res");
-    if(res is Success<SessionData>) {
-      return Success("ok");
+
+    final fcmTokenRes = await _getFcmToken();
+    if(fcmTokenRes is Success<String>) {
+      final token = fcmTokenRes.data;
+      final data = LoginData(email: email, password: password, fcmToken: token,);
+      final res = await _login(data);
+      prind("LoginVm.doSubmitJob() res= $res");
+      if(res is Success<SessionData>) {
+        return Success("ok");
+      }
+      return (res as Fail<SessionData>).copy();
     }
-    return (res as Fail<SessionData>).copy();
+    return fcmTokenRes as Fail<String>;
   }
 
   @override

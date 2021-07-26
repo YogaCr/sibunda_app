@@ -1,6 +1,7 @@
 import 'package:common/arch/di/config_di.dart';
 import 'package:common/arch/di/data_source_di.dart';
 import 'package:common/arch/di/db_di.dart';
+import 'package:common/arch/di/usecase_di.dart';
 import 'package:common/arch/domain/dummy_data.dart';
 import 'package:common/arch/domain/model/auth.dart';
 import 'package:common/arch/ui/widget/form_controller.dart';
@@ -8,6 +9,7 @@ import 'package:common/util/firebase_util.dart';
 import 'package:common/util/net.dart';
 import 'package:common/util/prefs.dart';
 import 'package:common/value/const_values.dart';
+import 'package:core/domain/model/result.dart';
 import 'package:core/util/_consoles.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -38,8 +40,35 @@ class ConfigUtil {
   }
 
   static initFcm() async {
-    await Firebase.initializeApp();
-    FirebaseMessaging.onBackgroundMessage(fcmBackgroundHandler);
+    try {
+      await Firebase.initializeApp();
+      FirebaseMessaging.onBackgroundMessage(fcmBackgroundHandler);
+      final saveFcmToken = UseCaseDi.saveFcmToken;
+      final token = await FirebaseMessaging.instance.getToken();
+      if(token != null) {
+        prind("`ConfigUtil.initFcm()` fcm token = $token");
+        final res = await saveFcmToken(token);
+        var canSave = true;
+        if(res is Fail<bool>) {
+          canSave = false;
+        } else {
+          canSave = (res as Success<bool>).data;
+        }
+        if(!canSave) {
+          prine("Can't save FCM token to local");
+        }
+      } else {
+        prine("Can't get FCM token from remote");
+      }
+      FirebaseMessaging.instance.onTokenRefresh.listen((refreshToken) {
+        prind("FCM token is refreshed, token = $refreshToken");
+        saveFcmToken(refreshToken);
+      });
+    } catch(e, stack) {
+      final msg = "Error calling `ConfigUtil.initFcm()`";
+      prine("$msg; e= $e");
+      prine(stack);
+    }
   }
 }
 

@@ -11,6 +11,7 @@ class UseCaseDi {
   UseCaseDi._();
 
   static GetFcmToken get getFcmToken => GetFcmTokenImpl(RepoDi.firebaseRepo);
+  static SaveFcmToken get saveFcmToken => SaveFcmTokenImpl(RepoDi.firebaseRepo);
 
   static GetCityList get getCityList => GetCityListImpl(RepoDi.dataRepo);
   static IsLoggedIn get isLoggedIn => IsLoggedInImpl(RepoDi.authRepo);

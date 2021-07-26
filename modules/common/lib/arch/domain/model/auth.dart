@@ -25,16 +25,22 @@ class SignUpData extends Equatable {
   factory SignUpData.fromJson(Map<String, dynamic> json) => _$SignUpDataFromJson(json);
   Map<String, dynamic> get toJson => _$SignUpDataToJson(this);
 
-  LoginData toLoginData() => LoginData(email: email, password: password);
+  LoginData toLoginData() => LoginData(
+    email: email,
+    password: password,
+    fcmToken: Const.FCM_TOKEN,
+  );
 }
 
 class LoginData {
   final String email;
   final String password;
+  final String fcmToken;
 
   const LoginData({
     required this.email,
     required this.password,
+    required this.fcmToken,
   });
 }
 
