@@ -274,12 +274,10 @@ class _WeeklyFormPage extends StatelessWidget {
                     );
                 }
               },
-              submitBtnBuilder: (ctx, canProceed) => Container(
-                margin: EdgeInsets.only(bottom: 20),
-                child: TxtBtn(
-                  Strings.submit_check_form,
-                  color: canProceed == true ? pink_300 : grey,
-                ),
+              submitBtnMargin: EdgeInsets.only(bottom: 20, top: 10,),
+              submitBtnBuilder: (ctx, canProceed) => TxtBtn(
+                Strings.submit_check_form,
+                color: canProceed == true ? pink_300 : grey,
               ),
             ),
           ]),

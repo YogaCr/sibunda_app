@@ -20,6 +20,7 @@ import 'form_controller.dart';
 class FormVmGroupObserver<VM extends FormVmGroup> extends StatefulWidget {
   /// The [bool] in its parameter is for representation of [FormTxtVm.canProceed].
   final Widget Function(BuildContext, bool?) submitBtnBuilder;
+  final EdgeInsets? submitBtnMargin;
 
   /// The [String] in its parameter is for async key from [FormTxtVm.doPreAsyncTask].
   final Widget? Function(BuildContext, String)? preSubmitBtnBuilder;
@@ -66,6 +67,7 @@ class FormVmGroupObserver<VM extends FormVmGroup> extends StatefulWidget {
     this.onSubmit,
     this.onPreSubmit,
     this.predicate,
+    this.submitBtnMargin,
     this.vm,
     this.imgPosition = RelativePosition.below,
     this.showHeader = true,
@@ -84,6 +86,7 @@ class FormVmGroupObserver<VM extends FormVmGroup> extends StatefulWidget {
     onSubmit: onSubmit,
     onPreSubmit: onPreSubmit,
     predicate: predicate,
+    submitBtnMargin: submitBtnMargin,
     vm: vm,
     imgPosition: imgPosition,
     showHeader: showHeader,
@@ -100,6 +103,7 @@ class _FormVmGroupObserverState<VM extends FormVmGroup>
 {
   /// The [bool] in its parameter is for representation of [FormVmGroup.canProceed].
   final Widget Function(BuildContext, bool?) submitBtnBuilder;
+  final EdgeInsets? submitBtnMargin;
 
   /// The [String] in its parameter is for async key from [AsyncVm.doPreAsyncTask].
   final Widget? Function(BuildContext, String)? preSubmitBtnBuilder;
@@ -146,6 +150,7 @@ class _FormVmGroupObserverState<VM extends FormVmGroup>
     required this.onSubmit,
     required this.onPreSubmit,
     required this.predicate,
+    required this.submitBtnMargin,
     required this.vm,
     required this.imgPosition,
     required this.showHeader,
@@ -222,18 +227,25 @@ class _FormVmGroupObserverState<VM extends FormVmGroup>
       builder: builder,
     );
 
-    final submitBtnWrapperBuilder = (BuildContext ctx, bool? canProceed) => InkWell(
-      child: submitBtnBuilder(ctx, canProceed),
-      onTap: () {
-        //print("SignUpPage.onTap() submit canProceed= $canProceed");
-        onPreSubmit?.call(ctx, canProceed);
-        if(canProceed == true) {
-          vm.submit();
-        } else if(vm.isFormEnabled.value == true) {
-          vm.displayInvalidFields();
-        }
-      },
-    );
+    final submitBtnWrapperBuilder = (BuildContext ctx, bool? canProceed) {
+      final child = InkWell(
+        child: submitBtnBuilder(ctx, canProceed),
+        onTap: () {
+          //print("SignUpPage.onTap() submit canProceed= $canProceed");
+          onPreSubmit?.call(ctx, canProceed);
+          if(canProceed == true) {
+            vm.submit();
+          } else if(vm.isFormEnabled.value == true) {
+            vm.displayInvalidFields();
+          }
+        },
+      );
+
+      return submitBtnMargin == null ? child : Container(
+        margin: submitBtnMargin,
+        child: child,
+      );
+    };
 
     final outerChildren = <Widget>[
       formAreaWidget,
