@@ -61,6 +61,7 @@ class _PregnancyCheckPageRoute {
     required BuildContext context,
     required MotherTrimester data,
     required ProfileCredential pregnancyCred,
+    required bool isLastTrimester,
   }) {
     final SibRoute _route = SibRoute("PregnancyCheckPage", KehamilankuTrimesterFormPage, (ctx) {
       final FormGroupInterceptor? interceptor = ConfigUtil.formInterceptor;
@@ -76,7 +77,10 @@ class _PregnancyCheckPageRoute {
         ),
       );
     });
-    _route.goToPage(context, args: {Const.KEY_TRIMESTER : data});
+    _route.goToPage(context, args: {
+      Const.KEY_TRIMESTER : data,
+      Const.KEY_IS_LAST_TRIMESTER: isLastTrimester,
+    });
   }
 }
 

@@ -35,4 +35,5 @@ class UseCaseDi {
 
   static GetBornBabyList get getBornBabyList => GetBornBabyListImpl(RepoDi.myBabyRepo);
   static GetUnbornBabyList get getUnbornBabyList => GetUnbornBabyListImpl(RepoDi.myBabyRepo);
+  static IsBabyBorn get isBabyBorn => IsBabyBornImpl(RepoDi.childRepo);
 }

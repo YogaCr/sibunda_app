@@ -27,6 +27,7 @@ class KehamilankuVmDi {
   }) => KehamilankuCheckFormVm(
     context: context,
     pregnancyId: pregnancyCred,
+    isBabyBorn: UseCaseDi.isBabyBorn,
     getMotherHpl: UseCaseDi.getMotherHpl,
     getPregnancyCheckUpId: UseCaseDi.getPregnancyCheckUpId,
     getPregnancyCheck: KehamilankuUseCaseDi.getPregnancyCheck,

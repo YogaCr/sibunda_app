@@ -13,6 +13,7 @@ import 'package:common/arch/domain/model/form_warning_status.dart';
 import 'package:common/arch/domain/model/img_data.dart';
 import 'package:common/arch/domain/model/kehamilanku_data.dart';
 import 'package:common/util/data_mapper.dart';
+import 'package:common/value/db_const.dart';
 import 'package:core/domain/model/result.dart';
 import 'package:core/util/_consoles.dart';
 import 'package:core/util/annotation/data_annotation.dart';
@@ -128,12 +129,17 @@ class PregnancyRepoImpl with PregnancyRepo {
 
   // ====== Check ==========
   @override
-  Future<Result<int>> getPregnancyCheckId(int pregnancyId, int week) => _checkUpLocalSrc.getCheckUpId(period: week, refId: pregnancyId);
+  Future<Result<int>> getPregnancyCheckId(int pregnancyId, int week) => _checkUpLocalSrc.getCheckUpId(
+    period: week,
+    refId: pregnancyId,
+    type: DbConst.TYPE_PREGNANCY_CHECK,
+  );
   @override
   Future<Result<bool>> savePregnancyCheckId(PregnancyCheckUpId checkUpId) => _checkUpLocalSrc.saveCheckUpId(
     id: checkUpId.id,
     period: checkUpId.week,
     refId: checkUpId.pregnancyId,
+    type: DbConst.TYPE_PREGNANCY_CHECK,
   );
   @override
   Future<Result<PregnancyCheck>> getPregnancyCheck(PregnancyCheckUpWeek checkUpWeek) async {
@@ -144,6 +150,20 @@ class PregnancyRepoImpl with PregnancyRepo {
         week: checkUpWeek.week,
       );
       _checkBody = await _api.getPregnancyCheckForm(body);
+      final checkUpId = PregnancyCheckUpId(
+        pregnancyId: checkUpWeek.pregnancyId, week: checkUpWeek.week, id: _checkBody!.id!,
+      );
+      final locRes = await savePregnancyCheckId(checkUpId);
+      if(locRes is! Success<bool>) {
+        final errMsg = (locRes as Fail<bool>).error?.toString();
+        //prind("getPregnancyCheck() errMsg?.contains('2067') = ${errMsg?.contains("2067")}");
+        if(errMsg?.contains("2067") != true) {
+          final msg = "Can't save pregnancy check up id to local, locRes = $locRes";
+          prine(msg);
+          return Fail(msg: msg);
+        }
+      }
+      _currentCheckUpWeek = checkUpWeek;
       return Success(PregnancyCheck.fromResponse(_checkBody!));
     } catch(e, stack) {
       final msg = "`getPregnancyCheck()` error";
@@ -204,10 +224,14 @@ class PregnancyRepoImpl with PregnancyRepo {
   Future<Result<PregnancyBabySize?>> getPregnancyBabySize(PregnancyCheckUpWeek checkUpWeek) async {
     if(checkUpWeek != _currentCheckUpWeek) {
       try {
+        final res = await getPregnancyCheck(checkUpWeek);
+        if(res is! Success<PregnancyCheck>) {
+          final msg = "Can't get pregnancy check up data with `checkUpWeek` of '$checkUpWeek', res= $res";
+          return Fail(msg: msg);
+        }
         //final checkId = checkUpId.id;
-        final body = PregnancyShowCheckBody(
-          trisemester_id: checkUpWeek.trimesterId,
-          week: checkUpWeek.week,
+        final body = PregnancyShowAnalysisBody(
+          weekly_trisemester_checkup_id: res.data.id!,
         );
         _checkUpAnalysis = (await _api.getPregnancyCheckWarning(body)).data;
         //_checkBody = await _api.getPregnancyCheckWarning(body);
@@ -216,7 +240,6 @@ class PregnancyRepoImpl with PregnancyRepo {
         prine(stack);
         return Fail(msg: "Error calling `getPregnancyBabySize()`", error: e);
       }
-      _currentCheckUpWeek = checkUpWeek;
     }
     if(_checkUpAnalysis!.fetusGrowth.desc == null) {
       return Success(null);
@@ -227,10 +250,14 @@ class PregnancyRepoImpl with PregnancyRepo {
   Future<Result<List<FormWarningStatus>>> getMotherWarningStatus(PregnancyCheckUpWeek checkUpWeek) async {
     if(checkUpWeek != _currentCheckUpWeek) {
       try {
+        final res = await getPregnancyCheck(checkUpWeek);
+        if(res is! Success<PregnancyCheck>) {
+          final msg = "Can't get pregnancy check up data with `checkUpWeek` of '$checkUpWeek', res= $res";
+          return Fail(msg: msg);
+        }
         //final checkId = checkUpId.id;
-        final body = PregnancyShowCheckBody(
-          trisemester_id: checkUpWeek.trimesterId,
-          week: checkUpWeek.week,
+        final body = PregnancyShowAnalysisBody(
+          weekly_trisemester_checkup_id: res.data.id!,
         );
         _checkUpAnalysis = (await _api.getPregnancyCheckWarning(body)).data;
         //_checkBody = await _api.getPregnancyCheckWarning(body);

@@ -11,6 +11,15 @@ class CheckUpIdEntities extends Table {
   IntColumn get refId => integer().named("ref_id")();//.named("nik")
     //.customConstraint("REFERENCES profiles(nik)")();
 
+  /// [DbConst.TYPE_PREGNANCY_CHECK] or [DbConst.TYPE_BABY_CHECK]
+  IntColumn get type => integer()();//.named("nik")
+
   @override
   String get tableName => "check_up_ids"; //DbConst.NAME_PREGNANCY_CHECK_UP_ID;
+
+@override
+  List<String> get customConstraints => [
+    "CHECK( type IN (1,2) )",
+    "UNIQUE (id, period, ref_id, type)"
+];
 }

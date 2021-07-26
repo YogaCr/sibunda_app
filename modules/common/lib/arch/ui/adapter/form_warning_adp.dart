@@ -15,13 +15,7 @@ class FormWarningList extends StatelessWidget {
     return Column(
       children: dataList.map((data) => Container(
         margin: EdgeInsets.symmetric(vertical: 5),
-        child: ItemFormWarningStatus(
-          desc: data.desc,
-          warningTxt: data.isSafe ? null : data.action,
-          image: Container(
-            color: Manifest.theme.colorPrimary, //TODO: img
-          ),
-        ),
+        child: ItemFormWarningStatus.fromData(data),
       )).toList(growable: false),
     );
   }
@@ -40,13 +34,7 @@ class FormWarningSliverList extends StatelessWidget {
             final data = dataList[i];
             return Container(
               margin: EdgeInsets.symmetric(vertical: 5),
-              child: ItemFormWarningStatus(
-                desc: data.desc,
-                warningTxt: data.isSafe ? null : data.action,
-                image: Container(
-                  color: Manifest.theme.colorPrimary, //TODO: img
-                ),
-              ),
+              child: ItemFormWarningStatus.fromData(data),
             );
           },
         childCount: dataList.length,

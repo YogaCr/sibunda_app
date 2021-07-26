@@ -16,6 +16,8 @@ class ConfigUtil {
   static FormGroupInterceptor? get formInterceptor => TestUtil.isDebug
       ? FormGroupInterceptor() : null;
 
+  static final isAutoToastEnabled = true;
+
   static init() async {
     await initializeDateFormatting("id_ID");
     if(TestUtil.isDummy) {

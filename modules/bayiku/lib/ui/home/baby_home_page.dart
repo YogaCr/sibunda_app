@@ -12,11 +12,9 @@ import 'package:common/arch/ui/widget/_item_template.dart';
 import 'package:common/arch/ui/widget/_items_bayiku.dart';
 import 'package:common/arch/ui/widget/_items_kehamilanku.dart';
 import 'package:common/config/_config.dart';
-import 'package:common/config/manifest.dart';
 import 'package:common/res/string/_string.dart';
 import 'package:common/res/theme/_theme.dart';
 import 'package:common/util/navigations.dart';
-import 'package:common/util/ui.dart';
 import 'package:common/value/const_values.dart';
 import 'package:core/ui/base/async_view_model_observer.dart';
 import 'package:core/ui/base/live_data.dart';
@@ -42,6 +40,16 @@ class BabyHomePage extends StatelessWidget {
 
     if(selectedBaby != null) {
       vm.initHome(babyCredential: selectedBaby);
+    } else {
+      final loadLast = getArgs<bool>(context, Const.KEY_LOAD_LAST);
+      if(loadLast == true) {
+        vm.bornBabyList.observeOnce((list) {
+          if(list?.isNotEmpty == true) {
+            final cred = ProfileCredential.fromBabyOverlay(list!.last);
+            vm.initHome(babyCredential: cred);
+          }
+        }, immediatelyGet: true);
+      }
     }
 
     return TopBarTitleAndBackFrame(
@@ -86,7 +94,7 @@ class BabyHomePage extends StatelessWidget {
             final isSaved = await BabyRoutes.obj.goToExternalRouteBuilder(
               context,
               GlobalRoutes.home_childFormPage,
-              builderArgs: { Const.KEY_CTX: context, },
+              builderArgs: GlobalRoutes.makeHomeChildFormPageData(),
             );
             if(isSaved == true) {
               vm..bornBabyList.observeOnce((babyList) {
@@ -101,7 +109,6 @@ class BabyHomePage extends StatelessWidget {
             final isSaved = await BabyRoutes.obj.goToExternalRouteBuilder(
               context,
               GlobalRoutes.home_motherHplPage,
-              builderArgs: { Const.KEY_CTX: context, },
             );
             if(isSaved == true) {
               vm..unbornBabyList.observeOnce((babyList) {

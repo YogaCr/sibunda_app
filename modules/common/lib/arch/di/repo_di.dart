@@ -49,6 +49,7 @@ class RepoDi {
   ); //MotherRepoDummy.obj;
   static FatherRepo get fatherRepo => FatherRepoDummy.obj;
   static ChildRepo get childRepo => ChildRepoImpl(
+    accountLocalSrc: LocalSrcDi.accountSrc,
     profileDao: DbDi.profileDao,
     pregnancyDao: DbDi.pregnancyDao,
     dataApi: ApiDi.dataApi,

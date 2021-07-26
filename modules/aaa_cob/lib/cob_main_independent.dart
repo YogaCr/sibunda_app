@@ -1,9 +1,31 @@
 import 'dart:io';
 
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
-void main() {
+Future<void> _bgHandler(RemoteMessage event) async {
+  print("message recieved in BG");
+  print(event.notification!.body);
+}
+
+void main() async {
+  await WidgetsFlutterBinding.ensureInitialized();
+  final res = await Firebase.initializeApp();
+  print("res= $res");
+  FirebaseMessaging.instance.getToken().then((str) {
+    print("token = $str");
+  });
+  FirebaseMessaging.onMessage.listen((event) {
+    print("message recieved");
+    print(event.notification!.body);
+  });
+  FirebaseMessaging.onMessageOpenedApp.listen((event) {
+    print("message recieved and CLICKED!!!");
+    print(event.notification!.body);
+  });
+  FirebaseMessaging.onBackgroundMessage(_bgHandler);
   runApp(MyApp());
 }
 

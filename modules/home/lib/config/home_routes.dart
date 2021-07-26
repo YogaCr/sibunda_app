@@ -29,15 +29,12 @@ class HomeRoutes extends ModuleRoute {
     exportRouteBuilder(
       GlobalRoutes.home_childFormPage,
       (args) => HomeRoutes.childFormPage.getRoute(
-        context: args[Const.KEY_CTX],
         childCount: args[Const.KEY_DATA],
       ),
     );
     exportRouteBuilder(
       GlobalRoutes.home_motherHplPage,
-      (args) => HomeRoutes.motherHplPage.getRoute(
-        context: args[Const.KEY_CTX],
-      ),
+      (args) => HomeRoutes.motherHplPage.getRoute(),
     );
   }
   static final obj = HomeRoutes._();
@@ -142,7 +139,6 @@ class _ChildFormPageRoute {
   static final obj = _ChildFormPageRoute._();
 
   SibRoute getRoute({
-    required BuildContext context,
     LiveData<int>? childCount,
   }) {
     final interceptor = ConfigUtil.formInterceptor;
@@ -164,25 +160,21 @@ class _ChildFormPageRoute {
   Future<bool?> go({
     required BuildContext context,
     LiveData<int>? childCount,
-  }) => getRoute(context: context, childCount: childCount).goToPage(context);
+  }) => getRoute(childCount: childCount).goToPage(context);
 }
 
 class _MotherHplPageRoute {
   _MotherHplPageRoute._();
   static final obj = _MotherHplPageRoute._();
 
-  SibRoute getRoute({
-    required BuildContext context,
-  }) => SibRoute("MotherHplPage", MotherHplPage, (ctx) =>  PlainBackFrame(
+  SibRoute getRoute() => SibRoute("MotherHplPage", MotherHplPage, (ctx) =>  PlainBackFrame(
     body: MotherHplPage().inVmProvider([
-          (ctx) => HomeVmDi.motherHplVm(
-        context: context,
-      ),
+          (ctx) => HomeVmDi.motherHplVm(context: ctx,),
     ]), //.inVmProvider([(ctx) => HomeVmDi.childFormVm,]),
     padding: EdgeInsets.all(20),
   ));
   /// Return future `true` if HPL data in this route is saved successfully.
   Future<bool?> go({
     required BuildContext context,
-  }) => getRoute(context: context).goToPage(context);
+  }) => getRoute().goToPage(context);
 }

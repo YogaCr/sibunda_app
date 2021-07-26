@@ -8,6 +8,7 @@ part of 'kehamilanku_form_api_model.dart';
 
 PregnancyCheckBody _$PregnancyCheckBodyFromJson(Map<String, dynamic> json) {
   return PregnancyCheckBody(
+    id: json['id'] as int?,
     visitDate: json['tanggal_periksa'] as String,
     visitPlace: json['tempat_periksa'] as String,
     checkerName: json['nama_pemeriksa'] as String,
@@ -37,6 +38,7 @@ PregnancyCheckBody _$PregnancyCheckBodyFromJson(Map<String, dynamic> json) {
 
 Map<String, dynamic> _$PregnancyCheckBodyToJson(PregnancyCheckBody instance) =>
     <String, dynamic>{
+      'id': instance.id,
       'tanggal_periksa': instance.visitDate,
       'tempat_periksa': instance.visitPlace,
       'nama_pemeriksa': instance.checkerName,

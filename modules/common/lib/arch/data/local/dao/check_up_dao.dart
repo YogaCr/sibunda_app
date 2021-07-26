@@ -28,8 +28,14 @@ class CheckUpIdDao extends DatabaseAccessor<AppDatabase> with _$CheckUpIdDaoMixi
   Future<CheckUpIdEntity?> getByRefIdAndPeriod({
     required int refId,
     required int period,
-  }) => (select(checkUpIdEntities)
-        ..where((it) => it.refId.equals(refId))
-        ..where((it) => it.period.equals(period)))
-      .getSingleOrNull();
+    int? type,
+  }) {
+    final sel = select(checkUpIdEntities)
+      ..where((it) => it.refId.equals(refId))
+      ..where((it) => it.period.equals(period));
+    if(type != null) {
+      sel.where((it) => it.type.equals(type));
+    }
+    return sel.getSingleOrNull();
+  }
 }

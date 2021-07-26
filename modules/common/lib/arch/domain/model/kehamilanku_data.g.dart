@@ -8,6 +8,7 @@ part of 'kehamilanku_data.dart';
 
 PregnancyCheck _$PregnancyCheckFromJson(Map<String, dynamic> json) {
   return PregnancyCheck(
+    id: json['id'] as int?,
     visitDate: json['tanggal_periksa'] as String,
     visitPlace: json['tempat_periksa'] as String,
     checkerName: json['nama_pemeriksa'] as String,
@@ -36,6 +37,7 @@ PregnancyCheck _$PregnancyCheckFromJson(Map<String, dynamic> json) {
 
 Map<String, dynamic> _$PregnancyCheckToJson(PregnancyCheck instance) =>
     <String, dynamic>{
+      'id': instance.id,
       'tanggal_periksa': instance.visitDate,
       'tempat_periksa': instance.visitPlace,
       'nama_pemeriksa': instance.checkerName,

@@ -246,7 +246,7 @@ class MyBabyRepoImpl with MyBabyRepo {
     required int babyId,
     required int month,
     required int id,
-  }) => _checkUpLocalSrc.saveCheckUpId(id: id, period: month, refId: babyId);
+  }) => _checkUpLocalSrc.saveCheckUpId(id: id, period: month, refId: babyId, type: DbConst.TYPE_BABY_CHECK,);
 
   @override
   Future<Result<int>> getBabyCheckUpId({

@@ -13,6 +13,7 @@ part 'kehamilanku_data.g.dart';
 
 @JsonSerializable()
 class PregnancyCheck {
+  final int? id;
   @JsonKey(name: Const.KEY_VISIT_DATE)
   final String visitDate;
   @JsonKey(name: Const.KEY_VISIT_PLACE)
@@ -61,6 +62,7 @@ class PregnancyCheck {
   final String? usgUrl;
 
   PregnancyCheck({
+    required this.id,
     required this.visitDate,
     required this.visitPlace,
     required this.checkerName,
@@ -88,6 +90,7 @@ class PregnancyCheck {
 
 
   factory PregnancyCheck.from(Map<String, String> map) => PregnancyCheck(
+    id: tryParseInt(map[Const.KEY_ID]),
     visitDate: map[Const.KEY_VISIT_DATE]!,
     visitPlace: map[Const.KEY_VISIT_PLACE]!,
     checkerName: map[Const.KEY_CHECKER_NAME]!,
@@ -153,14 +156,16 @@ class PregnancyCheckUpId extends Equatable {
 class PregnancyCheckUpWeek extends Equatable {
   final int week;
   final int trimesterId;
+  final int pregnancyId;
 
   PregnancyCheckUpWeek({
     required this.trimesterId,
     required this.week,
+    required this.pregnancyId,
   });
 
   @override
-  List<Object?> get props => [trimesterId, week];
+  List<Object?> get props => [trimesterId, week, pregnancyId];
 }
 
 /*

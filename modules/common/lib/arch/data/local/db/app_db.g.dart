@@ -1190,8 +1190,14 @@ class CheckUpIdEntity extends DataClass implements Insertable<CheckUpIdEntity> {
   /// It can reference to either pregnancy id or profile serverId (for baby).
   /// We know this is not the best solution, yet.
   final int refId;
+
+  /// [DbConst.TYPE_PREGNANCY_CHECK] or [DbConst.TYPE_BABY_CHECK]
+  final int type;
   CheckUpIdEntity(
-      {required this.id, required this.period, required this.refId});
+      {required this.id,
+      required this.period,
+      required this.refId,
+      required this.type});
   factory CheckUpIdEntity.fromData(
       Map<String, dynamic> data, GeneratedDatabase db,
       {String? prefix}) {
@@ -1203,6 +1209,8 @@ class CheckUpIdEntity extends DataClass implements Insertable<CheckUpIdEntity> {
           .mapFromDatabaseResponse(data['${effectivePrefix}period'])!,
       refId: const IntType()
           .mapFromDatabaseResponse(data['${effectivePrefix}ref_id'])!,
+      type: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}type'])!,
     );
   }
   @override
@@ -1211,6 +1219,7 @@ class CheckUpIdEntity extends DataClass implements Insertable<CheckUpIdEntity> {
     map['id'] = Variable<int>(id);
     map['period'] = Variable<int>(period);
     map['ref_id'] = Variable<int>(refId);
+    map['type'] = Variable<int>(type);
     return map;
   }
 
@@ -1219,6 +1228,7 @@ class CheckUpIdEntity extends DataClass implements Insertable<CheckUpIdEntity> {
       id: Value(id),
       period: Value(period),
       refId: Value(refId),
+      type: Value(type),
     );
   }
 
@@ -1229,6 +1239,7 @@ class CheckUpIdEntity extends DataClass implements Insertable<CheckUpIdEntity> {
       id: serializer.fromJson<int>(json['id']),
       period: serializer.fromJson<int>(json['period']),
       refId: serializer.fromJson<int>(json['refId']),
+      type: serializer.fromJson<int>(json['type']),
     );
   }
   @override
@@ -1238,71 +1249,85 @@ class CheckUpIdEntity extends DataClass implements Insertable<CheckUpIdEntity> {
       'id': serializer.toJson<int>(id),
       'period': serializer.toJson<int>(period),
       'refId': serializer.toJson<int>(refId),
+      'type': serializer.toJson<int>(type),
     };
   }
 
-  CheckUpIdEntity copyWith({int? id, int? period, int? refId}) =>
+  CheckUpIdEntity copyWith({int? id, int? period, int? refId, int? type}) =>
       CheckUpIdEntity(
         id: id ?? this.id,
         period: period ?? this.period,
         refId: refId ?? this.refId,
+        type: type ?? this.type,
       );
   @override
   String toString() {
     return (StringBuffer('CheckUpIdEntity(')
           ..write('id: $id, ')
           ..write('period: $period, ')
-          ..write('refId: $refId')
+          ..write('refId: $refId, ')
+          ..write('type: $type')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode =>
-      $mrjf($mrjc(id.hashCode, $mrjc(period.hashCode, refId.hashCode)));
+  int get hashCode => $mrjf($mrjc(id.hashCode,
+      $mrjc(period.hashCode, $mrjc(refId.hashCode, type.hashCode))));
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is CheckUpIdEntity &&
           other.id == this.id &&
           other.period == this.period &&
-          other.refId == this.refId);
+          other.refId == this.refId &&
+          other.type == this.type);
 }
 
 class CheckUpIdEntitiesCompanion extends UpdateCompanion<CheckUpIdEntity> {
   final Value<int> id;
   final Value<int> period;
   final Value<int> refId;
+  final Value<int> type;
   const CheckUpIdEntitiesCompanion({
     this.id = const Value.absent(),
     this.period = const Value.absent(),
     this.refId = const Value.absent(),
+    this.type = const Value.absent(),
   });
   CheckUpIdEntitiesCompanion.insert({
     required int id,
     required int period,
     required int refId,
+    required int type,
   })  : id = Value(id),
         period = Value(period),
-        refId = Value(refId);
+        refId = Value(refId),
+        type = Value(type);
   static Insertable<CheckUpIdEntity> custom({
     Expression<int>? id,
     Expression<int>? period,
     Expression<int>? refId,
+    Expression<int>? type,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (period != null) 'period': period,
       if (refId != null) 'ref_id': refId,
+      if (type != null) 'type': type,
     });
   }
 
   CheckUpIdEntitiesCompanion copyWith(
-      {Value<int>? id, Value<int>? period, Value<int>? refId}) {
+      {Value<int>? id,
+      Value<int>? period,
+      Value<int>? refId,
+      Value<int>? type}) {
     return CheckUpIdEntitiesCompanion(
       id: id ?? this.id,
       period: period ?? this.period,
       refId: refId ?? this.refId,
+      type: type ?? this.type,
     );
   }
 
@@ -1318,6 +1343,9 @@ class CheckUpIdEntitiesCompanion extends UpdateCompanion<CheckUpIdEntity> {
     if (refId.present) {
       map['ref_id'] = Variable<int>(refId.value);
     }
+    if (type.present) {
+      map['type'] = Variable<int>(type.value);
+    }
     return map;
   }
 
@@ -1326,7 +1354,8 @@ class CheckUpIdEntitiesCompanion extends UpdateCompanion<CheckUpIdEntity> {
     return (StringBuffer('CheckUpIdEntitiesCompanion(')
           ..write('id: $id, ')
           ..write('period: $period, ')
-          ..write('refId: $refId')
+          ..write('refId: $refId, ')
+          ..write('type: $type')
           ..write(')'))
         .toString();
   }
@@ -1349,8 +1378,12 @@ class $CheckUpIdEntitiesTable extends CheckUpIdEntities
   late final GeneratedColumn<int?> refId = GeneratedColumn<int?>(
       'ref_id', aliasedName, false,
       typeName: 'INTEGER', requiredDuringInsert: true);
+  final VerificationMeta _typeMeta = const VerificationMeta('type');
+  late final GeneratedColumn<int?> type = GeneratedColumn<int?>(
+      'type', aliasedName, false,
+      typeName: 'INTEGER', requiredDuringInsert: true);
   @override
-  List<GeneratedColumn> get $columns => [id, period, refId];
+  List<GeneratedColumn> get $columns => [id, period, refId, type];
   @override
   String get aliasedName => _alias ?? 'check_up_ids';
   @override
@@ -1376,6 +1409,12 @@ class $CheckUpIdEntitiesTable extends CheckUpIdEntities
           _refIdMeta, refId.isAcceptableOrUnknown(data['ref_id']!, _refIdMeta));
     } else if (isInserting) {
       context.missing(_refIdMeta);
+    }
+    if (data.containsKey('type')) {
+      context.handle(
+          _typeMeta, type.isAcceptableOrUnknown(data['type']!, _typeMeta));
+    } else if (isInserting) {
+      context.missing(_typeMeta);
     }
     return context;
   }

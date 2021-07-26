@@ -11,6 +11,7 @@ import 'package:common/arch/ui/widget/form_faker.dart';
 import 'package:common/arch/ui/widget/form_generic_vm_group_observer.dart';
 import 'package:common/arch/ui/widget/picker_icon_widget.dart';
 import 'package:common/arch/ui/widget/popup_widget.dart';
+import 'package:common/config/routes.dart';
 import 'package:common/res/string/_string.dart';
 import 'package:common/res/theme/_theme.dart';
 import 'package:common/util/navigations.dart';
@@ -22,6 +23,7 @@ import 'package:core/ui/base/view_model.dart';
 import 'package:core/util/_consoles.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:kehamilanku/config/kehamilanku_routes.dart';
 import 'package:kehamilanku/ui/pregnancy_check/kehamilanku_trimester_form_vm.dart';
 
 class KehamilankuTrimesterFormPage extends StatelessWidget {
@@ -35,11 +37,13 @@ class KehamilankuTrimesterFormPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isLastTrimester = getArgs<bool>(context, Const.KEY_IS_LAST_TRIMESTER) == true;
+
     final trimester = getArgs<MotherTrimester>(context, Const.KEY_TRIMESTER)!;
     final startWeek = trimester.startWeek;
     final weekCount = trimester.endWeek - startWeek +1;
     final vm = ViewModelProvider.of<KehamilankuCheckFormVm>(context)
-      ..init();
+      ..initVm();
 
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
       await Future.delayed(Duration(milliseconds: 500));
@@ -93,6 +97,7 @@ class KehamilankuTrimesterFormPage extends StatelessWidget {
             vm: vm,
             interceptor: interceptor,
             week: index +startWeek,
+            isLastTrimester: isLastTrimester,
           )),
         ),
       ),
@@ -103,12 +108,14 @@ class KehamilankuTrimesterFormPage extends StatelessWidget {
 
 class _WeeklyFormPage extends StatelessWidget {
   final int week;
+  final bool isLastTrimester;
   final KehamilankuCheckFormVm vm;
   final FormGroupInterceptor? interceptor;
   final scrollControl = ScrollController();
 
   _WeeklyFormPage({
     required this.week,
+    required this.isLastTrimester,
     required this.vm,
     this.interceptor,
   });
@@ -121,68 +128,113 @@ class _WeeklyFormPage extends StatelessWidget {
       slivers: [
         SliverList(
           delegate: SliverChildListDelegate.fixed([
-            MultiLiveDataObserver(
-              liveDataList: [vm.currentWeek, vm.isBabySizeInit],
-              builder: (ctx, dataList) => LiveDataObserver<PregnancyBabySize>(
-                liveData: vm.pregnancyBabySize,
-                immediatelyBuildState: dataList[0] == week
-                    && dataList[1] == true,
-                //distinctUntilChanged: false,
-                predicate: (data) => vm.currentWeek.value == week,
-                initBuilder: (ctx) => vm.isBabySizeInit.value != true
-                    ? defaultLoading()
-                    : defaultEmptyWidget(),
-                builder: (ctx, data) {
-                  prind("LiveDataObserver<PregnancyBabySize> data= $data week = $week");
-                  return data != null
-                      ? ItemMotherBabySizeOverview.fromData(data)
-                      : defaultEmptyWidget();
-                },
-              ),
+            MultiLiveDataObserver<dynamic>(
+              liveDataList: [vm.currentWeek, vm.isBabyBorn],
+              builder: (ctx, dataList) {
+                final int? currentWeek = dataList[0];
+                if(currentWeek != week) return defaultLoading();
+                final bool? isBorn = dataList[1];
+
+                final babySize = MultiLiveDataObserver<dynamic>(
+                  liveDataList: [vm.pregnancyBabySize, vm.isBabySizeInit],
+                  //distinctUntilChanged: false,
+                  predicate: (data) => currentWeek == week,
+                  //initBuilder: (ctx) => defaultLoading(),
+                  //immediatelyBuildState: currentWeek == week && vm.isBabySizeInit.value == true,
+                  builder: (ctx, dataList2) {
+                    //if(currentWeek != wee)
+                    final bool? isBabySizeInit = dataList2[1];
+                    final PregnancyBabySize? babySize = dataList2[0];
+                    prind("LiveDataObserver<PregnancyBabySize> dataList2= $dataList2 dataList= $dataList week = $week");
+                    if(babySize == null) {
+                      if(isBabySizeInit == true) return defaultEmptyWidget();
+                      return defaultLoading();
+                    }
+                    return ItemMotherBabySizeOverview.fromData(babySize);
+                  },
+                );
+
+                /*
+                LiveDataObserver<List<FormWarningStatus>>(
+                  liveData: vm.formWarningStatusList,
+                  predicate: (data) => vm.currentWeek.value == week,
+                  initBuilder: (ctx) => defaultLoading(),
+                  immediatelyBuildState: vm.currentWeek.value == week,
+                  builder: (ctx, data) =>
+                );
+                 */
+                final analysis = LiveDataObserver<List<FormWarningStatus>>(
+                  liveData: vm.formWarningStatusList,
+                  predicate: (data) => vm.currentWeek.value == week,
+                  initBuilder: (ctx) => defaultLoading(),
+                  immediatelyBuildState: vm.currentWeek.value == week,
+                  builder: (ctx, data) {
+                    prind("TrimesterFormPage FormWarningList builder data= $data");
+                    if(data == null) return defaultLoading();
+                    if(data.isEmpty) return defaultEmptyWidget();
+                    return Column(
+                      children: [
+                        //Container(margin: EdgeInsets.only(top: 20, bottom: 5,),),
+                        SizedBox(height: 20,),
+                        Text(
+                          "Informasi Hasil Pemeriksaan",
+                          style: SibTextStyles.size_0_bold,
+                        ),
+                        SizedBox(height: 5,),
+                        FormWarningList(data),
+                        TxtBtn(
+                          "Lihat Grafik Evaluasi Kehamilan",
+                          onTap: () => KehamilankuRoutes.pregEvalChartMenuPage.go(
+                            context: context,
+                            pregnancyCred: vm.pregnancyId,
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                );
+
+                final children = <Widget>[
+                  babySize, analysis,
+                ];
+
+                if(isLastTrimester && isBorn != true) {
+                  children.insert(1, Padding(
+                    padding: EdgeInsets.only(top: 10,),
+                    child: TxtBtn(
+                      "Konfirmasi Kelahiran Bayi",
+                      onTap: () async {
+                        final isSaved = await KehamilankuRoutes.obj.goToExternalRouteBuilder(
+                          context,
+                          GlobalRoutes.home_childFormPage,
+                          builderArgs: GlobalRoutes.makeHomeChildFormPageData(),
+                        );
+                        if(isSaved == true) {
+                          KehamilankuRoutes.obj.goToModule(
+                            context,
+                            GlobalRoutes.bayiku,
+                            args: { Const.KEY_LOAD_LAST: true },
+                            replaceCurrent: true,
+                          );
+                        }
+                      },
+                    ),
+                  ),);
+                }
+                return Column(
+                  children: children,
+                );
+              },
             ),
-            LiveDataObserver<List<FormWarningStatus>>(
-              liveData: vm.formWarningStatusList,
-              predicate: (data) => vm.currentWeek.value == week,
-              initBuilder: (ctx) => defaultLoading(),
-              builder: (ctx, data) => Container(
-                margin: EdgeInsets.only(top: 20, bottom: 5,),
-                child: data?.isNotEmpty == true ? Text(
-                  "Informasi Hasil Pemeriksaan",
-                  style: SibTextStyles.size_0_bold,
-                ) : null,
-              ),
-            ),
-          ]),
-        ),
-        LiveDataObserver<List<FormWarningStatus>>(
-          liveData: vm.formWarningStatusList,
-          predicate: (data) => vm.currentWeek.value == week,
-          initBuilder: (ctx) => SliverToBoxAdapter(child: defaultLoading(),),
-          builder: (ctx, data) => data != null
-              ? FormWarningSliverList(data)
-              : SliverToBoxAdapter(child: defaultLoading(),),
-        ),
-        //FormWarningSliverList(warningStatusList),
-        SliverList(
-          delegate: SliverChildListDelegate.fixed([
-/*
-            Container(
-              margin: EdgeInsets.only(top: 20, bottom: 5),
-              child: Text(
-                "Form Pemeriksaan Bunda",
-                style: SibTextStyles.size_0_bold,
-              ),
-            ),
- */
             FormVmGroupObserver<KehamilankuCheckFormVm>(
               vm: vm,
               interceptor: interceptor,
               predicate: () {
                 //prind("_WeeklyFormPage FormVmGroupObserver<KehamilankuCheckFormVm>.predicate() week = $week vm.currentWeek.value = ${vm.currentWeek.value}");
                 return vm.currentWeek.value == week;
-                    //|| vm.currentWeek.value == week;
-                    //|| vm.currentWeek.value == week -1
-                    //|| vm.currentWeek.value == week +1;
+                //|| vm.currentWeek.value == week;
+                //|| vm.currentWeek.value == week -1
+                //|| vm.currentWeek.value == week +1;
               },
               onPreSubmit: (ctx, canProceed) => canProceed == true
                   ? showSnackBar(ctx, "Submitting", backgroundColor: Colors.green)
@@ -226,7 +278,6 @@ class _WeeklyFormPage extends StatelessWidget {
                 ),
               ),
             ),
-            //BlocMultiFieldFormBuilder<PregnancyCheckBloc>.defaultInputField(),
           ]),
         ),
       ],

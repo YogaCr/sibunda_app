@@ -55,6 +55,7 @@ mixin AccountLocalSrc {
   Future<Result<int>> getChildId(String nik);
 
   Future<Result<Profile>> getProfile(String email);
+  Future<Result<Profile>> getProfileByServerId(int serverId);
 
   Future<Result<bool>> saveCurrentEmail(String email);
   Future<Result<String>> getCurrentEmail();
@@ -374,6 +375,29 @@ class AccountLocalSrcImpl with AccountLocalSrc {
     }
     final profile = Profile.fromEntity(entity: prof, email: email);
     return Success(profile);
+  }
+  @override
+  Future<Result<Profile>> getProfileByServerId(int serverId) async {
+    try {
+      final prof = await _profileDao.getByServerId(serverId);
+      if(prof == null) {
+        final msg = "Can't get profile with `serverId` of '$serverId'";
+        prinw(msg);
+        return Fail(msg: msg, code: 1,);
+      }
+      final cred = await _credentialDao.getById(prof.userId);
+      if(cred == null) {
+        final msg = "Can't get user credential with `serverId` of '$serverId' and `prof.userId` of '${prof.userId}'";
+        prine(msg);
+        return Fail(msg: msg, code: 2,);
+      }
+      return Success(Profile.fromEntity(entity: prof, email: cred.email));
+    } catch(e, stack) {
+      final msg = "Error calling `getProfileByServerId()`";
+      prine("$msg; e= $e");
+      prine(stack);
+      return Fail(msg: msg, error: e);
+    }
   }
 
   @override

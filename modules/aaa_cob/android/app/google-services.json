@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "1028319191005",
+    "project_id": "sibunda-718c1",
+    "storage_bucket": "sibunda-718c1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1028319191005:android:3c9ecb6b9ebfb9110c6034",
+        "android_client_info": {
+          "package_name": "com.example.aaa_cob"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1028319191005-hoc2effi4thdlci63v000r74e8iqqt30.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDWDB89bHFbzU1Q0FCJwGYdxtzSDXPwUpo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1028319191005-hoc2effi4thdlci63v000r74e8iqqt30.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1028319191005:android:3ff9060bf200ad630c6034",
+        "android_client_info": {
+          "package_name": "com.example.sibunda_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1028319191005-hoc2effi4thdlci63v000r74e8iqqt30.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDWDB89bHFbzU1Q0FCJwGYdxtzSDXPwUpo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1028319191005-hoc2effi4thdlci63v000r74e8iqqt30.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,4 +1,5 @@
 import 'package:common/arch/domain/model/baby_data.dart';
+import 'package:common/arch/domain/model/profile_data.dart';
 import 'package:common/arch/domain/repo/_repos.dart';
 import 'package:common/arch/domain/repo/bayiku_repo.dart';
 import 'package:core/domain/model/result.dart';
@@ -13,6 +14,10 @@ mixin GetBornBabyList {
 
 mixin GetUnbornBabyList {
   Future<Result<List<BabyOverlayData>>> call(String motherNik);
+}
+
+mixin IsBabyBorn {
+  Future<Result<bool>> call(int pregnancyId);
 }
 
 
@@ -36,4 +41,14 @@ class GetUnbornBabyListImpl with GetUnbornBabyList {
   GetUnbornBabyListImpl(this._repo);
   @override
   Future<Result<List<BabyOverlayData>>> call(String motherNik) => _repo.getUnbornBabyOverlayData(motherNik);
+}
+
+class IsBabyBornImpl with IsBabyBorn {
+  final ChildRepo _repo;
+  IsBabyBornImpl(this._repo);
+  @override
+  Future<Result<bool>> call(int pregnancyId) async {
+    final res = await _repo.getProfileByPregnancyId(pregnancyId);
+    return Success(res is Success<Profile>);
+  }
 }

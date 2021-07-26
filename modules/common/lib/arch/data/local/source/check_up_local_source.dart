@@ -8,10 +8,12 @@ mixin CheckUpLocalSrc {
     required int id,
     required int period,
     required int refId,
+    required int type,
   });
   Future<Result<int>> getCheckUpId({
     required int period,
     required int refId,
+    int? type,
   });
   Future<Result<bool>> clear();
 }
@@ -30,9 +32,10 @@ class CheckUpLocalSrcImpl with CheckUpLocalSrc {
     required int id,
     required int period,
     required int refId,
+    required int type,
   }) async {
     try {
-      final entity = CheckUpIdEntity(id: id, period: period, refId: refId);
+      final entity = CheckUpIdEntity(id: id, period: period, refId: refId, type: type);
       final rowId = await _checkUpIdDao.insert(entity);
       prind("CheckUpLocalSrc.saveCheckUpId() rowId= $rowId");
       if(rowId < 0) {
@@ -49,12 +52,13 @@ class CheckUpLocalSrcImpl with CheckUpLocalSrc {
   Future<Result<int>> getCheckUpId({
     required int period,
     required int refId,
+    int? type,
   }) async {
     try {
       prind("getCheckUpId() period = $period refId = $refId");
       final all = await _checkUpIdDao.getAll();
       prind("getCheckUpId() all = $all");
-      final e = await _checkUpIdDao.getByRefIdAndPeriod(refId: refId, period: period);
+      final e = await _checkUpIdDao.getByRefIdAndPeriod(refId: refId, period: period, type: type);
       prind("getCheckUpId() e = $e");
       if(e == null) {
         return Fail(msg: "Can't get `CheckUpIdEntity` from DB with `period` '$period' and `refId` '$refId'",);

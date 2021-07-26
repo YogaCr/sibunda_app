@@ -33,7 +33,7 @@ abstract class KehamilankuApi {
   @POST("/show-weekly-report")
   Future<PregnancyCheckBody> getPregnancyCheckForm(@Body() PregnancyShowCheckBody body);
   @POST("/show-weekly-report-analysis")
-  Future<PregnancyCheckFormWarningResponse> getPregnancyCheckWarning(@Body() PregnancyShowCheckBody body);
+  Future<PregnancyCheckFormWarningResponse> getPregnancyCheckWarning(@Body() PregnancyShowAnalysisBody body);
   @GET("/immunization")
   Future<List<PregnancyImmunizationResponse>> getPregnancyImmunization();
   @POST("/immunization")

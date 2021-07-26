@@ -2,9 +2,11 @@
 import 'package:common/arch/data/local/dao/account_dao.dart';
 import 'package:common/arch/data/local/dao/pregnancy_dao.dart';
 import 'package:common/arch/data/local/db/app_db.dart';
+import 'package:common/arch/data/local/source/account_local_source.dart';
 import 'package:common/arch/data/remote/api/data_api.dart';
 import 'package:common/arch/data/remote/model/baby_add_api_model.dart';
 import 'package:common/arch/domain/model/child.dart';
+import 'package:common/arch/domain/model/profile_data.dart';
 import 'package:common/util/type_util.dart';
 import 'package:common/value/db_const.dart';
 import 'package:core/domain/model/result.dart';
@@ -25,19 +27,23 @@ mixin ChildRepo {
   });
   //Future<Result<bool>> saveLastChildBirthDate(DateTime date);
   Future<Result<bool>> saveChildrenCount(int count);
+  Future<Result<Profile>> getProfileByPregnancyId(int pregnancyId);
 }
 
 class ChildRepoImpl with ChildRepo {
+  final AccountLocalSrc _accountLocalSrc;
   final ProfileDao _profileDao;
   final PregnancyDao _pregnancyDao;
   final DataApi _dataApi;
 
   ChildRepoImpl({
     required ProfileDao profileDao,
+    required AccountLocalSrc accountLocalSrc,
     required PregnancyDao pregnancyDao,
     required DataApi dataApi,
   }):
     _profileDao = profileDao,
+    _accountLocalSrc = accountLocalSrc,
     _pregnancyDao = pregnancyDao,
     _dataApi = dataApi
   ;
@@ -131,6 +137,28 @@ class ChildRepoImpl with ChildRepo {
   Future<Result<bool>> saveLastChildBirthDate(DateTime date);
    */
   @override Future<Result<bool>> saveChildrenCount(int count) async => Success(true);
+
+  @override
+  Future<Result<Profile>> getProfileByPregnancyId(int pregnancyId) async {
+    try {
+      final res = await _accountLocalSrc.getProfileByServerId(pregnancyId);
+      if(res is! Success<Profile>) {
+        if(res.code == 1) {
+          final msg = "Can't get baby profile with `pregnancyId` of '$pregnancyId'. It means the baby is not born yet";
+          prinw(msg);
+          return Fail(msg: msg);
+        } else {
+          return res as Fail<Profile>;
+        }
+      }
+      return res;
+    } catch(e, stack) {
+      final msg = "Error calling `getProfileByPregnancyId()`";
+      prine("$msg; e= $e");
+      prine(stack);
+      return Fail(msg: msg, error: e);
+    }
+  }
 }
 
 
@@ -148,4 +176,6 @@ class ChildRepoDummy with ChildRepo {
   Future<Result<bool>> saveFetusesData({required List<DateTime> hpls, required String email}) async => Success(true);
 
   @override Future<Result<bool>> saveChildrenCount(int count) async => Success(true);
+  @override
+  Future<Result<Profile>> getProfileByPregnancyId(int pregnancyId) async => Success(dummyProfile);
 }

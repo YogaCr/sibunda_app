@@ -9,6 +9,7 @@ part 'kehamilanku_form_api_model.g.dart';
 // ========== Body ===========
 @JsonSerializable()
 class PregnancyCheckBody {
+  final int? id;
   @JsonKey(name: Const.KEY_VISIT_DATE)
   final String visitDate;
   @JsonKey(name: Const.KEY_VISIT_PLACE)
@@ -58,6 +59,7 @@ class PregnancyCheckBody {
   final String? img_usg;
 
   PregnancyCheckBody({
+    required this.id,
     required this.visitDate,
     required this.visitPlace,
     required this.checkerName,
@@ -121,6 +123,20 @@ class PregnancyShowCheckBody {
 
   factory PregnancyShowCheckBody.fromJson(Map<String, dynamic> map) => _$PregnancyShowCheckBodyFromJson(map);
   Map<String, dynamic> toJson() => _$PregnancyShowCheckBodyToJson(this);
+}
+
+class PregnancyShowAnalysisBody {
+  //@JsonKey(name: Const.KEY_PREGNANCY_CHECKUP_ID)
+  final int weekly_trisemester_checkup_id;
+
+  PregnancyShowAnalysisBody({
+    required this.weekly_trisemester_checkup_id,
+  });
+
+  //factory PregnancyShowAnalysisBody.fromJson(Map<String, dynamic> map) => _$PregnancyShowAnalysisBodyFromJson(map);
+  Map<String, dynamic> toJson() => {
+    "weekly_trisemester_checkup_id": weekly_trisemester_checkup_id,
+  };
 }
 
 

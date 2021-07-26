@@ -36,13 +36,14 @@ class KehamilankuHomeVm extends AsyncAuthVm {
       _getUnbornBabyList = getUnbornBabyList, super(context: context)
   {
     _unbornBabyList.observe(this, (babyList) {
+      prind("PregnHomeVm.init() _unbornBabyList.observe() babyList= $babyList");
       if(babyList?.isNotEmpty == true) {
         if(_selectedProfile.value == null) {
           final cred = ProfileCredential.fromBabyOverlay(babyList!.first);
           init(profile: cred);
         }
       }
-    });
+    }, tag: toString());
     _ageOverview.observe(this, (overview) {
       if(overview != null) {
         final babyCred = _selectedProfile.value;
@@ -105,6 +106,7 @@ class KehamilankuHomeVm extends AsyncAuthVm {
     required ProfileCredential profile,
     bool forceLoad = false,
   }) {
+    prind("PregnHomeVm.init() profile= $profile forceLoad= $forceLoad _selectedProfile= $_selectedProfile");
     if(!forceLoad && profile == _selectedProfile.value) return;
     _selectedProfile.value = profile;
     _ageOverview.value = null;
@@ -182,6 +184,7 @@ class KehamilankuHomeVm extends AsyncAuthVm {
         && res2 is Success<List<BabyOverlayData>>) {
         final born = res1.data;
         final unborn = res2.data;
+        prind("`getBabyOverlay` startJob born= $born unborn= $unborn");
 
         _bornBabyList.value = born;
         _unbornBabyList.value = unborn;

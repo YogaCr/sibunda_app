@@ -47,12 +47,7 @@ class KehamilankuHomePage extends StatelessWidget {
       if(data != null) {
         overlayVisibility.value = false;
       }
-    }, tag: toString())
-    ..unbornBabyList.observe(vm, (data) {
-      if(data?.isEmpty == true) {
-
-      }
-    });
+    }, tag: toString());
 
     if(selectedPreg != null) {
       vm.init(profile: selectedPreg);
@@ -94,7 +89,7 @@ class KehamilankuHomePage extends StatelessWidget {
             final isSaved = await KehamilankuRoutes.obj.goToExternalRouteBuilder(
               context,
               GlobalRoutes.home_childFormPage,
-              builderArgs: { Const.KEY_CTX: context, },
+              builderArgs: GlobalRoutes.makeHomeChildFormPageData(),
             );
             if(isSaved == true) {
               vm..bornBabyList.observeOnce((babyList) {
@@ -113,7 +108,6 @@ class KehamilankuHomePage extends StatelessWidget {
             final isSaved = await KehamilankuRoutes.obj.goToExternalRouteBuilder(
               context,
               GlobalRoutes.home_motherHplPage,
-              builderArgs: { Const.KEY_CTX: context, },
             );
             if(isSaved == true) {
               vm..unbornBabyList.observeOnce((babyList) {
@@ -292,6 +286,7 @@ class _MotherTrimesterList extends StatelessWidget {
               context: c,
               data: data,
               pregnancyCred: selectedPregnancy,
+              isLastTrimester: i == dataList.length -1,
             ),
           ),
         );

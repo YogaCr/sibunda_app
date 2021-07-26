@@ -1,11 +1,11 @@
 import 'dart:io';
 
-import 'package:common/arch/di/config_di.dart';
 import 'package:common/arch/domain/model/form_data.dart';
 import 'package:common/arch/domain/model/form_warning_status.dart';
 import 'package:common/arch/domain/model/img_data.dart';
 import 'package:common/arch/domain/model/kehamilanku_data.dart';
 import 'package:common/arch/domain/model/profile_data.dart';
+import 'package:common/arch/domain/usecase/baby_usecase.dart';
 import 'package:common/arch/domain/usecase/mother_usecase.dart';
 import 'package:common/arch/ui/model/form_data.dart';
 import 'package:common/arch/ui/vm/vm_auth.dart';
@@ -39,6 +39,7 @@ class KehamilankuCheckFormVm extends FormAuthVmGroup {
     required GetMotherFormWarningStatus getMotherFormWarningStatus,
     required GetPregnancyBabySize getPregnancyBabySize,
     required GetPregnancyCheckForm getPregnancyCheckForm,
+    required IsBabyBorn isBabyBorn,
   }):
     //_getMotherNik = getMotherNik,
     //_getCurrentMotherHpl = getCurrentMotherHpl,
@@ -50,7 +51,8 @@ class KehamilankuCheckFormVm extends FormAuthVmGroup {
     _getPregnancyCheck = getPregnancyCheck,
     _getMotherFormWarningStatus = getMotherFormWarningStatus,
     _getPregnancyBabySize = getPregnancyBabySize,
-    _getPregnancyCheckForm = getPregnancyCheckForm, super(context: context) {
+    _getPregnancyCheckForm = getPregnancyCheckForm,
+    _isBabyBornUseCase = isBabyBorn, super(context: context) {
 
     _currentWeek.observe(this, (week) {
       prind("_currentWeek.observe week = $week");
@@ -66,12 +68,14 @@ class KehamilankuCheckFormVm extends FormAuthVmGroup {
       prind("KehamilankuCheckFormVm canProceed = $v");
     });
  */
-
+    _isBabyBorn.observe(this, (isBorn) {
+      setFormEnabled(isEnabled: isBorn != true);
+    }, tag: toString());
     onSubmit.observe(this, (success) {
       if(success is Success<String>) {
         setFormEnabled(isEnabled: false);
       }
-    });
+    }, tag: toString());
     _pregnancyCheck.observe(this, (data) {
       if(data != null) {
         final map = data.toJson();
@@ -95,10 +99,10 @@ class KehamilankuCheckFormVm extends FormAuthVmGroup {
       setFormEnabled(isEnabled: data == null);
       //Future.sync(() async {});
       //_isFormEnabled = data == null;
-    });
+    }, tag: toString());
     _pregnancyBabySize.observe(this, (data) {
       _isBabySizeInit.value = true;
-    });
+    }, tag: toString());
     isFormReady.observe(this, (isReady) {
       if(isReady == true) {
         /*
@@ -110,7 +114,7 @@ class KehamilankuCheckFormVm extends FormAuthVmGroup {
         setFieldValidity(0, Const.KEY_IMG_USG, true);
         prind("Trimester VM _responseGroupList[group][key]!.isValid = ${responseGroupList[0][Const.KEY_IMG_USG]!.isValid}");
       }
-    });
+    }, tag: toString());
     _lateInit();
   }
 
@@ -124,6 +128,7 @@ class KehamilankuCheckFormVm extends FormAuthVmGroup {
   final GetMotherFormWarningStatus _getMotherFormWarningStatus;
   final GetPregnancyBabySize _getPregnancyBabySize;
   final GetPregnancyCheckForm _getPregnancyCheckForm;
+  final IsBabyBorn _isBabyBornUseCase;
   //final GetMotherNik _getMotherNik;
   //final GetCurrentMotherHpl _getCurrentMotherHpl;
   //final GetCurrentMotherHpht _getCurrentMotherHpht;
@@ -131,11 +136,14 @@ class KehamilankuCheckFormVm extends FormAuthVmGroup {
   final MutableLiveData<PregnancyCheck> _pregnancyCheck = MutableLiveData();
   final MutableLiveData<List<FormWarningStatus>> _formWarningStatusList = MutableLiveData();
   final MutableLiveData<PregnancyBabySize> _pregnancyBabySize = MutableLiveData();
+  final MutableLiveData<bool> _isBabyBorn = MutableLiveData();
 
   LiveData<PregnancyCheck> get pregnancyCheck => _pregnancyCheck;
   LiveData<List<FormWarningStatus>> get formWarningStatusList => _formWarningStatusList;
   LiveData<PregnancyBabySize> get pregnancyBabySize => _pregnancyBabySize;
+  LiveData<bool> get isBabyBorn => _isBabyBorn;
 
+  /// Cuz there are some week with no baby size
   final MutableLiveData<bool> _isBabySizeInit = MutableLiveData(false);
   final MutableLiveData<int> _currentWeek = MutableLiveData();
 
@@ -146,7 +154,8 @@ class KehamilankuCheckFormVm extends FormAuthVmGroup {
   @override
   List<LiveData> get liveDatas => [
     _pregnancyCheck, _formWarningStatusList,
-    _pregnancyBabySize, _isBabySizeInit, _currentWeek,
+    _pregnancyBabySize, _currentWeek, _isBabySizeInit,
+    _isBabyBorn,
   ];
 
   void _lateInit() async {
@@ -313,6 +322,17 @@ class KehamilankuCheckFormVm extends FormAuthVmGroup {
     }
   }
 
+  void initVm({ bool forceLoad = false }) {
+    init(isOneShot: !forceLoad);
+    _isBabyBornUseCase(pregnancyId.id).then((res) {
+      if(res is Success<bool>) {
+        _isBabyBorn.value = res.data;
+      } else {
+        _isBabyBorn.value = false;
+      }
+    });
+  }
+
   void initPage({
     required int week,
     bool forceLoad = false,
@@ -321,6 +341,10 @@ class KehamilankuCheckFormVm extends FormAuthVmGroup {
     if(!forceLoad && _currentWeek.value == week) return;
     _isBabySizeInit.value = false;
     _currentWeek.value = week;
+
+    _formWarningStatusList.value = null;
+    _pregnancyBabySize.value = null;
+
     init(isOneShot: false);
     isFormReady.observeOnce((isReady) {
       if(isReady == true) {
@@ -346,7 +370,11 @@ class KehamilankuCheckFormVm extends FormAuthVmGroup {
       //final checkUpId = tryGetResultValue(res);
       //prind("getPregnancyCheck() checkUpId = $checkUpId pregnancyId = $pregnancyId week = $week res = $res");
       //if(checkUpId != null) {}
-      final checkUpWeek = PregnancyCheckUpWeek(trimesterId: currentTrimesterId, week: week);
+      final checkUpWeek = PregnancyCheckUpWeek(
+        pregnancyId: pregnancyId.id,
+        trimesterId: currentTrimesterId,
+        week: week,
+      );
       _getPregnancyCheck(checkUpWeek).then((value) {
         prind("getPregnancyCheck() _getPregnancyCheck() value = $value");
         if(value is Success<PregnancyCheck>) {
@@ -373,7 +401,11 @@ class KehamilankuCheckFormVm extends FormAuthVmGroup {
         _formWarningStatusList.value = List.empty();
       }
        */
-      final checkUpWeek = PregnancyCheckUpWeek(trimesterId: currentTrimesterId, week: week);
+      final checkUpWeek = PregnancyCheckUpWeek(
+        pregnancyId: pregnancyId.id,
+        trimesterId: currentTrimesterId,
+        week: week,
+      );
       _getMotherFormWarningStatus(checkUpWeek).then((value) {
         if(value is Success<List<FormWarningStatus>>) {
           final data = value.data;
@@ -394,7 +426,11 @@ class KehamilankuCheckFormVm extends FormAuthVmGroup {
       final checkUpId = tryGetResultValue(await _getPregnancyCheckUpId(pregnancyId.id, week));
       prind("KehamilankuCheckFormVm.getPregnancyBabySize() pregnancyId = $pregnancyId checkUpId = $checkUpId");
       if(checkUpId != null) {
-        final checkUpWeek = PregnancyCheckUpWeek(trimesterId: currentTrimesterId, week: week);
+        final checkUpWeek = PregnancyCheckUpWeek(
+          pregnancyId: pregnancyId.id,
+          trimesterId: currentTrimesterId,
+          week: week,
+        );
         _getPregnancyBabySize(checkUpWeek).then((value) {
           prind("KehamilankuCheckFormVm.getPregnancyBabySize() _getPregnancyBabySize(checkUpId).then week = $week value = $value");
           if(value is Success<PregnancyBabySize?>) {

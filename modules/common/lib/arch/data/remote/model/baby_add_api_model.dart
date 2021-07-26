@@ -18,6 +18,7 @@ class BabyAddBody {
     final childMap = child.toJson;
     childMap["ibu_id"] = ibu_id;
     childMap["is_janin"] = 0;
+    childMap["janin_hpl"] = null;
     return childMap;
   }
 }

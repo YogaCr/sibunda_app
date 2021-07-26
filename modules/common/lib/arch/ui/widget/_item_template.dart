@@ -315,14 +315,14 @@ class ItemHomeGraphMenu extends StatelessWidget {
 
 
 class ItemFormWarningStatus extends StatelessWidget {
-  final Widget image;
+  final ImgData img;
   final String desc;
   final String? warningTxt; // if null, then it is safe.
   final void Function()? onClick; //in weeks
 
   ItemFormWarningStatus({
     required this.desc,
-    required this.image,
+    required this.img,
     this.onClick,
     this.warningTxt,
   });
@@ -332,7 +332,7 @@ class ItemFormWarningStatus extends StatelessWidget {
   }):
     desc = data.desc,
     warningTxt = data.isSafe ? null : data.action,
-    image = Container(color: Manifest.theme.colorPrimary,) //TODO: img
+    img = data.img
   ;
 
   @override
@@ -346,7 +346,7 @@ class ItemFormWarningStatus extends StatelessWidget {
             borderRadius: BorderRadius.all(Radius.circular(10)),
             child: Container(
               width: 90,
-              child: image,
+              child: SibImages.resolve(img),
             ),
           ),
         )

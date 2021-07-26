@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:common/arch/domain/model/education_data.dart';
 import 'package:common/util/navigations.dart' as NavExt;
 import 'package:common/value/const_values.dart';
+import 'package:core/ui/base/live_data.dart';
 import 'package:core/util/_consoles.dart';
 import 'package:flutter/material.dart';
 import 'package:collection/collection.dart';
@@ -30,6 +31,13 @@ class GlobalRoutes {
   static Map<String, dynamic> makeEducationDetailPageData(Tips data) => {
     Const.KEY_DATA : data,
   };
+  static Map<String, dynamic> makeHomeChildFormPageData({
+    LiveData<int>? childCountLiveData,
+    int? childCount,
+  }) {
+    final liveData = childCountLiveData ?? MutableLiveData(childCount ?? 1);
+    return {Const.KEY_DATA : liveData,};
+  }
 }
 
 

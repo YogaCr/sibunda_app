@@ -2,6 +2,7 @@ import 'package:common/arch/di/config_di.dart';
 import 'package:common/arch/di/usecase_di.dart';
 import 'package:common/res/string/_string.dart';
 import 'package:common/res/theme/_theme.dart';
+import 'package:common/test/__common_test_const.dart';
 import 'package:common/util/ui.dart';
 import 'package:core/ui/base/async_vm.dart';
 import 'package:core/util/_consoles.dart';
@@ -42,7 +43,7 @@ abstract class AsyncAuthVm extends AsyncVm with AuthVm {
       },);
     }
   }
-  bool isAutoToastOnFail = false;
+  bool isAutoToastOnFail = ConfigUtil.isAutoToastEnabled;
   Set<String>? skippedKeyToToastOnFail;
   @override
   BuildContext? _context;
@@ -82,7 +83,7 @@ abstract class FormAuthVm extends FormVm with AuthVm {
       },);
     }
   }
-  bool isAutoToastOnFail = false;
+  bool isAutoToastOnFail = ConfigUtil.isAutoToastEnabled;
   Set<String>? skippedKeyToToastOnFail;
   @override
   BuildContext? _context;
@@ -120,7 +121,7 @@ abstract class FormAuthVmGroup extends FormVmGroup with AuthVm {
       },);
     }
   }
-  bool isAutoToastOnFail = false;
+  bool isAutoToastOnFail = ConfigUtil.isAutoToastEnabled;
   Set<String>? skippedKeyToToastOnFail;
   @override
   BuildContext? _context;
