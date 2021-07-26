@@ -126,6 +126,7 @@ class ChildFormVm extends FormAuthVmGroup {
 
 
   bool checkPageActiveInParent(int page, { bool force = false }) {
+    if(childCount.value == null || childCount.value! <= 0) return false;
     if(force || _pageInParent == null) {
       _pageInParent = page;
     }

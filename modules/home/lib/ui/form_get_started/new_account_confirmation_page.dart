@@ -7,6 +7,7 @@ import 'package:common/res/theme/_theme.dart';
 import 'package:common/util/assets.dart';
 import 'package:common/util/ui.dart';
 import 'package:common/value/const_values.dart';
+import 'package:core/domain/model/wrapper.dart';
 import 'package:core/ui/base/live_data.dart';
 import 'package:core/ui/base/live_data_observer.dart';
 import 'package:core/ui/base/view_model.dart';
@@ -17,6 +18,13 @@ import 'package:home/ui/form_get_started/get_started_form_main_vm.dart';
 
 
 class NewAccountConfirmPage extends StatelessWidget {
+  final PageController? pageControll; //TODO: not used yet.
+  final Var<void Function()?>? onBackPressedContainer; //TODO: not used yet.
+
+  NewAccountConfirmPage({
+    this.pageControll,
+    this.onBackPressedContainer,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -47,6 +55,18 @@ class NewAccountConfirmPage extends StatelessWidget {
     if(vm.signUpFormVm.isFormReady.value == true) {
       nameLiveData.value = vm.signUpFormVm.responseGroupList.first[Const.KEY_NAME]?.response.value;
     }
+
+    onBackPressedContainer?.value = () {
+      if(pageControll != null) {
+        final count = vm.childrenCountVm.childrenCount.value;
+        final diff = count != null && count > 0 ? 1 : 2;
+        pageControll!.animateToPage(
+          pageControll!.page!.toInt() -diff,
+          duration: Duration(milliseconds: 500),
+          curve: Curves.easeOut,
+        );
+      }
+    };
 
     return Stack(
       children: [

@@ -1,7 +1,9 @@
 import 'package:common/arch/ui/widget/form_controller.dart';
 import 'package:common/util/navigations.dart';
+import 'package:core/domain/model/wrapper.dart';
 import 'package:core/ui/base/live_data.dart';
 import 'package:core/ui/base/view_model.dart';
+import 'package:core/util/_consoles.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:home/ui/form_get_started/get_started_form_main_vm.dart';
@@ -19,8 +21,9 @@ import 'new_account_confirmation_page.dart';
 class GetStartedFormMainPage extends StatelessWidget {
   final pageControl = PageController();
   final nestedPageControl = MutableLiveData<PageController>();
-  final LiveData<int> page = MutableLiveData(0);
+  //final LiveData<int> page = MutableLiveData(0);
   final FormGroupInterceptor? interceptor;
+  final newAccountPageOnBackPressedContainer = Var<void Function()?>(null);
 
   late GetStartedFormMainVm vm;
 
@@ -74,7 +77,10 @@ class GetStartedFormMainPage extends StatelessWidget {
                 onlySinglePage: false,
                 //childCount: vm.childrenCountVm.childrenCount,
               ),
-              NewAccountConfirmPage(), //7
+              NewAccountConfirmPage(
+                pageControll: pageControl,
+                onBackPressedContainer: newAccountPageOnBackPressedContainer,
+              ), //7
             ],
           ),
           Align(
@@ -88,6 +94,15 @@ class GetStartedFormMainPage extends StatelessWidget {
                   color: Colors.black,
                 ),
                 onTap: () {
+                  prind("GetStartedFormPage pageControl.page= ${pageControl.page}");
+                  if(pageControl.page == 7) {
+                    final onBackPressed = newAccountPageOnBackPressedContainer.value;
+                    prind("GetStartedFormPage onBackPressed= $onBackPressed");
+                    if(onBackPressed != null) {
+                      onBackPressed();
+                      return;
+                    }
+                  }
                   if(nestedPageControl.value == null) {
                     if(!_scrollBackward(pageControl)) {
                       backPage(context);
