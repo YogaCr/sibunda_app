@@ -57,6 +57,10 @@ dependencies:
   #path: ^1.6.4
   fluttertoast: ^8.0.7
 
+  # Firebase
+  firebase_core: ^1.4.0
+  firebase_messaging: ^10.0.4
+
   core:
     path: ../core
 

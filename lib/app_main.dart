@@ -10,10 +10,10 @@ import 'package:home/config/home_routes.dart';
 
 import 'config/app_routes.dart';
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await ConfigUtil.init();
-  await TestUtil.initDummySeesion();
+void main() {
+  //WidgetsFlutterBinding.ensureInitialized();
+  //await ConfigUtil.init();
+  //TestUtil.initDummySeesion();
   runApp(MyApp());
 }
 

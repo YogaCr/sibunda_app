@@ -4,10 +4,14 @@ import 'package:common/arch/di/db_di.dart';
 import 'package:common/arch/domain/dummy_data.dart';
 import 'package:common/arch/domain/model/auth.dart';
 import 'package:common/arch/ui/widget/form_controller.dart';
+import 'package:common/util/firebase_util.dart';
 import 'package:common/util/net.dart';
 import 'package:common/util/prefs.dart';
 import 'package:common/value/const_values.dart';
 import 'package:core/util/_consoles.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
 class ConfigUtil {
@@ -19,6 +23,7 @@ class ConfigUtil {
   static final isAutoToastEnabled = true;
 
   static init() async {
+    WidgetsFlutterBinding.ensureInitialized();
     await initializeDateFormatting("id_ID");
     if(TestUtil.isDummy) {
       await TestUtil.init();
@@ -27,7 +32,14 @@ class ConfigUtil {
     } else {
       await Prefs.loadPrefs();
       await TestUtil.initDb();
+      await TestUtil.initDummySeesion(); // Just to pretend;
+
     }
+  }
+
+  static initFcm() async {
+    await Firebase.initializeApp();
+    FirebaseMessaging.onBackgroundMessage(fcmBackgroundHandler);
   }
 }
 
@@ -80,7 +92,7 @@ class TestUtil {
     final session = await getDummySession();
     VarDi.session = session;
   }
-  static initDummySeesion() async {
+  static initDummySeesion() {
     final session = SessionData(token: "<null>", tokenType: "Bearer");
     VarDi.session = session;
   }

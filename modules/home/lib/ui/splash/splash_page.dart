@@ -5,25 +5,24 @@ import 'package:common/arch/ui/widget/splash_widget.dart';
 import 'package:common/config/_config.dart';
 import 'package:common/res/string/_string.dart';
 import 'package:common/res/theme/_theme.dart';
+import 'package:common/test/__common_test_const.dart';
 import 'package:common/util/assets.dart';
+import 'package:core/domain/model/wrapper.dart';
 import 'package:core/ui/base/live_data.dart';
 import 'package:core/ui/base/live_data_observer.dart';
 import 'package:core/ui/base/view_model.dart';
 import 'package:core/util/_consoles.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:home/config/home_routes.dart';
 import 'package:home/ui/splash/splash_vm.dart';
 
 
 class SplashPage extends StatelessWidget {
+  final isLoggedIn = Var(false);
+
   @override
   Widget build(BuildContext context) {
-    final vm = ViewModelProvider.of<SplashVm>(context)
-      ..onInitConfig.observeOnce((isInitSuccess) {
-        if(isInitSuccess == true) {
-          HomeRoutes.homePage.goToPage(context, clearPrevs: true);
-        }
-      }, immediatelyGet: false)
 /*
       ..isLoggedIn.observeOnce((isLoggedIn) {
         if(isLoggedIn != true) {
@@ -31,14 +30,36 @@ class SplashPage extends StatelessWidget {
         }
       }, immediatelyGet: false)
  */
-    ;
 
     return SplashScreen(
       child: SplashIconPage(),
-      pageBuilder: (ctx) => HomeRoutes.introPage.build(ctx),
+      pageBuilder: (ctx) {
+        //final vm = ViewModelProvider.of<SplashVm>(ctx);
+
+        prind("SplashPage HomeRoutes.introPage.build(ctx)");
+        return isLoggedIn.value
+            ? HomeRoutes.homePage.build(ctx)
+            : HomeRoutes.introPage.build(ctx);
+      },
       computation: () async {
+        await ConfigUtil.init();
+        await ConfigUtil.initFcm();
+
+        final vm = ViewModelProvider.of<SplashVm>(context);
+        /*
+          ..onInitConfig.observeOnce((isInitSuccess) {
+            if(isInitSuccess == true) {
+              Future.delayed(Duration(milliseconds: 500), () {
+                prind("SplashPage HomeRoutes.homePage.goToPage(ctx)");
+                HomeRoutes.homePage.goToPage(context, clearPrevs: true);
+              });
+            }
+          }, immediatelyGet: false);
+         */
+
         await vm.checkLogIn();
-        if(vm.isLoggedIn.value != true) {
+        prind("SplashPage vm.isLoggedIn.value= ${vm.isLoggedIn.value}");
+        if(!(isLoggedIn.value = vm.isLoggedIn.value == true)) {
           await vm.downloadCityList();
         }
       },

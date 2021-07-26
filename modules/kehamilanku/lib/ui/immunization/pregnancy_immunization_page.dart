@@ -10,6 +10,7 @@ import 'package:common/util/ui.dart';
 import 'package:core/ui/base/async_view_model_observer.dart';
 import 'package:core/ui/base/live_data_observer.dart';
 import 'package:core/ui/base/view_model.dart';
+import 'package:core/util/_consoles.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:kehamilanku/config/kehamilanku_routes.dart';
@@ -47,6 +48,7 @@ class PregnancyImmunizationPage extends StatelessWidget {
                       onBtnClick: (group, child) async {
                         //showSnackBar(ctx, "group= $group child= $child");
                         final immData = data[group].immunizationList[child].core;
+                        prind("Immunization page group= $group child= $child immData= $immData");
                         if(immData.date != null) {
                           showSnackBar(context, "Immunisasi sudah dilakukan", backgroundColor: Colors.green);
                           return;

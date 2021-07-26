@@ -52,6 +52,10 @@ dependencies:
   flutter_html: ^2.1.0
   fluttertoast: ^8.0.7
 
+  # Firebase
+  firebase_core: ^1.4.0
+  firebase_messaging: ^10.0.4
+
   common:
     path: modules/common
   auth:
