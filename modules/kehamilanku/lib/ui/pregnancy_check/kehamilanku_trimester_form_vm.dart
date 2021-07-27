@@ -340,11 +340,11 @@ class KehamilankuCheckFormVm extends FormAuthVmGroup {
   }) {
     //prind("KehamilankuCheckFormVm.initPage() week = $week forceLoad = $forceLoad _currentWeek.value = ${_currentWeek.value}");
     if(!forceLoad && _currentWeek.value == week) return;
-    _isBabySizeInit.value = false;
     _currentWeek.value = week;
 
     _formWarningStatusList.value = null;
     _pregnancyBabySize.value = null;
+    _isBabySizeInit.value = false;
 
     init(isOneShot: false);
     isFormReady.observeOnce((isReady) {
