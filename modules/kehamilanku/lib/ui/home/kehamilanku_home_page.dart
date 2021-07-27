@@ -76,7 +76,9 @@ class KehamilankuHomePage extends StatelessWidget {
           } else {
             KehamilankuRoutes.obj.goToModule(
               context, GlobalRoutes.bayiku,
-              args: { Const.KEY_DATA: ProfileCredential.fromBabyOverlay(baby) },
+              args: GlobalRoutes.makeBabyHomePageData(
+                babyCredential: ProfileCredential.fromBabyOverlay(baby),
+              ),
               replaceCurrent: true,
             );
           }
@@ -98,7 +100,9 @@ class KehamilankuHomePage extends StatelessWidget {
                   KehamilankuRoutes.obj.goToModule(
                     context, GlobalRoutes.bayiku,
                     replaceCurrent: true,
-                    args: {Const.KEY_DATA: babyCred},
+                    args: GlobalRoutes.makeBabyHomePageData(
+                      babyCredential: babyCred,
+                    ),
                   );
                 }
               }, immediatelyGet: false)
@@ -162,10 +166,30 @@ class _PregnancyHomePageWithData extends StatelessWidget {
           delegate: SliverChildListDelegate.fixed([
             Container(
               margin: EdgeInsets.symmetric(vertical: 15).copyWith(top: 20),
-              child: AsyncVmObserver<KehamilankuHomeVm, MotherPregnancyAgeOverview>(
-                vm: vm,
-                liveDataGetter: (vm2) => vm2.ageOverview,
-                builder: (ctx, data) => ItemMotherOverview.fromData(data),
+              child: MultiLiveDataObserver<dynamic>(
+                liveDataList: [vm.ageOverview, vm.isBorn],
+                //
+                builder: (ctx, dataList) {
+                  final MotherPregnancyAgeOverview? ageOverview = dataList[0];
+                  final bool? isBorn = dataList[1];
+
+                  if(isBorn == true) {
+                    return LiveDataObserver<BabyOverlayData>(
+                      liveData: vm.selectedUnbornBabyOverlay,
+                      builder: (ctx, data) => ItemMotherBornOverview(
+                        bornBaby: data,
+                        onActionClick: data != null ? () => KehamilankuRoutes.obj.goToModule(
+                          ctx, GlobalRoutes.bayiku,
+                          args: GlobalRoutes.makeBabyHomePageData(
+                            babyCredential: ProfileCredential.fromBabyOverlay(data),
+                          ),
+                          replaceCurrent: true,
+                        ) : null,
+                      ),
+                    );
+                  }
+                  return ItemMotherUnbornOverview.fromData(data: ageOverview,);
+                },
               ),
             ),
             Container(

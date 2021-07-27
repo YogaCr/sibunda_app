@@ -43,6 +43,10 @@ class GlobalRoutes {
       Const.KEY_PREGNANCY_ID : pregnancyId,
     };
   }
+  static Map<String, dynamic> makeBabyHomePageData({
+    ProfileCredential? babyCredential,
+  }) => { Const.KEY_DATA : babyCredential, };
+
 }
 
 

@@ -27,13 +27,15 @@ class KehamilankuHomeVm extends AsyncAuthVm {
     required GetMotherFoodRecomList  getMotherFoodRecomList,
     required GetBornBabyList getBornBabyList,
     required GetUnbornBabyList getUnbornBabyList,
+    required IsBabyBorn isBabyBorn,
   }):
       //_getMotherNik = getMotherNik,
       _getPregnancyAgeOverview = getPregnancyAgeOverview,
       _getTrimesterList = getTrimesterList,
       _getMotherFoodRecomList = getMotherFoodRecomList,
       _getBornBabyList = getBornBabyList,
-      _getUnbornBabyList = getUnbornBabyList, super(context: context)
+      _getUnbornBabyList = getUnbornBabyList,
+     _isBabyBorn = isBabyBorn, super(context: context)
   {
     _unbornBabyList.observe(this, (babyList) {
       prind("PregnHomeVm.init() _unbornBabyList.observe() babyList= $babyList");
@@ -70,6 +72,23 @@ class KehamilankuHomeVm extends AsyncAuthVm {
         prind("BabyHomeVm selectedIndex= $selectedIndex");
       }
     });
+    _selectedProfile.observe(this, (profile) async {
+      prind("PregHomeVm _selectedProfile.observe profile?.id= ${profile?.id}");
+      if(profile != null) {
+        final babyIndex = _unbornBabyList.value?.indexWhere((e) => e.id == profile.id);
+        if(babyIndex != null && babyIndex >= 0) {
+          _selectedUnbornBabyOverlay.value = _unbornBabyList.value![babyIndex];
+        } else {
+          _selectedUnbornBabyOverlay.value = null;
+        }
+        final isBornRes = await _isBabyBorn(profile.id);
+        if(isBornRes is Success<bool>) {
+          _isBorn.value = isBornRes.data;
+        } else {
+          _isBorn.value = null;
+        }
+      }
+    }, tag: toString());
   }
 
   //final GetMotherNik _getMotherNik;
@@ -78,25 +97,30 @@ class KehamilankuHomeVm extends AsyncAuthVm {
   final GetMotherFoodRecomList _getMotherFoodRecomList;
   final GetBornBabyList _getBornBabyList;
   final GetUnbornBabyList _getUnbornBabyList;
+  final IsBabyBorn _isBabyBorn;
 
   final MutableLiveData<MotherPregnancyAgeOverview> _ageOverview = MutableLiveData();
   final MutableLiveData<List<MotherTrimester>> _trimesterList = MutableLiveData();
   final MutableLiveData<List<MotherFoodRecom>> _foodRecomList = MutableLiveData();
   final MutableLiveData<List<BabyOverlayData>> _bornBabyList = MutableLiveData();
   final MutableLiveData<List<BabyOverlayData>> _unbornBabyList = MutableLiveData();
+  final MutableLiveData<BabyOverlayData> _selectedUnbornBabyOverlay = MutableLiveData();
   final MutableLiveData<ProfileCredential> _selectedProfile = MutableLiveData();
+  final MutableLiveData<bool> _isBorn = MutableLiveData();
 
   LiveData<MotherPregnancyAgeOverview> get ageOverview => _ageOverview;
   LiveData<List<MotherTrimester>> get trimesterList => _trimesterList;
   LiveData<List<MotherFoodRecom>> get foodRecomList => _foodRecomList;
   LiveData<List<BabyOverlayData>> get bornBabyList => _bornBabyList;
   LiveData<List<BabyOverlayData>> get unbornBabyList => _unbornBabyList;
+  LiveData<BabyOverlayData> get selectedUnbornBabyOverlay => _selectedUnbornBabyOverlay;
   LiveData<ProfileCredential> get selectedProfile => _selectedProfile;
+  LiveData<bool> get isBorn => _isBorn;
 
   @override
   List<LiveData> get liveDatas => [
     _ageOverview, _trimesterList, _foodRecomList,
-    _selectedProfile,
+    _selectedProfile, _isBorn, _selectedUnbornBabyOverlay,
   ];
 
   final MutableLiveData<int> selectedIndex = MutableLiveData();

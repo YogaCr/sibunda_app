@@ -20,6 +20,7 @@ class KehamilankuVmDi {
     getMotherFoodRecomList: KehamilankuUseCaseDi.getMotherFoodRecomList,
     getBornBabyList: UseCaseDi.getBornBabyList,
     getUnbornBabyList: UseCaseDi.getUnbornBabyList,
+    isBabyBorn: UseCaseDi.isBabyBorn,
   );
   static KehamilankuCheckFormVm checkFormVm({
     BuildContext? context,

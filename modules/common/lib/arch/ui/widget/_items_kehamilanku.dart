@@ -23,28 +23,32 @@ final _cornerRadius = 10.0;
 final _paddingSmall = 10.0;
 
 
-class ItemMotherOverview extends StatelessWidget {
+class ItemMotherUnbornOverview extends StatelessWidget {
   final ImgData img;
   final int pregnancyAge; // in weeks
   final int pregnancyAgeRem; // in days
+  //final BabyOverlayData? bornBaby;
 
-  ItemMotherOverview({
+  ItemMotherUnbornOverview({
     required this.img,
     required this.pregnancyAge,
     required this.pregnancyAgeRem,
+    //this.bornBaby,
   });
 
-  ItemMotherOverview.fromData(
+  ItemMotherUnbornOverview.fromData({
     MotherPregnancyAgeOverview? data,
-  ): img = data?.img ?? dummyImg,
+    //this.bornBaby,
+  }): img = data?.img ?? dummyImg,
     pregnancyAge = data?.weekAge ?? -1,
     pregnancyAgeRem = data?.daysRemaining ?? -1
   ;
 
-  ItemMotherOverview.def():
+  ItemMotherUnbornOverview.def():
     img = dummyImg,
     pregnancyAge = -1,
     pregnancyAgeRem = -1
+    //bornBaby = null
   ;
 
   @override
@@ -71,6 +75,35 @@ class ItemMotherOverview extends StatelessWidget {
             TextSpan(text: "lagi menuju kelahiran ya Bun"),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class ItemMotherBornOverview extends StatelessWidget {
+  final ImgData img;
+  final BabyOverlayData? bornBaby;
+  final void Function()? onActionClick;
+
+  ItemMotherBornOverview({
+    required this.bornBaby,
+    this.onActionClick,
+    ImgData? img,
+    //this.bornBaby,
+  }): img = img ?? imgPregnancyAgeOverview;
+
+  @override
+  Widget build(BuildContext context) {
+    return ItemModuleHomeOverview(
+      image: SibImages.resolve(img),
+      upperText: Text(
+        "Selamat Bunda!\n"
+        "${bornBaby?.name ?? "Bayi"} sudah lahir.",
+        style: SibTextStyles.size_0_bold,
+      ),
+      lowerText: TxtBtn(
+        "Isi Data Pemeriksaan Bayi",
+        onTap: onActionClick,
       ),
     );
   }
