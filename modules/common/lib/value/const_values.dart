@@ -29,6 +29,7 @@ class Const {
 
   static const KEY_ID = "id";
   static const KEY_DATA = "data";
+  static const KEY_PREGNANCY_ID = "pregnancy_id";
   static const KEY_LOAD_LAST = "load_last"; // type bool
   static const KEY_IS_LAST_TRIMESTER = "is_last_trimester"; // type bool
   static const KEY_IMG = "img";

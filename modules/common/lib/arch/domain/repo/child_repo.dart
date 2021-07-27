@@ -20,6 +20,7 @@ mixin ChildRepo {
   Future<Result<bool>> saveChildrenData({
     required List<Child> data,
     required String email,
+    int? pregnancyId,
   });
   Future<Result<bool>> saveFetusesData({
     required List<DateTime> hpls,
@@ -52,6 +53,7 @@ class ChildRepoImpl with ChildRepo {
   Future<Result<bool>> saveChildrenData({
     required List<Child> data,
     required String email,
+    int? pregnancyId,
   }) async {
     try {
       final profiles = await _profileDao.getProfilesByEmail(email);
@@ -79,6 +81,7 @@ class ChildRepoImpl with ChildRepo {
           nik: child.nik,
           birthDate: parseDate(child.birthDate),
           birthPlace: child.birthCity,
+          pregnancyId: pregnancyId,
         );
         childProfiles.add(childProfile);
         i++;
@@ -141,8 +144,8 @@ class ChildRepoImpl with ChildRepo {
   @override
   Future<Result<Profile>> getProfileByPregnancyId(int pregnancyId) async {
     try {
-      final res = await _accountLocalSrc.getProfileByServerId(pregnancyId);
-      if(res is! Success<Profile>) {
+      final res = await _accountLocalSrc.getProfileByPregnancyId(pregnancyId);
+      if(res is! Success<ProfileEntity>) {
         if(res.code == 1) {
           final msg = "Can't get baby profile with `pregnancyId` of '$pregnancyId'. It means the baby is not born yet";
           prinw(msg);
@@ -151,7 +154,7 @@ class ChildRepoImpl with ChildRepo {
           return res as Fail<Profile>;
         }
       }
-      return res;
+      return await _accountLocalSrc.getProfileByServerId(res.data.serverId);
     } catch(e, stack) {
       final msg = "Error calling `getProfileByPregnancyId()`";
       prine("$msg; e= $e");
@@ -170,7 +173,11 @@ class ChildRepoDummy with ChildRepo {
   //Future<Result<Child>> getChildData(String nik) async => Success(dummyChild);
 
   @override
-  Future<Result<bool>> saveChildrenData({required List<Child> data, required String email}) async => Success(true);
+  Future<Result<bool>> saveChildrenData({
+    required List<Child> data,
+    required String email,
+    int? pregnancyId,
+  }) async => Success(true);
 
   @override
   Future<Result<bool>> saveFetusesData({required List<DateTime> hpls, required String email}) async => Success(true);

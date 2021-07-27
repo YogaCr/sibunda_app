@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:common/arch/domain/model/education_data.dart';
+import 'package:common/arch/domain/model/profile_data.dart';
 import 'package:common/util/navigations.dart' as NavExt;
 import 'package:common/value/const_values.dart';
 import 'package:core/ui/base/live_data.dart';
@@ -34,9 +35,13 @@ class GlobalRoutes {
   static Map<String, dynamic> makeHomeChildFormPageData({
     LiveData<int>? childCountLiveData,
     int? childCount,
+    ProfileCredential? pregnancyId,
   }) {
     final liveData = childCountLiveData ?? MutableLiveData(childCount ?? 1);
-    return {Const.KEY_DATA : liveData,};
+    return {
+      Const.KEY_DATA : liveData,
+      Const.KEY_PREGNANCY_ID : pregnancyId,
+    };
   }
 }
 

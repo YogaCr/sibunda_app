@@ -104,10 +104,13 @@ class BabyOverlayData extends Equatable {
     required PregnancyEntity entity,
     Profile? profile,
   }) {
+    /*
+    We decide to not filter the `profile`, cuz `PregnancyEntity.id` is not contained in `Profile`.
     if(profile != null && profile.id != entity.id) {
       prinw("`profile` != null but `profile.id` (${profile.id}) != `entity.id` (${entity.id}). Then, `profile` will be ignored.");
       profile = null;
     }
+     */
     return BabyOverlayData(
       id: entity.id,
       nik: profile?.nik ?? "<fetus_nik>",

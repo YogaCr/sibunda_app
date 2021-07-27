@@ -69,6 +69,7 @@ class KehamilankuCheckFormVm extends FormAuthVmGroup {
     });
  */
     _isBabyBorn.observe(this, (isBorn) {
+      //prind("PregTrimesterVm _isBabyBorn.observe() isBorn= $isBorn");
       setFormEnabled(isEnabled: isBorn != true);
     }, tag: toString());
     onSubmit.observe(this, (success) {
@@ -96,7 +97,7 @@ class KehamilankuCheckFormVm extends FormAuthVmGroup {
         });
         setFieldValidity(0, Const.KEY_IMG_USG, true);
       }
-      setFormEnabled(isEnabled: data == null);
+      setFormEnabled(isEnabled: data == null && _isBabyBorn.value != true);
       //Future.sync(() async {});
       //_isFormEnabled = data == null;
     }, tag: toString());

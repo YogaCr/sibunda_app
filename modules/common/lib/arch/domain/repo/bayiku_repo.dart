@@ -115,18 +115,28 @@ class MyBabyRepoImpl with MyBabyRepo {
   Future<Result<List<BabyOverlayData>>> getUnbornBabyOverlayData(String motherNik) async {
     final pregRes = await _pregnancyLocalSrc.getPregnancyOfUser(motherNik);
     if(pregRes is Success<List<PregnancyEntity>>) {
-      final preg = pregRes.data;
-      final nowBornProfilesRes = await _accountLocalSrc.getProfilesByPregnancies(preg);
+      final pregs = pregRes.data;
+      final nowBornProfiles = <ProfileEntity>[];
+      for(final preg in pregs) {
+        final prof = await _accountLocalSrc.getProfileByPregnancy(preg);
+        if(prof is Success<ProfileEntity>) {
+          nowBornProfiles.add(prof.data);
+        }
+      }
       final emailRes = await _accountLocalSrc.getCurrentEmail();
 
-      if(nowBornProfilesRes is Success<List<ProfileEntity>> && emailRes is Success<String>) {
+      //prind("MeyBabyRepo.getUnbornBabyOverlayData() nowBornProfilesRes= $nowBornProfilesRes emailRes= $emailRes");
+      if(emailRes is Success<String>) {
         final email = emailRes.data;
-        final nowBornProfiles = nowBornProfilesRes.data;
-        final babyOverlays = preg.map<BabyOverlayData>((e1) {
-          final eProf = nowBornProfiles.firstWhereOrNull((e2) => e2.serverId == e1.id);
+        //final nowBornProfiles = nowBornProfilesRes.data;
+        final babyOverlays = pregs.map<BabyOverlayData>((preg) {
+          final eProf = nowBornProfiles.firstWhereOrNull((profIt) {
+            prind("MeyBabyRepo.getUnbornBabyOverlayData() nowBornProfiles.firstWhereOrNull profIt.serverId= ${profIt.serverId} profIt.pregnancyId= ${profIt.pregnancyId} pregs.id= ${preg.id}");
+            return profIt.serverId == preg.id || profIt.pregnancyId == preg.id;
+          });
           final prof = eProf != null ? Profile.fromEntity(entity: eProf, email: email) : null;
           return BabyOverlayData.fromPregnancyEntity(
-            entity: e1,
+            entity: preg,
             profile: prof,
           );
         }).toList(growable: false);

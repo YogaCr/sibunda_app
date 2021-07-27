@@ -12,6 +12,7 @@ mixin SaveChildrenData {
   Future<Result<bool>> call({
     required List<Child> data,
     required String email,
+    required int? pregnancyId,
   });
 }
 
@@ -100,9 +101,11 @@ class SaveChildrenDataImpl with SaveChildrenData {
   Future<Result<bool>> call({
     required List<Child> data,
     required String email,
+    required int? pregnancyId,
   }) => _repo.saveChildrenData(
     data: data,
     email: email,
+    pregnancyId: pregnancyId
   );
 }
 

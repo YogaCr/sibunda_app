@@ -2,6 +2,7 @@ import 'package:common/arch/domain/dummy_form_field_data.dart';
 import 'package:common/arch/domain/model/_model_template.dart';
 import 'package:common/arch/domain/model/child.dart';
 import 'package:common/arch/domain/model/img_data.dart';
+import 'package:common/arch/domain/model/profile_data.dart';
 import 'package:common/arch/domain/usecase/profile_usecase.dart';
 import 'package:common/arch/ui/model/form_data.dart';
 import 'package:common/arch/ui/vm/form_vm.dart';
@@ -30,6 +31,7 @@ class ChildFormVm extends FormAuthVmGroup {
     required SaveChildrenData saveChildrenData,
     required GetCurrentEmail getCurrentEmail,
     required this.childCount,
+    required this.pregnancyId,
   }):
     //_saveChildData = saveChildData,
     _saveChildrenData = saveChildrenData,
@@ -106,6 +108,7 @@ class ChildFormVm extends FormAuthVmGroup {
   int? _pageInParent;
   int? get pageInParent => _pageInParent;
   final LiveData<int> childCount;
+  final ProfileCredential? pregnancyId;
 
   //void Function()? onActiveInParent;
 
@@ -237,6 +240,7 @@ class ChildFormVm extends FormAuthVmGroup {
   }
 
   void saveBatchChildren() {
+    prind("ChildFormVm.saveBatchChildren() pregnancyId= $pregnancyId");
     if(_currentPage.value != childCount.value! -1) {
       throw "`currentPage` is '${_currentPage.value}' and total children count (`pageCount`) is '$childCount'.\n"
             "There are still some `Child`s with no data.\n"
@@ -254,6 +258,7 @@ class ChildFormVm extends FormAuthVmGroup {
         final res = await _saveChildrenData(
           data: newList,
           email: email,
+          pregnancyId: pregnancyId?.id,
         );
         if(res is Success<bool>) {
           _onSaveBatch.value = res.data;

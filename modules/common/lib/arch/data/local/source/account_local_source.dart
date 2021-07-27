@@ -40,7 +40,8 @@ mixin AccountLocalSrc {
   Future<Result<SessionData?>> getSession();
 
   Future<Result<ProfileEntity>> getProfileByNik(String nik, { int? type });
-  Future<Result<List<ProfileEntity>>> getProfilesByPregnancies(List<PregnancyEntity> pregnancies);
+  Future<Result<ProfileEntity>> getProfileByPregnancy(PregnancyEntity pregnancy);
+  Future<Result<ProfileEntity>> getProfileByPregnancyId(int pregnancyId);
 
   Future<Result<int>> getCredentialIdByNik(String nik);
 
@@ -239,18 +240,43 @@ class AccountLocalSrcImpl with AccountLocalSrc {
     return Success(profile);
   }
   @override
+  Future<Result<ProfileEntity>> getProfileByPregnancy(PregnancyEntity pregnancy) =>
+      getProfileByPregnancyId(pregnancy.id);
+  @override
+  Future<Result<ProfileEntity>> getProfileByPregnancyId(int pregnancyId) async {
+    var prof = await _profileDao.getByServerId(pregnancyId);
+    if(prof == null) {
+      prinw("Can't get profile with `serverId` of '$pregnancyId', trying to find by `pregnancyId`...");
+      prof = await _profileDao.getByPregnancyId(pregnancyId);
+      if(prof == null) {
+        final msg = "Can't get profile with `pregnancyId` of '$pregnancyId', then continue to next iteration";
+        prinw(msg);
+        return Fail(msg: msg);
+      }
+      prinr("Got profile with `pregnancyId` of '$pregnancyId'!");
+    }
+    return Success(prof);
+  }
+  /*
+  @override
   Future<Result<List<ProfileEntity>>> getProfilesByPregnancies(List<PregnancyEntity> pregnancies) async {
     final list = <ProfileEntity>[];
     for(final preg in pregnancies) {
-      final prof = await _profileDao.getByServerId(preg.id);
+      var prof = await _profileDao.getByServerId(preg.id);
       if(prof == null) {
-        prinw("Can't get profile with `serverId` of '${preg.id}', then continue to next iteration");
-        continue;
+        prinw("Can't get profile with `serverId` of '${preg.id}', trying to find by `pregnancyId`...");
+        prof = await _profileDao.getByPregnancyId(preg.id);
+        if(prof == null) {
+          prinw("Can't get profile with `pregnancyId` of '${preg.id}', then continue to next iteration");
+          continue;
+        }
+        prinr("Got profile with `pregnancyId` of '${preg.id}'!");
       }
       list.add(prof);
     }
     return Success(list);
   }
+   */
 
   @override
   Future<Result<int>> getCredentialIdByNik(String nik) async {

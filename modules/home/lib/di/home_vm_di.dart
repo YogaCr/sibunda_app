@@ -1,4 +1,5 @@
 import 'package:common/arch/di/usecase_di.dart';
+import 'package:common/arch/domain/model/profile_data.dart';
 import 'package:core/ui/base/live_data.dart';
 import 'package:flutter/material.dart';
 import 'package:home/core/di/home_usecase_di.dart';
@@ -54,8 +55,10 @@ class HomeVmDi {
   static ChildFormVm childFormVm({
     BuildContext? context,
     LiveData<int>? childCount,
+    ProfileCredential? pregnancyId,
   }) => ChildFormVm(
     context: context,
+    pregnancyId: pregnancyId,
     getCurrentEmail: UseCaseDi.getCurrentEmail,
     childCount: childCount ?? MutableLiveData(1),
     saveChildrenData: HomeUseCaseDi.saveChildrenData,

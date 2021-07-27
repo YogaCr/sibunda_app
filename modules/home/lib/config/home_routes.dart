@@ -1,3 +1,4 @@
+import 'package:common/arch/domain/model/profile_data.dart';
 import 'package:common/arch/ui/page/frames.dart';
 import 'package:common/arch/ui/widget/form_controller.dart';
 import 'package:common/arch/ui/widget/form_faker.dart';
@@ -30,6 +31,7 @@ class HomeRoutes extends ModuleRoute {
       GlobalRoutes.home_childFormPage,
       (args) => HomeRoutes.childFormPage.getRoute(
         childCount: args[Const.KEY_DATA],
+        pregnancyId: args[Const.KEY_PREGNANCY_ID],
       ),
     );
     exportRouteBuilder(
@@ -140,6 +142,7 @@ class _ChildFormPageRoute {
 
   SibRoute getRoute({
     LiveData<int>? childCount,
+    ProfileCredential? pregnancyId,
   }) {
     final interceptor = ConfigUtil.formInterceptor;
     return SibRoute("ChildFormPage", ChildFormPage, (ctx) =>  PlainBackFrame(
@@ -150,6 +153,7 @@ class _ChildFormPageRoute {
           (ctx) => HomeVmDi.childFormVm(
             context: ctx,
             childCount: childCount,
+            pregnancyId: pregnancyId,
           ),
         ]),
       ),
@@ -160,7 +164,11 @@ class _ChildFormPageRoute {
   Future<bool?> go({
     required BuildContext context,
     LiveData<int>? childCount,
-  }) => getRoute(childCount: childCount).goToPage(context);
+    ProfileCredential? pregnancyId,
+  }) => getRoute(
+    childCount: childCount,
+    pregnancyId: pregnancyId
+  ).goToPage(context);
 }
 
 class _MotherHplPageRoute {

@@ -50,6 +50,7 @@ class GetStartedFormMainVm extends AsyncVm {
       getCurrentEmail: _getCurrentEmailDummy,
       childCount: childrenCountVm.childrenCount,
       saveChildrenData: _saveChildrenData,
+      pregnancyId: null,
     );
     childrenCountVm.childrenCount.observe(this, (count) {
       prind("GetStartedFormMainVm childrenCountVm.childrenCount.observe count= $count");
@@ -205,6 +206,7 @@ class _SaveChildrenDataImpl with SaveChildrenData {
   Future<Result<bool>> call({
     required List<Child> data,
     required String email,
+    required int? pregnancyId,
   }) async {
     _data.value = data;
     return Success(true); // We return `Success` in intention cuz, in this context, the 'save' means save locally before collective submission in the end of get started related forms.
