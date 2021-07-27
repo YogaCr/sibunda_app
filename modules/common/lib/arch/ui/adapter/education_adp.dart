@@ -3,10 +3,10 @@ import 'package:common/arch/domain/model/education_data.dart';
 import 'package:common/arch/ui/widget/_item_template.dart';
 import 'package:flutter/material.dart';
 
-class TipsList extends StatelessWidget {
+class TipsSliverList extends StatelessWidget {
   final List<Tips> dataList;
   final void Function(Tips)? onItemClick;
-  TipsList(this.dataList, { this.onItemClick, });
+  TipsSliverList(this.dataList, { this.onItemClick, });
 
   @override
   Widget build(BuildContext context) {

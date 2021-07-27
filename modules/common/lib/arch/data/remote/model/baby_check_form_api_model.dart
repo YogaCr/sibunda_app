@@ -55,7 +55,7 @@ class BabyMonthlyFormBody {
     required this.height,
     required this.headCircum,
     required this.bmi,
-    this.perkembangan_ans = const [],
+    this.perkembangan_ans,
   });
 
   factory BabyMonthlyFormBody.fromJson(Map<String, dynamic> map) {
@@ -70,11 +70,13 @@ class BabyMonthlyFormBody {
   factory BabyMonthlyFormBody.fromModel(BabyGrowthCheck model, {
     required int yearId,
     required int month,
-    List<BabyMonthlyDevFormBody> perkembangan_ans = const[],
+    List<BabyMonthlyDevFormBody>? perkembangan_ans,
   }) {
     final map = model.toJson();
     map[Const.KEY_YEAR_ID] = yearId;
-    map["perkembangan_ans"] = perkembangan_ans.map((e) => e.toJson()).toList(growable: false);
+    if(perkembangan_ans != null) {
+      map["perkembangan_ans"] = perkembangan_ans.map((e) => e.toJson()).toList(growable: false);
+    }
     map["month"] = month;
     return BabyMonthlyFormBody.fromJson(map);
   }
@@ -88,7 +90,17 @@ class BabyMonthlyDevFormBody {
     required this.ans,
     required this.q_id,
   });
-  factory BabyMonthlyDevFormBody.fromJson(Map<String, dynamic> map) => _$BabyMonthlyDevFormBodyFromJson(map);
+  factory BabyMonthlyDevFormBody.fromJson(Map<String, dynamic> map) {
+    if(!map.containsKey("q_id")) {
+      final qId = map["questionnaire_id"];
+      if(qId is! int) {
+        throw "Response doesn't have key `q_id` nor `questionnaire_id` for `BabyMonthlyDevFormBody.fromJson`\n"
+            "Current map = $map";
+      }
+      map["q_id"] = qId;
+    }
+    return _$BabyMonthlyDevFormBodyFromJson(map);
+  }
   Map<String, dynamic> toJson() => _$BabyMonthlyDevFormBodyToJson(this);
 }
 
@@ -117,4 +129,3 @@ class BabyCheckDevFormDataResponse {
   factory BabyCheckDevFormDataResponse.fromJson(Map<String, dynamic> map) => _$BabyCheckDevFormDataResponseFromJson(map);
   Map<String, dynamic> toJson() => _$BabyCheckDevFormDataResponseToJson(this);
 }
-

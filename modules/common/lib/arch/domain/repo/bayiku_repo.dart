@@ -28,7 +28,11 @@ mixin MyBabyRepo {
   Future<Result<List<BabyOverlayData>>> getUnbornBabyOverlayData(String motherNik);
   //Future<Result<List<Profile>>> getBabyProfiles();
   Future<Result<BabyAgeOverview>> getBabyAgeOverview(String babyNik);
-  Future<Result<List<FormWarningStatus>>> getBabyWarningStatus({
+  Future<Result<List<FormWarningStatus>>> getBabyGrowthWarningStatus({
+    required int yearId,
+    required int month,
+  });
+  Future<Result<List<FormWarningStatus>>> getBabyDevWarningStatus({
     required int yearId,
     required int month,
   });
@@ -161,7 +165,8 @@ class MyBabyRepoImpl with MyBabyRepo {
     return (idRes as Fail<int>).copy();
   }
 // */
-  Future<Result<List<FormWarningStatus>>> getBabyWarningStatus({
+  @override
+  Future<Result<List<FormWarningStatus>>> getBabyGrowthWarningStatus({
     required int yearId,
     required int month,
   }) async {
@@ -186,6 +191,11 @@ class MyBabyRepoImpl with MyBabyRepo {
       return Fail(msg: "Error calling `getBabyWarningStatus()`", error: e);
     }
   }
+  @override
+  Future<Result<List<FormWarningStatus>>> getBabyDevWarningStatus({
+    required int yearId,
+    required int month,
+  }) async => Success(babyWarningStatusList); //TODO: Baby dev form warning: Msh dummy
 
   @override
   Future<Result<List<HomeGraphMenu>>> getBabyGraphMenu() async => Success(babyHomeGraph_ui);
@@ -309,11 +319,15 @@ class MyBabyRepoDummy with MyBabyRepo {
   @override
   Future<Result<List<BabyChartMenuData>>> getBabyDevGraphMenu() async => Success(babyDevGraphMenuList);
   @override
-  Future<Result<List<FormWarningStatus>>> getBabyWarningStatus({
+  Future<Result<List<FormWarningStatus>>> getBabyGrowthWarningStatus({
     required int yearId,
     required int month,
-  }) async =>
-      Success(motherWarningStatusList);
+  }) async => Success(babyWarningStatusList);
+  @override
+  Future<Result<List<FormWarningStatus>>> getBabyDevWarningStatus({
+    required int yearId,
+    required int month,
+  }) async => Success(babyWarningStatusList); //TODO: Baby dev form warning: Msh dummy
   @override
   Future<Result<bool>> saveBabyMonthlyCheck(BabyMonthlyFormBody body) async => Success(true);
   @override

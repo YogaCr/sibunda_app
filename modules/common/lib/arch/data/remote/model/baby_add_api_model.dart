@@ -18,7 +18,7 @@ class BabyAddBody {
     final childMap = child.toJson;
     childMap["ibu_id"] = ibu_id;
     childMap["is_janin"] = 0;
-    childMap["janin_hpl"] = null;
+    childMap["janin_hpl"] = DateTime.fromMicrosecondsSinceEpoch(0).toString(); // Cuz, the endpoint needs it.
     return childMap;
   }
 }

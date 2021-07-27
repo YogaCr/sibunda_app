@@ -11,7 +11,14 @@ mixin GetBabyCheckForm {
   Future<Result<List<FormGroupData>>> call(int month);
 }
 
-mixin GetBabyFormWarningStatus {
+mixin GetBabyGrowthFormWarningStatus {
+  Future<Result<List<FormWarningStatus>>> call({
+    required int yearId,
+    required int month,
+  });
+}
+
+mixin GetBabyDevFormWarningStatus {
   Future<Result<List<FormWarningStatus>>> call({
     required int yearId,
     required int month,
@@ -54,14 +61,24 @@ class GetBabyCheckFormImpl with GetBabyCheckForm {
   Future<Result<List<FormGroupData>>> call(int month) async => _repo.getBabyFormGroupData(month);
 }
 
-class GetBabyFormWarningStatusImpl with GetBabyFormWarningStatus {
+class GetBabyFormWarningStatusImpl with GetBabyGrowthFormWarningStatus {
   final MyBabyRepo _repo;
   GetBabyFormWarningStatusImpl(this._repo);
   @override
   Future<Result<List<FormWarningStatus>>> call({
     required int yearId,
     required int month,
-  }) => _repo.getBabyWarningStatus(yearId: yearId, month: month);
+  }) => _repo.getBabyGrowthWarningStatus(yearId: yearId, month: month);
+}
+
+class GetBabyDevFormWarningStatusImpl with GetBabyDevFormWarningStatus {
+  final MyBabyRepo _repo;
+  GetBabyDevFormWarningStatusImpl(this._repo);
+  @override
+  Future<Result<List<FormWarningStatus>>> call({
+    required int yearId,
+    required int month,
+  }) => _repo.getBabyDevWarningStatus(yearId: yearId, month: month);
 }
 
 class SaveBabyCheckFormImpl with SaveBabyCheckForm {

@@ -2,6 +2,7 @@ import 'package:bayiku/config/baby_routes.dart';
 import 'package:common/arch/data/remote/model/baby_check_form_api_model.dart';
 import 'package:common/arch/domain/dummy_data.dart';
 import 'package:common/arch/domain/model/baby_data.dart';
+import 'package:common/arch/domain/model/chart_data_baby.dart';
 import 'package:common/arch/domain/model/form_warning_status.dart';
 import 'package:common/arch/domain/model/img_data.dart';
 import 'package:common/arch/ui/adapter/form_warning_adp.dart';
@@ -21,6 +22,7 @@ import 'package:common/util/ui.dart';
 import 'package:common/value/const_values.dart';
 import 'package:common/value/enums.dart';
 import 'package:core/domain/model/result.dart';
+import 'package:core/ui/base/live_data.dart';
 import 'package:core/ui/base/live_data_observer.dart';
 import 'package:core/ui/base/view_model.dart';
 import 'package:core/util/_consoles.dart';
@@ -121,16 +123,85 @@ class _MonthlyCheckFormPage extends StatelessWidget {
     return BelowTopBarScrollContentArea(
       controller: scrollControl,
       slivers: [SliverList(delegate: SliverChildListDelegate.fixed([
-        year == 1 && month == 0 ? MultiLiveDataObserver(
-          liveDataList: [vm.formAnswer, vm.onSubmit,],
-          builder: (ctx, dataList) {
-            final checkUpId = (dataList[0] as BabyMonthlyFormBody?)?.id;
-            prind("_MonthlyCheckFormPage checkUpId= $checkUpId dataList[1]= ${dataList[1]}");
-            return checkUpId != null //&& dataList[1] is Success<String>
-                ? _NeonatalServicePanel(checkUpId)
-                : defaultEmptyWidget();
+        LiveDataObserver<int>(
+          liveData: vm.currentMonth,
+          builder: (ctx, month) {
+            if(month != this.month) return defaultLoading();
+
+            Widget getAnalysis({
+              required LiveData<List<FormWarningStatus>> liveData,
+              required String header,
+              required String btnTxt,
+              required void Function()? onTap,
+            }) => LiveDataObserver<List<FormWarningStatus>>(
+              liveData: liveData,
+              builder: (ctx, data) {
+                if(data == null) return defaultLoading();
+                if(data.isEmpty) return defaultEmptyWidget();
+                return Column(
+                  children: [
+                    Container(
+                      margin: EdgeInsets.only(top: 20, bottom: 5,),
+                      child: Text(
+                        header,
+                        style: SibTextStyles.size_0_bold,
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    FormWarningList(data),
+                    SizedBox(height: 10,),
+                    TxtBtn(
+                      btnTxt,
+                      onTap: onTap,
+                    ),
+                  ],
+                );
+              },
+            );
+
+            final growthAnalysis = getAnalysis(
+              liveData: vm.growthWarningList,
+              header: "Informasi Hasil Pemeriksaan Pertumbuhan",
+              btnTxt: "Lihat Grafik Pertumbuhan Bayi",
+              onTap: () => BabyRoutes.growthChartMenuVm.go(
+                context: context,
+                babyCredential: vm.credential,
+              ),
+            );
+            final devAnalysis = getAnalysis(
+              liveData: vm.devWarningList,
+              header: "Informasi Hasil Pemeriksaan Perkembangan",
+              btnTxt: "Lihat Grafik Perkembangan Bayi",
+              onTap: () => BabyRoutes.chartPageRoute.go(
+                context: context,
+                babyCredential: vm.credential,
+                type: BabyChartType.dev,
+              ),
+            );
+
+            final children = <Widget>[
+              growthAnalysis, devAnalysis,
+            ];
+
+            if(year == 1 && month == 0) {
+              children.insert(0, MultiLiveDataObserver(
+                liveDataList: [vm.formAnswer, vm.onSubmit,],
+                builder: (ctx, dataList) {
+                  final checkUpId = (dataList[0] as BabyMonthlyFormBody?)?.id;
+                  prind("_MonthlyCheckFormPage checkUpId= $checkUpId dataList[1]= ${dataList[1]}");
+                  return checkUpId != null //&& dataList[1] is Success<String>
+                      ? _NeonatalServicePanel(checkUpId)
+                      : defaultEmptyWidget();
+                },
+              ),);
+            }
+
+            return Column(
+              children: children,
+            );
           },
-        ) : defaultEmptyWidget(),
+        ),
+        /*
         LiveDataObserver<List<FormWarningStatus>>(
           liveData: vm.warningList,
           predicate: (data) => vm.currentMonth.value == month,
@@ -144,16 +215,15 @@ class _MonthlyCheckFormPage extends StatelessWidget {
             ) : null,
           ),
         ),
-      ])),
-      LiveDataObserver<List<FormWarningStatus>>(
-        liveData: vm.warningList,
-        predicate: (data) => vm.currentMonth.value == month,
-        initBuilder: (ctx) => SliverToBoxAdapter(child: defaultLoading(),),
-        builder: (ctx, data) => data != null
-            ? FormWarningSliverList(data)
-            : SliverToBoxAdapter(child: defaultLoading(),),
-      ),
-      SliverList(delegate: SliverChildListDelegate.fixed([
+        LiveDataObserver<List<FormWarningStatus>>(
+          liveData: vm.warningList,
+          predicate: (data) => vm.currentMonth.value == month,
+          initBuilder: (ctx) => defaultLoading(),
+          builder: (ctx, data) => data != null
+              ? FormWarningList(data)
+              : defaultLoading(),
+        ),
+         */
         Container(
           margin: EdgeInsets.only(bottom: 15),
           child: FormVmGroupObserver<BabyCheckFormVm>(
@@ -161,8 +231,8 @@ class _MonthlyCheckFormPage extends StatelessWidget {
             interceptor: interceptor,
             imgPosition: RelativePosition.below,
             predicate: () => vm.currentMonth.value == month,
-                //|| vm.currentMonth.value == month -1
-                //|| vm.currentMonth.value == month +1,
+            //|| vm.currentMonth.value == month -1
+            //|| vm.currentMonth.value == month +1,
             onPreSubmit: (ctx, valid) => valid == true
                 ? showSnackBar(ctx, "Submitting", backgroundColor: Colors.green)
                 : showSnackBar(ctx, "There still invalid fields"),

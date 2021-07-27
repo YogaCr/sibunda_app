@@ -345,6 +345,47 @@ class RadioGroup extends SibFormField {
       groupValueLiveData.value = selectedAnswer;
     }
 
+    Widget getLiveDataObserver(String option) {
+      if(isEnabledController == null) {
+        return LiveDataObserver<String>(
+          liveData: groupValueLiveData,
+          builder: (ctx, data) {
+            prind("RadioGroup isEnabledController == null data= $data");
+            return Radio<String>(
+              value: option,
+              groupValue: data,
+              onChanged: enabled ? (value) => groupValueLiveData.value = value : null,
+            );
+          },
+        );
+      } else {
+        String? groupVal2;
+        return MultiLiveDataObserver<dynamic>(
+          liveDataList: [groupValueLiveData, isEnabledController!],
+          builder: (ctx, dataList) {
+            final groupVal = dataList[0] as String?;
+            final enabled = dataList[1] as bool?;
+            groupVal2 = groupVal;
+            prind("RadioGroup groupVal= $groupVal groupVal2 = $groupVal2 enabled= $enabled");
+            return Radio<String>(
+              value: option,
+              groupValue: groupVal2, //If I use parameter `data` here, then the value won't change.
+              // although the outer lambda gets called whenever `groupValueLiveData.value` change
+              // and this inner lambda gets new parameter `data` with new value.
+              // It seems it has something to do with Flutter `State` class.
+              onChanged: this.enabled && enabled != false
+                  ? (value) {
+                //prind("RadioGroup onChange groupValueLiveData.value = ${groupValueLiveData.value} value = $value groupValue = $data option = $option this.enabled = ${this.enabled} enabled = $enabled");
+                groupValueLiveData.value = value;
+                //data = value;
+              } : null,
+            );
+          },
+        );
+      }
+    }
+
+    /*
     Widget? Function(BuildContext, String?) getBuilder(final String option) {
       //prind("RadioGroup getBuilder() isEnabledController == null => ${isEnabledController == null}");
 
@@ -361,12 +402,12 @@ class RadioGroup extends SibFormField {
         String? data2; // I don't know why but Dart seems unable to capture
           // parameter `data` new reference. So, the value of `data` stays the same like the old one.
         return (ctx, data) {
-          //prind("RadioGroup isEnabledController != null data= $data");
           data2 = data;
+          prind("RadioGroup isEnabledController != null data= $data data2= $data2");
           return LiveDataObserver<bool>(
             liveData: isEnabledController!,
             builder: (ctx, enabled) {
-              //prind("RadioGroup isEnabledController != null INNER builder data= $data data2= $data2 enabled = $enabled");
+              prind("RadioGroup isEnabledController != null INNER builder data= $data data2= $data2 enabled = $enabled");
               return Radio<String>(
                 value: option,
                 groupValue: data2, //If I use parameter `data` here, then the value won't change.
@@ -385,17 +426,21 @@ class RadioGroup extends SibFormField {
         };
       }
     }
+     */
 
     for(final option in itemData.answerItems) {
       optionWidgetList.add(
         Flexible(
           child: ListTile(
             title: Text(option),
-            leading: LiveDataObserver<String>(
+            leading: getLiveDataObserver(option),
+/*
+            LiveDataObserver<String>(
               isLiveDataOwner: isLiveDataOwner,
               liveData: groupValueLiveData,
               builder: getBuilder(option),
             ),
+ */
           ),
         ),
       );

@@ -71,18 +71,32 @@ class HomePage extends StatelessWidget {
       body: BelowTopBarScrollContentArea(slivers: [
         SliverList(
           delegate: SliverChildListDelegate.fixed([
-            Container(
-              margin: EdgeInsets.only(left: 20, bottom: 20, top: 30),
-              child: Text(
-                "Yuk Lihat Kesehatan Keluarga",
-                style: SibTextStyles.size_0_bold,
-              ),
+            LiveDataObserver<List<HomeStatus>>(
+              liveData: vm.homeStatusList,
+              builder: (ctx, data) {
+                if(data == null) return defaultLoading();
+                if(data.isEmpty) return defaultEmptyWidget();
+                return Column(
+                  children: [
+                    Container(
+                      margin: EdgeInsets.only(left: 20, bottom: 20, top: 30),
+                      child: Text(
+                        "Yuk Lihat Kesehatan Keluarga",
+                        style: SibTextStyles.size_0_bold,
+                      ),
+                    ),
+                    _StatusList(data),
+                    SizedBox(height: 40,),
+                  ],
+                );
+              },
             ),
-
+            /*
             AsyncVmObserver<HomeVm, List<HomeStatus>>(
               liveDataGetter: (vm2) => vm2.homeStatusList,
               builder: (ctx, data) => _StatusList(data ?? List.empty()),
             ),
+             */
 /*
             buildReactiveBlocBuilder<
                 HomeBloc, HomeState, OnHomeStatusDataChanged, List<HomeStatus>
@@ -93,30 +107,48 @@ class HomePage extends StatelessWidget {
             ),
 */
 // */
-            Container(
-              margin: EdgeInsets.only(left: 20, bottom: 20, top: 40),
-              child: Text(
-                "Jelajahi Menu siBunda",
-                style: SibTextStyles.size_0_bold,
-              ),
+            LiveDataObserver<List<HomeMenu>>(
+              liveData: vm.homeMenuList,
+              builder: (ctx, data) {
+                if(data == null) return defaultLoading();
+                if(data.isEmpty) return defaultEmptyWidget();
+                return Column(
+                  children: [
+                    Container(
+                      margin: EdgeInsets.only(left: 20, bottom: 20,),
+                      child: Text(
+                        "Jelajahi Menu siBunda",
+                        style: SibTextStyles.size_0_bold,
+                      ),
+                    ),
+                    _MenuList(data),
+                  ],
+                );
+              },
             ),
-
+            /*
             AsyncVmObserver<HomeVm, List<HomeMenu>>(
+              vm: vm,
               liveDataGetter: (vm2) => vm2.homeMenuList,
               builder: (ctx, data) => _MenuList(data ?? List.empty()),
             ),
-            Container(
-              margin: EdgeInsets.only(left: 20, bottom: 20, top: 40,),
-              child: Text(
-                "Baca Tips dan Info untuk Bunda",
-                style: SibTextStyles.size_0_bold,
-              ),
-            ),
+             */
+            LiveDataObserver<List<Tips>>(
+              liveData: vm.homeTipsList,
+              builder: (ctx, data) => data?.isNotEmpty == true ? Container(
+                margin: EdgeInsets.only(left: 20, bottom: 20, top: 40,),
+                child: Text(
+                  "Baca Tips dan Info untuk Bunda",
+                  style: SibTextStyles.size_0_bold,
+                ),
+              ) : defaultEmptyWidget(),
+            )
           ]),
         ),
-        AsyncVmObserver<HomeVm, List<Tips>>(
-          liveDataGetter: (vm2) => vm2.homeTipsList,
-          builder: (ctx, data) => TipsList(
+        LiveDataObserver<List<Tips>>(
+          liveData: vm.homeTipsList,
+          initBuilder: (ctx) => SliverToBoxAdapter(child: defaultLoading()),
+          builder: (ctx, data) => TipsSliverList(
             data ?? List.empty(),
             onItemClick: (data) => HomeRoutes.obj.goToExternalRoute(
               context, GlobalRoutes.education_detailPage,
@@ -126,18 +158,25 @@ class HomePage extends StatelessWidget {
         ),
         SliverList(
           delegate: SliverChildListDelegate.fixed([
-            InkWell(
-              onTap: () => HomeRoutes.obj.goToModule(context, GlobalRoutes.education),
-              child: Container(
-                alignment: Alignment.center,
-                margin: EdgeInsets.only(top: 15),
-                child: Text(
-                  "Lihat Selengkapnya",
-                  style: SibTextStyles.size_min_2_colorPrimary,
-                ),
-              ),
+            LiveDataObserver<List<Tips>>(
+              liveData: vm.homeTipsList,
+              builder: (ctx, data) => data?.isNotEmpty == true ? Column(
+                children: [
+                  InkWell(
+                    onTap: () => HomeRoutes.obj.goToModule(context, GlobalRoutes.education),
+                    child: Container(
+                      alignment: Alignment.center,
+                      margin: EdgeInsets.only(top: 15),
+                      child: Text(
+                        "Lihat Selengkapnya",
+                        style: SibTextStyles.size_min_2_colorPrimary,
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 100,),
+                ],
+              ) : defaultEmptyWidget(),
             ),
-            SizedBox(height: 100,),
           ]),
         ),
       ]),

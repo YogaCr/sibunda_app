@@ -30,7 +30,8 @@ class BabyVmDi {
     credential: babyCredential,
     getBabyCheckForm: BabyUseCaseDi.getBabyCheckForm,
     getBabyCheckFormAnswer: BabyUseCaseDi.getBabyCheckFormAnswer,
-    getBabyFromWarningStatus: BabyUseCaseDi.getBabyFormWarningStatus,
+    getBabyGrowthFormWarningStatus: BabyUseCaseDi.getBabyFormWarningStatus,
+    getBabyDevFormWarningStatus: BabyUseCaseDi.getBabyDevFormWarningStatus,
     saveBabyCheckForm: BabyUseCaseDi.saveBabyCheckForm,
   );
   static NeonatalServiceVm neonatalServiceVm({

@@ -25,14 +25,16 @@ class BabyCheckFormVm extends FormAuthVmGroup {
     required this.credential,
     //required GetBabyNik getBabyNik,
     required GetBabyCheckForm getBabyCheckForm,
-    required GetBabyFormWarningStatus getBabyFromWarningStatus,
+    required GetBabyGrowthFormWarningStatus getBabyGrowthFormWarningStatus,
+    required GetBabyDevFormWarningStatus getBabyDevFormWarningStatus,
     required SaveBabyCheckForm saveBabyCheckForm,
     required GetBabyCheckFormAnswer getBabyCheckFormAnswer,
     //required SaveBabyCheckUpId saveBabyCheckUpId,
   }):
     //_getBabyNik = getBabyNik,
     _getBabyCheckForm = getBabyCheckForm,
-    _getBabyFromWarningStatus = getBabyFromWarningStatus,
+    _getBabyGrowthFormWarningStatus = getBabyGrowthFormWarningStatus,
+    _getBabyDevFormWarningStatus = getBabyDevFormWarningStatus,
     _saveBabyCheckForm = saveBabyCheckForm,
     _getBabyCheckFormAnswer = getBabyCheckFormAnswer, super(context: context)
     //_saveBabyCheckUpId = saveBabyCheckUpId
@@ -48,16 +50,17 @@ class BabyCheckFormVm extends FormAuthVmGroup {
       }
     });
     _formAnswer.observe(this, (data) {
-      //prind("_formAnswer.observe data = $data _currentMonth = $_currentMonth");
+      prind("_formAnswer.observe data = $data _currentMonth = $_currentMonth");
       if(data != null) {
         final map = data.toJson();
         final respGroupList = <Map<String, dynamic>>[map];
         final devList = map[Const.KEY_PERKEMBANGAN_ANS] as List<BabyMonthlyDevFormBody>?;
+        prind("BabyCheckFormVm _formAnswer.observe() devList= $devList");
         if(devList != null) {
           final devMap = <String, dynamic>{};
           respGroupList.add(devMap);
           for(final ans in devList) {
-            devMap[ans.q_id.toString()] = getBinaryAnswerHaveNotStr(ans.ans);
+            devMap[ans.q_id.toString()] = getBinaryAnswerYesNoStr(ans.ans);
           }
           map.remove(Const.KEY_PERKEMBANGAN_ANS);
         }
@@ -73,23 +76,28 @@ class BabyCheckFormVm extends FormAuthVmGroup {
 
   //final GetBabyNik _getBabyNik;
   final GetBabyCheckForm _getBabyCheckForm;
-  final GetBabyFormWarningStatus _getBabyFromWarningStatus;
+  final GetBabyGrowthFormWarningStatus _getBabyGrowthFormWarningStatus;
+  final GetBabyDevFormWarningStatus _getBabyDevFormWarningStatus;
   final SaveBabyCheckForm _saveBabyCheckForm;
   final GetBabyCheckFormAnswer _getBabyCheckFormAnswer;
   //final SaveBabyCheckUpId _saveBabyCheckUpId;
 
   final ProfileCredential credential;
 
-  final MutableLiveData<List<FormWarningStatus>> _warningList = MutableLiveData();
+  final MutableLiveData<List<FormWarningStatus>> _growthWarningList = MutableLiveData();
+  final MutableLiveData<List<FormWarningStatus>> _devWarningList = MutableLiveData();
   final MutableLiveData<BabyMonthlyFormBody> _formAnswer = MutableLiveData();
   //final MutableLiveData<int> _checkUpId = MutableLiveData();
 
-  LiveData<List<FormWarningStatus>> get warningList => _warningList;
+  LiveData<List<FormWarningStatus>> get growthWarningList => _growthWarningList;
+  LiveData<List<FormWarningStatus>> get devWarningList => _devWarningList;
   LiveData<BabyMonthlyFormBody> get formAnswer => _formAnswer;
   //LiveData<int> get checkUpId => _checkUpId;
 
   @override
-  List<LiveData> get liveDatas => [_warningList, _formAnswer,];
+  List<LiveData> get liveDatas => [
+    _growthWarningList, _devWarningList, _formAnswer,
+  ];
 
   late int yearId;
   final MutableLiveData<int> _currentMonth = MutableLiveData();
@@ -237,7 +245,7 @@ class BabyCheckFormVm extends FormAuthVmGroup {
   }
 
   void getWarningList({ bool forceLoad = false}) {
-    if(!forceLoad && _warningList.value != null) return;
+    if(!forceLoad && _growthWarningList.value != null) return;
     startJob(getWarningListKey, (isActive) async {
       final babyNik = credential.nik; //res1.data[babyId];
       /*
@@ -245,14 +253,24 @@ class BabyCheckFormVm extends FormAuthVmGroup {
           throw "No such `babyNik` with `babyId` of '$babyId'";
         }
          */
-      final res2 = await _getBabyFromWarningStatus(yearId: yearId, month: _currentMonth.value!);
+      final res2 = await _getBabyGrowthFormWarningStatus(yearId: yearId, month: _currentMonth.value!);
       //prind("getWarningList res2 = $res2 _currentMonth = $_currentMonth");
       if(res2 is Success<List<FormWarningStatus>>) {
         final data = res2.data;
-        _warningList.value = data;
+        _growthWarningList.value = data;
         //return null;
       } else {
-        _warningList.value = List.empty();
+        _growthWarningList.value = List.empty();
+      }
+
+      final res3 = await _getBabyDevFormWarningStatus(yearId: yearId, month: _currentMonth.value!);
+      //prind("getWarningList res2 = $res2 _currentMonth = $_currentMonth");
+      if(res3 is Success<List<FormWarningStatus>>) {
+        final data = res3.data;
+        _devWarningList.value = data;
+        //return null;
+      } else {
+        _devWarningList.value = List.empty();
       }
       //return res2 as Fail;
     });

@@ -308,7 +308,7 @@ abstract class FormVmGroup extends AsyncVm with FormVmGroupMixin {
       final vmGroup = _responseGroupList[i];
 
       for(final key in vmGroup.keys) {
-        //prind("resps.containsKey(${key}) = ${resps.containsKey(key)}");
+        prind("resps.containsKey($key) = ${resps.containsKey(key)} resps[key]= ${resps[key]}");
         if(resps.containsKey(key)) {
           vmGroup[key]!.response.value = resps[key];
         }

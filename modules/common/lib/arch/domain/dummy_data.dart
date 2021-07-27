@@ -366,6 +366,12 @@ final babyWarningStatusList = <FormWarningStatus>[
     isSafe: false,
     img: dummyImg,
   ),
+  FormWarningStatus(
+    desc: "Warning ini masih dummy dari local ya Bun",
+    action: "Hubungi developer terdekat",
+    isSafe: false,
+    img: dummyImg,
+  ),
 ];
 
 final templateTetanusImmunization = ImmunizationData(
