@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:image_picker/image_picker.dart';
 
 enum ImgSrc {
   asset,
@@ -18,6 +19,12 @@ class ImgData extends Equatable {
     this.package,
     required this.src,
   });
+
+  ImgData.fromXFile(XFile file):
+    link = file.path,
+    package = null,
+    src = ImgSrc.file
+  ;
 
   static ImgSrc getSrcFromLink(String link) {
     if(

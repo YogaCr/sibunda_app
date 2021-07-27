@@ -1,4 +1,5 @@
 
+import 'package:common/arch/domain/model/img_data.dart';
 import 'package:common/arch/ui/widget/_basic_widget.dart';
 import 'package:common/arch/ui/widget/form_controller.dart';
 import 'package:common/arch/ui/widget/form_generic_vm_group_observer.dart';
@@ -162,12 +163,21 @@ class _ChildSingleFormPage extends StatelessWidget {
           style: SibTextStyles.header1,
           textAlign: TextAlign.center,
         ).withMargin(EdgeInsets.only(top: 60)),
-        ImgPick().withMargin(EdgeInsets.only(top: 10, bottom: 15)),
+        //ImgPick().withMargin(EdgeInsets.only(top: 10, bottom: 15)),
+        LiveDataObserver<ImgData>(
+          liveData: vm.imgProfile,
+          builder: (ctx, img) => ImgPick(
+            pic: img,
+            onImgPick: (file) => vm.imgProfile.value = file != null
+                ? ImgData.fromXFile(file) : null,
+          ),
+        ).withMargin(EdgeInsets.only(top: 10, bottom: 20,)),
         /*TxtLink(
           Strings.skip,
           onTap: () => showSnackBar(context, "dipencet"),
         ),*/
         FormVmGroupObserver<ChildFormVm>(
+          vm: vm,
           showHeader: false,
           interceptor: interceptor,
           pickerIconBuilder: (group, key, data) {

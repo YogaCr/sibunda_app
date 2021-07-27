@@ -1,6 +1,7 @@
 import 'package:common/arch/domain/dummy_form_field_data.dart';
 import 'package:common/arch/domain/model/_model_template.dart';
 import 'package:common/arch/domain/model/child.dart';
+import 'package:common/arch/domain/model/img_data.dart';
 import 'package:common/arch/domain/usecase/profile_usecase.dart';
 import 'package:common/arch/ui/model/form_data.dart';
 import 'package:common/arch/ui/vm/form_vm.dart';
@@ -119,10 +120,14 @@ class ChildFormVm extends FormAuthVmGroup {
   final MutableLiveData<bool> _onSaveBatch = MutableLiveData(false);
   LiveData<bool> get onSaveBatch => _onSaveBatch;
 
+  final imgProfile = MutableLiveData<ImgData>();
+
   //LiveData<List<Child>> get children => _children;
 
   @override
-  List<LiveData> get liveDatas => [_currentPage, _children, _onSaveBatch,];
+  List<LiveData> get liveDatas => [
+    _currentPage, _children, _onSaveBatch, imgProfile,
+  ];
 
 
   bool checkPageActiveInParent(int page, { bool force = false }) {

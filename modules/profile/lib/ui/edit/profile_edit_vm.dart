@@ -1,5 +1,6 @@
 import 'package:common/arch/domain/dummy_data.dart';
 import 'package:common/arch/domain/dummy_form_field_data.dart';
+import 'package:common/arch/domain/model/img_data.dart';
 import 'package:common/arch/domain/model/profile_data.dart';
 import 'package:common/arch/ui/model/form_data.dart';
 import 'package:common/arch/ui/vm/form_vm_group.dart';
@@ -26,9 +27,11 @@ class ProfileEditVm extends FormAuthVmGroup {
   LiveData? _newPswd;
   LiveData? _newPswdRe;
 
+  final imgProfile = MutableLiveData<ImgData>();
+
   @override
   List<LiveData> get liveDatas {
-    final list = <LiveData>[];
+    final list = <LiveData>[imgProfile,];
     if(_oldPswd != null) {
       list.add(_oldPswd!);
     }

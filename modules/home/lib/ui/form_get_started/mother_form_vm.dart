@@ -1,5 +1,6 @@
 import 'package:common/arch/domain/dummy_form_field_data.dart';
 import 'package:common/arch/domain/model/_model_template.dart';
+import 'package:common/arch/domain/model/img_data.dart';
 import 'package:common/arch/domain/model/mother.dart';
 import 'package:common/arch/ui/model/form_data.dart';
 import 'package:common/arch/ui/vm/form_vm.dart';
@@ -20,8 +21,10 @@ class MotherFormVm extends FormVmGroup {
   }
   final SaveMotherData _useCase;
 
+  final imgProfile = MutableLiveData<ImgData>();
+
   @override
-  List<LiveData> get liveDatas => [];
+  List<LiveData> get liveDatas => [imgProfile];
 
   @override
   Set<String>? get mappedKey => {

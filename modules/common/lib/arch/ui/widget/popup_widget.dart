@@ -7,6 +7,7 @@ import 'package:common/arch/domain/model/baby_data.dart';
 import 'package:common/arch/domain/usecase/baby_usecase.dart';
 import 'package:common/arch/ui/adapter/id_string_adp.dart';
 import 'package:common/arch/ui/widget/_basic_widget.dart';
+import 'package:common/config/manifest.dart';
 import 'package:common/res/string/_string.dart';
 import 'package:common/res/theme/_theme.dart';
 import 'package:common/util/navigations.dart';
@@ -15,6 +16,7 @@ import 'package:core/ui/base/live_data.dart';
 import 'package:core/ui/base/live_data_observer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 class PopupSuccess extends StatelessWidget {
   final String msg;
@@ -79,6 +81,120 @@ class PopupSuccess extends StatelessWidget {
 }
 
 
+class PopupImgPicker extends StatelessWidget {
+  final void Function(XFile?)? onItemClick;
+  final imgPicker = ImagePicker();
+
+  PopupImgPicker({
+    this.onItemClick,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    /*
+    final screenSize = MediaQuery.of(context).size;
+    final width = screenSize.width * 85 / 100;
+    final height = screenSize.height * 40 / 100;
+    final iconSize = screenSize.width * 30 / 100;
+     */
+
+    pickImg(ImageSource src) => onItemClick != null ? () async {
+      final res = await imgPicker.pickImage(source: src);
+      onItemClick!(res);
+    } : null;
+
+    return Material(
+      child: Container(
+        color: black_trans_most2,
+        alignment: Alignment.center,
+        child: Flexible(
+          child: Container(
+            margin: EdgeInsets.all(20),
+            constraints: BoxConstraints(
+              maxHeight: 200,
+            ),
+            decoration: BoxDecoration(
+              color: white,
+              borderRadius: BorderRadius.circular(15),
+            ),
+            padding: EdgeInsets.all(20),
+            child: Row(
+              //direction: Axis.horizontal,
+              //spacing: 10,
+              //runSpacing: 10,
+              children: [
+                Expanded(
+                  child: _PopupImgPickerPanel(
+                    icon: Icons.add_photo_alternate_outlined,
+                    text: Strings.pick_img_gallery,
+                    onClick: pickImg(ImageSource.gallery),
+                  ),
+                ),
+                SizedBox(width: 15,),
+                Expanded(
+                  child: _PopupImgPickerPanel(
+                    icon: Icons.add_a_photo_outlined,
+                    text: Strings.pick_img_camera,
+                    onClick: pickImg(ImageSource.camera),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _PopupImgPickerPanel extends StatelessWidget {
+  final IconData icon;
+  final String text;
+  final void Function()? onClick;
+
+  _PopupImgPickerPanel({
+    required this.icon,
+    required this.text,
+    this.onClick,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onClick,
+      child: Container(
+        decoration: BoxDecoration(
+          color: Manifest.theme.colorPrimary,
+          borderRadius: BorderRadius.circular(15),
+        ),
+        padding: EdgeInsets.all(15),
+        child: Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Icon(
+                icon,
+                color: Manifest.theme.colorOnPrimary,
+                size: 35,
+              ),
+              SizedBox(height: 10,),
+              Text(
+                text,
+                style: SibTextStyles.size_min_1_colorOnPrimary,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+
+
+
 class IdStringPopup extends StatelessWidget {
   final List<IdStringModel> dataList;
   final void Function(int id, String name)? onItemClick;
@@ -112,6 +228,19 @@ class IdStringPopup extends StatelessWidget {
     );
   }
 }
+
+
+Future<XFile?> showPickImgPopup({
+  required BuildContext context,
+}) => showDialog(
+  context: context,
+  builder: (ctx) => PopupImgPicker(
+    onItemClick: (imgFile) {
+      backPage(ctx, result: imgFile);
+    },
+  ),
+);
+
 
 Future<IdStringModel?> showIdStringPopup({
   required BuildContext context,

@@ -1,6 +1,8 @@
 
 import 'package:common/arch/di/db_di.dart';
 import 'package:common/arch/domain/dummy_data.dart';
+import 'package:common/arch/domain/model/img_data.dart';
+import 'package:common/arch/ui/widget/_basic_widget.dart';
 import 'package:common/arch/ui/widget/form_controller.dart';
 import 'package:common/arch/ui/widget/form_generic_vm_group_observer.dart';
 import 'package:common/arch/ui/widget/form_vm_observer.dart';
@@ -11,6 +13,8 @@ import 'package:common/res/string/_string.dart';
 import 'package:common/res/theme/_theme.dart';
 import 'package:common/util/ui.dart';
 import 'package:common/value/const_values.dart';
+import 'package:core/ui/base/live_data_observer.dart';
+import 'package:core/ui/base/view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:home/config/home_routes.dart';
@@ -27,15 +31,23 @@ class MotherFormPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final vm = ViewModelProvider.of<MotherFormVm>(context);
     return Column(
       children: [
         Text(
           Strings.fill_mother_data,
           style: SibTextStyles.header1,
         ).withMargin(EdgeInsets.only(top: 60)),
-        ImgPick(placeholderImg: dummyImg_profile,)
-            .withMargin(EdgeInsets.only(top: 10, bottom: 20,)),
+        LiveDataObserver<ImgData>(
+          liveData: vm.imgProfile,
+          builder: (ctx, img) => ImgPick(
+            pic: img,
+            onImgPick: (file) => vm.imgProfile.value = file != null
+                ? ImgData.fromXFile(file) : null,
+          ),
+        ).withMargin(EdgeInsets.only(top: 10, bottom: 20,)),
         FormVmGroupObserver<MotherFormVm>(
+          vm: vm,
           showHeader: false,
           interceptor: interceptor,
           pickerIconBuilder: (group, key, data) {

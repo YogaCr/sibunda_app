@@ -1,3 +1,4 @@
+import 'package:common/arch/domain/model/img_data.dart';
 import 'package:common/arch/domain/model/profile_data.dart';
 import 'package:common/arch/ui/page/secondary_frames.dart';
 import 'package:common/arch/ui/widget/_basic_widget.dart';
@@ -8,6 +9,7 @@ import 'package:common/res/theme/_theme.dart';
 import 'package:common/util/navigations.dart';
 import 'package:common/util/ui.dart';
 import 'package:common/value/const_values.dart';
+import 'package:core/ui/base/live_data_observer.dart';
 import 'package:core/ui/base/view_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -42,10 +44,20 @@ class ProfileEditPage extends StatelessWidget {
         child: BelowTopBarScrollContentArea(slivers: [
           SliverList(
             delegate: SliverChildListDelegate.fixed([
+              /*
               Container(
                 margin: EdgeInsets.only(bottom: 20,),
                 child: ImgPick(pic: profile.img,),
               ),
+               */
+              LiveDataObserver<ImgData>(
+                liveData: vm.imgProfile,
+                builder: (ctx, img) => ImgPick(
+                  pic: img,
+                  onImgPick: (file) => vm.imgProfile.value = file != null
+                      ? ImgData.fromXFile(file) : null,
+                ),
+              ).withMargin(EdgeInsets.only(top: 10, bottom: 20,)),
               FormVmGroupObserver<ProfileEditVm>(
                 vm: vm,
                 showHeader: false,
