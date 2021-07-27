@@ -36,25 +36,29 @@ class BabyHomeVm extends AsyncAuthVm {
       }
     });
     _ageOverview.observe(this, (data) {
+      prind("BabyHomeVm _ageOverview.observe data= $data");
       if(data != null) {
         final babyCred = _babyCredential.value;
+        prind("BabyHomeVm _ageOverview.observe babyCred= $babyCred _bornBabyList= $_bornBabyList");
         if(babyCred == null) {
           throw "Something error. `babyCred` is null";
         }
+        /*
         final unbornIndex = _unbornBabyList.value!.indexWhere((e) => e.id == babyCred.id);
         prind("BabyHomeVm unbornIndex= $unbornIndex");
         if(unbornIndex >= 0) {
           selectedIndex.value = unbornIndex;
           selectedBabyData = _unbornBabyList.value![unbornIndex];
-        } else {
-          final bornIndex = _bornBabyList.value!.indexWhere((e) => e.id == babyCred.id);
-          prind("BabyHomeVm bornIndex= $bornIndex");
-          if(bornIndex < 0) {
-            throw "Something error. `ageOverview.value` is not null, but there's no selected baby";
-          }
-          selectedBabyData = _bornBabyList.value![bornIndex];
-          selectedIndex.value = bornIndex +(_unbornBabyList.value?.length ?? 0);
+        } else {}
+         */
+        final bornIndex = _bornBabyList.value!.indexWhere((e) => e.id == babyCred.id);
+        prind("BabyHomeVm bornIndex= $bornIndex");
+        if(bornIndex < 0) {
+          throw "Something error. `ageOverview.value` is not null, but there's no selected baby";
         }
+        selectedBabyData = _bornBabyList.value![bornIndex];
+        selectedIndex.value = bornIndex +(_unbornBabyList.value?.length ?? 0);
+
         prind("BabyHomeVm selectedIndex= $selectedIndex");
       }
     }, tag: toString());

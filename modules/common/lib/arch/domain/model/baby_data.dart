@@ -112,7 +112,7 @@ class BabyOverlayData extends Equatable {
     }
      */
     return BabyOverlayData(
-      id: entity.id,
+      id: profile?.id ?? entity.id,
       nik: profile?.nik ?? "<fetus_nik>",
       name: profile?.name ?? Strings.baby_candidate,
       date: entity.hpl,

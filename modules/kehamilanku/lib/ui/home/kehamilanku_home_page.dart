@@ -21,6 +21,7 @@ import 'package:core/ui/base/live_data.dart';
 import 'package:core/ui/base/live_data_observer.dart';
 import 'package:core/ui/base/view_model.dart';
 import 'package:core/util/_consoles.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -178,13 +179,16 @@ class _PregnancyHomePageWithData extends StatelessWidget {
                       liveData: vm.selectedUnbornBabyOverlay,
                       builder: (ctx, data) => ItemMotherBornOverview(
                         bornBaby: data,
-                        onActionClick: data != null ? () => KehamilankuRoutes.obj.goToModule(
-                          ctx, GlobalRoutes.bayiku,
-                          args: GlobalRoutes.makeBabyHomePageData(
-                            babyCredential: ProfileCredential.fromBabyOverlay(data),
-                          ),
-                          replaceCurrent: true,
-                        ) : null,
+                        onActionClick: data != null ? () {
+                          prind("PregnancyHomePage born action clicked");
+                          KehamilankuRoutes.obj.goToModule(
+                            ctx, GlobalRoutes.bayiku,
+                            args: GlobalRoutes.makeBabyHomePageData(
+                              babyCredential: ProfileCredential.fromBabyOverlay(data),
+                            ),
+                            replaceCurrent: true,
+                          );
+                        } : null,
                       ),
                     );
                   }

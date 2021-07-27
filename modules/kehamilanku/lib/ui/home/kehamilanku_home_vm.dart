@@ -37,12 +37,21 @@ class KehamilankuHomeVm extends AsyncAuthVm {
       _getUnbornBabyList = getUnbornBabyList,
      _isBabyBorn = isBabyBorn, super(context: context)
   {
-    _unbornBabyList.observe(this, (babyList) {
+    _unbornBabyList.observe(this, (babyList) async {
       prind("PregnHomeVm.init() _unbornBabyList.observe() babyList= $babyList");
       if(babyList?.isNotEmpty == true) {
         if(_selectedProfile.value == null) {
           final cred = ProfileCredential.fromBabyOverlay(babyList!.first);
           init(profile: cred);
+        } else {
+          final profile = _selectedProfile.value!;
+          final babyIndex = babyList!.indexWhere((e) => e.id == profile.id);
+          prind("PregHomeVm _selectedProfile.observe babyIndex= $babyIndex");
+          if(babyIndex >= 0) {
+            _selectedUnbornBabyOverlay.value = _unbornBabyList.value![babyIndex];
+          } else {
+            _selectedUnbornBabyOverlay.value = null;
+          }
         }
       }
     }, tag: toString());
@@ -61,6 +70,8 @@ class KehamilankuHomeVm extends AsyncAuthVm {
           selectedIndex.value = unbornIndex;
           //selectedBabyData = _unbornBabyList.value![unbornIndex];
         } else {
+          throw "Something error. `ageOverview.value` is not null, but there's no selected baby";
+          /*
           final bornIndex = _bornBabyList.value!.indexWhere((e) => e.id == babyCred.id);
           prind("BabyHomeVm bornIndex= $bornIndex");
           if(bornIndex < 0) {
@@ -68,6 +79,7 @@ class KehamilankuHomeVm extends AsyncAuthVm {
           }
           //selectedBabyData = _bornBabyList.value![bornIndex];
           selectedIndex.value = bornIndex +(_unbornBabyList.value?.length ?? 0);
+           */
         }
         prind("BabyHomeVm selectedIndex= $selectedIndex");
       }
@@ -75,12 +87,15 @@ class KehamilankuHomeVm extends AsyncAuthVm {
     _selectedProfile.observe(this, (profile) async {
       prind("PregHomeVm _selectedProfile.observe profile?.id= ${profile?.id}");
       if(profile != null) {
+        final profile = _selectedProfile.value!;
         final babyIndex = _unbornBabyList.value?.indexWhere((e) => e.id == profile.id);
+        prind("PregHomeVm _selectedProfile.observe babyIndex= $babyIndex");
         if(babyIndex != null && babyIndex >= 0) {
           _selectedUnbornBabyOverlay.value = _unbornBabyList.value![babyIndex];
         } else {
           _selectedUnbornBabyOverlay.value = null;
         }
+
         final isBornRes = await _isBabyBorn(profile.id);
         if(isBornRes is Success<bool>) {
           _isBorn.value = isBornRes.data;
