@@ -37,18 +37,21 @@ class LoginFormVm extends FormVmGroup {
     final email = respMap[Const.KEY_EMAIL] as String;
     final password = respMap[Const.KEY_PSWD] as String;
 
+    var token = Const.DUMMY_FCM_TOKEN;
     final fcmTokenRes = await _getFcmToken();
     if(fcmTokenRes is Success<String>) {
-      final token = fcmTokenRes.data;
-      final data = LoginData(email: email, password: password, fcmToken: token,);
-      final res = await _login(data);
-      prind("LoginVm.doSubmitJob() res= $res");
-      if(res is Success<SessionData>) {
-        return Success("ok");
-      }
-      return (res as Fail<SessionData>).copy();
+      token = fcmTokenRes.data;
+    } else {
+      prinw("Can't get FCM token from local, register with dummy one.");
     }
-    return fcmTokenRes as Fail<String>;
+    final data = LoginData(email: email, password: password, fcmToken: token,);
+    final res = await _login(data);
+    prind("LoginVm.doSubmitJob() res= $res");
+    if(res is Success<SessionData>) {
+      return Success("ok");
+    }
+    return (res as Fail<SessionData>).copy();
+    //return fcmTokenRes as Fail<String>;
   }
 
   @override

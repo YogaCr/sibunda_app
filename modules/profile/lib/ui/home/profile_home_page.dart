@@ -9,6 +9,7 @@ import 'package:common/util/ui.dart';
 import 'package:core/ui/base/async_view_model_observer.dart';
 import 'package:core/ui/base/live_data_observer.dart';
 import 'package:core/ui/base/view_model.dart';
+import 'package:core/util/_consoles.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:profile/config/profile_routes.dart';
@@ -31,39 +32,49 @@ class ProfileHomePage extends StatelessWidget {
     });
 
     return TopBarTitleAndBackFrame(
-      withTopOffset: true,
+      //withTopOffset: true,
       title: "Profile",
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 10),
-        child: BelowTopBarScrollContentArea(slivers: [
-          SliverList(
-            delegate: SliverChildListDelegate.fixed([
-              LiveDataObserver<Profile>(
-                liveData: vm.profile,
-                builder: (ctx, data) => data != null
-                    ? Column(
-                      children: [
-                        ItemProfilePic.fromData(data),
-                        _MenuList(profile: data),
-                        AsyncVmObserver<ProfileHomeVm, bool>(
-                          liveDataGetter: (vm) => vm.onLogout,
-                          preAsyncBuilder: (ctx, key) {
-                            if(key == ProfileHomeVm.logoutKey) {
-                              return CircularProgressIndicator();
-                            }
-                          },
-                          builder: (ctx, data) => TxtBtn(
-                            Strings.logout,
-                            isHollow: true,
-                            onTap: () => vm.logout(),
-                          ),
-                        ),
-                      ],
-                    ) : defaultLoading(),
+        child: Column(
+          children: [
+            LiveDataObserver<Profile>(
+              liveData: vm.profile,
+              builder: (ctx, data) => data != null ? Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  ItemProfilePic.fromData(data),
+                  _MenuList(profile: data),
+                ],
+              ) : defaultLoading(),
+            ),
+            Expanded(
+              child: Align(
+                alignment: Alignment.bottomCenter,
+                child: LiveDataObserver(
+                  liveData: vm.profile,
+                  builder: (ctx, data) => data != null ? AsyncVmObserver<ProfileHomeVm, bool>(
+                    liveDataGetter: (vm) => vm.onLogout,
+                    preAsyncBuilder: (ctx, key) {
+                      if(key == ProfileHomeVm.logoutKey) {
+                        return CircularProgressIndicator();
+                      }
+                    },
+                    builder: (ctx, data) => Container(
+                      margin: EdgeInsets.only(bottom: 10),
+                      child: TxtBtn(
+                        Strings.logout,
+                        isHollow: true,
+                        onTap: () => vm.logout(),
+                      ),
+                    ),
+                  ) : defaultEmptyWidget(),
+                ),
               ),
-            ]),
-          ),
-        ]),
+            ),
+          ],
+        ),
+          //BelowTopBarScrollContentArea(slivers: [SliverList(delegate: SliverChildListDelegate.fixed([]),),]),
       ),
     );
   }
@@ -88,16 +99,23 @@ class _MenuList extends StatelessWidget {
             title: Text("Edit Profil"),
           ),
         ),
-        InkWell(
-          child: ListTile(
-            leading: SibImages.get("ic_wallet.png", package: "common"),
-            title: Text("Edit Data Profil"),
-          ),
-        ),
-        InkWell(
-          child: ListTile(
-            leading: SibImages.get("ic_verified.png", package: "common"),
-            title: Text("Pusat Bantuan"),
+        Visibility(
+          visible: false,
+          child: Column(
+            children: [
+              InkWell(
+                child: ListTile(
+                  leading: SibImages.get("ic_wallet.png", package: "common"),
+                  title: Text("Edit Data Profil"),
+                ),
+              ),
+              InkWell(
+                child: ListTile(
+                  leading: SibImages.get("ic_verified.png", package: "common"),
+                  title: Text("Pusat Bantuan"),
+                ),
+              ),
+            ],
           ),
         ),
       ],

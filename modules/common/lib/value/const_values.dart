@@ -21,7 +21,8 @@ class Const {
 
   static const CLIENT_SECRET = "5xnEHfLiRiyyRGrez97iEmqzTB4h48IWr5DnHEuO";
   static const CLIENT_ID = 2;
-  static const FCM_TOKEN = "ini token";
+  static const DUMMY_FCM_TOKEN = "ini token";
+  static const FCM_WEB_PUSH_CERT = "BBw65v7mrdPsVwq8YRZWrDVtBkmG0hVyAt7B8zmeK1iFvMBDaSsDaydTiX0LEFMTgFYQTR1kYbOfcXIbZqRzKAA";
 
   static const GENDER_MALE = "M";
   static const GENDER_FEMALE = "F";

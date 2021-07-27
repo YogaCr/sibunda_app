@@ -28,7 +28,7 @@ class SignUpData extends Equatable {
   LoginData toLoginData() => LoginData(
     email: email,
     password: password,
-    fcmToken: Const.FCM_TOKEN,
+    fcmToken: Const.DUMMY_FCM_TOKEN,
   );
 }
 

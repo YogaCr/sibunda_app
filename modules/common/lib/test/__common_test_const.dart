@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:common/arch/di/config_di.dart';
 import 'package:common/arch/di/data_source_di.dart';
 import 'package:common/arch/di/db_di.dart';
@@ -14,6 +16,7 @@ import 'package:core/util/_consoles.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:intl/date_symbol_data_local.dart';
 
 class ConfigUtil {
@@ -35,16 +38,39 @@ class ConfigUtil {
       await Prefs.loadPrefs();
       await TestUtil.initDb();
       await TestUtil.initDummySeesion(); // Just to pretend;
-
     }
   }
 
   static initFcm() async {
+    if(kIsWeb) return;
     try {
-      await Firebase.initializeApp();
+      prind("ConfigUtil initFcm() AWAL");
+
+      if(!kIsWeb) {
+        final option = kIsWeb ? FirebaseOptions(
+          apiKey: "AIzaSyAKJ6eEXLl039Ta9les33IBpTUMpAuv0KA",
+          authDomain: "sibunda-718c1.firebaseapp.com",
+          projectId: "sibunda-718c1",
+          storageBucket: "sibunda-718c1.appspot.com",
+          messagingSenderId: "1028319191005",
+          appId: "1:1028319191005:web:bbb0ef6172d768dd0c6034",
+          measurementId: "G-46NGZ9YS6J",
+        ) : null;
+        await Firebase.initializeApp(options: option);
+      }
+
+      prind("ConfigUtil initFcm() AWAL 2");
       FirebaseMessaging.onBackgroundMessage(fcmBackgroundHandler);
+      prind("ConfigUtil initFcm() AWAL 3");
       final saveFcmToken = UseCaseDi.saveFcmToken;
-      final token = await FirebaseMessaging.instance.getToken();
+      prind("ConfigUtil initFcm() AWAL 4");
+      final vapidKey = kIsWeb ? Const.FCM_WEB_PUSH_CERT : null;
+      FirebaseMessaging.instance.getToken(vapidKey: vapidKey,)
+          .then(prind)
+          .catchError((e) => prine(e));
+      prind("ConfigUtil initFcm() sblum await token");
+      final token = await FirebaseMessaging.instance.getToken(vapidKey: vapidKey,);
+      prind("ConfigUtil initFcm() token = $token");
       if(token != null) {
         prind("`ConfigUtil.initFcm()` fcm token = $token");
         final res = await saveFcmToken(token);
@@ -60,6 +86,7 @@ class ConfigUtil {
       } else {
         prine("Can't get FCM token from remote");
       }
+      prind("ConfigUtil initFcm() AKHIR");
       FirebaseMessaging.instance.onTokenRefresh.listen((refreshToken) {
         prind("FCM token is refreshed, token = $refreshToken");
         saveFcmToken(refreshToken);
