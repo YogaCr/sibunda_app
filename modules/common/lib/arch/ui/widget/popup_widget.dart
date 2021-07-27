@@ -104,45 +104,49 @@ class PopupImgPicker extends StatelessWidget {
     } : null;
 
     return Material(
-      child: Container(
-        color: black_trans_most2,
-        alignment: Alignment.center,
-        child: Flexible(
-          child: Container(
-            margin: EdgeInsets.all(20),
-            constraints: BoxConstraints(
-              maxHeight: 200,
-            ),
-            decoration: BoxDecoration(
-              color: white,
-              borderRadius: BorderRadius.circular(15),
-            ),
-            padding: EdgeInsets.all(20),
-            child: Row(
-              //direction: Axis.horizontal,
-              //spacing: 10,
-              //runSpacing: 10,
-              children: [
-                Expanded(
-                  child: _PopupImgPickerPanel(
-                    icon: Icons.add_photo_alternate_outlined,
-                    text: Strings.pick_img_gallery,
-                    onClick: pickImg(ImageSource.gallery),
+      color: Colors.transparent,
+      child: GestureDetector(
+        onTap: () => backPage(context),
+        child: Container(
+          color: black_trans_most2,
+          alignment: Alignment.center,
+          child: Flexible(
+            child: Container(
+              margin: EdgeInsets.all(20),
+              constraints: BoxConstraints(
+                maxHeight: 200,
+              ),
+              decoration: BoxDecoration(
+                color: white,
+                borderRadius: BorderRadius.circular(15),
+              ),
+              padding: EdgeInsets.all(20),
+              child: Row(
+                //direction: Axis.horizontal,
+                //spacing: 10,
+                //runSpacing: 10,
+                children: [
+                  Expanded(
+                    child: _PopupImgPickerPanel(
+                      icon: Icons.add_photo_alternate_outlined,
+                      text: Strings.pick_img_gallery,
+                      onClick: pickImg(ImageSource.gallery),
+                    ),
                   ),
-                ),
-                SizedBox(width: 15,),
-                Expanded(
-                  child: _PopupImgPickerPanel(
-                    icon: Icons.add_a_photo_outlined,
-                    text: Strings.pick_img_camera,
-                    onClick: pickImg(ImageSource.camera),
+                  SizedBox(width: 15,),
+                  Expanded(
+                    child: _PopupImgPickerPanel(
+                      icon: Icons.add_a_photo_outlined,
+                      text: Strings.pick_img_camera,
+                      onClick: pickImg(ImageSource.camera),
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
-      ),
+      )
     );
   }
 }
