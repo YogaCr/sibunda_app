@@ -113,7 +113,7 @@ class KehamilankuHomePage extends StatelessWidget {
               vm..unbornBabyList.observeOnce((babyList) {
                 if(babyList?.isNotEmpty == true) {
                   final babyCred = ProfileCredential.fromBabyOverlay(babyList!.last);
-                  prind("PregHomePage add fetus babyCred= $babyCred vm.selectedProfile.value= ${vm.selectedProfile.value}");
+                  //prind("PregHomePage add fetus babyCred= $babyCred vm.selectedProfile.value= ${vm.selectedProfile.value}");
                   vm.init(profile: babyCred);
                 }
               }, immediatelyGet: false)

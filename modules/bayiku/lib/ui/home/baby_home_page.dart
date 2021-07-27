@@ -20,6 +20,7 @@ import 'package:core/ui/base/async_view_model_observer.dart';
 import 'package:core/ui/base/live_data.dart';
 import 'package:core/ui/base/live_data_observer.dart';
 import 'package:core/ui/base/view_model.dart';
+import 'package:core/util/_consoles.dart';
 import 'package:flutter/cupertino.dart';
 
 class BabyHomePage extends StatelessWidget {
@@ -96,10 +97,12 @@ class BabyHomePage extends StatelessWidget {
               GlobalRoutes.home_childFormPage,
               builderArgs: GlobalRoutes.makeHomeChildFormPageData(),
             );
+            prind("Baby add isSaved= $isSaved");
             if(isSaved == true) {
               vm..bornBabyList.observeOnce((babyList) {
                 if(babyList?.isNotEmpty == true) {
                   final babyCred = ProfileCredential.fromBabyOverlay(babyList!.last);
+                  //prind("Baby add last babyCred= $babyCred");
                   vm.initHome(babyCredential: babyCred);
                 }
               }, immediatelyGet: false)

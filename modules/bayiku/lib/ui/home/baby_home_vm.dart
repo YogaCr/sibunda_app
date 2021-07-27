@@ -92,6 +92,7 @@ class BabyHomeVm extends AsyncAuthVm {
     required ProfileCredential babyCredential,
     bool forceLoad = false,
   }) {
+    //prind("BabyHomeVm.initHome() forceLoad= $forceLoad babyCredential= $babyCredential _babyCredential= $_babyCredential");
     if(!forceLoad && babyCredential == _babyCredential.value) return;
     _babyCredential.value = babyCredential;
     _ageOverview.value = null;

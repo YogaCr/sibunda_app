@@ -143,6 +143,7 @@ class MyBabyRepoImpl with MyBabyRepo {
   BabyHomeResponse? _homeResponse;
   int _currentMonth = -1;
   int _currentYearId = -1;
+  String? _currentBabyNik;
   BabyFormWarningResponse? _formWarningResponse;
 
   @override
@@ -152,7 +153,9 @@ class MyBabyRepoImpl with MyBabyRepo {
     final idRes = await _accountLocalSrc.getChildId(babyNik);
     if(idRes is Success<int>) {
       final id = idRes.data;
-      final homeResponse = _homeResponse ??= await _api.getHomeData();
+      final homeResponse = babyNik != _currentBabyNik || _homeResponse == null
+          ? _homeResponse = await _api.getHomeData()
+          : _homeResponse!;
       final child = homeResponse.data.firstWhereOrNull((e) => e.id == id);
       if(child == null) {
         final msg = "Can't find `child` with `id` '$id' with `babyNik` '$babyNik'";
