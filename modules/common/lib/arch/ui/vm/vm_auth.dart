@@ -37,7 +37,8 @@ abstract class AsyncAuthVm extends AsyncVm with AuthVm {
         if(isAutoToastOnFail &&
             (skippedKeyToToastOnFail == null || !skippedKeyToToastOnFail!.contains(key))
         ) {
-          Fluttertoast.showToast(msg: msg, backgroundColor: red, toastLength: Toast.LENGTH_LONG);
+          showToast(msg: msg, bgColor: red, textColor: white, len: Toast.LENGTH_LONG);
+          //Fluttertoast.showToast(msg: msg, backgroundColor: red, toastLength: Toast.LENGTH_LONG);
         }
         //showSnackBar(_context!, failure.toString());
       },);
@@ -77,7 +78,8 @@ abstract class FormAuthVm extends FormVm with AuthVm {
         if(isAutoToastOnFail &&
             (skippedKeyToToastOnFail == null || !skippedKeyToToastOnFail!.contains(key))
         ) {
-          Fluttertoast.showToast(msg: msg, backgroundColor: red, toastLength: Toast.LENGTH_LONG);
+          showToast(msg: msg, bgColor: red, textColor: white, len: Toast.LENGTH_LONG);
+          //Fluttertoast.showToast(msg: msg, backgroundColor: red, toastLength: Toast.LENGTH_LONG);
         }
         //showSnackBar(_context!, failure.toString());
       },);
@@ -115,7 +117,8 @@ abstract class FormAuthVmGroup extends FormVmGroup with AuthVm {
         if(isAutoToastOnFail &&
             (skippedKeyToToastOnFail == null || !skippedKeyToToastOnFail!.contains(key))
         ) {
-          Fluttertoast.showToast(msg: msg, backgroundColor: red, toastLength: Toast.LENGTH_LONG);
+          showToast(msg: msg, bgColor: red, textColor: white, len: Toast.LENGTH_LONG);
+          //Fluttertoast.showToast(msg: msg, backgroundColor: red, toastLength: Toast.LENGTH_LONG);
         }
         //showSnackBar(_context!, failure.toString());
       },);

@@ -113,7 +113,7 @@ class ItemHomeFormMenu extends StatelessWidget {
 
     Widget descTxt = Text(
       desc,
-      style: SibTextStyles.size_min_2,
+      style: SibTextStyles.size_min_1,
     );
 
     if(category != null && category!.isNotEmpty) {
@@ -124,7 +124,7 @@ class ItemHomeFormMenu extends StatelessWidget {
             alignment: Alignment.bottomRight,
             child: Text(
               category!,
-              style: SibTextStyles.size_min_2_colorPrimary,
+              style: SibTextStyles.size_min_1_colorPrimary,
             ),
           ),
         ],
@@ -285,7 +285,7 @@ class ItemHomeGraphMenu extends StatelessWidget {
     final txtChild = Expanded(
       child: Text(
         text,
-        style: SibTextStyles.size_min_2_bold_colorPrimary,
+        style: SibTextStyles.size_min_1_bold_colorPrimary,
         textAlign: TextAlign.start,
       ),
     );

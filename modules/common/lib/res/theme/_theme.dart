@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:common/config/_config.dart';
 import 'package:common/config/manifest.dart';
 import 'package:flutter/material.dart';
 
@@ -62,7 +63,7 @@ class MaterialTheme {
     this.colorOnSurface = black,
     this.colorError = red,
     this.colorOnError = white,
-    this.fontFamily = fontFamily_nunito,
+    this.fontFamily = fontFamily_nunito_common,
     this.brightness = Brightness.light,
     this.textBodyColor = Colors.black,
     this.textDisplayColor = Colors.black,
@@ -72,6 +73,7 @@ class MaterialTheme {
     textTheme: TextTheme().apply(
       bodyColor: textBodyColor,
       displayColor: textDisplayColor,
+      fontFamily: fontFamily,
     ),
     brightness: brightness,
     primaryColor: colorPrimary,

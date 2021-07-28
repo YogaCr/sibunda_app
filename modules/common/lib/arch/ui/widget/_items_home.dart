@@ -60,7 +60,7 @@ class ItemDashboardStatus extends StatelessWidget {
     return ClipRRect(
       borderRadius: BorderRadius.all(Radius.circular(_cornerRadius)),
       child: Container(
-        width: _size_8,
+        width: _size_9,
         height: _size_4,
         color: bgColor,
         child: Padding(
@@ -71,8 +71,9 @@ class ItemDashboardStatus extends StatelessWidget {
               Expanded(
                 child: Text(
                   content,
-                  style: SibTextStyles.size_min_2,
-                  overflow: TextOverflow.clip,
+                  style: SibTextStyles.size_min_1,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 4,
                 ),
               ),
             ],
@@ -122,7 +123,7 @@ class ItemDashboardMenu extends StatelessWidget {
               margin: EdgeInsets.only(top: 10,),
               child: Text(
                 text,
-                style: SibTextStyles.size_min_2_colorPrimary,
+                style: SibTextStyles.size_min_1_bold_colorPrimary,
               ),
             ),
           ],
@@ -194,12 +195,12 @@ class ItemNotif extends StatelessWidget {
                       children: [
                         Text(
                           title,
-                          style: SibTextStyles.size_min_1,
+                          style: SibTextStyles.size_0,
                         ),
                         SizedBox(height: 10,),
                         Text(
                           content,
-                          style: SibTextStyles.size_min_2,
+                          style: SibTextStyles.size_min_1,
                         ),
                         SizedBox(height: 5,),
                       ],
@@ -231,7 +232,7 @@ class ItemNotif extends StatelessWidget {
                   margin: EdgeInsets.only(bottom: 10),
                   child: Text(
                     timestamp,
-                    style: SibTextStyles.size_min_3_colorPrimary,
+                    style: SibTextStyles.size_min_2_colorPrimary,
                   ),
                 ),
               ),
@@ -292,13 +293,13 @@ class ItemMessage extends StatelessWidget {
                 children: [
                   Text(
                     title,
-                    style: SibTextStyles.size_min_1,
+                    style: SibTextStyles.size_0,
                     textAlign: TextAlign.center,
                   ),
                   SizedBox(height: 10,),
                   Text(
                     content,
-                    style: SibTextStyles.size_min_2,
+                    style: SibTextStyles.size_min_1,
                     textAlign: TextAlign.center,
                   ),
                   SizedBox(height: 10,),

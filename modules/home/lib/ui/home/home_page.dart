@@ -169,7 +169,7 @@ class HomePage extends StatelessWidget {
                       margin: EdgeInsets.only(top: 15),
                       child: Text(
                         "Lihat Selengkapnya",
-                        style: SibTextStyles.size_min_2_colorPrimary,
+                        style: SibTextStyles.size_min_1_colorPrimary,
                       ),
                     ),
                   ),
