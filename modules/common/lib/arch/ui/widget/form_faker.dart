@@ -60,7 +60,10 @@ class _FormFakerState extends State<FormFaker> {
     }
     void fillForm() {
       //prind("fillForm() interceptor!.formControllers = ${interceptor!.formControllers}");
+      //if(!interceptor!.isEnabled) return;
+
       for(final formInterceptor in interceptor!.formControllers) {
+        //if(!formInterceptor.isEnabled) continue;
         for(final fieldInterceptor in formInterceptor.fieldControllers.values) {
           final fieldData = fieldInterceptor.fieldData;
           prind("fillForm() fieldData = $fieldData fieldInterceptor.isEnabled = ${fieldInterceptor.isEnabled}");

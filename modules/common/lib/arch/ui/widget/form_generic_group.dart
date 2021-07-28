@@ -103,6 +103,7 @@ class _FormGenericGroupState
         final interceptor = this.interceptor?[key];
         if(interceptor != null) {
           vm.isFormEnabled.observe(interceptor, (isEnable) {
+            //prind("FormFaker vm.isFormEnabled.observe isEnable= $isEnable");
             interceptor.isEnabled = isEnable == true;
           });
         }

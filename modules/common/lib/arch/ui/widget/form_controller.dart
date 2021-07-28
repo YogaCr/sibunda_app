@@ -3,14 +3,17 @@ import 'package:common/arch/ui/model/form_data.dart';
 import 'package:core/ui/base/live_data.dart';
 import 'package:core/util/_consoles.dart';
 
+/// Controls each field
 class FieldController<T> extends MutableLiveData<T> {
   final FormUiData fieldData;
   FieldController(this.fieldData);
   bool isEnabled = true;
 }
 
+/// Controls each group
 class FormInterceptor extends MutableLiveData<FormUiGroupData> {
   final Map<String, FieldController> fieldControllers = {};
+  //bool isEnabled = true;
 
   @override
   void notifyObservers({FormUiGroupData? oldValue, FormUiGroupData? newValue}) {
@@ -57,8 +60,10 @@ class FormInterceptor extends MutableLiveData<FormUiGroupData> {
   }
 }
 
+/// Controls all groups
 class FormGroupInterceptor extends MutableLiveData<List<LiveData<FormUiGroupData>>> {
   final List<FormInterceptor> formControllers = [];
+  //bool isEnabled = true;
 
   @override
   void notifyObservers({List<LiveData<FormUiGroupData>>? oldValue, List<LiveData<FormUiGroupData>>? newValue}) {
