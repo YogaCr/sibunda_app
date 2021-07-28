@@ -113,6 +113,11 @@ flutter:
           weight: 300
         - asset: assets/fonts/Nunito-Bold.ttf
           weight: 500
+    - family: FiraCode
+      fonts:
+        - asset: assets/fonts/FiraCode-Regular.ttf
+        - asset: assets/fonts/FiraCode-Bold.ttf
+          weight: 500
   #   - family: Trajan Pro
   #     fonts:
   #       - asset: fonts/TrajanPro.ttf

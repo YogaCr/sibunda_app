@@ -4,6 +4,9 @@ part of '_theme.dart';
 const fontFamily_nunito = "Nunito";
 const fontFamily_nunito_common = "packages/${GlobalRoutes.common}/Nunito";
 
+const fontFamily_firaCode = "FiraCode";
+const fontFamily_firaCode_common = "packages/${GlobalRoutes.common}/FiraCode";
+
 const textStyle_default = TextStyle(
   fontFamily:  fontFamily_nunito,
 );

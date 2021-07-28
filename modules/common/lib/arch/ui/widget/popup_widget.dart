@@ -11,11 +11,13 @@ import 'package:common/config/manifest.dart';
 import 'package:common/res/string/_string.dart';
 import 'package:common/res/theme/_theme.dart';
 import 'package:common/util/navigations.dart';
+import 'package:common/util/ui.dart';
 import 'package:core/domain/model/result.dart';
 import 'package:core/ui/base/live_data.dart';
 import 'package:core/ui/base/live_data_observer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 
 class PopupSuccess extends StatelessWidget {
@@ -199,6 +201,127 @@ class _PopupImgPickerPanel extends StatelessWidget {
 
 
 
+class PopupError extends StatelessWidget {
+  final Object error;
+
+  PopupError({
+    required this.error,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    /*
+    final screenSize = MediaQuery.of(context).size;
+    final width = screenSize.width * 85 / 100;
+    final height = screenSize.height * 40 / 100;
+    final iconSize = screenSize.width * 30 / 100;
+     */
+
+    final errorStr = error.toString();
+    final stackStr = StackTrace.current.toString();
+
+    return Material(
+        color: Colors.transparent,
+        child: GestureDetector(
+          onTap: () => backPage(context),
+          child: Container(
+            color: black_trans_most2,
+            alignment: Alignment.center,
+            child: Flexible(
+              child: GestureDetector(
+                onTap: () {
+                  //Just to cancel parent on tap.
+                },
+                child: Container(
+                  margin: EdgeInsets.all(20),
+                  decoration: BoxDecoration(
+                    color: red,
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  padding: EdgeInsets.all(20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Material(
+                        color: Colors.transparent,
+                        child: InkResponse(
+                          onTap: () => backPage(context),
+                          child: Icon(
+                            Icons.clear,
+                            color: white,
+                            size: 30,
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 10,),
+                      Expanded(
+                        child: SingleChildScrollView(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                errorStr,
+                                style: TextStyle(
+                                  fontFamily: fontFamily_firaCode_common,
+                                  color: yellow,
+                                ),
+                              ),
+                              SizedBox(height: 20,),
+                              Text(
+                                "Stack Trace:",
+                                style: TextStyle(
+                                  fontFamily: fontFamily_firaCode_common,
+                                  color: yellow,
+                                ),
+                              ),
+                              SizedBox(height: 10,),
+                              Padding(
+                                padding: EdgeInsets.only(left: 10,),
+                                child: Text(
+                                  stackStr,
+                                  style: TextStyle(
+                                    fontFamily: fontFamily_firaCode_common,
+                                    color: yellow,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 10,),
+                      Material(
+                        color: Colors.transparent,
+                        child: InkResponse(
+                          onTap: () {
+                            final data = ClipboardData(
+                              text: "$errorStr\n\n"
+                                  "Stack Trace:\n"
+                                  "$stackStr",
+                            );
+                            Clipboard.setData(data);
+                            showToast(msg: "Error copied!");
+                          },
+                          child: Icon(
+                            Icons.copy,
+                            color: white,
+                            size: 32,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+        )
+    );
+  }
+}
+
+
+
 class IdStringPopup extends StatelessWidget {
   final List<IdStringModel> dataList;
   final void Function(int id, String name)? onItemClick;
@@ -243,6 +366,14 @@ Future<XFile?> showPickImgPopup({
       backPage(ctx, result: imgFile);
     },
   ),
+);
+
+Future<void> showErrorPopup({
+  required BuildContext context,
+  required Object error,
+}) => showDialog(
+  context: context,
+  builder: (ctx) => PopupError(error: error,),
 );
 
 

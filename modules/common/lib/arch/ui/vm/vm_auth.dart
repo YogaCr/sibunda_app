@@ -1,5 +1,6 @@
 import 'package:common/arch/di/config_di.dart';
 import 'package:common/arch/di/usecase_di.dart';
+import 'package:common/arch/ui/widget/popup_widget.dart';
 import 'package:common/res/string/_string.dart';
 import 'package:common/res/theme/_theme.dart';
 import 'package:common/test/__common_test_const.dart';
@@ -38,6 +39,7 @@ abstract class AsyncAuthVm extends AsyncVm with AuthVm {
             (skippedKeyToToastOnFail == null || !skippedKeyToToastOnFail!.contains(key))
         ) {
           showToast(msg: msg, bgColor: red, textColor: white, len: Toast.LENGTH_LONG);
+          showErrorPopup(context: _context!, error: msg);
           //Fluttertoast.showToast(msg: msg, backgroundColor: red, toastLength: Toast.LENGTH_LONG);
         }
         //showSnackBar(_context!, failure.toString());
@@ -79,6 +81,7 @@ abstract class FormAuthVm extends FormVm with AuthVm {
             (skippedKeyToToastOnFail == null || !skippedKeyToToastOnFail!.contains(key))
         ) {
           showToast(msg: msg, bgColor: red, textColor: white, len: Toast.LENGTH_LONG);
+          showErrorPopup(context: _context!, error: msg);
           //Fluttertoast.showToast(msg: msg, backgroundColor: red, toastLength: Toast.LENGTH_LONG);
         }
         //showSnackBar(_context!, failure.toString());
@@ -118,6 +121,7 @@ abstract class FormAuthVmGroup extends FormVmGroup with AuthVm {
             (skippedKeyToToastOnFail == null || !skippedKeyToToastOnFail!.contains(key))
         ) {
           showToast(msg: msg, bgColor: red, textColor: white, len: Toast.LENGTH_LONG);
+          showErrorPopup(context: _context!, error: msg);
           //Fluttertoast.showToast(msg: msg, backgroundColor: red, toastLength: Toast.LENGTH_LONG);
         }
         //showSnackBar(_context!, failure.toString());
