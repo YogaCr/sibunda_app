@@ -125,7 +125,7 @@ class GetBabyCheckFormAnswerImpl with GetBabyCheckFormAnswer {
       final res3 = await _repo.saveBabyCheckUpId(babyId: babyId, month: month, id: data.id!);
       if(res3 is Fail<bool>) {
         final errMsg = res3.error?.toString();
-        if(errMsg?.contains("2067") != true) {
+        if(!(errMsg?.contains("2067") == true || errMsg?.contains("UNIQUE") == true)) {
           final msg = "Can't save baby form check up id to local";
           prine(msg);
           return Fail(msg: msg, error: res3.error);

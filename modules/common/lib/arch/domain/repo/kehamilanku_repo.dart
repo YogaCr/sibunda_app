@@ -157,7 +157,7 @@ class PregnancyRepoImpl with PregnancyRepo {
       if(locRes is! Success<bool>) {
         final errMsg = (locRes as Fail<bool>).error?.toString();
         //prind("getPregnancyCheck() errMsg?.contains('2067') = ${errMsg?.contains("2067")}");
-        if(errMsg?.contains("2067") != true) {
+        if(!(errMsg?.contains("2067") == true || errMsg?.contains("UNIQUE") == true)) {
           final msg = "Can't save pregnancy check up id to local, locRes = $locRes";
           prine(msg);
           return Fail(msg: msg);

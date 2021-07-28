@@ -135,18 +135,21 @@ class _WeeklyFormPage extends StatelessWidget {
                 if(currentWeek != week) return defaultLoading();
                 final bool? isBorn = dataList[1];
                 final bool? isBabySizeInit = dataList[2];
+                prind("MultiLiveDataObserver dataList= $dataList isBabySizeInit= $isBabySizeInit");
 
-                final babySize = LiveDataObserver<PregnancyBabySize>(
-                  liveData: vm.pregnancyBabySize,
+                final babySize = MultiLiveDataObserver<dynamic>(
+                  liveDataList: [vm.pregnancyBabySize, vm.isBabySizeInit],
                   //distinctUntilChanged: false,
                   predicate: (data) => currentWeek == week,
                   //initBuilder: (ctx) => defaultLoading(),
                   //immediatelyBuildState: currentWeek == week && isBabySizeInit == true,
-                  builder: (ctx, babySize) {
+                  builder: (ctx, dataList2) {
+                    final PregnancyBabySize? babySize = dataList2[0];
+                    final bool? isBabySizeInit = dataList2[1];
                     //if(currentWeek != wee)
                     //final bool? isBabySizeInit = dataList2[1];
                     //final PregnancyBabySize? babySize = dataList2[0];
-                    prind("LiveDataObserver<PregnancyBabySize> dataList= $dataList week = $week");
+                    prind("LiveDataObserver<PregnancyBabySize> dataList= $dataList isBabySizeInit= $isBabySizeInit babySize= $babySize week = $week");
                     if(babySize == null) {
                       if(isBabySizeInit == true) return defaultEmptyWidget();
                       return defaultLoading();

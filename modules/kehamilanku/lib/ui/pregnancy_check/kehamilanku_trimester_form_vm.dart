@@ -103,6 +103,7 @@ class KehamilankuCheckFormVm extends FormAuthVmGroup {
     }, tag: toString());
     _pregnancyBabySize.observe(this, (data) {
       _isBabySizeInit.value = true;
+      prind("PregnFormVm _pregnancyBabySize.observe data= $data _isBabySizeInit= $_isBabySizeInit");
     }, tag: toString());
     isFormReady.observe(this, (isReady) {
       if(isReady == true) {
@@ -424,22 +425,25 @@ class KehamilankuCheckFormVm extends FormAuthVmGroup {
     if(!forceLoad && _pregnancyBabySize.value != null) return;
     startJob(getPregnancyBabySizeKey, (isActive) async {
       //final motherNik = VarDi.motherNik.getOrElse();
+      /*
       final checkUpId = tryGetResultValue(await _getPregnancyCheckUpId(pregnancyId.id, week));
       prind("KehamilankuCheckFormVm.getPregnancyBabySize() pregnancyId = $pregnancyId checkUpId = $checkUpId");
       if(checkUpId != null) {
-        final checkUpWeek = PregnancyCheckUpWeek(
-          pregnancyId: pregnancyId.id,
-          trimesterId: currentTrimesterId,
-          week: week,
-        );
-        _getPregnancyBabySize(checkUpWeek).then((value) {
-          prind("KehamilankuCheckFormVm.getPregnancyBabySize() _getPregnancyBabySize(checkUpId).then week = $week value = $value");
-          if(value is Success<PregnancyBabySize?>) {
-            prind("KehamilankuCheckFormVm.getPregnancyBabySize() MASUK _getPregnancyBabySize(checkUpId).then week = $week value = $value");
-            final data = value.data;
-            _pregnancyBabySize.value = data;
-          }
-        });
+      } else {
+        _pregnancyBabySize.value = null;
+      }
+       */
+      final checkUpWeek = PregnancyCheckUpWeek(
+        pregnancyId: pregnancyId.id,
+        trimesterId: currentTrimesterId,
+        week: week,
+      );
+      final res = await _getPregnancyBabySize(checkUpWeek);
+      prind("KehamilankuCheckFormVm.getPregnancyBabySize() _getPregnancyBabySize(checkUpId).then week = $week res= $res");
+      if(res is Success<PregnancyBabySize?>) {
+        prind("KehamilankuCheckFormVm.getPregnancyBabySize() MASUK _getPregnancyBabySize(checkUpId).then week = $week res= $res");
+        final data = res.data;
+        _pregnancyBabySize.value = data;
       } else {
         _pregnancyBabySize.value = null;
       }
