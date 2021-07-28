@@ -128,14 +128,14 @@ class _WeeklyFormPage extends StatelessWidget {
       slivers: [
         SliverList(
           delegate: SliverChildListDelegate.fixed([
-            MultiLiveDataObserver<dynamic>(
-              liveDataList: [vm.currentWeek, vm.isBabyBorn, /*vm.isBabySizeInit*/],
-              builder: (ctx, dataList) {
-                final int? currentWeek = dataList[0];
+            LiveDataObserver<int>(
+              liveData: vm.currentWeek, //, vm.isBabyBorn, /*vm.isBabySizeInit*/],
+              builder: (ctx, currentWeek) {
+                //final int? currentWeek = dataList[0];
                 if(currentWeek != week) return defaultLoading();
-                final bool? isBorn = dataList[1];
+                //final bool? isBorn = dataList[1];
                 //final bool? isBabySizeInit = dataList[2];
-                prind("MultiLiveDataObserver dataList= $dataList"); //isBabySizeInit= $isBabySizeInit
+                //prind("MultiLiveDataObserver dataList= $dataList"); //isBabySizeInit= $isBabySizeInit
 
                 final babySize = MultiLiveDataObserver<dynamic>(
                   liveDataList: [vm.pregnancyBabySize, vm.isBabySizeInit,],
@@ -149,7 +149,7 @@ class _WeeklyFormPage extends StatelessWidget {
                     //if(currentWeek != wee)
                     //final bool? isBabySizeInit = dataList2[1];
                     //final PregnancyBabySize? babySize = dataList2[0];
-                    prind("LiveDataObserver<PregnancyBabySize> dataList= $dataList isBabySizeInit= $isBabySizeInit babySize= $babySize week = $week");
+                    prind("LiveDataObserver<PregnancyBabySize> isBabySizeInit= $isBabySizeInit babySize= $babySize week = $week");
                     if(babySize == null) {
                       if(isBabySizeInit == true) return defaultEmptyWidget();
                       return defaultLoading();
@@ -198,92 +198,112 @@ class _WeeklyFormPage extends StatelessWidget {
                   },
                 );
 
-                final children = <Widget>[
-                  babySize, analysis,
-                ];
-
+                /*
                 if(isLastTrimester
                     && isBorn != true
                     && vm.pregnancyBabySize.value != null
                 ) {
-                  children.insert(1, Padding(
-                    padding: EdgeInsets.only(top: 10,),
-                    child: TxtBtn(
-                      "Konfirmasi Kelahiran Bayi",
-                      onTap: () async {
-                        final isSaved = await KehamilankuRoutes.obj.goToExternalRouteBuilder(
-                          context,
-                          GlobalRoutes.home_childFormPage,
-                          builderArgs: GlobalRoutes.makeHomeChildFormPageData(
-                            pregnancyId: vm.pregnancyId,
-                          ),
+                  children.insert(1, );
+                }
+                 */
+
+                final form = FormVmGroupObserver<KehamilankuCheckFormVm>(
+                  vm: vm,
+                  interceptor: interceptor,
+                  predicate: () {
+                    //prind("_WeeklyFormPage FormVmGroupObserver<KehamilankuCheckFormVm>.predicate() week = $week vm.currentWeek.value = ${vm.currentWeek.value}");
+                    return vm.currentWeek.value == week;
+                    //|| vm.currentWeek.value == week;
+                    //|| vm.currentWeek.value == week -1
+                    //|| vm.currentWeek.value == week +1;
+                  },
+                  onPreSubmit: (ctx, canProceed) => canProceed == true
+                      ? showSnackBar(ctx, "Submitting", backgroundColor: Colors.green)
+                      : showSnackBar(ctx, "There still invalid fields"),
+                  onSubmit: (ctx, success) async {
+                    if(success) {
+                      final res = await showDialog<bool>(context: context, builder: (ctx) => AlertDialog(
+                        content: PopupSuccess(
+                          msg: "Data Pemeriksaan Bunda berhasil disimpan",
+                          actionMsg: "Lihat hasil pemeriksaan",
+                          onActionClick: () => Navigator.pop(context, true), //() => backPage(context, backStep: 2),
+                        ),
+                      )); //showSnackBar(ctx, "Berhasil bro", backgroundColor: Colors.green)
+                      if(res == true) {
+                        vm.getMotherFormWarningStatus(week: week, forceLoad: true,);
+                        vm.getPregnancyBabySize(week: week, forceLoad: true,);
+                        scrollControl.animateTo( 0,
+                          duration: Duration(seconds: 1),
+                          curve: Curves.easeOut,
                         );
-                        if(isSaved == true) {
-                          KehamilankuRoutes.obj.goToModule(
-                            context,
-                            GlobalRoutes.bayiku,
-                            args: { Const.KEY_LOAD_LAST: true },
-                            replaceCurrent: true,
-                          );
-                        }
-                      },
-                    ),
+                      }
+                    } else {
+                      showSnackBar(ctx, Strings.form_submission_fail);
+                    }
+                  },
+                  pickerIconBuilder: (group, key, data) {
+                    switch(key) {
+                      case Const.KEY_BABY_GENDER:
+                        return GenderPickerIcon(
+                          onItemSelected: (gender) async {
+                            data.value = gender?.name[0];
+                          },
+                        );
+                    }
+                  },
+                  submitBtnMargin: EdgeInsets.only(bottom: 20, top: 10,),
+                  submitBtnBuilder: (ctx, canProceed) => TxtBtn(
+                    Strings.submit_check_form,
+                    color: canProceed == true ? pink_300 : grey,
+                  ),
+                );
+
+                final children = <Widget>[
+                  babySize, analysis, form,
+                ];
+
+                prind("MultiLiveDataObserver isLastTrimester= $isLastTrimester vm.pregnancyBabySize= ${vm.pregnancyBabySize}"); //isBabySizeInit= $isBabySizeInit
+                if(isLastTrimester) {
+                  children.insert(1, MultiLiveDataObserver<dynamic>(
+                    liveDataList: [vm.isBabyBorn, vm.pregnancyCheck,],
+                    builder: (ctx, dataList) {
+                      prind("confirmBorn isLastTrimester= $isLastTrimester dataList= $dataList");
+                      final bool? isBabyBorn = dataList[0];
+                      final pregnancyCheck = dataList[1];
+                      if(isBabyBorn == true || pregnancyCheck == null) {
+                        return defaultEmptyWidget();
+                      }
+                      return Padding(
+                        padding: EdgeInsets.only(top: 10,),
+                        child: TxtBtn(
+                          "Konfirmasi Kelahiran Bayi",
+                          onTap: () async {
+                            final isSaved = await KehamilankuRoutes.obj.goToExternalRouteBuilder(
+                              context,
+                              GlobalRoutes.home_childFormPage,
+                              builderArgs: GlobalRoutes.makeHomeChildFormPageData(
+                                pregnancyId: vm.pregnancyId,
+                              ),
+                            );
+                            if(isSaved == true) {
+                              KehamilankuRoutes.obj.goToModule(
+                                context,
+                                GlobalRoutes.bayiku,
+                                args: { Const.KEY_LOAD_LAST: true },
+                                replaceCurrent: true,
+                              );
+                            }
+                          },
+                        ),
+                      );
+                    },
                   ),);
                 }
+
                 return Column(
                   children: children,
                 );
               },
-            ),
-            FormVmGroupObserver<KehamilankuCheckFormVm>(
-              vm: vm,
-              interceptor: interceptor,
-              predicate: () {
-                //prind("_WeeklyFormPage FormVmGroupObserver<KehamilankuCheckFormVm>.predicate() week = $week vm.currentWeek.value = ${vm.currentWeek.value}");
-                return vm.currentWeek.value == week;
-                //|| vm.currentWeek.value == week;
-                //|| vm.currentWeek.value == week -1
-                //|| vm.currentWeek.value == week +1;
-              },
-              onPreSubmit: (ctx, canProceed) => canProceed == true
-                  ? showSnackBar(ctx, "Submitting", backgroundColor: Colors.green)
-                  : showSnackBar(ctx, "There still invalid fields"),
-              onSubmit: (ctx, success) async {
-                if(success) {
-                  final res = await showDialog<bool>(context: context, builder: (ctx) => AlertDialog(
-                    content: PopupSuccess(
-                      msg: "Data Pemeriksaan Bunda berhasil disimpan",
-                      actionMsg: "Lihat hasil pemeriksaan",
-                      onActionClick: () => Navigator.pop(context, true), //() => backPage(context, backStep: 2),
-                    ),
-                  )); //showSnackBar(ctx, "Berhasil bro", backgroundColor: Colors.green)
-                  if(res == true) {
-                    vm.getMotherFormWarningStatus(week: week, forceLoad: true,);
-                    vm.getPregnancyBabySize(week: week, forceLoad: true,);
-                    scrollControl.animateTo( 0,
-                      duration: Duration(seconds: 1),
-                      curve: Curves.easeOut,
-                    );
-                  }
-                } else {
-                  showSnackBar(ctx, Strings.form_submission_fail);
-                }
-              },
-              pickerIconBuilder: (group, key, data) {
-                switch(key) {
-                  case Const.KEY_BABY_GENDER:
-                    return GenderPickerIcon(
-                      onItemSelected: (gender) async {
-                        data.value = gender?.name[0];
-                      },
-                    );
-                }
-              },
-              submitBtnMargin: EdgeInsets.only(bottom: 20, top: 10,),
-              submitBtnBuilder: (ctx, canProceed) => TxtBtn(
-                Strings.submit_check_form,
-                color: canProceed == true ? pink_300 : grey,
-              ),
             ),
           ]),
         ),

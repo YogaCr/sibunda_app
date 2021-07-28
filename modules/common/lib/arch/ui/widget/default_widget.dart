@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 
 import 'img_widget.dart';
 
-Widget defaultEmptyWidget() => SizedBox();
+Widget defaultEmptyWidget() => SizedBox.shrink();
 
 Widget defaultImg({
   double? width = 80,

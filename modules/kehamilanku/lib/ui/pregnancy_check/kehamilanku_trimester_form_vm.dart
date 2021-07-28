@@ -343,6 +343,7 @@ class KehamilankuCheckFormVm extends FormAuthVmGroup {
     if(!forceLoad && _currentWeek.value == week) return;
     _currentWeek.value = week;
 
+    _pregnancyCheck.value = null;
     _formWarningStatusList.value = null;
     _pregnancyBabySize.value = null;
     _isBabySizeInit.value = false;
