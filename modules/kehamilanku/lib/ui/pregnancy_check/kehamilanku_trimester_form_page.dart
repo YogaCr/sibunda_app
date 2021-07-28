@@ -129,16 +129,16 @@ class _WeeklyFormPage extends StatelessWidget {
         SliverList(
           delegate: SliverChildListDelegate.fixed([
             MultiLiveDataObserver<dynamic>(
-              liveDataList: [vm.currentWeek, vm.isBabyBorn, vm.isBabySizeInit],
+              liveDataList: [vm.currentWeek, vm.isBabyBorn, /*vm.isBabySizeInit*/],
               builder: (ctx, dataList) {
                 final int? currentWeek = dataList[0];
                 if(currentWeek != week) return defaultLoading();
                 final bool? isBorn = dataList[1];
-                final bool? isBabySizeInit = dataList[2];
-                prind("MultiLiveDataObserver dataList= $dataList isBabySizeInit= $isBabySizeInit");
+                //final bool? isBabySizeInit = dataList[2];
+                prind("MultiLiveDataObserver dataList= $dataList"); //isBabySizeInit= $isBabySizeInit
 
                 final babySize = MultiLiveDataObserver<dynamic>(
-                  liveDataList: [vm.pregnancyBabySize, vm.isBabySizeInit],
+                  liveDataList: [vm.pregnancyBabySize, vm.isBabySizeInit,],
                   //distinctUntilChanged: false,
                   predicate: (data) => currentWeek == week,
                   //initBuilder: (ctx) => defaultLoading(),
