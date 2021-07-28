@@ -120,6 +120,9 @@ class Strings {
   static const special_note =  "Catatan Khusus";
   static const img_usg =  "Foto USG";
 
+  static const baby_chart_x_label_format =  "{value} bulan";
+  static const pregnancy_chart_x_label_format =  "{value} minggu";
+
   static const immunization_date = "Tanggal Imunisasi";
   static const immunization_place = "Tempat Imunisasi";
   static const responsible_name = "Nama Penanggungjawab";
@@ -143,6 +146,7 @@ class Strings {
   static const year =  "Tahun";
   static const month =  "Bulan";
   static const day =  "Hari";
+  static const week =  "Minggu";
 
   static const my_pregnancy =  "Kehamilanku";
   static const my_baby =  "Bayiku";

@@ -355,10 +355,10 @@ class ItemFormWarningStatus extends StatelessWidget {
     final txtList = <Widget>[
       Text(
         desc,
-        style: SibTextStyles.size_min_2,
+        style: SibTextStyles.size_min_1,
       ),
     ];
-    if(warningTxt != null) {
+    if(false && warningTxt != null) { //This is cuz the warning hasn't yet open to any external link.
       txtList.add(
         Text(
           warningTxt!,

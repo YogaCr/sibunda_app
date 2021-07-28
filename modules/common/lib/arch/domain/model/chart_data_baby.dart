@@ -1,7 +1,10 @@
 
 import 'package:common/arch/domain/usecase/chart_usecase.dart';
 import 'package:common/res/theme/_theme.dart';
+import 'package:common/util/map_util.dart';
+import 'package:common/util/type_util.dart';
 import 'package:common/value/const_values.dart';
+import 'package:core/domain/model/range.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
@@ -60,7 +63,8 @@ class BabyWeightChartData {
     required this.observed,
   });
 
-  factory BabyWeightChartData.fromJson(Map<String, dynamic> map) => _$BabyWeightChartDataFromJson(map);
+  factory BabyWeightChartData.fromJson(Map<String, dynamic> map) =>
+      _$BabyWeightChartDataFromJson(parseAllValuesToNum(map));
   Map<String, dynamic> toJson() => _$BabyWeightChartDataToJson(this);
 }
 
@@ -98,7 +102,8 @@ class BabyKmsChartData {
     required this.observed,
   });
 
-  factory BabyKmsChartData.fromJson(Map<String, dynamic> map) => _$BabyKmsChartDataFromJson(map);
+  factory BabyKmsChartData.fromJson(Map<String, dynamic> map) =>
+      _$BabyKmsChartDataFromJson(parseAllValuesToNum(map));
   Map<String, dynamic> toJson() => _$BabyKmsChartDataToJson(this);
 }
 
@@ -135,7 +140,8 @@ class BabyLenChartData {
     required this.observed,
   });
 
-  factory BabyLenChartData.fromJson(Map<String, dynamic> map) => _$BabyLenChartDataFromJson(map);
+  factory BabyLenChartData.fromJson(Map<String, dynamic> map) =>
+      _$BabyLenChartDataFromJson(parseAllValuesToNum(map));
   Map<String, dynamic> toJson() => _$BabyLenChartDataToJson(this);
 }
 
@@ -172,7 +178,8 @@ class BabyWeightToLenChartData {
     required this.observed,
   });
 
-  factory BabyWeightToLenChartData.fromJson(Map<String, dynamic> map) => _$BabyWeightToLenChartDataFromJson(map);
+  factory BabyWeightToLenChartData.fromJson(Map<String, dynamic> map) =>
+      _$BabyWeightToLenChartDataFromJson(parseAllValuesToNum(map));
   Map<String, dynamic> toJson() => _$BabyWeightToLenChartDataToJson(this);
 }
 
@@ -209,7 +216,8 @@ class BabyHeadCircumChartData {
     required this.observed,
   });
 
-  factory BabyHeadCircumChartData.fromJson(Map<String, dynamic> map) => _$BabyHeadCircumChartDataFromJson(map);
+  factory BabyHeadCircumChartData.fromJson(Map<String, dynamic> map) =>
+      _$BabyHeadCircumChartDataFromJson(parseAllValuesToNum(map));
   Map<String, dynamic> toJson() => _$BabyHeadCircumChartDataToJson(this);
 }
 
@@ -246,7 +254,8 @@ class BabyBmiChartData {
     required this.observed,
   });
 
-  factory BabyBmiChartData.fromJson(Map<String, dynamic> map) => _$BabyBmiChartDataFromJson(map);
+  factory BabyBmiChartData.fromJson(Map<String, dynamic> map) =>
+      _$BabyBmiChartDataFromJson(parseAllValuesToNum(map));
   Map<String, dynamic> toJson() => _$BabyBmiChartDataToJson(this);
 }
 
@@ -277,7 +286,8 @@ class BabyDevChartData {
       return "M"; // Meragukan
   }
 
-  factory BabyDevChartData.fromJson(Map<String, dynamic> map) => _$BabyDevChartDataFromJson(map);
+  factory BabyDevChartData.fromJson(Map<String, dynamic> map) =>
+      _$BabyDevChartDataFromJson(parseAllValuesToNum(map));
   Map<String, dynamic> toJson() => _$BabyDevChartDataToJson(this);
 }
 
@@ -285,8 +295,78 @@ class BabyDevChartData {
 class BabyChartLineSeries {
   BabyChartLineSeries._();
 
-  static const _markerSetting = MarkerSettings(isVisible: true);
+  static final labelList_sd = ["-3 SD", "-2 SD", "-1 SD", "Median", "+1 SD", "+2 SD", "+3 SD", "Input"];
+  static final keyList_sd = ["minus_3_sd", "minus_2_sd", "minus_1_sd", "median", "plus_1_sd", "plus_2_sd", "plus_3_sd", "input"];
+  static final List<num Function(dynamic, int)> getterList_sd = [
+        (data, i) => min1To0(data.min3sd),
+        (data, i) => min1To0(data.min2sd),
+        (data, i) => min1To0(data.min1sd),
+        (data, i) => min1To0(data.medianSd),
+        (data, i) => min1To0(data.plus1sd),
+        (data, i) => min1To0(data.plus2sd),
+        (data, i) => min1To0(data.plus3sd),
+        (data, i) => min1To0(data.observed),
+  ];
+  static num min1To0(num i) => i != -1 ? i : 0;
 
+  static List<LineSeries<T, num>> getBabyGenericSeries_sd<T>(List<T> dataList, {
+    num Function(T, int)? xGetter,
+  }) {
+    return Charts.getLineSeriesList(
+      dataList: dataList,
+      labels: labelList_sd,
+      yGetters: getterList_sd,
+      xGetter: xGetter ?? (data, i) => (data as dynamic).age,
+    );
+    /*
+    final lastComparedLimit = labelList_sd.length-1;
+    return List.generate(labelList_sd.length, (i) {
+      final label = labelList_sd[i];
+      //final key = keyList_sd[i];
+      final getter = getterList_sd[i];
+      final isObserved = i >= lastComparedLimit;
+
+      return LineSeries(
+        dataLabelSettings: Charts.dataLabelSetting,
+        markerSettings: Charts.getMarkerSetting(i, isObserved: isObserved),
+        name: label,
+        animationDuration: Charts.getAnimDuration(isObserved: isObserved),
+        width: Charts.getChartLineWidth(isObserved: isObserved),
+        dataSource: dataList,
+        xValueMapper: (data, i) => (data as dynamic).age,
+        yValueMapper: getter,
+      );
+    });
+     */
+  }
+
+  static List<LineSeries<BabyWeightChartData, num>> getBabyWeightSeries(List<BabyWeightChartData> dataList) => getBabyGenericSeries_sd(dataList);
+  static List<LineSeries<BabyKmsChartData, num>> getBabyKmsSeries(List<BabyKmsChartData> dataList) => getBabyGenericSeries_sd(dataList);
+  static List<LineSeries<BabyLenChartData, num>> getBabyLenSeries(List<BabyLenChartData> dataList) => getBabyGenericSeries_sd(dataList);
+  static List<LineSeries<BabyWeightToLenChartData, num>> getBabyWeightToLenSeries(List<BabyWeightToLenChartData> dataList) => getBabyGenericSeries_sd(
+    dataList,
+    xGetter: (data, i) => data.len,
+  );
+  static List<LineSeries<BabyHeadCircumChartData, num>> getBabyHeadCircumSeries(List<BabyHeadCircumChartData> dataList) => getBabyGenericSeries_sd(dataList);
+  static List<LineSeries<BabyBmiChartData, num>> getBabyBmiSeries(List<BabyBmiChartData> dataList) => getBabyGenericSeries_sd(dataList);
+
+
+  static List<LineSeries<BabyDevChartData, num>> getBabyDevSeries(List<BabyDevChartData> dataList) {
+    final labels = ["Meragukan", "Normal", "Input 'Ya'"];
+    final getters = <num Function(BabyDevChartData, int)>[
+      (data, i) => data.doubtedLimit,
+      (data, i) => data.normalLimit,
+      (data, i) => data.observed,
+    ];
+    return Charts.getLineSeriesList(
+      dataList: dataList,
+      labels: labels,
+      yGetters: getters,
+      xGetter: (data, i) => data.age,
+    );
+  }
+
+/*
   static List<LineSeries<BabyWeightChartData, num>> getBabyWeightSeries(List<BabyWeightChartData> dataList) => [
     LineSeries(
 			markerSettings: _markerSetting,
@@ -766,4 +846,5 @@ class BabyChartLineSeries {
       yValueMapper: (data, i) => data.observed,
     ),
   ];
+ */
 }

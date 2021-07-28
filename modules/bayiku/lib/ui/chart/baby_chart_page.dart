@@ -5,6 +5,7 @@ import 'package:common/arch/ui/adapter/form_warning_adp.dart';
 import 'package:common/arch/ui/page/secondary_frames.dart';
 import 'package:common/arch/ui/widget/_basic_widget.dart';
 import 'package:common/arch/ui/widget/_items_chart.dart';
+import 'package:common/res/string/_string.dart';
 import 'package:common/util/data_mapper.dart';
 import 'package:common/util/navigations.dart';
 import 'package:common/value/const_values.dart';
@@ -43,6 +44,8 @@ class BabyChartPage extends StatelessWidget {
                     ? ItemLineChart(
                         title: chartTitle,
                         yLabelFormat: getBabyChartTypeYLabelFormat(chartType),
+                        xLabelFormat: Strings.baby_chart_x_label_format,
+                        xAxisTitle: Strings.month,
                         seriesList: data,
                     ): defaultLoading(),
               ),

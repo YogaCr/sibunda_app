@@ -2,6 +2,7 @@
 import 'package:common/arch/domain/model/img_data.dart';
 import 'package:common/res/string/_string.dart';
 import 'package:common/res/theme/_theme.dart';
+import 'package:common/util/map_util.dart';
 import 'package:common/value/const_values.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -46,7 +47,8 @@ class MotherTfuChartData {
     required this.observed,
   });
 
-  factory MotherTfuChartData.fromJson(Map<String, dynamic> map) => _$MotherTfuChartDataFromJson(map);
+  factory MotherTfuChartData.fromJson(Map<String, dynamic> map) => 
+      _$MotherTfuChartDataFromJson(parseAllValuesToNum(map));
   Map<String, dynamic> toJson() => _$MotherTfuChartDataToJson(this);
 }
 
@@ -67,7 +69,8 @@ class MotherDjjChartData {
     required this.observed,
   });
 
-  factory MotherDjjChartData.fromJson(Map<String, dynamic> map) => _$MotherDjjChartDataFromJson(map);
+  factory MotherDjjChartData.fromJson(Map<String, dynamic> map) => 
+      _$MotherDjjChartDataFromJson(parseAllValuesToNum(map));
   Map<String, dynamic> toJson() => _$MotherDjjChartDataToJson(this);
 }
 
@@ -85,7 +88,8 @@ class MotherMapChartData {
     required this.observed,
   });
 
-  factory MotherMapChartData.fromJson(Map<String, dynamic> map) => _$MotherMapChartDataFromJson(map);
+  factory MotherMapChartData.fromJson(Map<String, dynamic> map) => 
+      _$MotherMapChartDataFromJson(parseAllValuesToNum(map));
   Map<String, dynamic> toJson() => _$MotherMapChartDataToJson(this);
 }
 
@@ -109,7 +113,8 @@ class MotherBmiChartData {
     required this.observed,
   });
 
-  factory MotherBmiChartData.fromJson(Map<String, dynamic> map) => _$MotherBmiChartDataFromJson(map);
+  factory MotherBmiChartData.fromJson(Map<String, dynamic> map) => 
+      _$MotherBmiChartDataFromJson(parseAllValuesToNum(map));
   Map<String, dynamic> toJson() => _$MotherBmiChartDataToJson(this);
 }
 
@@ -118,6 +123,69 @@ class MotherChartLineSeries {
 
   static const _markerSetting = MarkerSettings(isVisible: true);
 
+
+  static List<LineSeries<MotherTfuChartData, num>> getMotherTfuSeries(List<MotherTfuChartData> dataList) {
+    final labels = [Strings.lower_limit, Strings.normal_limit, Strings.upper_limit, Strings.input];
+    final getters = <num Function(MotherTfuChartData, int)>[
+      (data, i) => data.lowerLimit,
+      (data, i) => data.normalLimit,
+      (data, i) => data.upperLimit,
+      (data, i) => data.observed,
+    ];
+    return Charts.getLineSeriesList(
+      dataList: dataList,
+      labels: labels,
+      yGetters: getters,
+      xGetter: (data, i) => data.week,
+    );
+  }
+
+  static List<LineSeries<MotherDjjChartData, num>> getMotherDjjSeries(List<MotherDjjChartData> dataList) {
+    final labels = [Strings.lower_limit, Strings.upper_limit, Strings.input];
+    final getters = <num Function(MotherDjjChartData, int)>[
+          (data, i) => data.lowerLimit,
+          (data, i) => data.upperLimit,
+          (data, i) => data.observed,
+    ];
+    return Charts.getLineSeriesList(
+      dataList: dataList,
+      labels: labels,
+      yGetters: getters,
+      xGetter: (data, i) => data.week,
+    );
+  }
+
+  static List<LineSeries<MotherMapChartData, num>> getMotherMapSeries(List<MotherMapChartData> dataList) {
+    final labels = [Strings.lower_limit, Strings.input];
+    final getters = <num Function(MotherMapChartData, int)>[
+          (data, i) => data.lowerLimit,
+          (data, i) => data.observed,
+    ];
+    return Charts.getLineSeriesList(
+      dataList: dataList,
+      labels: labels,
+      yGetters: getters,
+      xGetter: (data, i) => data.week,
+    );
+  }
+
+  static List<LineSeries<MotherBmiChartData, num>> getMotherBmiSeries(List<MotherBmiChartData> dataList) {
+    final labels = [Strings.normal_limit, Strings.over_limit, Strings.obese_limit, Strings.input,];
+    final getters = <num Function(MotherBmiChartData, int)>[
+          (data, i) => data.normalLimit,
+          (data, i) => data.overLimit,
+          (data, i) => data.obeseLimit,
+          (data, i) => data.observed,
+    ];
+    return Charts.getLineSeriesList(
+      dataList: dataList,
+      labels: labels,
+      yGetters: getters,
+      xGetter: (data, i) => data.week,
+    );
+  }
+
+/*
   static List<LineSeries<MotherTfuChartData, num>> getMotherTfuSeries(List<MotherTfuChartData> dataList) => [
     LineSeries(
       markerSettings: _markerSetting,
@@ -246,4 +314,5 @@ class MotherChartLineSeries {
       yValueMapper: (data, i) => data.observed,
     ),
   ];
+ */
 }

@@ -30,7 +30,7 @@ class FormWarningStatus {
     img: dummyImg,
   );
   factory FormWarningStatus.fromChartResponse(ChartWarningResponse response) => FormWarningStatus(
-    desc: response.desc ?? "<null>",
+    desc: response.desc ?? "<ada_warning_tapi_desc_nya_null>",
     action: "Cari faskes terdekat",
     isSafe: response.is_normal,
     img: dummyImg,

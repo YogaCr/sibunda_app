@@ -77,18 +77,23 @@ class ItemLineChart extends StatelessWidget {
   final String title;
   final List<LineSeries<dynamic, num>> seriesList;
   final String yLabelFormat;
+  final String xLabelFormat;
+  final String? xAxisTitle;
   //final List<FormWarningStatus> warningList;
 
   ItemLineChart({
     required this.title,
     required this.seriesList,
     this.yLabelFormat = "{value}",
+    this.xLabelFormat = "{value}",
+    this.xAxisTitle,
     //required this.warningList,
   });
 
   @override
   Widget build(BuildContext context) {
     final chart = SfCartesianChart(
+
       title: ChartTitle(
         text: title,
         textStyle: SibTextStyles.size_min_1_bold,
@@ -102,8 +107,13 @@ class ItemLineChart extends StatelessWidget {
         overflowMode: LegendItemOverflowMode.wrap,
       ),
       primaryXAxis: NumericAxis(
+        title: xAxisTitle != null ? AxisTitle(
+          text: xAxisTitle,
+          textStyle: TextStyle(fontStyle: FontStyle.italic,),
+        ) : null,
+        labelFormat: xLabelFormat,
         edgeLabelPlacement: EdgeLabelPlacement.shift,
-        interval: 2,
+        //interval: 2,
         majorGridLines: const MajorGridLines(width: 0),
       ),
       primaryYAxis: NumericAxis(
