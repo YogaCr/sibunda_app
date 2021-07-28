@@ -128,11 +128,13 @@ class BabyCheckFormVm extends FormAuthVmGroup {
 
   void initFormDataInMonth({
     required int month,
-    bool forceLoad = false
+    bool forceLoad = false,
   }) {
     //prind("BabyCheckFormVm initFormDataInMonth() month = $month forceLoad = $forceLoad _currentMonth = $_currentMonth");
     if(!forceLoad && _currentMonth.value == month) return;
     _currentMonth.value = month;
+    _devWarningList.value = null;
+    _growthWarningList.value = null;
     init(isOneShot: false);
     isFormReady.observeOnce((isReady) {
       //prind("BabyCheckFormVm initFormDataInMonth() isFormReady.observeOnce isReady= $isReady month = $month forceLoad = $forceLoad _currentMonth = $_currentMonth");
@@ -287,7 +289,7 @@ class BabyCheckFormVm extends FormAuthVmGroup {
         month: _currentMonth.value!,
         babyId: credential.id,
       );
-      //prind("getBabyFormAnswer res = $res _currentMonth = $_currentMonth");
+      prind("getBabyFormAnswer res = $res _currentMonth = $_currentMonth");
       if(res is Success<BabyMonthlyFormBody>) {
         final data = res.data;
         _formAnswer.value = data;

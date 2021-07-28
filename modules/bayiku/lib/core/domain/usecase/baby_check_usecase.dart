@@ -119,6 +119,7 @@ class GetBabyCheckFormAnswerImpl with GetBabyCheckFormAnswer {
     required int month,
   }) async {
     final res = await _repo.getBabyMonthlyCheck(yearId: yearId, month: month);
+    prind("GetBabyCheckFormAnswerImpl babyId= $babyId yearId= $yearId month= $month res= $res");
     if(res is Success<BabyMonthlyFormBody>) {
       final data = res.data;
       final res3 = await _repo.saveBabyCheckUpId(babyId: babyId, month: month, id: data.id!);
@@ -141,10 +142,11 @@ class GetBabyCheckFormAnswerImpl with GetBabyCheckFormAnswer {
         if(babyNik == null) {
           throw "Can't get `babyNik` with `babyId` of '$babyId'";
         }
-       */
       else {
         return Fail(msg: "Can't get baby NIK to save form check up id to local");
       }
+       */
+      //return Success(true);
     }
     return res;
   }
