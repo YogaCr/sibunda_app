@@ -2,6 +2,7 @@ import 'package:common/arch/domain/model/profile_data.dart';
 import 'package:common/arch/ui/page/frames.dart';
 import 'package:common/arch/ui/widget/form_controller.dart';
 import 'package:common/arch/ui/widget/form_faker.dart';
+import 'package:common/arch/ui/widget/form_faker_enabler.dart';
 import 'package:common/config/_config.dart';
 import 'package:common/test/__common_test_const.dart';
 import 'package:common/util/providers.dart';
@@ -72,11 +73,12 @@ class HomeRoutes extends ModuleRoute {
   ));
 
   static final getStartedFormMainPage = SibRoute("GetStartedFormMainPage", GetStartedFormMainPage, (ctx) {
-    final FormGroupInterceptor? interceptor = ConfigUtil.formInterceptor;
+    //final FormGroupInterceptor? interceptor = ConfigUtil.formInterceptor;
     return MainFrame(
-      body: FormFaker(
-        interceptor: interceptor,
-        child: GetStartedFormMainPage(interceptor: interceptor,).inVmProvider([
+      body: FormFakerEnabler(
+        showInDefault: TestUtil.isDummy,
+        //interceptor: interceptor,
+        builder: (ctx, interceptor) => GetStartedFormMainPage(interceptor: interceptor,).inVmProvider([
               (ctx) => HomeVmDi.getStartedFormMainVm,
         ]),
       ),
@@ -144,12 +146,13 @@ class _ChildFormPageRoute {
     LiveData<int>? childCount,
     ProfileCredential? pregnancyId,
   }) {
-    final interceptor = ConfigUtil.formInterceptor;
+    //final interceptor = ConfigUtil.formInterceptor;
     return SibRoute("ChildFormPage", ChildFormPage, (ctx) =>  PlainBackFrame(
       padding: EdgeInsets.all(20),
-      body: FormFaker(
-        interceptor: interceptor,
-        child: ChildFormPage(interceptor: interceptor,).inVmProvider([
+      body: FormFakerEnabler(
+        showInDefault: TestUtil.isDummy,
+        //interceptor: interceptor,
+        builder: (ctx, interceptor) => ChildFormPage(interceptor: interceptor,).inVmProvider([
           (ctx) => HomeVmDi.childFormVm(
             context: ctx,
             childCount: childCount,

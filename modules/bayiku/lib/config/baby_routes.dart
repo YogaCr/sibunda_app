@@ -14,6 +14,7 @@ import 'package:common/arch/ui/model/immunization_data.dart';
 import 'package:common/arch/ui/page/_page.dart';
 import 'package:common/arch/ui/widget/form_controller.dart';
 import 'package:common/arch/ui/widget/form_faker.dart';
+import 'package:common/arch/ui/widget/form_faker_enabler.dart';
 import 'package:common/config/_config.dart';
 import 'package:common/test/__common_test_const.dart';
 import 'package:common/util/providers.dart';
@@ -63,11 +64,11 @@ class _BabyCheckFormPage {
     required ProfileCredential babyCredential,
   }) {
     final route = SibRoute("BabyCheckFormPage", BabyCheckFormPage, (ctx) {
-      final FormGroupInterceptor? interceptor = ConfigUtil.formInterceptor;
+      //final FormGroupInterceptor? interceptor = ConfigUtil.formInterceptor;
       return MainFrame(
-          body: FormFaker(
-            interceptor: interceptor,
-            child: BabyCheckFormPage(interceptor: interceptor,).inVmProvider([
+          body: FormFakerEnabler(
+            showInDefault: TestUtil.isDummy,
+            builder: (ctx, interceptor) => BabyCheckFormPage(interceptor: interceptor,).inVmProvider([
                   (ctx) => BabyVmDi.babyCheckFormVm(
                     context: ctx,
                     babyCredential: babyCredential,
@@ -89,11 +90,12 @@ class _BabyNeonantalServicePageRoute {
     required int checkUpId,
   }) {
     final route = SibRoute("NeonatalServicePage", NeonatalServicePage, (ctx) {
-      final FormGroupInterceptor? interceptor = ConfigUtil.formInterceptor;
+      //final FormGroupInterceptor? interceptor = ConfigUtil.formInterceptor;
       return MainFrame(
-        body: FormFaker(
-          interceptor: interceptor,
-          child: NeonatalServicePage(interceptor: interceptor,).inVmProvider([
+        body: FormFakerEnabler(
+          showInDefault: TestUtil.isDummy,
+          //interceptor: interceptor,
+          builder: (ctx, interceptor) => NeonatalServicePage(interceptor: interceptor,).inVmProvider([
                 (ctx) => BabyVmDi.neonatalServiceVm(
                   context: ctx,
                   checkUpId: checkUpId,

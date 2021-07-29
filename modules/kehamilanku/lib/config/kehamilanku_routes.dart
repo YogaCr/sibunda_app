@@ -5,11 +5,14 @@ import 'package:common/arch/domain/model/profile_data.dart';
 import 'package:common/arch/ui/page/_page.dart';
 import 'package:common/arch/ui/widget/form_controller.dart';
 import 'package:common/arch/ui/widget/form_faker.dart';
+import 'package:common/arch/ui/widget/form_faker_enabler.dart';
 import 'package:common/config/_config.dart';
 import 'package:common/test/__common_test_const.dart';
 import 'package:common/util/providers.dart';
 import 'package:common/util/navigations.dart' as nav_ext;
 import 'package:common/value/const_values.dart';
+import 'package:core/ui/base/live_data.dart';
+import 'package:core/ui/base/live_data_observer.dart';
 import 'package:core/util/_consoles.dart';
 import 'package:flutter/material.dart';
 import 'package:kehamilanku/di/kehamilanku_vm_di.dart';
@@ -64,15 +67,15 @@ class _PregnancyCheckPageRoute {
     required bool isLastTrimester,
   }) {
     final SibRoute _route = SibRoute("PregnancyCheckPage", KehamilankuTrimesterFormPage, (ctx) {
-      final FormGroupInterceptor? interceptor = ConfigUtil.formInterceptor;
+      //final FormGroupInterceptor? interceptor = ConfigUtil.formInterceptor;
       return MainFrame(
-        body: FormFaker(
-          interceptor: interceptor,
-          child: KehamilankuTrimesterFormPage(interceptor: interceptor,).inVmProvider([
+        body: FormFakerEnabler(
+          showInDefault: TestUtil.isDummy,
+          builder: (ctx, interceptor) => KehamilankuTrimesterFormPage(interceptor: interceptor,).inVmProvider([
                 (ctx) => KehamilankuVmDi.checkFormVm(
-                  context: ctx,
-                  pregnancyCred: pregnancyCred,
-                ),
+              context: ctx,
+              pregnancyCred: pregnancyCred,
+            ),
           ]),
         ),
       );

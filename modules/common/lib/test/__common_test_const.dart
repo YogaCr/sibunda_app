@@ -12,6 +12,7 @@ import 'package:common/util/net.dart';
 import 'package:common/util/prefs.dart';
 import 'package:common/value/const_values.dart';
 import 'package:core/domain/model/result.dart';
+import 'package:core/ui/base/live_data.dart';
 import 'package:core/util/_consoles.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -22,8 +23,10 @@ import 'package:intl/date_symbol_data_local.dart';
 class ConfigUtil {
   ConfigUtil._();
 
-  static FormGroupInterceptor? get formInterceptor => TestUtil.isDebug
+  static FormGroupInterceptor? get formInterceptor => TestUtil.isDummy
       ? FormGroupInterceptor() : null;
+
+  //static final MutableLiveData<FormGroupInterceptor> formInterceptorLiveData = MutableLiveData();
 
   static final isAutoToastEnabled = true;
 
@@ -102,8 +105,12 @@ class ConfigUtil {
 class TestUtil {
   TestUtil._();
 
+  //static bool isDebug = true;
   static bool isDebug = true;
-  static bool isDummy = false;
+
+  static bool _isDummy = false;
+  static bool get isDummy => isDebug && _isDummy;
+
   //static bool isTest = false;
   static String testOutputDir = "test/_out/signup_data.txt";
 

@@ -1,15 +1,18 @@
+import 'package:async/async.dart';
 import 'package:common/arch/domain/model/form_data.dart';
 import 'package:common/arch/ui/model/form_data.dart';
 import 'package:common/arch/ui/widget/_basic_widget.dart';
 import 'package:common/arch/ui/widget/form_controller.dart';
+import 'package:common/test/__common_test_const.dart';
+import 'package:common/util/ui.dart';
 import 'package:core/domain/model/range.dart';
+import 'package:core/domain/model/wrapper.dart';
 import 'package:core/util/_consoles.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-
-class FormFaker extends StatefulWidget {
+class FormFaker extends StatelessWidget {
   final Widget child;
   /// This widget shouldn't have any gesture detector or this [FormFaker]
   /// can't detect whether the btn is clicked or not.
@@ -18,6 +21,11 @@ class FormFaker extends StatefulWidget {
   /// returned immediately.
   final FormGroupInterceptor? interceptor;
   final Faker faker;
+  //bool isFakerShown;
+
+  //CancelableOperation? countDownOperation;
+  //int nearTap = 0;
+  //Var<bool>? tapCancellation;
 
   FormFaker({
     required this.child,
@@ -28,36 +36,11 @@ class FormFaker extends StatefulWidget {
   ;
 
   @override
-  State createState() => _FormFakerState(
-    child: child,
-    interceptor: interceptor,
-    btn: btn,
-    faker: faker,
-  );
-}
-
-class _FormFakerState extends State<FormFaker> {
-  final Widget child;
-  /// This widget shouldn't have any gesture detector or this [FormFaker]
-  /// can't detect whether the btn is clicked or not.
-  final Widget? btn;
-  /// If this is null, then [btn] won't be displayed and [child] will be
-  /// returned immediately.
-  final FormGroupInterceptor? interceptor;
-  final Faker faker;
-
-  _FormFakerState({
-    required this.child,
-    required this.interceptor,
-    required this.btn,
-    required this.faker,
-  });
-
-  @override
   Widget build(BuildContext context) {
     if(interceptor == null) {
       return child;
     }
+
     void fillForm() {
       //prind("fillForm() interceptor!.formControllers = ${interceptor!.formControllers}");
       //if(!interceptor!.isEnabled) return;
@@ -111,7 +94,7 @@ class _FormFakerState extends State<FormFaker> {
                       fieldInterceptor.value = timestamp +faker.internet.email();
                       break;
                     case InputType.password:
-                      //prind("FormFaker InputType.password len = $len");
+                    //prind("FormFaker InputType.password len = $len");
                       fieldInterceptor.value = faker.internet.password(
                         length: faker.randomGenerator.integer(30, min: 8),
                       );
@@ -169,3 +152,38 @@ class _FormFakerState extends State<FormFaker> {
   }
  */
 }
+
+
+
+/*
+
+class FormFaker extends StatefulWidget {
+  final Widget child;
+  /// This widget shouldn't have any gesture detector or this [FormFaker]
+  /// can't detect whether the btn is clicked or not.
+  final Widget? btn;
+  /// If this is null, then [btn] won't be displayed and [child] will be
+  /// returned immediately.
+  final FormGroupInterceptor? interceptor;
+  final Faker faker;
+
+  FormFaker({
+    required this.child,
+    this.interceptor,
+    this.btn,
+    Faker? faker,
+  }): this.faker = faker ?? Faker()
+  ;
+
+  @override
+  State createState() => _FormFakerState(
+    child: child,
+    interceptor: interceptor,
+    btn: btn,
+    faker: faker,
+  );
+}
+
+class _FormFakerState extends State<FormFaker> {
+}
+ */

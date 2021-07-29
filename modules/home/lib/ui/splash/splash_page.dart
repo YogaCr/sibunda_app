@@ -96,7 +96,10 @@ class SplashIconPage extends StatelessWidget {
           SizedBox(height: 15,),
           Text(
             Strings.app_name,
-            style: SibTextStyles.size_plus_5.copyWith(color: white),
+            style: SibTextStyles.size_plus_5.copyWith(
+              color: white,
+              fontWeight: FontWeight.bold,
+            ),
           ),
           SizedBox(height: 40,),
           LiveDataObserver<bool>(
