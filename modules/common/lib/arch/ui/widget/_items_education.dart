@@ -46,7 +46,7 @@ class ItemTipsHeaderPanel extends StatelessWidget {
           Align(
             alignment: Alignment.bottomLeft,
             child: Container(
-              constraints: BoxConstraints(maxHeight: parentHeight *60 /100),
+              constraints: BoxConstraints(maxHeight: parentHeight *70 /100),
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [
