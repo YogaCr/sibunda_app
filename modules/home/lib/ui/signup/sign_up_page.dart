@@ -1,5 +1,6 @@
 
 import 'package:common/arch/domain/dummy_data.dart';
+import 'package:common/arch/domain/model/img_data.dart';
 import 'package:common/arch/ui/widget/form_controller.dart';
 import 'package:common/arch/ui/widget/form_generic_vm_group_observer.dart';
 import 'package:common/arch/ui/widget/form_vm_observer.dart';
@@ -7,6 +8,7 @@ import 'package:common/res/theme/_theme.dart';
 import 'package:common/res/string/_string.dart';
 import 'package:common/util/ui.dart';
 import 'package:common/arch/ui/widget/img_pick.dart';
+import 'package:core/ui/base/live_data_observer.dart';
 import 'package:core/ui/base/view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:home/config/home_routes.dart';
@@ -27,17 +29,24 @@ class SignUpPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //final bloc = ViewModelProvider.of<SignUpFormBloc>(context);
-    //final vm = ViewModelProvider.of<SignUpFormVm>(context);
+    final vm = ViewModelProvider.of<SignUpFormVm>(context);
     return Column(
       children: [
         Text(
           Strings.make_new_mother_account,
           style: SibTextStyles.header1,
         ).withMargin(EdgeInsets.only(top: 60)),
-        ImgPick(placeholderImg: dummyImg_profile,)
-            .withMargin(EdgeInsets.only(top: 10, bottom: 20,)),
+        LiveDataObserver<ImgData>(
+          liveData: vm.imgProfile,
+          builder: (ctx, img) => ImgPick(
+            pic: img,
+            onImgPick: (file) => vm.imgProfile.value = file != null
+                ? ImgData.fromXFile(file) : null,
+          ),
+        ).withMargin(EdgeInsets.only(top: 10, bottom: 20,)),
         FormVmGroupObserver<SignUpFormVm>(
           showHeader: false,
+          vm: vm,
           interceptor: interceptor,
           onSubmit: (ctx, success) {
             if(success) {

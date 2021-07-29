@@ -1,3 +1,4 @@
+import 'package:common/config/_config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -9,11 +10,13 @@ class MainFrame extends StatelessWidget {
   final Widget body;
   final PreferredSizeWidget? appBar;
   final EdgeInsetsGeometry? padding;
+  final Color? statusBarColor;
 
   MainFrame({
     required this.body,
     this.appBar,
-    this.padding
+    this.padding,
+    this.statusBarColor,
   });
 
   @override
@@ -21,22 +24,26 @@ class MainFrame extends StatelessWidget {
     appBar: appBar,
     body: body,
     padding: padding,
+    statusBarColor: statusBarColor,
   );
 }
 
 class NoAppBarFrame extends StatelessWidget {
   final Widget body;
   final EdgeInsetsGeometry? padding;
+  final Color? statusBarColor;
 
   NoAppBarFrame({
     required this.body,
-    this.padding
+    this.padding,
+    this.statusBarColor,
   });
 
   @override
   Widget build(BuildContext context) => Frame(
     body: body,
     padding: padding,
+    statusBarColor: statusBarColor,
   );
 }
 
@@ -44,16 +51,19 @@ class PlainBackFrame extends StatelessWidget {
   final Widget body;
   final EdgeInsetsGeometry? padding;
   final GestureTapCallback? onTap;
+  final Color? statusBarColor;
 
   PlainBackFrame({
     required this.body,
     this.padding,
     this.onTap,
+    this.statusBarColor,
   });
 
   @override
   Widget build(BuildContext context) => Frame(
     padding: padding,
+    statusBarColor: statusBarColor,
     body: Stack(
       children: [
         body,
@@ -190,23 +200,45 @@ class Frame extends StatelessWidget {
   final Widget body;
   final PreferredSizeWidget? appBar;
   final EdgeInsetsGeometry? padding;
+  final Color? statusBarColor;
 
   Frame({
     required this.body,
     this.appBar,
     this.padding,
+    this.statusBarColor,
   });
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-    appBar: appBar,
-    body: SafeArea(
+  Widget build(BuildContext context) {
+    final bodyChild = SafeArea(
       child: Container(
         padding: padding,
-        child: body,
+        child: this.body,
       ),
-    ),
-  );
+    );
+
+    final body = appBar != null ? bodyChild : Builder(
+      builder: (ctx) {
+        final topPadding = MediaQuery.of(ctx).padding.top;
+        return Stack(
+          children: [
+            bodyChild,
+            Container(
+              color: statusBarColor ?? Manifest.theme.colorPrimary,
+              height: topPadding,
+              width: double.infinity,
+            ),
+          ],
+        );
+      },
+    );
+
+    return Scaffold(
+      appBar: appBar,
+      body: body,
+    );
+  }
 }
 
 extension FramedWidgetExt on Widget {

@@ -16,7 +16,8 @@ class TxtLink extends StatelessWidget {
     onTap: _onTap,
     child: Text(
       txt,
-      style: _onTap != null ? SibTextStyles.regular_colorPrimary : SibTextStyles.default_,
+      style: _onTap != null
+          ? SibTextStyles.regular_colorPrimary : SibTextStyles.default_,
       textAlign: TextAlign.center,
     ),
   );

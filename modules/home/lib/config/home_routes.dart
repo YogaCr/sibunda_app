@@ -62,10 +62,12 @@ class HomeRoutes extends ModuleRoute {
     await TestUtil.initSession();
   });
   static final introPage = SibRoute("IntroPage", IntroPage, (ctx) => NoAppBarFrame(
+    statusBarColor: Manifest.theme.colorBackground,
     body: IntroPage(),
     padding: EdgeInsets.all(20),
   ));
   static final loginPage = SibRoute("LoginPage", LoginPage, (ctx) =>  MainFrame(
+    statusBarColor: Manifest.theme.colorBackground,
     body: LoginPage().inVmProvider([
       (ctx) => HomeVmDi.loginFormVm,
     ]),
@@ -75,6 +77,7 @@ class HomeRoutes extends ModuleRoute {
   static final getStartedFormMainPage = SibRoute("GetStartedFormMainPage", GetStartedFormMainPage, (ctx) {
     //final FormGroupInterceptor? interceptor = ConfigUtil.formInterceptor;
     return MainFrame(
+      statusBarColor: Manifest.theme.colorBackground,
       body: FormFakerEnabler(
         showInDefault: TestUtil.isDummy,
         //interceptor: interceptor,
@@ -148,6 +151,7 @@ class _ChildFormPageRoute {
   }) {
     //final interceptor = ConfigUtil.formInterceptor;
     return SibRoute("ChildFormPage", ChildFormPage, (ctx) =>  PlainBackFrame(
+      statusBarColor: Manifest.theme.colorBackground,
       padding: EdgeInsets.all(20),
       body: FormFakerEnabler(
         showInDefault: TestUtil.isDummy,
@@ -179,6 +183,7 @@ class _MotherHplPageRoute {
   static final obj = _MotherHplPageRoute._();
 
   SibRoute getRoute() => SibRoute("MotherHplPage", MotherHplPage, (ctx) =>  PlainBackFrame(
+    statusBarColor: Manifest.theme.colorBackground,
     body: MotherHplPage().inVmProvider([
           (ctx) => HomeVmDi.motherHplVm(context: ctx,),
     ]), //.inVmProvider([(ctx) => HomeVmDi.childFormVm,]),

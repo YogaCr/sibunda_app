@@ -42,8 +42,9 @@ mixin AuthRepo {
   
   Future<Result<List<BatchProfileServer>>> getBio();
 }
-
-// Although it's a repo, but I feel the implementation is like use case.
+/*
+ Although it's a repo, but I feel the implementation is like use case.
+ */
 class AuthRepoImpl with AuthRepo {
   final AuthApi _api;
   DataApi? _dataApi;
@@ -92,25 +93,6 @@ class AuthRepoImpl with AuthRepo {
       if(res.code != 200) {
         return Fail(code: res.code, msg: res.message);
       }
-      prind("AuthRepoImpl.signup() _api.register() res= $res");
-/*
-      final userId = res.user.id;
-      final userRole = res.user.groupId;
-      final bioRes = await getDataApi().getBio();
-      if(bioRes.code != 200) {
-        return Fail(code: bioRes.code, msg: bioRes.message);
-      }
-      if(bioRes.data.isEmpty) {
-        throw "`List<BioMotherResponse>` is empty";
-      }
-      final ids = BatchProfileIds.fromResponse(bioRes.data.first);
-
-      final locRes = await _localSrc.saveBatchProfile(
-        userId: userId, userRole: userRole, signup: signup,
-        mother: mother, father: father, children: children,
-        ids: ids,
-      );
- */
       return Success(true);
     } catch(e, stack) {
       prine(e);

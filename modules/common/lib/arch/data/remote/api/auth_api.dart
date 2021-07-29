@@ -18,5 +18,6 @@ abstract class AuthApi {
   Future<LoginResponse> login(@Body() LoginBody body);
   @GET("/logout")
   Future<LogoutResponse> logout(@Header("Authorization") LogoutBody body);
-  //Future<LogoutResponse> logout(LogoutBody body) => logoutWithToken(body.toString());
 }
+
+//Future<LogoutResponse> logout(LogoutBody body) => logoutWithToken(body.toString());

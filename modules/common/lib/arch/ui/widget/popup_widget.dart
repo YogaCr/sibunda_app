@@ -44,8 +44,6 @@ class PopupSuccess extends StatelessWidget {
           maxHeight: height,
         ),
         width: width,
-        //height: height,
-        //constraints: BoxConstraints(minHeight: 400, minWidth: 200,),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.all(Radius.circular(10)),

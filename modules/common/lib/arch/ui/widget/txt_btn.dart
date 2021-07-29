@@ -49,7 +49,9 @@ class TxtBtn extends StatelessWidget {
               padding: padding,
               child: Text(
                 txt,
-                style: textStyle ?? SibTextStyles.default_.copyWith(color: !isHollow ? Manifest.theme.colorOnPrimary : primaryColor),
+                style: textStyle ?? SibTextStyles.default_.copyWith(
+                    color: !isHollow ? Manifest.theme.colorOnPrimary : primaryColor,
+                ),
                 textAlign: TextAlign.center,
               ),
             ),

@@ -1,5 +1,6 @@
 import 'package:common/arch/domain/dummy_form_field_data.dart';
 import 'package:common/arch/domain/model/auth.dart';
+import 'package:common/arch/domain/model/img_data.dart';
 import 'package:common/arch/ui/model/form_data.dart';
 import 'package:common/arch/ui/vm/form_vm.dart';
 import 'package:common/arch/ui/vm/form_vm_group.dart';
@@ -22,8 +23,16 @@ class SignUpFormVm extends FormVmGroup {
 
   LiveData<dynamic>? _pswd_re;
 
+  final imgProfile = MutableLiveData<ImgData>();
+
   @override
-  List<LiveData> get liveDatas => [];
+  List<LiveData> get liveDatas => [imgProfile,];
+
+  @override
+  void dispose() {
+    _pswd_re?.dispose();
+    super.dispose();
+  }
 
 
   @override

@@ -127,25 +127,6 @@ class TxtInputUnderlineState extends State<TxtInputUnderline> {
               borderRadius: BorderRadius.circular(15),
               borderSide: borderSide,
             ),
-    /*
-          suffixIcon: !isTypePassword
-            ? null
-            : InkWell(
-              onTap: _togglePassword,
-              child: Icon(
-                _isPasswordVisible
-                    ? Icons.visibility_off
-                    : Icons.visibility
-              ),
-            ),
-     */
-    /*
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(15),
-            borderSide: borderSide.copyWith(color: Colors.yellow),
-          ),
-          labelStyle: Theme.of(context).textTheme.subtitle2?.copyWith(color: Colors.yellow),
-     */
             errorText: _isTxtValid ? null : errorTextGenerator?.call() ?? errorText,
             labelText: label,
             hintText: hint,

@@ -93,7 +93,6 @@ class ItemLineChart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final chart = SfCartesianChart(
-
       title: ChartTitle(
         text: title,
         textStyle: SibTextStyles.size_min_1_bold,
@@ -113,7 +112,6 @@ class ItemLineChart extends StatelessWidget {
         ) : null,
         labelFormat: xLabelFormat,
         edgeLabelPlacement: EdgeLabelPlacement.shift,
-        //interval: 2,
         majorGridLines: const MajorGridLines(width: 0),
       ),
       primaryYAxis: NumericAxis(

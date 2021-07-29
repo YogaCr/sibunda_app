@@ -75,6 +75,7 @@ class MaterialTheme {
       displayColor: textDisplayColor,
       fontFamily: fontFamily,
     ),
+    //appBarTheme: AppBarTheme(),
     brightness: brightness,
     primaryColor: colorPrimary,
     primaryColorLight: colorPrimary,
