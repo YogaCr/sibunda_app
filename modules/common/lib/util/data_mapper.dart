@@ -1,4 +1,5 @@
 
+import 'package:common/arch/data/remote/model/baby_form_warning_api_model.dart';
 import 'package:common/arch/data/remote/model/kehamilanku_form_warning_api_model.dart';
 import 'package:common/arch/domain/dummy_data.dart';
 import 'package:common/arch/domain/model/chart_data_baby.dart';
@@ -17,39 +18,21 @@ List<FormUiGroupData> formDataListToUi(List<FormGroupData> data) =>
     data.map((e) => FormUiGroupData.fromModel(e)).toList(growable: false);
 
 List<FormWarningStatus> responseToMotherFormWarning(PregnancyCheckFormWarningDataResponse response) {
-  final defaultAction = "Cari faskes terdekat";
-  final defaultImg = dummyImg;
   return [
-    FormWarningStatus(
-      desc: response.weight.desc,
-      action: defaultAction,
-      isSafe: response.weight.isNormal,
-      img: defaultImg,
-    ),
-    FormWarningStatus(
-      desc: response.tfu.desc,
-      action: defaultAction,
-      isSafe: response.tfu.isNormal,
-      img: defaultImg,
-    ),
-    FormWarningStatus(
-      desc: response.djj.desc,
-      action: defaultAction,
-      isSafe: response.djj.isNormal,
-      img: defaultImg,
-    ),
-    FormWarningStatus(
-      desc: response.babyMovement.desc,
-      action: defaultAction,
-      isSafe: response.babyMovement.isNormal,
-      img: defaultImg,
-    ),
-    FormWarningStatus(
-      desc: response.momPulse.desc,
-      action: defaultAction,
-      isSafe: response.momPulse.isNormal,
-      img: defaultImg,
-    ),
+    FormWarningStatus.fromPregnancyResponse(response.weight, i: 0),
+    FormWarningStatus.fromPregnancyResponse(response.djj, i: 1),
+    FormWarningStatus.fromPregnancyResponse(response.tfu, i: 2),
+    FormWarningStatus.fromPregnancyResponse(response.momPulse, i: 3),
+    FormWarningStatus.fromPregnancyResponse(response.babyMovement, i: 4),
+  ];
+}
+List<FormWarningStatus> responseToBabyFormGrowthWarning(BabyFormWarningDataResponse response) {
+  return [
+    FormWarningStatus.fromBabyResponse(response.weight, i: 0),
+    FormWarningStatus.fromBabyResponse(response.len, i: 1),
+    FormWarningStatus.fromBabyResponse(response.weightToLen, i: 2),
+    FormWarningStatus.fromBabyResponse(response.headCircum, i: 3),
+    FormWarningStatus.fromBabyResponse(response.imt, i: 4),
   ];
 }
 

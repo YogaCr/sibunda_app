@@ -104,7 +104,7 @@ class MotherChartRepoImpl with MotherChartRepo {
       if(raw == null) {
         return Success(List.empty());
       }
-      final data = FormWarningStatus.fromChartResponse(raw);
+      final data = FormWarningStatus.fromChartResponse(raw, isMother: true);
       return Success([data]);
     } catch(e, stack) {
       final msg = "Error calling `getMotherTfuChartWarning()`";
@@ -123,7 +123,7 @@ class MotherChartRepoImpl with MotherChartRepo {
       if(raw == null) {
         return Success(List.empty());
       }
-      final data = FormWarningStatus.fromChartResponse(raw);
+      final data = FormWarningStatus.fromChartResponse(raw, isMother: true);
       return Success([data]);
     } catch(e, stack) {
       final msg = "Error calling `getMotherDjjChartWaning()`";
@@ -142,7 +142,7 @@ class MotherChartRepoImpl with MotherChartRepo {
       if(raw == null) {
         return Success(List.empty());
       }
-      final data = FormWarningStatus.fromChartResponse(raw);
+      final data = FormWarningStatus.fromChartResponse(raw, isMother: true);
       return Success([data]);
     } catch(e, stack) {
       final msg = "Error calling `getMotherBmiChartWaning()`";
@@ -161,7 +161,7 @@ class MotherChartRepoImpl with MotherChartRepo {
       if(raw == null) {
         return Success(List.empty());
       }
-      final data = FormWarningStatus.fromChartResponse(raw);
+      final data = FormWarningStatus.fromChartResponse(raw, isMother: true);
       return Success([data]);
     } catch(e, stack) {
       final msg = "Error calling `getMotherMapChartWaning()`";

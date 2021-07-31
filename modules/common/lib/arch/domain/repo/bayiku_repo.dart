@@ -16,6 +16,7 @@ import 'package:common/arch/domain/model/profile_data.dart';
 import 'package:common/arch/ui/model/dummy_ui_data.dart';
 import 'package:common/arch/ui/model/home_graph_menu.dart';
 import 'package:common/res/string/_string.dart';
+import 'package:common/util/data_mapper.dart';
 import 'package:common/value/db_const.dart';
 import 'package:core/domain/model/result.dart';
 import 'package:core/util/_consoles.dart';
@@ -191,13 +192,7 @@ class MyBabyRepoImpl with MyBabyRepo {
         _currentYearId = yearId;
       }
       final data = _formWarningResponse!.data;
-      final list = <FormWarningStatus>[
-        FormWarningStatus.fromBabyResponse(data.weight),
-        FormWarningStatus.fromBabyResponse(data.len),
-        FormWarningStatus.fromBabyResponse(data.weightToLen),
-        FormWarningStatus.fromBabyResponse(data.headCircum),
-        FormWarningStatus.fromBabyResponse(data.imt),
-      ];
+      final list = responseToBabyFormGrowthWarning(data);
       return Success(list);
     } catch(e, stack) {
       prine(stack);

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:common/arch/domain/model/img_data.dart';
 import 'package:common/arch/ui/widget/_basic_widget.dart';
 import 'package:common/arch/ui/widget/img_widget.dart';
+import 'package:common/config/_config.dart';
 import 'package:core/util/_consoles.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
@@ -83,3 +84,9 @@ class SibImages {
     }
   }
 }
+
+ImgData getDefaultAssetImg(String link) => ImgData(
+  link: link,
+  package: GlobalRoutes.common,
+  src: ImgSrc.asset,
+);

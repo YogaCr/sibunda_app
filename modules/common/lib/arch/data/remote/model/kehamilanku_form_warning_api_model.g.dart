@@ -31,15 +31,15 @@ PregnancyCheckFormWarningDataResponse
   return PregnancyCheckFormWarningDataResponse(
     fetusGrowth: PregnancyCheckFetusGrowthWarningResponse.fromJson(
         json['fetus_growth_desc'] as Map<String, dynamic>),
-    weight: PregnancyCheckWeightWarningResponse.fromJson(
+    weight: PregnancyFormWarningDescResponse.fromJson(
         json['weight_desc'] as Map<String, dynamic>),
-    momPulse: PregnancyCheckMomPulseWarningResponse.fromJson(
+    momPulse: PregnancyFormWarningDescResponse.fromJson(
         json['mom_pulse_desc'] as Map<String, dynamic>),
-    tfu: PregnancyCheckTfuWarningResponse.fromJson(
+    tfu: PregnancyFormWarningDescResponse.fromJson(
         json['tfu_desc'] as Map<String, dynamic>),
-    djj: PregnancyCheckDjjWarningResponse.fromJson(
+    djj: PregnancyFormWarningDescResponse.fromJson(
         json['djj_desc'] as Map<String, dynamic>),
-    babyMovement: PregnancyCheckBabyMovementWarningResponse.fromJson(
+    babyMovement: PregnancyFormWarningDescResponse.fromJson(
         json['baby_movement_desc'] as Map<String, dynamic>),
   );
 }
@@ -77,86 +77,17 @@ Map<String, dynamic> _$PregnancyCheckFetusGrowthWarningResponseToJson(
       'img': instance.imgLink,
     };
 
-PregnancyCheckWeightWarningResponse
-    _$PregnancyCheckWeightWarningResponseFromJson(Map<String, dynamic> json) {
-  return PregnancyCheckWeightWarningResponse(
-    type: json['type'] as int,
-    desc: json['desc'] as String,
-    isNormal: json['is_normal'] as bool,
-  );
-}
-
-Map<String, dynamic> _$PregnancyCheckWeightWarningResponseToJson(
-        PregnancyCheckWeightWarningResponse instance) =>
-    <String, dynamic>{
-      'type': instance.type,
-      'desc': instance.desc,
-      'is_normal': instance.isNormal,
-    };
-
-PregnancyCheckMomPulseWarningResponse
-    _$PregnancyCheckMomPulseWarningResponseFromJson(Map<String, dynamic> json) {
-  return PregnancyCheckMomPulseWarningResponse(
-    type: json['type'] as int,
-    desc: json['desc'] as String,
-    isNormal: json['is_normal'] as bool,
-  );
-}
-
-Map<String, dynamic> _$PregnancyCheckMomPulseWarningResponseToJson(
-        PregnancyCheckMomPulseWarningResponse instance) =>
-    <String, dynamic>{
-      'type': instance.type,
-      'desc': instance.desc,
-      'is_normal': instance.isNormal,
-    };
-
-PregnancyCheckTfuWarningResponse _$PregnancyCheckTfuWarningResponseFromJson(
+PregnancyFormWarningDescResponse _$PregnancyFormWarningDescResponseFromJson(
     Map<String, dynamic> json) {
-  return PregnancyCheckTfuWarningResponse(
+  return PregnancyFormWarningDescResponse(
     type: json['type'] as int,
     desc: json['desc'] as String,
     isNormal: json['is_normal'] as bool,
   );
 }
 
-Map<String, dynamic> _$PregnancyCheckTfuWarningResponseToJson(
-        PregnancyCheckTfuWarningResponse instance) =>
-    <String, dynamic>{
-      'type': instance.type,
-      'desc': instance.desc,
-      'is_normal': instance.isNormal,
-    };
-
-PregnancyCheckDjjWarningResponse _$PregnancyCheckDjjWarningResponseFromJson(
-    Map<String, dynamic> json) {
-  return PregnancyCheckDjjWarningResponse(
-    type: json['type'] as int,
-    desc: json['desc'] as String,
-    isNormal: json['is_normal'] as bool,
-  );
-}
-
-Map<String, dynamic> _$PregnancyCheckDjjWarningResponseToJson(
-        PregnancyCheckDjjWarningResponse instance) =>
-    <String, dynamic>{
-      'type': instance.type,
-      'desc': instance.desc,
-      'is_normal': instance.isNormal,
-    };
-
-PregnancyCheckBabyMovementWarningResponse
-    _$PregnancyCheckBabyMovementWarningResponseFromJson(
-        Map<String, dynamic> json) {
-  return PregnancyCheckBabyMovementWarningResponse(
-    type: json['type'] as int,
-    desc: json['desc'] as String,
-    isNormal: json['is_normal'] as bool,
-  );
-}
-
-Map<String, dynamic> _$PregnancyCheckBabyMovementWarningResponseToJson(
-        PregnancyCheckBabyMovementWarningResponse instance) =>
+Map<String, dynamic> _$PregnancyFormWarningDescResponseToJson(
+        PregnancyFormWarningDescResponse instance) =>
     <String, dynamic>{
       'type': instance.type,
       'desc': instance.desc,

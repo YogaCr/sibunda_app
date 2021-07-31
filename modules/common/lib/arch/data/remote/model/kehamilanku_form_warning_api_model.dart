@@ -29,15 +29,15 @@ class PregnancyCheckFormWarningDataResponse extends Equatable  {
   @JsonKey(name: Const.KEY_FETUS_GROWTH_DESC)
   final PregnancyCheckFetusGrowthWarningResponse fetusGrowth;
   @JsonKey(name: Const.KEY_WEIGHT_DESC)
-  final PregnancyCheckWeightWarningResponse weight;
+  final PregnancyFormWarningDescResponse weight;
   @JsonKey(name: Const.KEY_MOM_PULSE_DESC)
-  final PregnancyCheckMomPulseWarningResponse momPulse;
+  final PregnancyFormWarningDescResponse momPulse;
   @JsonKey(name: Const.KEY_TFU_DESC)
-  final PregnancyCheckTfuWarningResponse tfu;
+  final PregnancyFormWarningDescResponse tfu;
   @JsonKey(name: Const.KEY_DJJ_DESC)
-  final PregnancyCheckDjjWarningResponse djj;
+  final PregnancyFormWarningDescResponse djj;
   @JsonKey(name: Const.KEY_BABY_MOVEMENT_DESC)
-  final PregnancyCheckBabyMovementWarningResponse babyMovement;
+  final PregnancyFormWarningDescResponse babyMovement;
 
   PregnancyCheckFormWarningDataResponse({
     required this.fetusGrowth,
@@ -80,6 +80,25 @@ class PregnancyCheckFetusGrowthWarningResponse extends Equatable  {
   List<Object?> get props => [week, length, weight, desc, imgLink];
 }
 
+@JsonSerializable()
+class PregnancyFormWarningDescResponse extends Equatable {
+  final int type;
+  final String desc;
+  @JsonKey(name: Const.KEY_IS_NORMAL)
+  final bool isNormal;
+  PregnancyFormWarningDescResponse({
+    required this.type,
+    required this.desc,
+    required this.isNormal,
+  });
+  factory PregnancyFormWarningDescResponse.fromJson(Map<String, dynamic> map) => _$PregnancyFormWarningDescResponseFromJson(map);
+
+  @override
+  List<Object?> get props => [type, desc];
+}
+
+
+/*
 @JsonSerializable()
 class PregnancyCheckWeightWarningResponse extends Equatable {
   final int type;
@@ -164,3 +183,4 @@ class PregnancyCheckBabyMovementWarningResponse extends Equatable  {
   @override
   List<Object?> get props => [type, desc];
 }
+ */

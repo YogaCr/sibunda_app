@@ -182,7 +182,7 @@ class BabyChartRepoImpl with BabyChartRepo {
         if(raw == null) {
           return Success(List.empty());
         }
-        final data = FormWarningStatus.fromChartResponse(raw);
+        final data = FormWarningStatus.fromChartResponse(raw, isMother: false);
         return Success([data]);
       } else {
         return Fail();
@@ -204,7 +204,7 @@ class BabyChartRepoImpl with BabyChartRepo {
         if(raw == null) {
           return Success(List.empty());
         }
-        final data = FormWarningStatus.fromChartResponse(raw);
+        final data = FormWarningStatus.fromChartResponse(raw, isMother: false);
         return Success([data]);
       } else {
         return Fail();
@@ -226,7 +226,7 @@ class BabyChartRepoImpl with BabyChartRepo {
         if(raw == null) {
           return Success(List.empty());
         }
-        final data = FormWarningStatus.fromChartResponse(raw);
+        final data = FormWarningStatus.fromChartResponse(raw, isMother: false);
         return Success([data]);
       } else {
         return Fail();
@@ -248,7 +248,7 @@ class BabyChartRepoImpl with BabyChartRepo {
         if(raw == null) {
           return Success(List.empty());
         }
-        final data = FormWarningStatus.fromChartResponse(raw);
+        final data = FormWarningStatus.fromChartResponse(raw, isMother: false);
         return Success([data]);
       } else {
         return Fail();
@@ -270,7 +270,7 @@ class BabyChartRepoImpl with BabyChartRepo {
         if(raw == null) {
           return Success(List.empty());
         }
-        final data = FormWarningStatus.fromChartResponse(raw);
+        final data = FormWarningStatus.fromChartResponse(raw, isMother: false);
         return Success([data]);
       } else {
         return Fail();
@@ -292,7 +292,7 @@ class BabyChartRepoImpl with BabyChartRepo {
         if(raw == null) {
           return Success(List.empty());
         }
-        final data = FormWarningStatus.fromChartResponse(raw);
+        final data = FormWarningStatus.fromChartResponse(raw, isMother: false);
         return Success([data]);
       } else {
         return Fail();
@@ -314,7 +314,7 @@ class BabyChartRepoImpl with BabyChartRepo {
         if(raw == null) {
           return Success(List.empty());
         }
-        final data = FormWarningStatus.fromChartResponse(raw);
+        final data = FormWarningStatus.fromChartResponse(raw, isMother: false);
         return Success([data]);
       } else {
         return Fail();

@@ -87,7 +87,6 @@ class MotherBmiChartResponseData with _$MotherBmiChartResponseData {
 }
 
 
-
 /*
 @JsonSerializable()
 class PregnancyChartTfuResponse {

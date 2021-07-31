@@ -69,6 +69,44 @@ final imgCovidFormOverview = ImgData(
   package: GlobalRoutes.common,
   src: ImgSrc.asset,
 );
+final imgCovidStatusMother = ImgData(
+  link: "covid_mother.png",
+  package: GlobalRoutes.common,
+  src: ImgSrc.asset,
+);
+final imgCovidStatusBaby = ImgData(
+  link: "covid_baby.png",
+  package: GlobalRoutes.common,
+  src: ImgSrc.asset,
+);
+
+final imgChartBabyWarning = ImgData(
+  link: "bayiku_berat_badan.png",
+  package: GlobalRoutes.common,
+  src: ImgSrc.asset,
+);
+final imgChartMotherWarning = ImgData(
+  link: "mother_panel.png",
+  package: GlobalRoutes.common,
+  src: ImgSrc.asset,
+);
+
+final pregnancyWarningImgList = <String>[
+  "kehamilanku_weight.png",
+  "kehamilanku_djj.png",
+  "kehamilanku_tfu.png",
+  "kehamilanku_map.png",
+  "kehamilanku_gerakan_bayi.png",
+];
+
+final babyWarningImgList = <String>[
+  "bayiku_berat_badan.png",
+  "bayiku_panjang_badan.png",
+  "bayiku_panjang_badan_berat.png",
+  "bayiku_lingkar_kepala.png",
+  "bayiku_imt.png",
+  "bayiku_perkembangan.png",
+];
 
 final imgPlaceholder = ImgData(link: "img_placeholder.png", package: GlobalRoutes.common, src: ImgSrc.asset);
 
