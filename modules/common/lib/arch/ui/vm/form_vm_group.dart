@@ -185,6 +185,9 @@ mixin FormVmGroupMixin implements AsyncVm {
     if(response is Iterable) return response.isNotEmpty;
     return response != null;
   }
+  /// Called before [validateField]. This method is useful for validation preparation
+  /// That can't be solve just by observing the response live data outside this class.
+  void preValidateField(int groupPosition, String inputKey, dynamic response) {}
   String getResponseStringRepr(int groupPosition, String inputKey, dynamic response) =>
       response is String ? response : response?.toString() ?? "";
   String getInvalidMsg(String inputKey, dynamic response) => defaultInvalidMsg;
@@ -267,7 +270,7 @@ abstract class FormVmGroup extends AsyncVm with FormVmGroupMixin {
         for(final formData in e.data) {
           final isValidData = MutableLiveData<bool>();
           isValidData.observe(this, (isValid) {
-            //prind("isValidData.observe() formData.key = ${formData.key} isValid = $isValid");
+            prind("isValidData.observe() formData.key = ${formData.key} isValid = $isValid _isReseting= $_isReseting");
             if(!_isReseting) {
               _checkCanProceed();
             }
@@ -276,6 +279,7 @@ abstract class FormVmGroup extends AsyncVm with FormVmGroupMixin {
           responseData.observe(this, (response) async {
             prind("responseData.observe() AWAL _isReseting= $_isReseting");
             if(!_isReseting) {
+              preValidateField(i2, formData.key, response);
               final isValid = await validateField(i2, formData.key, response);
               prind("responseData.observe() validateField() formData.key = ${formData.key} isValid = $isValid");
               isValidData.value = isValid;

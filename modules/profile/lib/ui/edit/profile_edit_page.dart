@@ -66,6 +66,17 @@ class ProfileEditPage extends StatelessWidget {
                     showSnackBar(context, Strings.there_still_invalid_fields,);
                   }
                 },
+                pickerIconBuilder: (group, key, liveData) {
+                  if(key == Const.KEY_EMAIL) {
+                    return LiveDataObserver<bool>(
+                      liveData: vm.isEmailAvailable,
+                      builder: (ctx, available) {
+                        if(available == null) return defaultLoading(showText: false);
+                        return defaultEmptyWidget();
+                      },
+                    );
+                  }
+                },
                 onSubmit: (ctx, success) => success
                     ? showSnackBar(context, Strings.form_submission_success, backgroundColor: Colors.green,)
                     :  showSnackBar(context, Strings.form_submission_fail,),

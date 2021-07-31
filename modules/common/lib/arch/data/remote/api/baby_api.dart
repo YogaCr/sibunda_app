@@ -34,7 +34,7 @@ abstract class BabyApi {
   @POST("/show-monthly-report-analysis")
   Future<BabyFormWarningResponse> getFormWarning(@Body() BabyFormWarningBody body,);
 
-  @POST("//create-neonatus-6-hours")
+  @POST("/create-neonatus-6-hours")
   Future<CommonResponse> sendNeo6hForm(@Body() Neonatal6HourFormBody body,);
   @POST("/create-neonatus-kn1")
   Future<CommonResponse> sendKn1Form(@Body() NeonatalKn1FormBody body,);

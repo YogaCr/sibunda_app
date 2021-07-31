@@ -45,6 +45,8 @@ class BabyFormWarningDataResponse {
   final BabyFormWarningDescResponse headCircum;
   @JsonKey(name: "imt_desc")
   final BabyFormWarningDescResponse imt;
+  @JsonKey(name: "perkembangan_desc")
+  final BabyFormWarningDescResponse? dev;
 
   BabyFormWarningDataResponse({
     required this.weight,
@@ -52,6 +54,7 @@ class BabyFormWarningDataResponse {
     required this.weightToLen,
     required this.headCircum,
     required this.imt,
+    required this.dev,
   });
 
   factory BabyFormWarningDataResponse.fromJson(Map<String, dynamic> map) => _$BabyFormWarningDataResponseFromJson(map);

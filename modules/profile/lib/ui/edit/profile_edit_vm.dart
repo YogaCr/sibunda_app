@@ -1,7 +1,10 @@
+import 'dart:async';
+
 import 'package:common/arch/domain/dummy_data.dart';
 import 'package:common/arch/domain/dummy_form_field_data.dart';
 import 'package:common/arch/domain/model/img_data.dart';
 import 'package:common/arch/domain/model/profile_data.dart';
+import 'package:common/arch/domain/usecase/auth_usecase.dart';
 import 'package:common/arch/ui/model/form_data.dart';
 import 'package:common/arch/ui/vm/form_vm_group.dart';
 import 'package:common/arch/ui/vm/vm_auth.dart';
@@ -11,27 +14,80 @@ import 'package:common/util/validators.dart';
 import 'package:common/value/const_values.dart';
 import 'package:core/domain/model/result.dart';
 import 'package:core/ui/base/live_data.dart';
+import 'package:core/util/_consoles.dart';
 import 'package:flutter/material.dart';
 import 'package:profile/core/domain/usecase/profile_edit_usecase.dart';
+import 'package:email_validator/email_validator.dart';
 
 class ProfileEditVm extends FormAuthVmGroup {
   ProfileEditVm({
     BuildContext? context,
     required SaveProfile saveProfile,
+    required CheckEmailAvailability checkEmailAvailability,
   }):
-    _saveProfile = saveProfile, super(context: context)
-  ;
+    _saveProfile = saveProfile,
+    _checkEmailAvailability = checkEmailAvailability, super(context: context)
+  {
+    isFormReady.observe(this, (isReady) {
+      if(isReady == true) {
+        getResponseLiveDataWithKey(Const.KEY_EMAIL).observe(this, (final email) {
+          prind("ProfileEditVm getResponseLiveDataWithKey.observe() email= $email _currentEmail= $_currentEmail");
+          _emailCheckTimer?.cancel();
+          if(email == _currentTypedEmail) {
+            return;
+          }
+          _isEmailAvailable.value = false;
+          setFieldValidity(0, Const.KEY_EMAIL, false);
+          if(email == _currentEmail) { // it means the email doesn't change.
+            _isEmailAvailable.value = true;
+            setFieldValidity(0, Const.KEY_EMAIL, true);
+            return;
+          }
+          if(email != null) {
+            if(!EmailValidator.validate(email)) {
+              _isEmailAvailable.value = false;
+              return;
+            }
+            _isEmailAvailable.value = null;
+            _emailCheckTimer = Timer(Duration(milliseconds: 2500), () async {
+              final res = await _checkEmailAvailability(email!);
+              if(res is Success<bool>) {
+                _isEmailAvailable.value = res.data;
+              } else {
+                _isEmailAvailable.value = null; // it means error while checking
+              }
+              //setResponse(0, Const.KEY_EMAIL, email);
+            });
+          }
+          _currentTypedEmail = email;
+        }, distinctUntilChanged: true,);
+      }
+    }, tag: toString());
+    _isEmailAvailable.observe(this, (available) {
+      setFieldValidity(0, Const.KEY_EMAIL, available == true);
+    });
+  }
+
   final SaveProfile _saveProfile;
+  final CheckEmailAvailability _checkEmailAvailability;
 
   LiveData? _oldPswd;
   LiveData? _newPswd;
   LiveData? _newPswdRe;
 
+  Timer? _emailCheckTimer;
+
+  final MutableLiveData<bool> _isEmailAvailable = MutableLiveData(false);
+  LiveData<bool> get isEmailAvailable => _isEmailAvailable;
+
   final imgProfile = MutableLiveData<ImgData>();
+
+  String? _currentEmail;
+  String? _currentTypedEmail;
 
   @override
   List<LiveData> get liveDatas {
-    final list = <LiveData>[imgProfile,];
+    final list = <LiveData>[imgProfile, _isEmailAvailable,];
     if(_oldPswd != null) {
       list.add(_oldPswd!);
     }
@@ -42,6 +98,12 @@ class ProfileEditVm extends FormAuthVmGroup {
       list.add(_newPswdRe!);
     }
     return list;
+  }
+
+  @override
+  void dispose() {
+    _emailCheckTimer?.cancel();
+    super.dispose();
   }
 
   @override
@@ -56,7 +118,7 @@ class ProfileEditVm extends FormAuthVmGroup {
       pswd: respMap[Const.KEY_PSWD],
       img: dummyImg, //TODO: img edit profile msh dummy.
     );
-    final oldPswd = respMap[Const.KEY_OLD_PSWD];
+    final String? oldPswd = respMap[Const.KEY_OLD_PSWD];
     final res = await _saveProfile(data, oldPswd);
     return res is Success<bool> ? Success("ok") : Fail();
   }
@@ -70,7 +132,16 @@ class ProfileEditVm extends FormAuthVmGroup {
   }
 
   @override
+  void preValidateField(int groupPosition, String inputKey, response) {
+    if(inputKey == Const.KEY_EMAIL) {
+      if(response != _currentTypedEmail) {
+        _isEmailAvailable.value = false;
+      }
+    }
+  }
+  @override
   Future<bool> validateField(int groupPosition, String inputKey, response) async {
+    prind("ProfileEditVm.validateField() groupPosition= $groupPosition inputKey= $inputKey response= $response _isEmailAvailable= $_isEmailAvailable _currentEmail= $_currentEmail");
     if((inputKey == Const.KEY_OLD_PSWD
     || inputKey == Const.KEY_PSWD
     || inputKey == Const.KEY_RE_PSWD)
@@ -82,6 +153,9 @@ class ProfileEditVm extends FormAuthVmGroup {
       _newPswdRe = list[Const.KEY_RE_PSWD]!.response;
     }
     switch(inputKey) {
+      case Const.KEY_EMAIL:
+        return (_currentEmail != null && response == _currentEmail)
+           || _isEmailAvailable.value == true && EmailValidator.validate(response);
       case Const.KEY_OLD_PSWD:
         return (_newPswd!.value?.isNotEmpty != true && _newPswdRe!.value?.isNotEmpty != true)
             || response.isNotEmpty;
@@ -98,6 +172,18 @@ class ProfileEditVm extends FormAuthVmGroup {
   @override
   String getInvalidMsg(String inputKey, response) {
     switch(inputKey) {
+      case Const.KEY_EMAIL:
+        if(!EmailValidator.validate(response)) {
+          return Strings.please_type_correct_email;
+        }
+        if(_isEmailAvailable.value != true) {
+          if(_isEmailAvailable.value == false) {
+            return Strings.email_already_exists;
+          } else {
+            return Strings.still_checking_email_availability;
+          }
+        }
+        return Strings.please_type_correct_email;
       case Const.KEY_PSWD: return Strings.password_at_least_8;
       case Const.KEY_RE_PSWD: return Strings.password_re_does_not_match;
     }
@@ -107,6 +193,6 @@ class ProfileEditVm extends FormAuthVmGroup {
   void setProfile(Profile data) {
     final list = responseGroupList.first as Map<String, MutableFormVmResponse>;
     list[Const.KEY_NAME]!.response.value = data.name;
-    list[Const.KEY_EMAIL]!.response.value = data.email;
+    list[Const.KEY_EMAIL]!.response.value = _currentEmail = data.email;
   }
 }

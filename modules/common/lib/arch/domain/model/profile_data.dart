@@ -61,7 +61,7 @@ class Profile {
 class AccountData {
   final String name;
   final String email;
-  final String pswd;
+  final String? pswd;
   final ImgData img;
 
   AccountData({

@@ -39,6 +39,10 @@ BabyFormWarningDataResponse _$BabyFormWarningDataResponseFromJson(
         json['lingkar_kepala_desc'] as Map<String, dynamic>),
     imt: BabyFormWarningDescResponse.fromJson(
         json['imt_desc'] as Map<String, dynamic>),
+    dev: json['perkembangan_desc'] == null
+        ? null
+        : BabyFormWarningDescResponse.fromJson(
+            json['perkembangan_desc'] as Map<String, dynamic>),
   );
 }
 
@@ -50,6 +54,7 @@ Map<String, dynamic> _$BabyFormWarningDataResponseToJson(
       'bb_pb_desc': instance.weightToLen,
       'lingkar_kepala_desc': instance.headCircum,
       'imt_desc': instance.imt,
+      'perkembangan_desc': instance.dev,
     };
 
 BabyFormWarningDescResponse _$BabyFormWarningDescResponseFromJson(

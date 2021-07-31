@@ -16,6 +16,7 @@ class ProfileVmDi {
   );
   static ProfileEditVm profileEditVm({BuildContext? context,}) => ProfileEditVm(
     context: context,
+    checkEmailAvailability: UseCaseDi.checkEmailAvailability,
     saveProfile: ProfileUseCaseDi.saveProfile,
   );
 }

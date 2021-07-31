@@ -8,7 +8,7 @@ import '../dummy_data.dart';
 mixin ProfileRepo {
   Future<Result<Profile>> getProfile(String email);
   Future<Result<String>> getCurrentEmail();
-  Future<Result<bool>> saveProfile(AccountData data, String oldPswd);
+  Future<Result<bool>> saveProfile(AccountData data, String? oldPswd);
 }
 
 class ProfileRepoImpl with ProfileRepo {
@@ -25,7 +25,7 @@ class ProfileRepoImpl with ProfileRepo {
   @override
   Future<Result<String>> getCurrentEmail() => _localSrc.getCurrentEmail();
   @override
-  Future<Result<bool>> saveProfile(AccountData data, String oldPswd) async => Success(true); //TODO: Repo dummy.
+  Future<Result<bool>> saveProfile(AccountData data, String? oldPswd) async => Success(true); //TODO: Repo dummy.
 }
 
 class ProfileRepoDummy with ProfileRepo {
@@ -36,5 +36,5 @@ class ProfileRepoDummy with ProfileRepo {
   @override
   Future<Result<String>> getCurrentEmail() async => Success(dummyEmail);
   @override
-  Future<Result<bool>> saveProfile(AccountData data, String oldPswd) async => Success(true);
+  Future<Result<bool>> saveProfile(AccountData data, String? oldPswd) async => Success(true);
 }

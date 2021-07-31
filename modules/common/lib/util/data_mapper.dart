@@ -35,6 +35,12 @@ List<FormWarningStatus> responseToBabyFormGrowthWarning(BabyFormWarningDataRespo
     FormWarningStatus.fromBabyResponse(response.imt, i: 4),
   ];
 }
+List<FormWarningStatus> responseToBabyFormDevWarning(BabyFormWarningDataResponse response) {
+  if(response.dev == null) return List.empty(growable: false);
+  return [
+    FormWarningStatus.fromBabyResponse(response.dev!, i: 5),
+  ];
+}
 
 
 String getMotherChartTypeString(MotherChartType type) {

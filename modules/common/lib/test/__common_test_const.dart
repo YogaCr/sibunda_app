@@ -30,6 +30,8 @@ class ConfigUtil {
 
   static final isAutoToastEnabled = true;
 
+  static final isMobileOnly = true;
+
   static init() async {
     WidgetsFlutterBinding.ensureInitialized();
     await initializeDateFormatting("id_ID");
@@ -45,9 +47,9 @@ class ConfigUtil {
   }
 
   static initFcm() async {
+    prind("ConfigUtil initFcm() AWAL kIsWeb= $kIsWeb");
     if(kIsWeb) return;
     try {
-      prind("ConfigUtil initFcm() AWAL");
 
       if(!kIsWeb) {
         final option = kIsWeb ? FirebaseOptions(

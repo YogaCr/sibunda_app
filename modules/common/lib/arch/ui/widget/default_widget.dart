@@ -22,7 +22,8 @@ Widget defaultImg({
 Widget defaultLoading({
   String? text = "Loading...",
   double? width, //= 80,
-  double? height, // = 80,
+  double? height, // = 8
+  bool? showText = true,// 0,
 }) => Container(
   padding: EdgeInsets.all(10),
   width: width,
@@ -32,11 +33,13 @@ Widget defaultLoading({
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
       CircularProgressIndicator(),
-      SizedBox(height: 10,),
-      Text(
-        text ?? "Error",
-        textAlign: TextAlign.center,
-      ),
+      ...(showText != true ? [] : [
+        SizedBox(height: 10,),
+        Text(
+          text ?? "Error",
+          textAlign: TextAlign.center,
+        ),
+      ]),
     ],
   ),
 );

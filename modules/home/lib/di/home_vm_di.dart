@@ -25,12 +25,16 @@ class HomeVmDi {
     initConfig: UseCaseDi.initConfig,
   );
   static GetStartedFormMainVm get getStartedFormMainVm => GetStartedFormMainVm(
+    getFcmToken: UseCaseDi.getFcmToken,
     signUpAndRegisterOtherData: HomeUseCaseDi.signUpAndRegister,
     login: HomeUseCaseDi.login,
     initConfig: UseCaseDi.initConfig,
     //saveMotherHpl: HomeUseCaseDi.saveMotherHpl,
   );
-  static SignUpFormVm get signUpFormVm => SignUpFormVm(HomeUseCaseDi.signUp);
+  static SignUpFormVm get signUpFormVm => SignUpFormVm(
+    saveSignupData: HomeUseCaseDi.signUp,
+    checkEmailAvailability: UseCaseDi.checkEmailAvailability,
+  );
   static LoginFormVm get loginFormVm => LoginFormVm(
     login: HomeUseCaseDi.login,
     getFcmToken: UseCaseDi.getFcmToken,

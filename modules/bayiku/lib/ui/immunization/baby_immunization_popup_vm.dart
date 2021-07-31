@@ -52,12 +52,12 @@ class BabyImmunizationPopupVm extends FormAuthVmGroup {
       immunization: immunization.copy(
         date: respMap[Const.KEY_IMMUNIZATION_DATE],
         location: respMap[Const.KEY_IMMUNIZATION_PLACE],
-        batchNo: respMap[Const.KEY_NO_BATCH]?.toString(),
+        batchNo: respMap[Const.KEY_NO_BATCH]!.toString(),
       ),
       responsibleName: respMap[Const.KEY_RESPONSIBLE_NAME],
       date: respMap[Const.KEY_IMMUNIZATION_DATE],
       place: respMap[Const.KEY_IMMUNIZATION_PLACE],
-      noBatch: respMap[Const.KEY_NO_BATCH] ?? -1,
+      noBatch: respMap[Const.KEY_NO_BATCH]!.toString(), // ?? "<>",
     );
 
     final res = await _confirmBabyImmunization(credential.nik, data);
@@ -78,23 +78,24 @@ class BabyImmunizationPopupVm extends FormAuthVmGroup {
       return List.empty();
     }
   }
-
+/*
   @override
   Future<bool> validateField(int groupPosition, String inputKey, response) async {
     switch(inputKey) {
-      case Const.KEY_NO_BATCH: return int.tryParse(response) != null;
+      case Const.KEY_NO_BATCH: return int.tryParse(response) != null; //No batch can be alphabet
     }
     return super.validateField(groupPosition, inputKey, response);
   }
+ */
   
   @override
   Set<String>? get mappedKey => {
-    Const.KEY_NO_BATCH,
+    //Const.KEY_NO_BATCH,
     Const.KEY_IMMUNIZATION_DATE,
   };
   @override
   dynamic mapResponse(int groupPosition, String key, dynamic response) {
-    if(key == Const.KEY_NO_BATCH) return int.parse(response);
+    //if(key == Const.KEY_NO_BATCH) return int.parse(response);
     if(response is DateTime) return response.toString();
   }
 }

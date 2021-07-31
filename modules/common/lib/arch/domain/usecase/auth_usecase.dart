@@ -15,6 +15,10 @@ mixin InitConfig {
   Future<Result<bool>> call();
 }
 
+mixin CheckEmailAvailability {
+  Future<Result<bool>> call(String email);
+}
+
 mixin Logout {
   Future<Result<bool>> call(SessionData data);
 }
@@ -75,6 +79,13 @@ class InitConfigImpl with InitConfig {
     }
     return Fail(msg: msg);
   }
+}
+
+class CheckEmailAvailabilityImpl with CheckEmailAvailability {
+  final AuthRepo _repo;
+  CheckEmailAvailabilityImpl(this._repo);
+  @override
+  Future<Result<bool>> call(String email) => _repo.isEmailAvailable(email);
 }
 
 class LogoutImpl with Logout {

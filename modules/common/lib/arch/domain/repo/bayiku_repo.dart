@@ -203,7 +203,22 @@ class MyBabyRepoImpl with MyBabyRepo {
   Future<Result<List<FormWarningStatus>>> getBabyDevWarningStatus({
     required int yearId,
     required int month,
-  }) async => Success(babyWarningStatusList); //TODO: Baby dev form warning: Msh dummy
+  }) async {
+    try {
+      if(month != _currentMonth) {
+        final body = BabyFormWarningBody(month: month, yearId: yearId);
+        _formWarningResponse = await _api.getFormWarning(body);
+        _currentMonth = month;
+        _currentYearId = yearId;
+      }
+      final data = _formWarningResponse!.data;
+      final list = responseToBabyFormDevWarning(data);
+      return Success(list);
+    } catch(e, stack) {
+      prine(stack);
+      return Fail(msg: "Error calling `getBabyDevWarningStatus()`", error: e);
+    }
+  }
 
   @override
   Future<Result<List<HomeGraphMenu>>> getBabyGraphMenu() async => Success(babyHomeGraph_ui);

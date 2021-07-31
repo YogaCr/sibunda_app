@@ -173,7 +173,7 @@ class ImmunizationConfirmData {
   final String responsibleName;
   final String date;
   final String place;
-  final int noBatch;
+  final String noBatch;
 
   ImmunizationConfirmData({
     required this.immunization,

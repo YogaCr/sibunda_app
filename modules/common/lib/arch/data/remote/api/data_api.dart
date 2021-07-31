@@ -1,3 +1,4 @@
+import 'package:common/arch/data/remote/model/_common_api_model.dart';
 import 'package:common/arch/data/remote/model/baby_add_api_model.dart';
 import 'package:common/arch/data/remote/model/data_api_model.dart';
 import 'package:common/arch/domain/model/auth.dart';
@@ -22,4 +23,6 @@ abstract class DataApi {
   Future<BabyAddResponse> createChild(@Body() BabyAddBody body);
   @POST("/identitas-anak")
   Future<BabyAddResponse> createFetus(@Body() FetusAddBody body);
+  @PUT("/save-profile")
+  Future<CommonResponse> saveProfile(@Body() SaveProfileBody body);
 }

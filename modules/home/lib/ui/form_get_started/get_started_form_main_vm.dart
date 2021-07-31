@@ -1,10 +1,13 @@
+import 'package:common/arch/di/usecase_di.dart';
 import 'package:common/arch/domain/model/auth.dart';
 import 'package:common/arch/domain/model/child.dart';
 import 'package:common/arch/domain/model/father.dart';
 import 'package:common/arch/domain/model/mother.dart';
 import 'package:common/arch/domain/usecase/auth_usecase.dart';
+import 'package:common/arch/domain/usecase/firebase_usecase.dart';
 import 'package:common/arch/domain/usecase/mother_usecase.dart';
 import 'package:common/arch/domain/usecase/profile_usecase.dart';
+import 'package:common/value/const_values.dart';
 import 'package:core/domain/model/result.dart';
 import 'package:core/ui/base/async_vm.dart';
 import 'package:core/ui/base/live_data.dart';
@@ -26,14 +29,19 @@ class GetStartedFormMainVm extends AsyncVm {
 
   GetStartedFormMainVm({
     required SignUpAndRegisterOtherData signUpAndRegisterOtherData,
+    required GetFcmToken getFcmToken,
     required Login login,
     required InitConfig initConfig,
     //required SaveMotherHpl saveMotherHpl,
   }): //_saveMotherHpl = saveMotherHpl,
       _signUpAndRegisterOtherData = signUpAndRegisterOtherData,
+      _getFcmToken = getFcmToken,
       _login = login,
       _initConfig = initConfig {
-    signUpFormVm = SignUpFormVm(_signup);
+    signUpFormVm = SignUpFormVm(
+      saveSignupData: _signup,
+      checkEmailAvailability: UseCaseDi.checkEmailAvailability,
+    );
     motherVm = MotherFormVm(_saveMotherData);
     fatherVm = FatherFormVm(_saveFatherData);
     motherHplVm = MotherHplVm(
@@ -61,21 +69,32 @@ class GetStartedFormMainVm extends AsyncVm {
         if(signupData == null) {
           throw "`onSubmit` is success, but current signup data is null.";
         }
-        final loginRes = await _login.call(signupData.toLoginData());
-        prind("GetStartedFormMainVm loginRes= $loginRes");
-        if(loginRes is Success<SessionData>) {
-          final configRes = await _initConfig();
-          prind("GetStartedFormMainVm configRes= $configRes");
-          if(configRes is Success<bool>) {
-            _onLogin.value = configRes.data;
-            return;
+        var loginMsg = "";
+        final fcmTokenRes = await _getFcmToken();
+        if(fcmTokenRes is Success<String>) {
+          final loginData = signupData.toLoginData(fcmToken: fcmTokenRes.data,);
+          final loginRes = await _login.call(loginData);
+          prind("GetStartedFormMainVm loginRes= $loginRes");
+          if(loginRes is Success<SessionData>) {
+            final configRes = await _initConfig();
+            prind("GetStartedFormMainVm configRes= $configRes");
+            if(configRes is Success<bool>) {
+              _onLogin.value = configRes.data;
+              return;
+            } else {
+              loginMsg = "Can't login to server";
+            }
           }
+        } else {
+          loginMsg = "Can't get FCM token from local";
         }
+        prine("Error when login; e= $loginMsg");
         _onLogin.value = false;
       }
     });
   }
   final SignUpAndRegisterOtherData _signUpAndRegisterOtherData;
+  final GetFcmToken _getFcmToken;
   final Login _login;
   final InitConfig _initConfig;
   //final SaveMotherHpl _saveMotherHpl;

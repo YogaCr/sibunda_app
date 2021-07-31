@@ -40,6 +40,7 @@ mixin AuthRepo {
   /// Returns null if user hasn't logged in yet.
   Future<Result<SessionData?>> getSession();
   
+  Future<Result<bool>> isEmailAvailable(String email);
   Future<Result<List<BatchProfileServer>>> getBio();
 }
 /*
@@ -237,7 +238,25 @@ class AuthRepoImpl with AuthRepo {
 
   @override
   Future<Result<SessionData?>> getSession() => _accountLocalSrc.getSession();
-  
+
+  @override
+  Future<Result<bool>> isEmailAvailable(String email) async {
+    try {
+      final res = await _api.checkEmailAvailability(email);
+      if(res.code != 200) {
+        final msg = "Can't check email availability in server";
+        prine(msg);
+        return Fail(msg: "$msg; remote msg = ${res.message}", code: res.code,);
+      }
+      return Success(res.available);
+    } catch(e, stack) {
+      final msg = "Error calling `isEmailAvailable()`";
+      prine("$msg; e= $e");
+      prine(stack);
+      return Fail(msg: msg, error: e,);
+    }
+  }
+
   @override
   Future<Result<List<BatchProfileServer>>> getBio() async {
     try {
@@ -344,7 +363,10 @@ class AuthDummyRepo with AuthRepo {
 
   @override
   Future<Result<bool>> saveSession(SessionData data) async => Success(true);
-  
+
+  @override
+  Future<Result<bool>> isEmailAvailable(String email) async => Success(true);
+
   @override
   Future<Result<List<BatchProfileServer>>> getBio() async => Success([dummyBatchProfile]);
 }

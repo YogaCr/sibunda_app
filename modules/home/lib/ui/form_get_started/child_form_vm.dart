@@ -226,7 +226,12 @@ class ChildFormVm extends FormAuthVmGroup {
   Future<bool> validateField(int groupPosition, String inputKey, response) async {
     prind("ChildFormVm groupPosition= $groupPosition inputKey= $inputKey response= $response");
     switch(inputKey) {
-      case Const.KEY_CHILD_ORDER: return tryParseInt(response) != null;
+      case Const.KEY_CHILD_ORDER:
+        final input = tryParseInt(response); // != null;
+        if(input == null) {
+          return false;
+        }
+        return input <= 32000;
     }
     return super.validateField(groupPosition, inputKey, response);
   }
@@ -234,7 +239,7 @@ class ChildFormVm extends FormAuthVmGroup {
   @override
   String getInvalidMsg(String inputKey, response) {
     switch(inputKey) {
-      case Const.KEY_CHILD_ORDER: return Strings.field_must_be_number;
+      case Const.KEY_CHILD_ORDER: return Strings.field_must_be_small_number;
     }
     return defaultInvalidMsg;
   }

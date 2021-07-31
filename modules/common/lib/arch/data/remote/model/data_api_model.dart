@@ -6,6 +6,35 @@ import 'package:json_annotation/json_annotation.dart';
 part 'data_api_model.g.dart';
 part 'data_api_model.freezed.dart';
 
+class SaveProfileBody extends Equatable {
+  final String email;
+  final String name;
+  final String? password;
+
+  const SaveProfileBody({
+    required this.email,
+    required this.name,
+    this.password,
+  });
+
+  Map<String, dynamic> toJson() {
+    final map = <String, dynamic>{
+      "email": email,
+      "name": name,
+    };
+    if(password?.isNotEmpty == true) {
+      map["password"] = password;
+    }
+    return map;
+  }
+
+  @override
+  List<Object?> get props => [
+    email, name, password,
+  ];
+}
+
+
 @JsonSerializable()
 class CityResponse extends Equatable {
   final int id;

@@ -171,7 +171,7 @@ class _FormGenericGroupState
                 responseRepresentator = (resp) => vm.getResponseStringRepr(groupPosition, key, resp);
                 break;
               default:
-                //suffixIcon = pickerIconBuilder?.call(groupPosition, key, vmLiveData); //TODO: for now, the direct input method can only be input by texting directly.
+                suffixIcon = pickerIconBuilder?.call(groupPosition, key, vmLiveData);
             }
 
             final enabled = this.enabled && itemData.isInputEnabled;
