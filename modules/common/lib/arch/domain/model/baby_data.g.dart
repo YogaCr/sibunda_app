@@ -188,3 +188,28 @@ Map<String, dynamic> _$NeonatalKn3FormToJson(NeonatalKn3Form instance) =>
       'catatan_penting': instance.catatan_penting,
       'masalah': instance.masalah,
     };
+
+AllNeonatalForm _$AllNeonatalFormFromJson(Map<String, dynamic> json) {
+  return AllNeonatalForm(
+    sixHour: json['six_hours'] == null
+        ? null
+        : Neonatal6HourForm.fromJson(json['six_hours'] as Map<String, dynamic>),
+    kn1: json['kn_1'] == null
+        ? null
+        : NeonatalKn1Form.fromJson(json['kn_1'] as Map<String, dynamic>),
+    kn2: json['kn_2'] == null
+        ? null
+        : NeonatalKn2Form.fromJson(json['kn_2'] as Map<String, dynamic>),
+    kn3: json['kn_3'] == null
+        ? null
+        : NeonatalKn3Form.fromJson(json['kn_3'] as Map<String, dynamic>),
+  );
+}
+
+Map<String, dynamic> _$AllNeonatalFormToJson(AllNeonatalForm instance) =>
+    <String, dynamic>{
+      'six_hours': instance.sixHour,
+      'kn_1': instance.kn1,
+      'kn_2': instance.kn2,
+      'kn_3': instance.kn3,
+    };

@@ -174,3 +174,47 @@ Map<String, dynamic> _$NeonatalKn3FormBodyToJson(
       'masalah': instance.masalah,
       'monthly_checkup_id': instance.monthly_checkup_id,
     };
+
+NeonatalResponse _$NeonatalResponseFromJson(Map<String, dynamic> json) {
+  return NeonatalResponse(
+    message: json['message'] as String,
+    status: json['status'] as String,
+    code: json['code'] as int,
+    data: NeonatalDataResponse.fromJson(json['data'] as Map<String, dynamic>),
+  );
+}
+
+Map<String, dynamic> _$NeonatalResponseToJson(NeonatalResponse instance) =>
+    <String, dynamic>{
+      'message': instance.message,
+      'status': instance.status,
+      'code': instance.code,
+      'data': instance.data,
+    };
+
+NeonatalDataResponse _$NeonatalDataResponseFromJson(Map<String, dynamic> json) {
+  return NeonatalDataResponse(
+    six_hours: json['six_hours'] == null
+        ? null
+        : Neonatal6HourFormBody.fromJson(
+            json['six_hours'] as Map<String, dynamic>),
+    kn_1: json['kn_1'] == null
+        ? null
+        : NeonatalKn1FormBody.fromJson(json['kn_1'] as Map<String, dynamic>),
+    kn_2: json['kn_2'] == null
+        ? null
+        : NeonatalKn2FormBody.fromJson(json['kn_2'] as Map<String, dynamic>),
+    kn_3: json['kn_3'] == null
+        ? null
+        : NeonatalKn3FormBody.fromJson(json['kn_3'] as Map<String, dynamic>),
+  );
+}
+
+Map<String, dynamic> _$NeonatalDataResponseToJson(
+        NeonatalDataResponse instance) =>
+    <String, dynamic>{
+      'six_hours': instance.six_hours,
+      'kn_1': instance.kn_1,
+      'kn_2': instance.kn_2,
+      'kn_3': instance.kn_3,
+    };

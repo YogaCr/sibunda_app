@@ -111,7 +111,7 @@ class NeonatalServiceVm extends FormAuthVmGroup {
       }
       map.remove("q_kuning");
     }
-    map["monthly_checkup_id"] = monthlyCheckUpId;
+    map["monthly_checkup_id"] = monthlyCheckUpId.checkUpId;
     prind("NeonatalServiceVm.doSubmitJob() map = $map");
     final res = await _saveNeonatalForm(
       page: _currentPage.value!,
@@ -156,6 +156,7 @@ class NeonatalServiceVm extends FormAuthVmGroup {
 
   @protected
   void getAnswer({ bool forceLoad = false }) {
+    prind("Neonatal Vm getAnswer() forceLoad= $forceLoad _formAnswer= $_formAnswer");
     if(!forceLoad && _formAnswer.value != null) return;
     startJob(getAnswerKey, (isActive) async {
       final res = await _getNeonatalFormAnswer(
@@ -163,6 +164,7 @@ class NeonatalServiceVm extends FormAuthVmGroup {
         yearId: monthlyCheckUpId.yearId,
         month: monthlyCheckUpId.month,
       );
+      prind("Neonatal Vm getAnswer() res= $res");
       if(res is Success<Map<String, dynamic>?>) {
         final map = res.data;
         _formAnswer.value = map;

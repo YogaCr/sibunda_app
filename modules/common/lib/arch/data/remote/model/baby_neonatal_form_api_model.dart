@@ -1,4 +1,5 @@
 import 'package:common/arch/domain/model/baby_data.dart';
+import 'package:common/util/map_util.dart';
 import 'package:common/value/const_values.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -42,7 +43,12 @@ class Neonatal6HourFormBody {
     required this.monthly_checkup_id,
   });
 
-  factory Neonatal6HourFormBody.fromJson(Map<String, dynamic> map) => _$Neonatal6HourFormBodyFromJson(map);
+  factory Neonatal6HourFormBody.fromJson(Map<String, dynamic> map) =>
+      _$Neonatal6HourFormBodyFromJson(
+          parseAllParsableValuesToNum(
+              parseAllBoolToNum(map)
+          )
+      );
   Map<String, dynamic> toJson() => _$Neonatal6HourFormBodyToJson(this);
 
   factory Neonatal6HourFormBody.fromModel(Neonatal6HourForm model, {
@@ -98,7 +104,12 @@ class NeonatalKn1FormBody {
   required this.monthly_checkup_id,
   });
 
-  factory NeonatalKn1FormBody.fromJson(Map<String, dynamic> map) => _$NeonatalKn1FormBodyFromJson(map);
+  factory NeonatalKn1FormBody.fromJson(Map<String, dynamic> map) =>
+      _$NeonatalKn1FormBodyFromJson(
+          parseAllParsableValuesToNum(
+              parseAllBoolToNum(map)
+          )
+      );
   Map<String, dynamic> toJson() => _$NeonatalKn1FormBodyToJson(this);
 
   factory NeonatalKn1FormBody.fromModel(NeonatalKn1Form model, {
@@ -153,7 +164,12 @@ class NeonatalKn2FormBody {
   required this.monthly_checkup_id,
   });
 
-  factory NeonatalKn2FormBody.fromJson(Map<String, dynamic> map) => _$NeonatalKn2FormBodyFromJson(map);
+  factory NeonatalKn2FormBody.fromJson(Map<String, dynamic> map) =>
+      _$NeonatalKn2FormBodyFromJson(
+          parseAllParsableValuesToNum(
+              parseAllBoolToNum(map)
+          )
+      );
   Map<String, dynamic> toJson() => _$NeonatalKn2FormBodyToJson(this);
 
   factory NeonatalKn2FormBody.fromModel(NeonatalKn2Form model, {
@@ -202,7 +218,12 @@ class NeonatalKn3FormBody {
     required this.monthly_checkup_id,
   });
 
-  factory NeonatalKn3FormBody.fromJson(Map<String, dynamic> map) => _$NeonatalKn3FormBodyFromJson(map);
+  factory NeonatalKn3FormBody.fromJson(Map<String, dynamic> map) =>
+      _$NeonatalKn3FormBodyFromJson(
+          parseAllParsableValuesToNum(
+              parseAllBoolToNum(map)
+          )
+      );
   Map<String, dynamic> toJson() => _$NeonatalKn3FormBodyToJson(this);
 
   factory NeonatalKn3FormBody.fromModel(NeonatalKn3Form model, {
