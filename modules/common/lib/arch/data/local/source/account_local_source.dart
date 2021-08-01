@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:common/arch/data/local/dao/account_dao.dart';
 import 'package:common/arch/data/local/dao/pregnancy_dao.dart';
 import 'package:common/arch/data/local/db/app_db.dart';
@@ -12,6 +14,7 @@ import 'package:common/value/const_values.dart';
 import 'package:common/value/db_const.dart';
 import 'package:core/domain/model/result.dart';
 import 'package:core/util/_consoles.dart';
+import 'package:crypto/crypto.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:collection/collection.dart';
@@ -61,6 +64,10 @@ mixin AccountLocalSrc {
   Future<Result<bool>> saveCurrentEmail(String email);
   Future<Result<String>> getCurrentEmail();
   Future<Result<bool>> deleteCurrentEmail();
+
+  Future<Result<bool>> saveCurrentPswd(String password);
+  /// Check if [password] is same as saved in local.
+  Future<Result<bool>> checkCurrentPswd(String password);
 
   Future<Result<bool>> clear();
 }
@@ -348,10 +355,15 @@ class AccountLocalSrcImpl with AccountLocalSrc {
       final children = res[DbConst.TYPE_CHILD]?.map((e) => Profile.fromEntity(
         entity: e, email: motherCred.email,
       )).toList(growable: false);
+      // /*
       if(children == null) {
-        return Fail(msg: "Can't get children profiles with `id` of '${mother.userId}' in `getChildrenProfilesByMotherNik()`");
+        final msg = "Can't get children profiles with `id` of '${mother.userId}' in `getChildrenProfilesByMotherNik()`.\n"
+            "It means that this user with `id` of '${mother.userId}' doesn't have a child yet, then return empty list.";
+        prinw(msg);
+        //return Fail(msg: msg);
       }
-      return Success(children);
+      // */
+      return Success(children ?? []);
     } catch(e, stack) {
       final msg = "Error calling `getChildrenProfilesByMotherNik()`";
       prine("$msg, e= $e");
@@ -435,7 +447,6 @@ class AccountLocalSrcImpl with AccountLocalSrc {
       return Fail();
     }
   }
-
   @override
   Future<Result<String>> getCurrentEmail() async {
     final email = _sharedPref.getString(Const.KEY_ACTIVE_EMAIL);
@@ -444,7 +455,6 @@ class AccountLocalSrcImpl with AccountLocalSrc {
     }
     return Success(email);
   }
-
   @override
   Future<Result<bool>> deleteCurrentEmail() async {
     try {
@@ -456,11 +466,63 @@ class AccountLocalSrcImpl with AccountLocalSrc {
   }
 
   @override
+  Future<Result<bool>> saveCurrentPswd(String password) async {
+    try {
+      final bytes = utf8.encode(password);
+      final digested = sha256.convert(bytes);
+
+      final keyBytes = utf8.encode(Const.KEY_PSWD);
+      final key = sha1.convert(keyBytes);
+
+      final res = await _sharedPref.setString(key.toString(), digested.toString());
+      if(!res) {
+        final msg = "Can't save password to local";
+        return Fail(msg: msg);
+      }
+      return Success(true);
+    } catch(e, stack) {
+      final msg = "Error calling `saveCurrentPswd()`";
+      prine("$msg; e= $e");
+      prine(stack);
+      return Fail(msg: msg, error: e,);
+    }
+  }
+  @override
+  Future<Result<bool>> checkCurrentPswd(String password) async {
+    try {
+      final keyBytes = utf8.encode(Const.KEY_PSWD);
+      final key = sha1.convert(keyBytes);
+
+      final currPswd = _sharedPref.getString(key.toString());
+      if(currPswd == null) {
+        final msg = "Can't check current pswd because there is no current saved pswd";
+        prine(msg);
+        return Fail(msg: msg, code: 404);
+      }
+
+      final bytes = utf8.encode(password);
+      final digest = sha256.convert(bytes);
+
+      return Success(digest.toString() == currPswd);
+    } catch(e, stack) {
+      final msg = "Error calling `checkCurrentPswd()`";
+      prine("$msg; e= $e");
+      prine(stack);
+      return Fail(msg: msg, error: e,);
+    }
+  }
+
+  @override
   Future<Result<bool>> clear() async {
     try {
       final res = await _profileDao.deleteAll();
       final res2 = await _credentialDao.deleteAll();
-      return Success(res > 0 && res2 > 0);
+
+      final keyBytes = utf8.encode(Const.KEY_PSWD);
+      final key = sha1.convert(keyBytes);
+      final res3 = await _sharedPref.remove(key.toString());
+
+      return Success(res > 0 && res2 > 0 && res3);
     } catch(e, stack) {
       prine(e);
       prine(stack);

@@ -4,6 +4,7 @@ import 'package:common/arch/domain/dummy_data.dart';
 import 'package:common/arch/domain/dummy_form_field_data.dart';
 import 'package:common/arch/domain/model/img_data.dart';
 import 'package:common/arch/domain/model/profile_data.dart';
+import 'package:common/arch/domain/repo/profile_repo.dart';
 import 'package:common/arch/domain/usecase/auth_usecase.dart';
 import 'package:common/arch/ui/model/form_data.dart';
 import 'package:common/arch/ui/vm/form_vm_group.dart';
@@ -30,9 +31,15 @@ class ProfileEditVm extends FormAuthVmGroup {
   {
     isFormReady.observe(this, (isReady) {
       if(isReady == true) {
+        /*
+        getResponseLiveDataWithKey(Const.KEY_NAME).observe(this, (final name) {
+          checkIsEdited();
+        });
+         */
         getResponseLiveDataWithKey(Const.KEY_EMAIL).observe(this, (final email) {
           prind("ProfileEditVm getResponseLiveDataWithKey.observe() email= $email _currentEmail= $_currentEmail");
           _emailCheckTimer?.cancel();
+          //checkIsEdited();
           if(email == _currentTypedEmail) {
             return;
           }
@@ -66,6 +73,9 @@ class ProfileEditVm extends FormAuthVmGroup {
     _isEmailAvailable.observe(this, (available) {
       setFieldValidity(0, Const.KEY_EMAIL, available == true);
     });
+    _oldPswdCode.observe(this, (code) {
+      setFieldValidity(0, Const.KEY_OLD_PSWD, code == Const.CODE_OK);
+    });
   }
 
   final SaveProfile _saveProfile;
@@ -80,14 +90,21 @@ class ProfileEditVm extends FormAuthVmGroup {
   final MutableLiveData<bool> _isEmailAvailable = MutableLiveData(false);
   LiveData<bool> get isEmailAvailable => _isEmailAvailable;
 
+  final MutableLiveData<int> _oldPswdCode = MutableLiveData();
+  LiveData<int> get oldPswdCode => _oldPswdCode;
+
   final imgProfile = MutableLiveData<ImgData>();
 
   String? _currentEmail;
+  String? _currentName;
+
   String? _currentTypedEmail;
+  bool _isCurrentlyEdited = false;
+  bool get isCurrentlyEdited => _isCurrentlyEdited;
 
   @override
   List<LiveData> get liveDatas {
-    final list = <LiveData>[imgProfile, _isEmailAvailable,];
+    final list = <LiveData>[imgProfile, _isEmailAvailable, _oldPswdCode,];
     if(_oldPswd != null) {
       list.add(_oldPswd!);
     }
@@ -111,6 +128,9 @@ class ProfileEditVm extends FormAuthVmGroup {
 
   @override
   Future<Result<String>> doSubmitJob() async {
+    if(!checkIsEdited()) {
+      return Success("unedited");
+    }
     final respMap = getResponse().responseGroups.values.first;
     final data = AccountData(
       name: respMap[Const.KEY_NAME],
@@ -120,6 +140,11 @@ class ProfileEditVm extends FormAuthVmGroup {
     );
     final String? oldPswd = respMap[Const.KEY_OLD_PSWD];
     final res = await _saveProfile(data, oldPswd);
+    if(res is Fail<bool>) {
+      _oldPswdCode.value = res.code;
+    } else {
+      _oldPswdCode.value = Const.CODE_OK;
+    }
     return res is Success<bool> ? Success("ok") : Fail();
   }
 
@@ -184,6 +209,10 @@ class ProfileEditVm extends FormAuthVmGroup {
           }
         }
         return Strings.please_type_correct_email;
+      case Const.KEY_OLD_PSWD:
+        if(_oldPswdCode.value == ProfileRepo.CODE_PSWD_MISMATCH) return Strings.old_pswd_not_match;
+        if(_oldPswdCode.value == Const.CODE_NOT_OK) return Strings.cant_check_old_pswd;
+        return Strings.password_at_least_8;
       case Const.KEY_PSWD: return Strings.password_at_least_8;
       case Const.KEY_RE_PSWD: return Strings.password_re_does_not_match;
     }
@@ -192,7 +221,19 @@ class ProfileEditVm extends FormAuthVmGroup {
 
   void setProfile(Profile data) {
     final list = responseGroupList.first as Map<String, MutableFormVmResponse>;
-    list[Const.KEY_NAME]!.response.value = data.name;
+    list[Const.KEY_NAME]!.response.value = _currentName = data.name;
     list[Const.KEY_EMAIL]!.response.value = _currentEmail = data.email;
+    _isCurrentlyEdited = false;
+  }
+
+  bool checkIsEdited() {
+    final isNameSame = _currentName == getResponseWithKey(Const.KEY_NAME);
+    final isEmailSame = _currentEmail == getResponseWithKey(Const.KEY_EMAIL);
+    return _isCurrentlyEdited =
+        !isNameSame || !isEmailSame
+      || _oldPswd?.value?.isNotEmpty == true
+      || _newPswd?.value?.isNotEmpty == true
+      || _newPswdRe?.value?.isNotEmpty == true
+    ;
   }
 }

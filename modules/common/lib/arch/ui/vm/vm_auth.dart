@@ -39,7 +39,7 @@ abstract class AsyncAuthVm extends AsyncVm with AuthVm {
             (skippedKeyToToastOnFail == null || !skippedKeyToToastOnFail!.contains(key))
         ) {
           showToast(msg: msg, bgColor: red, textColor: white, len: Toast.LENGTH_LONG);
-          showErrorPopup(context: _context!, error: msg);
+          showErrorPopup(context: _context!, error: failure.copy(msg: msg),);
           //Fluttertoast.showToast(msg: msg, backgroundColor: red, toastLength: Toast.LENGTH_LONG);
         }
         //showSnackBar(_context!, failure.toString());
@@ -81,7 +81,7 @@ abstract class FormAuthVm extends FormVm with AuthVm {
             (skippedKeyToToastOnFail == null || !skippedKeyToToastOnFail!.contains(key))
         ) {
           showToast(msg: msg, bgColor: red, textColor: white, len: Toast.LENGTH_LONG);
-          showErrorPopup(context: _context!, error: msg);
+          showErrorPopup(context: _context!, error: failure.copy(msg: msg),);
           //Fluttertoast.showToast(msg: msg, backgroundColor: red, toastLength: Toast.LENGTH_LONG);
         }
         //showSnackBar(_context!, failure.toString());
@@ -121,7 +121,7 @@ abstract class FormAuthVmGroup extends FormVmGroup with AuthVm {
             (skippedKeyToToastOnFail == null || !skippedKeyToToastOnFail!.contains(key))
         ) {
           showToast(msg: msg, bgColor: red, textColor: white, len: Toast.LENGTH_LONG);
-          showErrorPopup(context: _context!, error: msg);
+          showErrorPopup(context: _context!, error: failure.copy(msg: msg),);
           //Fluttertoast.showToast(msg: msg, backgroundColor: red, toastLength: Toast.LENGTH_LONG);
         }
         //showSnackBar(_context!, failure.toString());

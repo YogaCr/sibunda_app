@@ -201,9 +201,11 @@ class _PopupImgPickerPanel extends StatelessWidget {
 
 class PopupError extends StatelessWidget {
   final Object error;
+  //final Fail? failure;
 
   PopupError({
     required this.error,
+    //this.failure,
   });
 
   @override
@@ -216,7 +218,9 @@ class PopupError extends StatelessWidget {
      */
 
     final errorStr = error.toString();
-    final stackStr = StackTrace.current.toString();
+    final stackStr =
+        (error is Fail ? (error as Fail).stack
+        : StackTrace.current).toString();
 
     return Material(
         color: Colors.transparent,

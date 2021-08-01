@@ -1,6 +1,7 @@
 import 'package:common/arch/di/api_di.dart';
 import 'package:common/arch/di/data_source_di.dart';
 import 'package:common/arch/di/db_di.dart';
+import 'package:common/arch/di/usecase_di.dart';
 import 'package:common/arch/domain/repo/_repos.dart';
 import 'package:common/arch/domain/repo/bayiku_repo.dart';
 import 'package:common/arch/domain/repo/chart_baby_repo.dart';
@@ -35,7 +36,10 @@ class RepoDi {
     checkUpLocalSrc: LocalSrcDi.checkUpSrc,
   ); //AuthDummyRepo.obj; //
 
-  static ProfileRepo get profileRepo => ProfileRepoImpl(localSrc: LocalSrcDi.accountSrc); //ProfileRepoDummy.obj; //ProfileRepoImpl(localSrc: LocalSrcDi.accountSrc); //
+  static ProfileRepo get profileRepo => ProfileRepoImpl(
+    localSrc: LocalSrcDi.accountSrc,
+    dataApi: ApiDi.dataApi,
+  ); //ProfileRepoDummy.obj; //ProfileRepoImpl(localSrc: LocalSrcDi.accountSrc); //
   static HomeStatusRepo get homeStatusRepo => HomeStatusRepoImpl(homeApi: ApiDi.homeApi); //HomeStatusRepoDummy.obj;
   static HomeMenuRepo get homeMenuRepo => HomeMenuRepoDummy.obj;
   //static TipsRepo get tipsRepo => TipsRepoDummy.obj;

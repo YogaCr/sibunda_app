@@ -27,6 +27,9 @@ class Const {
   static const GENDER_MALE = "M";
   static const GENDER_FEMALE = "F";
 
+  static const CODE_OK = 0;
+  static const CODE_NOT_OK = -1;
+
   static const KEY_ID = "id";
   static const KEY_DATA = "data";
   static const KEY_PREGNANCY_ID = "pregnancy_id";

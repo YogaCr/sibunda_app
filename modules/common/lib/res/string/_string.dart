@@ -27,8 +27,10 @@ class Strings {
   static const still_checking_email_availability = "Sedang mengecek ketersediaan email...";
   static const please_enter_your_name = "Mohon masukan nama Anda";
   static const there_still_invalid_fields = "Ada beberapa isian yang belum valid";
+  static const old_pswd_not_match = "Password lama tidak cocok";
   static const password_at_least_8 = "Panjang password minimal 8 karakter";
   static const password_re_does_not_match = "Konfirmasi password tidak sama";
+  static const cant_check_old_pswd = "Tidak dapat mengecek password lama";
   static const wrong_email_or_password = "Email atau password salah";
   static const form_submission_success = "Form berhasil dikirim";
   static const form_submission_fail = "Terjadi kesalahan saat mengirim form. Harap ulangi.";

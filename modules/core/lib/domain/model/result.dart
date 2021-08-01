@@ -28,13 +28,16 @@ class Fail<T> extends Result<T> {
   final String? msg;
   final error;
   final data;
+  final StackTrace stack;
 
   Fail({
     int? code,
     this.msg,
     this.error,
     this.data,
-  }) : super(code ?? 1);
+    StackTrace? stack,
+  }): stack = stack ?? StackTrace.current,
+        super(code ?? 1);
 
   @override
   List<Object?> get props => [code, msg, error, data];
@@ -44,11 +47,13 @@ class Fail<T> extends Result<T> {
     String? msg,
     error,
     data,
+    StackTrace? stack,
   }) => Fail(
     code: code ?? this.code,
     msg: msg ?? this.msg,
     error: error ?? this.error,
     data: data ?? this.data,
+    stack: stack ?? this.stack,
   );
 }
 

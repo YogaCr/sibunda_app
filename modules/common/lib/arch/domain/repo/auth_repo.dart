@@ -147,6 +147,10 @@ class AuthRepoImpl with AuthRepo {
       if(locRes is! Success<bool>) {
         return Fail(msg: "Can't save `email` in local");
       }
+      locRes = await _accountLocalSrc.saveCurrentPswd(data.password);
+      if(locRes is! Success<bool>) {
+        return Fail(msg: "Can't save `pswd` in local");
+      }
 
       /*
       //final unbornChild = bioData.first.children.firstWhereOrNull((e) => e.)
@@ -163,7 +167,6 @@ class AuthRepoImpl with AuthRepo {
         }
       }
        */
-
       return Success(session, 200);
     } catch(e, stack) {
       final msg = "Error calling `login()`";
