@@ -1,4 +1,5 @@
 import 'package:common/arch/data/local/db/app_db.dart';
+import 'package:common/arch/data/remote/model/baby_neonatal_form_api_model.dart';
 import 'package:common/arch/data/remote/model/baby_overview_api_model.dart';
 import 'package:common/arch/domain/model/img_data.dart';
 import 'package:common/arch/domain/model/profile_data.dart';
@@ -11,6 +12,21 @@ import 'package:json_annotation/json_annotation.dart';
 import '../dummy_data.dart';
 
 part 'baby_data.g.dart';
+
+class BabyFormId extends Equatable {
+  final int yearId;
+  final int month;
+  final int? checkUpId;
+
+  BabyFormId({
+    required this.yearId,
+    required this.month,
+    this.checkUpId,
+  });
+
+  @override
+  List<Object?> get props => [yearId, month, checkUpId,];
+}
 
 class BabyAgeOverview {
   /*
@@ -194,6 +210,11 @@ class Neonatal6HourForm {
 
   factory Neonatal6HourForm.fromJson(Map<String, dynamic> map) => _$Neonatal6HourFormFromJson(map);
   Map<String, dynamic> toJson() => _$Neonatal6HourFormToJson(this);
+
+  factory Neonatal6HourForm.fromResponse(Neonatal6HourFormBody response) {
+    final map = response.toJson();
+    return Neonatal6HourForm.fromJson(map);
+  }
 }
 
 
@@ -242,6 +263,11 @@ class NeonatalKn1Form {
 
   factory NeonatalKn1Form.fromJson(Map<String, dynamic> map) => _$NeonatalKn1FormFromJson(map);
   Map<String, dynamic> toJson() => _$NeonatalKn1FormToJson(this);
+
+  factory NeonatalKn1Form.fromResponse(NeonatalKn1FormBody response) {
+    final map = response.toJson();
+    return NeonatalKn1Form.fromJson(map);
+  }
 }
 
 @JsonSerializable()
@@ -289,6 +315,11 @@ class NeonatalKn2Form {
 
   factory NeonatalKn2Form.fromJson(Map<String, dynamic> map) => _$NeonatalKn2FormFromJson(map);
   Map<String, dynamic> toJson() => _$NeonatalKn2FormToJson(this);
+
+  factory NeonatalKn2Form.fromResponse(NeonatalKn2FormBody response) {
+    final map = response.toJson();
+    return NeonatalKn2Form.fromJson(map);
+  }
 }
 
 
@@ -330,4 +361,37 @@ class NeonatalKn3Form {
 
   factory NeonatalKn3Form.fromJson(Map<String, dynamic> map) => _$NeonatalKn3FormFromJson(map);
   Map<String, dynamic> toJson() => _$NeonatalKn3FormToJson(this);
+
+  factory NeonatalKn3Form.fromResponse(NeonatalKn3FormBody response) {
+    final map = response.toJson();
+    return NeonatalKn3Form.fromJson(map);
+  }
+}
+
+
+@JsonSerializable()
+class AllNeonatalForm {
+  @JsonKey(name: "six_hours")
+  final Neonatal6HourForm? sixHour;
+  @JsonKey(name: "kn_1")
+  final NeonatalKn1Form? kn1;
+  @JsonKey(name: "kn_2")
+  final NeonatalKn2Form? kn2;
+  @JsonKey(name: "kn_3")
+  final NeonatalKn3Form? kn3;
+
+  AllNeonatalForm({
+    required this.sixHour,
+    required this.kn1,
+    required this.kn2,
+    required this.kn3,
+  });
+
+  factory AllNeonatalForm.fromJson(Map<String, dynamic> map) => _$AllNeonatalFormFromJson(map);
+  Map<String, dynamic> toJson() => _$AllNeonatalFormToJson(this);
+
+  factory AllNeonatalForm.fromResponse(NeonatalResponse response) {
+    final map = response.data.toJson();
+    return AllNeonatalForm.fromJson(map);
+  }
 }

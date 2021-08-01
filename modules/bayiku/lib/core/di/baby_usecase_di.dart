@@ -25,6 +25,7 @@ class BabyUseCaseDi {
 
   static GetNeonatalFormData get getNeonatalFormData => GetNeonatalFormDataImpl(RepoDi.formFieldRepo);
   static SaveNeonatalForm get saveNeonatalForm => SaveNeonatalFormImpl(RepoDi.myBabyRepo);
+  static GetNeonatalFormAnswer get getNeonatalFormAnswer => GetNeonatalFormAnswerImpl(RepoDi.myBabyRepo);
 
   static GetBabyImmunizationConfirmForm get getBabyImmunizationConfirmForm => GetBabyImmunizationConfirmFormImpl(RepoDi.formFieldRepo);
   static GetBabyImmunizationOverview get getBabyImmunizationOverview => GetBabyImmunizationOverviewImpl(RepoDi.immunizationRepo);

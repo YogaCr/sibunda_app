@@ -1,5 +1,6 @@
 import 'package:bayiku/core/domain/usecase/baby_neonatal_usecase.dart';
 import 'package:common/arch/domain/dummy_data.dart';
+import 'package:common/arch/domain/model/baby_data.dart';
 import 'package:common/arch/domain/model/form_data.dart';
 import 'package:common/arch/ui/model/form_data.dart';
 import 'package:common/arch/ui/vm/form_vm_group.dart';
@@ -19,9 +20,11 @@ class NeonatalServiceVm extends FormAuthVmGroup {
     required this.monthlyCheckUpId,
     required SaveNeonatalForm saveNeonatalForm,
     required GetNeonatalFormData getNeonatalFormData,
+    required GetNeonatalFormAnswer getNeonatalFormAnswer,
   }):
     _saveNeonatalForm = saveNeonatalForm,
-    _getNeonatalFormData = getNeonatalFormData, super(context: context)
+    _getNeonatalFormData = getNeonatalFormData,
+    _getNeonatalFormAnswer = getNeonatalFormAnswer, super(context: context)
   {
     _formAnswer.observe(this, (data) {
       if(data != null) {
@@ -51,22 +54,30 @@ class NeonatalServiceVm extends FormAuthVmGroup {
           }
         }
         patchResponse([mappedData]);
+        setFormEnabled(isEnabled: false);
       } else {
         resetResponses();
+        setFormEnabled(isEnabled: true);
+      }
+    });
+    isFormReady.observe(this, (isReady) {
+      if(isReady == true) {
+        getAnswer(forceLoad: true);
       }
     });
   }
   final SaveNeonatalForm _saveNeonatalForm;
   final GetNeonatalFormData _getNeonatalFormData;
+  final GetNeonatalFormAnswer _getNeonatalFormAnswer;
 
   final MutableLiveData<Map<String, dynamic>> _formAnswer = MutableLiveData();
 
   final MutableLiveData<int> _currentPage = MutableLiveData();
   LiveData<int> get currentPage => _currentPage;
-  final int monthlyCheckUpId;
+  final BabyFormId monthlyCheckUpId;
 
   @override
-  List<LiveData> get liveDatas => [];
+  List<LiveData> get liveDatas => [_formAnswer, _currentPage,];
 
 
   void initFormInPage({
@@ -143,11 +154,19 @@ class NeonatalServiceVm extends FormAuthVmGroup {
   }
  */
 
-  //TODO: NeonatalServiceVm - getAnswer: blum ada endpoint.
+  @protected
   void getAnswer({ bool forceLoad = false }) {
     if(!forceLoad && _formAnswer.value != null) return;
     startJob(getAnswerKey, (isActive) async {
-
+      final res = await _getNeonatalFormAnswer(
+        page: _currentPage.value!,
+        yearId: monthlyCheckUpId.yearId,
+        month: monthlyCheckUpId.month,
+      );
+      if(res is Success<Map<String, dynamic>?>) {
+        final map = res.data;
+        _formAnswer.value = map;
+      }
     });
   }
 }

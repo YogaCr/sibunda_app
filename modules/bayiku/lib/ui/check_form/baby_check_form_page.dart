@@ -187,7 +187,7 @@ class _MonthlyCheckFormPage extends StatelessWidget {
               children.insert(0, MultiLiveDataObserver(
                 liveDataList: [vm.formAnswer, vm.onSubmit,],
                 builder: (ctx, dataList) {
-                  final checkUpId = (dataList[0] as BabyMonthlyFormBody?)?.id;
+                  final checkUpId = (dataList[0] as BabyMonthlyFormBody?)?.toFormId();
                   prind("_MonthlyCheckFormPage checkUpId= $checkUpId dataList[1]= ${dataList[1]}");
                   return checkUpId != null //&& dataList[1] is Success<String>
                       ? _NeonatalServicePanel(checkUpId)
@@ -269,7 +269,7 @@ class _MonthlyCheckFormPage extends StatelessWidget {
 
 
 class _NeonatalServicePanel extends StatelessWidget {
-  final int checkUpId;
+  final BabyFormId checkUpId;
   _NeonatalServicePanel(this.checkUpId);
   @override
   Widget build(BuildContext context) {

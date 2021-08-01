@@ -80,6 +80,12 @@ class BabyMonthlyFormBody {
     map["month"] = month;
     return BabyMonthlyFormBody.fromJson(map);
   }
+
+  BabyFormId toFormId() => BabyFormId(
+    checkUpId: id,
+    yearId: yearId,
+    month: month,
+  );
 }
 
 @JsonSerializable()

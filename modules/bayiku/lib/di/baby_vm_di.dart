@@ -7,6 +7,7 @@ import 'package:bayiku/ui/immunization/baby_immunization_popup_vm.dart';
 import 'package:bayiku/ui/immunization/baby_immunization_vm.dart';
 import 'package:bayiku/ui/neonatal_service/neonatal_service_vm.dart';
 import 'package:common/arch/di/usecase_di.dart';
+import 'package:common/arch/domain/model/baby_data.dart';
 import 'package:common/arch/domain/model/immunization.dart';
 import 'package:common/arch/domain/model/profile_data.dart';
 import 'package:flutter/material.dart';
@@ -36,11 +37,12 @@ class BabyVmDi {
   );
   static NeonatalServiceVm neonatalServiceVm({
     BuildContext? context,
-    required int checkUpId,
+    required BabyFormId checkUpId,
   }) => NeonatalServiceVm(
     context: context,
     monthlyCheckUpId: checkUpId,
     getNeonatalFormData: BabyUseCaseDi.getNeonatalFormData,
+    getNeonatalFormAnswer: BabyUseCaseDi.getNeonatalFormAnswer,
     saveNeonatalForm: BabyUseCaseDi.saveNeonatalForm,
   );
   static BabyImmunizationVm babyImmunizationVm({

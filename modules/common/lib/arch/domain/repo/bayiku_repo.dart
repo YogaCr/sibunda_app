@@ -60,6 +60,27 @@ mixin MyBabyRepo {
     required int page,
     required Map<String, dynamic> formData,
   });
+
+  Future<Result<AllNeonatalForm>> getNeonatalServiceAnswer({
+    required int yearId,
+    required int month,
+  });
+  Future<Result<Neonatal6HourForm?>> getNeonatal6HourAnswer({
+    required int yearId,
+    required int month,
+  });
+  Future<Result<NeonatalKn1Form?>> getNeonatalKn1Answer({
+    required int yearId,
+    required int month,
+  });
+  Future<Result<NeonatalKn2Form?>> getNeonatalKn2Answer({
+    required int yearId,
+    required int month,
+  });
+  Future<Result<NeonatalKn3Form?>> getNeonatalKn3Answer({
+    required int yearId,
+    required int month,
+  });
 }
 
 
@@ -156,6 +177,7 @@ class MyBabyRepoImpl with MyBabyRepo {
   int _currentYearId = -1;
   String? _currentBabyNik;
   BabyFormWarningResponse? _formWarningResponse;
+  NeonatalResponse? _neonatalResponse;
 
   @override
   Future<Result<BabyAgeOverview>> getBabyAgeOverview(String babyNik) async //=> Success(dummyBabyAgeOverview);
@@ -319,6 +341,111 @@ class MyBabyRepoImpl with MyBabyRepo {
       return Fail(msg: "Error calling `saveNeonatalServiceForm()`", error: e,);
     }
   }
+
+  @override
+  Future<Result<AllNeonatalForm>> getNeonatalServiceAnswer({
+    required int yearId,
+    required int month,
+  }) async {
+    try {
+      if(_neonatalResponse == null || yearId != _currentYearId || month != _currentMonth) {
+        final body = BabyGetMonthlyFormBody(yearId: yearId, month: month);
+        _neonatalResponse = await _api.getNeonatalAnswer(body);
+        _currentYearId = yearId;
+        _currentMonth = month;
+      }
+      return Success(AllNeonatalForm.fromResponse(_neonatalResponse!));
+    } catch(e, stack) {
+      final msg = "Error calling `getNeonatalServiceAnswer()`";
+      prine("$msg; e= $e");
+      prine(stack);
+      return Fail(msg: msg, error: e,);
+    }
+  }
+  @override
+  Future<Result<Neonatal6HourForm?>> getNeonatal6HourAnswer({
+    required int yearId,
+    required int month,
+  }) async {
+    try {
+      if(_neonatalResponse == null || yearId != _currentYearId || month != _currentMonth) {
+        final body = BabyGetMonthlyFormBody(yearId: yearId, month: month);
+        _neonatalResponse = await _api.getNeonatalAnswer(body);
+        _currentYearId = yearId;
+        _currentMonth = month;
+      }
+      final raw = _neonatalResponse!.data.six_hours;
+      return Success(raw == null ? null : Neonatal6HourForm.fromResponse(raw));
+    } catch(e, stack) {
+      final msg = "Error calling `getNeonatal6HourAnswer()`";
+      prine("$msg; e= $e");
+      prine(stack);
+      return Fail(msg: msg, error: e,);
+    }
+  }
+  @override
+  Future<Result<NeonatalKn1Form?>> getNeonatalKn1Answer({
+    required int yearId,
+    required int month,
+  }) async {
+    try {
+      if(_neonatalResponse == null || yearId != _currentYearId || month != _currentMonth) {
+        final body = BabyGetMonthlyFormBody(yearId: yearId, month: month);
+        _neonatalResponse = await _api.getNeonatalAnswer(body);
+        _currentYearId = yearId;
+        _currentMonth = month;
+      }
+      final raw = _neonatalResponse!.data.kn_1;
+      return Success(raw == null ? null : NeonatalKn1Form.fromResponse(raw));
+    } catch(e, stack) {
+      final msg = "Error calling `getNeonatalKn1Answer()`";
+      prine("$msg; e= $e");
+      prine(stack);
+      return Fail(msg: msg, error: e,);
+    }
+  }
+  @override
+  Future<Result<NeonatalKn2Form?>> getNeonatalKn2Answer({
+    required int yearId,
+    required int month,
+  }) async {
+    try {
+      if(_neonatalResponse == null || yearId != _currentYearId || month != _currentMonth) {
+        final body = BabyGetMonthlyFormBody(yearId: yearId, month: month);
+        _neonatalResponse = await _api.getNeonatalAnswer(body);
+        _currentYearId = yearId;
+        _currentMonth = month;
+      }
+      final raw = _neonatalResponse!.data.kn_2;
+      return Success(raw == null ? null : NeonatalKn2Form.fromResponse(raw));
+    } catch(e, stack) {
+      final msg = "Error calling `getNeonatalKn2Answer()`";
+      prine("$msg; e= $e");
+      prine(stack);
+      return Fail(msg: msg, error: e,);
+    }
+  }
+  @override
+  Future<Result<NeonatalKn3Form?>> getNeonatalKn3Answer({
+    required int yearId,
+    required int month,
+  }) async {
+    try {
+      if(_neonatalResponse == null || yearId != _currentYearId || month != _currentMonth) {
+        final body = BabyGetMonthlyFormBody(yearId: yearId, month: month);
+        _neonatalResponse = await _api.getNeonatalAnswer(body);
+        _currentYearId = yearId;
+        _currentMonth = month;
+      }
+      final raw = _neonatalResponse!.data.kn_3;
+      return Success(raw == null ? null : NeonatalKn3Form.fromResponse(raw));
+    } catch(e, stack) {
+      final msg = "Error calling `getNeonatalKn3Answer()`";
+      prine("$msg; e= $e");
+      prine(stack);
+      return Fail(msg: msg, error: e,);
+    }
+  }
 }
 
 class MyBabyRepoDummy with MyBabyRepo {
@@ -376,6 +503,37 @@ class MyBabyRepoDummy with MyBabyRepo {
     required int babyId,
     required int month,
   }) async => Success(1);
+
+  @override
+  Future<Result<AllNeonatalForm>> getNeonatalServiceAnswer({
+    required int yearId,
+    required int month,
+  }) async => Success(AllNeonatalForm(
+    sixHour: null,
+    kn1: null,
+    kn2: null,
+    kn3: null,
+  ));
+  @override
+  Future<Result<Neonatal6HourForm?>> getNeonatal6HourAnswer({
+    required int yearId,
+    required int month,
+  }) async => Success(null);
+  @override
+  Future<Result<NeonatalKn1Form?>> getNeonatalKn1Answer({
+    required int yearId,
+    required int month,
+  }) async => Success(null);
+  @override
+  Future<Result<NeonatalKn2Form?>> getNeonatalKn2Answer({
+    required int yearId,
+    required int month,
+  }) async => Success(null);
+  @override
+  Future<Result<NeonatalKn3Form?>> getNeonatalKn3Answer({
+    required int yearId,
+    required int month,
+  }) async => Success(null);
 }
 
 

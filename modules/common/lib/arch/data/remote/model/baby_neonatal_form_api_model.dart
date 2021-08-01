@@ -214,3 +214,45 @@ class NeonatalKn3FormBody {
   }
 }
 
+
+/*
+================
+Response
+================
+ */
+
+@JsonSerializable()
+class NeonatalResponse {
+  final String message;
+  final String status;
+  final int code;
+  final NeonatalDataResponse data;
+
+  NeonatalResponse({
+    required this.message,
+    required this.status,
+    required this.code,
+    required this.data,
+  });
+
+  factory NeonatalResponse.fromJson(Map<String, dynamic> map) => _$NeonatalResponseFromJson(map);
+  Map<String, dynamic> toJson() => _$NeonatalResponseToJson(this);
+}
+
+@JsonSerializable()
+class NeonatalDataResponse {
+  final Neonatal6HourFormBody? six_hours;
+  final NeonatalKn1FormBody? kn_1;
+  final NeonatalKn2FormBody? kn_2;
+  final NeonatalKn3FormBody? kn_3;
+
+  NeonatalDataResponse({
+    required this.six_hours,
+    required this.kn_1,
+    required this.kn_2,
+    required this.kn_3,
+  });
+
+  factory NeonatalDataResponse.fromJson(Map<String, dynamic> map) => _$NeonatalDataResponseFromJson(map);
+  Map<String, dynamic> toJson() => _$NeonatalDataResponseToJson(this);
+}

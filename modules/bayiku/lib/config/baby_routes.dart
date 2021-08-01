@@ -87,7 +87,7 @@ class _BabyNeonantalServicePageRoute {
 
   void go({
     required BuildContext context,
-    required int checkUpId,
+    required BabyFormId checkUpId,
   }) {
     final route = SibRoute("NeonatalServicePage", NeonatalServicePage, (ctx) {
       //final FormGroupInterceptor? interceptor = ConfigUtil.formInterceptor;
