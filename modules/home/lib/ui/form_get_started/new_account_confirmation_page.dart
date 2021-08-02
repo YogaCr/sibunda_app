@@ -70,12 +70,6 @@ class NewAccountConfirmPage extends StatelessWidget {
       }
     };
 
-    final onPrePostAsyncBuilder = (BuildContext ctx, String key) {
-      if(key == FormVmGroupMixin.submitFormKey) {
-        return defaultLoading();
-      }
-    };
-
     return Stack(
       children: [
         Align(
@@ -116,16 +110,29 @@ class NewAccountConfirmPage extends StatelessWidget {
         ),
         Align(
           alignment: Alignment.bottomCenter,
-          child: AsyncVmObserver<GetStartedFormMainVm, bool>(
-            vm: vm,
-            liveDataGetter: (vm) => vm.onSubmit,
-            preAsyncBuilder: onPrePostAsyncBuilder,
-            postAsyncBuilder: onPrePostAsyncBuilder,
-            builder: (ctx, data) {
-              return TxtBtn(
-                Strings.make_new_mother_account,
-                color: data == true ? green_calm : grey,
-                onTap: data == true ? () => vm.sendData() : null,
+          child: Builder(
+            builder: (ctx) {
+              final submitBtnBuilder = (ctx, data) {
+                return TxtBtn(
+                  Strings.make_new_mother_account,
+                  color: data == true ? green_calm : grey,
+                  onTap: data == true ? () => vm.sendData() : null,
+                );
+              };
+              return AsyncVmObserver<GetStartedFormMainVm, bool>(
+                vm: vm,
+                liveDataGetter: (vm) => vm.onSubmit,
+                preAsyncBuilder: (BuildContext ctx, String key) {
+                  if(key == FormVmGroupMixin.submitFormKey) {
+                    return defaultLoading();
+                  }
+                },
+                postAsyncBuilder: (ctx, key) {
+                  if(key == FormVmGroupMixin.submitFormKey) {
+                    return submitBtnBuilder(ctx, true);
+                  }
+                },
+                builder: submitBtnBuilder,
               );
             },
           ),

@@ -1,9 +1,11 @@
+import 'package:common/arch/ui/vm/form_vm_group.dart';
 import 'package:common/arch/ui/widget/_basic_widget.dart';
 import 'package:common/config/_config.dart';
 import 'package:common/res/string/_string.dart';
 import 'package:common/res/theme/_theme.dart';
 import 'package:common/util/navigations.dart';
 import 'package:common/util/ui.dart';
+import 'package:core/ui/base/async_view_model_observer.dart';
 import 'package:core/ui/base/live_data_observer.dart';
 import 'package:core/ui/base/view_model.dart';
 import 'package:flutter/cupertino.dart';
@@ -98,6 +100,33 @@ class MotherHplPage extends StatelessWidget {
               ),
             ],
           ).withMargin(EdgeInsets.all(SibDimens.std_padding)),
+        ),
+        Builder(
+          builder: (ctx) {
+            final submitBtnBuilder = (ctx, canProceed) {
+              return TxtBtn(
+                Strings.save,
+                color: canProceed == true ? Manifest.theme.colorPrimary : grey,
+                onTap: () => canProceed == true
+                    ? vm.proceed()
+                    : showSnackBar(ctx, Strings.there_still_invalid_fields), //canProceed != true ? null : () => _moveToNext(context),
+              );
+            };
+            return AsyncVmObserver<MotherHplVm, bool>(
+              liveDataGetter: (vm) => vm.canProceed,
+              preAsyncBuilder: (BuildContext ctx, String key) {
+                if(key == FormVmGroupMixin.submitFormKey) {
+                  return defaultLoading();
+                }
+              },
+              postAsyncBuilder: (BuildContext ctx, String key) {
+                if(key == FormVmGroupMixin.submitFormKey) {
+                  return submitBtnBuilder(ctx, true);
+                }
+              },
+              builder: submitBtnBuilder,
+            );
+          },
         ),
         LiveDataObserver<bool>(
           liveData: vm.canProceed,
