@@ -110,31 +110,36 @@ class NewAccountConfirmPage extends StatelessWidget {
         ),
         Align(
           alignment: Alignment.bottomCenter,
-          child: Builder(
-            builder: (ctx) {
-              final submitBtnBuilder = (ctx, data) {
-                return TxtBtn(
-                  Strings.make_new_mother_account,
-                  color: data == true ? green_calm : grey,
-                  onTap: data == true ? () => vm.sendData() : null,
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              maxHeight: 90,
+            ),
+            child: Builder(
+              builder: (ctx) {
+                final submitBtnBuilder = (ctx, data) {
+                  return TxtBtn(
+                    Strings.make_new_mother_account,
+                    color: green_calm, //data == true ? green_calm : grey,
+                    onTap: () => vm.sendData(), //data == true ? () => vm.sendData() : null,
+                  );
+                };
+                return AsyncVmObserver<GetStartedFormMainVm, bool>(
+                  vm: vm,
+                  liveDataGetter: (vm) => vm.onSubmit,
+                  preAsyncBuilder: (BuildContext ctx, String key) {
+                    if(key == GetStartedFormMainVm.sendDataKey) {
+                      return defaultLoading();
+                    }
+                  },
+                  postAsyncBuilder: (ctx, key) {
+                    if(key == GetStartedFormMainVm.sendDataKey) {
+                      return submitBtnBuilder(ctx, true);
+                    }
+                  },
+                  builder: submitBtnBuilder,
                 );
-              };
-              return AsyncVmObserver<GetStartedFormMainVm, bool>(
-                vm: vm,
-                liveDataGetter: (vm) => vm.onSubmit,
-                preAsyncBuilder: (BuildContext ctx, String key) {
-                  if(key == FormVmGroupMixin.submitFormKey) {
-                    return defaultLoading();
-                  }
-                },
-                postAsyncBuilder: (ctx, key) {
-                  if(key == FormVmGroupMixin.submitFormKey) {
-                    return submitBtnBuilder(ctx, true);
-                  }
-                },
-                builder: submitBtnBuilder,
-              );
-            },
+              },
+            ),
           ),
         ).withMargin(EdgeInsets.only(bottom: 55)),
       ],

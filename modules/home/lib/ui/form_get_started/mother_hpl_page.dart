@@ -115,12 +115,12 @@ class MotherHplPage extends StatelessWidget {
             return AsyncVmObserver<MotherHplVm, bool>(
               liveDataGetter: (vm) => vm.canProceed,
               preAsyncBuilder: (BuildContext ctx, String key) {
-                if(key == FormVmGroupMixin.submitFormKey) {
+                if(key == MotherHplVm.proceedKey) {
                   return defaultLoading();
                 }
               },
               postAsyncBuilder: (BuildContext ctx, String key) {
-                if(key == FormVmGroupMixin.submitFormKey) {
+                if(key == MotherHplVm.proceedKey) {
                   return submitBtnBuilder(ctx, true);
                 }
               },
@@ -128,6 +128,7 @@ class MotherHplPage extends StatelessWidget {
             );
           },
         ),
+        /*
         LiveDataObserver<bool>(
           liveData: vm.canProceed,
           builder: (ctx, canProceed) => TxtBtn(
@@ -138,6 +139,7 @@ class MotherHplPage extends StatelessWidget {
                 : showSnackBar(ctx, Strings.there_still_invalid_fields), //canProceed != true ? null : () => _moveToNext(context),
           ),
         ),
+         */
       ],
     ).withMargin(EdgeInsets.only(right: 24, left: 24));
   }

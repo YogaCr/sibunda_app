@@ -83,6 +83,7 @@ class MotherFormPage extends StatelessWidget {
               showSnackBar(context, "Gagal",);
             }
           },
+          submitBtnMargin: EdgeInsets.only(bottom: 15,),
           submitBtnBuilder: (ctx, canProceed) => FloatingActionButton(
             child: Icon(Icons.arrow_forward_rounded,),
             backgroundColor: canProceed == true ? pink_300 : grey,

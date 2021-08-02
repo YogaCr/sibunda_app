@@ -127,6 +127,7 @@ class ChildFormPage extends StatelessWidget {
             interceptor: interceptor,
             innerPageControll: innerPageControll,
             pageControll: pageControll,
+            onlySinglePage: onlySinglePage,
           ),
         ),
       ) : defaultLoading();
@@ -140,6 +141,7 @@ class ChildFormPage extends StatelessWidget {
 }
 
 class _ChildSingleFormPage extends StatelessWidget {
+  final bool onlySinglePage;
   final PageController innerPageControll;
   final PageController? pageControll;
   final FormGroupInterceptor? interceptor;
@@ -152,6 +154,7 @@ class _ChildSingleFormPage extends StatelessWidget {
     required this.innerPageControll,
     required this.pageControll,
     required this.interceptor,
+    required this.onlySinglePage,
   });
 
   @override
@@ -180,6 +183,9 @@ class _ChildSingleFormPage extends StatelessWidget {
           vm: vm,
           showHeader: false,
           interceptor: interceptor,
+          submissionKeys: {
+            ChildFormVm.saveBatchChildrenKey,
+          },
           pickerIconBuilder: (group, key, data) {
             if(group == 0) {
               switch(key) {
@@ -240,6 +246,7 @@ class _ChildSingleFormPage extends StatelessWidget {
               showSnackBar(context, "Terjadi kesalahan",);
             }
           },
+          submitBtnMargin: !onlySinglePage ? EdgeInsets.only(bottom: 15,) : null,
           submitBtnBuilder: (ctx, canProceed) => FloatingActionButton(
             child: Icon(Icons.arrow_forward_rounded,),
             backgroundColor: canProceed == true ? pink_300 : grey,

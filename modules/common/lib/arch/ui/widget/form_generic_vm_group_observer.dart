@@ -45,6 +45,11 @@ class FormVmGroupObserver<VM extends FormVmGroup> extends StatefulWidget {
   /// This returns true, then new form will be displayed.
   final bool Function()? predicate;
 
+  /// If somehow [FormVmGroupMixin.submit] doesn't use [FormVmGroupMixin.submitFormKey]
+  /// for the key, then programmer can define custom key so that this widget can
+  /// harness the power of [AsyncVmObserver.preAsyncBuilder].
+  final Set<String>? submissionKeys;
+
   final bool showHeader;
   /// Just like [showHeader], but for each group. Its keys are index of group.
   /// Note that [showHeader] has higher privilege, so if [showHeader] is false,
@@ -67,6 +72,7 @@ class FormVmGroupObserver<VM extends FormVmGroup> extends StatefulWidget {
     this.onSubmit,
     this.onPreSubmit,
     this.predicate,
+    this.submissionKeys,
     this.submitBtnMargin,
     this.vm,
     this.imgPosition = RelativePosition.below,
@@ -86,6 +92,7 @@ class FormVmGroupObserver<VM extends FormVmGroup> extends StatefulWidget {
     onSubmit: onSubmit,
     onPreSubmit: onPreSubmit,
     predicate: predicate,
+    submissionKeys: submissionKeys,
     submitBtnMargin: submitBtnMargin,
     vm: vm,
     imgPosition: imgPosition,
@@ -128,6 +135,11 @@ class _FormVmGroupObserverState<VM extends FormVmGroup>
   /// This returns true, then new form will be displayed.
   final bool Function()? predicate;
 
+  /// If somehow [FormVmGroupMixin.submit] doesn't use [FormVmGroupMixin.submitFormKey]
+  /// for the key, then programmer can define custom key so that this widget can
+  /// harness the power of [AsyncVmObserver.preAsyncBuilder].
+  final Set<String>? submissionKeys;
+
   final bool showHeader;
   /// Just like [showHeader], but for each group. Its keys are index of group.
   /// Note that [showHeader] has higher privilege, so if [showHeader] is false,
@@ -150,6 +162,7 @@ class _FormVmGroupObserverState<VM extends FormVmGroup>
     required this.onSubmit,
     required this.onPreSubmit,
     required this.predicate,
+    required this.submissionKeys,
     required this.submitBtnMargin,
     required this.vm,
     required this.imgPosition,
@@ -259,12 +272,22 @@ class _FormVmGroupObserverState<VM extends FormVmGroup>
             liveDataGetter: (vm) => vm.canProceed,
             distinctUntilChanged: true,
             builder: submitBtnWrapperBuilder,
-            preAsyncBuilder: preSubmitBtnBuilder ?? (ctx, key) => key == FormVmGroupMixin.submitFormKey
-                ? defaultLoading() : null,
-            postAsyncBuilder: postSubmitBtnBuilder ?? (ctx, key) => key == FormVmGroupMixin.submitFormKey
-                ? submitBtnWrapperBuilder(ctx, true) /* Off course true after successfully sent data */ : null,
+            preAsyncBuilder: preSubmitBtnBuilder ?? (ctx, key) {
+              prind("FormVmGroupObserver preAsyncBuilder key= $key submissionKeys= $submissionKeys submissionKeys?.contains(key)= ${submissionKeys?.contains(key)} key == FormVmGroupMixin.submitFormKey => ${key == FormVmGroupMixin.submitFormKey}");
+              if(submissionKeys?.contains(key) == true
+                || key == FormVmGroupMixin.submitFormKey) {
+                return defaultLoading();
+              }
+            },
+            postAsyncBuilder: postSubmitBtnBuilder ?? (ctx, key) {
+              if(submissionKeys?.contains(key) == true
+                  || key == FormVmGroupMixin.submitFormKey) {
+                return submitBtnWrapperBuilder(ctx, true) /* Off course true after successfully sent data */;
+              }
+            },
             onFailBuilder: (ctx, key, fail) {
-               if(key == FormVmGroupMixin.submitFormKey) {
+               if(submissionKeys?.contains(key) == true
+                  || key == FormVmGroupMixin.submitFormKey) {
                  final disabledSubmitBtn = submitBtnWrapperBuilder(ctx, false);
                  return onFailSubmitBtnBuilder?.call(ctx, key, fail, disabledSubmitBtn)
                     ?? disabledSubmitBtn;
