@@ -126,6 +126,7 @@ class Strings {
   static const img_usg =  "Foto USG";
 
   static const baby_chart_x_label_format =  "{value} bulan";
+  static const baby_chart_x_label_format_cm =  "{value} $cm";
   static const pregnancy_chart_x_label_format =  "{value} minggu";
 
   static const immunization_date = "Tanggal Imunisasi";
@@ -152,6 +153,8 @@ class Strings {
   static const month =  "Bulan";
   static const day =  "Hari";
   static const week =  "Minggu";
+
+  static const cm =  "cm";
 
   static const my_pregnancy =  "Kehamilanku";
   static const my_baby =  "Bayiku";

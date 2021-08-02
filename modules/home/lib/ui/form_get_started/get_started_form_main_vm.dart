@@ -7,11 +7,13 @@ import 'package:common/arch/domain/usecase/auth_usecase.dart';
 import 'package:common/arch/domain/usecase/firebase_usecase.dart';
 import 'package:common/arch/domain/usecase/mother_usecase.dart';
 import 'package:common/arch/domain/usecase/profile_usecase.dart';
+import 'package:common/arch/ui/vm/vm_auth.dart';
 import 'package:common/value/const_values.dart';
 import 'package:core/domain/model/result.dart';
 import 'package:core/ui/base/async_vm.dart';
 import 'package:core/ui/base/live_data.dart';
 import 'package:core/util/_consoles.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:home/core/domain/usecase/_auth_usecase.dart';
 import 'package:home/core/domain/usecase/form_get_started_usecase.dart';
 import 'package:home/ui/form_get_started/child_form_vm.dart';
@@ -24,10 +26,11 @@ import 'package:home/ui/signup/sign_up_vm.dart';
 import 'children_count_vm.dart';
 
 ///*
-class GetStartedFormMainVm extends AsyncVm {
+class GetStartedFormMainVm extends AsyncAuthVm {
   static const sendDataKey = "sendData";
 
   GetStartedFormMainVm({
+    BuildContext? context,
     required SignUpAndRegisterOtherData signUpAndRegisterOtherData,
     required GetFcmToken getFcmToken,
     required Login login,
@@ -37,7 +40,7 @@ class GetStartedFormMainVm extends AsyncVm {
       _signUpAndRegisterOtherData = signUpAndRegisterOtherData,
       _getFcmToken = getFcmToken,
       _login = login,
-      _initConfig = initConfig {
+      _initConfig = initConfig, super(context: context) {
     signUpFormVm = SignUpFormVm(
       saveSignupData: _signup,
       checkEmailAvailability: UseCaseDi.checkEmailAvailability,

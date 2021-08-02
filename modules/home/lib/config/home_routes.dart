@@ -82,7 +82,7 @@ class HomeRoutes extends ModuleRoute {
         showInDefault: TestUtil.isDummy,
         //interceptor: interceptor,
         builder: (ctx, interceptor) => GetStartedFormMainPage(interceptor: interceptor,).inVmProvider([
-              (ctx) => HomeVmDi.getStartedFormMainVm,
+              (ctx) => HomeVmDi.getStartedFormMainVm(context: ctx,),
         ]),
       ),
     );
@@ -122,7 +122,7 @@ class HomeRoutes extends ModuleRoute {
   static final childFormPage = _ChildFormPageRoute.obj;
   static final newAccountConfirmPage = SibRoute("NewAccountConfirmPage", NewAccountConfirmPage, (ctx) =>  PlainBackFrame(
     body: NewAccountConfirmPage().inVmProvider([
-      (ctx) => HomeVmDi.getStartedFormMainVm,
+      (ctx) => HomeVmDi.getStartedFormMainVm(context: ctx,),
     ]),
     padding: EdgeInsets.all(20),
   ));

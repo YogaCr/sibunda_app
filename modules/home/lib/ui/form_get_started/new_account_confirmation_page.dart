@@ -1,4 +1,5 @@
 import 'package:common/arch/domain/dummy_data.dart';
+import 'package:common/arch/ui/vm/form_vm_group.dart';
 import 'package:common/arch/ui/widget/_basic_widget.dart';
 import 'package:common/arch/ui/widget/form_generic_vm_group_observer.dart';
 import 'package:common/arch/ui/widget/img_pick.dart';
@@ -8,6 +9,7 @@ import 'package:common/util/assets.dart';
 import 'package:common/util/ui.dart';
 import 'package:common/value/const_values.dart';
 import 'package:core/domain/model/wrapper.dart';
+import 'package:core/ui/base/async_view_model_observer.dart';
 import 'package:core/ui/base/live_data.dart';
 import 'package:core/ui/base/live_data_observer.dart';
 import 'package:core/ui/base/view_model.dart';
@@ -68,6 +70,12 @@ class NewAccountConfirmPage extends StatelessWidget {
       }
     };
 
+    final onPrePostAsyncBuilder = (BuildContext ctx, String key) {
+      if(key == FormVmGroupMixin.submitFormKey) {
+        return defaultLoading();
+      }
+    };
+
     return Stack(
       children: [
         Align(
@@ -108,10 +116,18 @@ class NewAccountConfirmPage extends StatelessWidget {
         ),
         Align(
           alignment: Alignment.bottomCenter,
-          child: TxtBtn(
-            Strings.make_new_mother_account,
-            color: green_calm,
-            onTap: () => vm.sendData(),
+          child: AsyncVmObserver<GetStartedFormMainVm, bool>(
+            vm: vm,
+            liveDataGetter: (vm) => vm.onSubmit,
+            preAsyncBuilder: onPrePostAsyncBuilder,
+            postAsyncBuilder: onPrePostAsyncBuilder,
+            builder: (ctx, data) {
+              return TxtBtn(
+                Strings.make_new_mother_account,
+                color: data == true ? green_calm : grey,
+                onTap: data == true ? () => vm.sendData() : null,
+              );
+            },
           ),
         ).withMargin(EdgeInsets.only(bottom: 55)),
       ],

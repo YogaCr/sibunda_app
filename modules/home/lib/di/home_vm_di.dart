@@ -24,7 +24,10 @@ class HomeVmDi {
     isLoggedInUseCase: UseCaseDi.isLoggedIn,
     initConfig: UseCaseDi.initConfig,
   );
-  static GetStartedFormMainVm get getStartedFormMainVm => GetStartedFormMainVm(
+  static GetStartedFormMainVm getStartedFormMainVm({
+    BuildContext? context,
+  }) => GetStartedFormMainVm(
+    context: context,
     getFcmToken: UseCaseDi.getFcmToken,
     signUpAndRegisterOtherData: HomeUseCaseDi.signUpAndRegister,
     login: HomeUseCaseDi.login,

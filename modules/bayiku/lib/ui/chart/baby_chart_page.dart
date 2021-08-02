@@ -44,8 +44,8 @@ class BabyChartPage extends StatelessWidget {
                     ? ItemLineChart(
                         title: chartTitle,
                         yLabelFormat: getBabyChartTypeYLabelFormat(chartType),
-                        xLabelFormat: Strings.baby_chart_x_label_format,
-                        xAxisTitle: Strings.month,
+                        xLabelFormat: getBabyChartXLabelFormat(chartType),
+                        xAxisTitle: getBabyChartXLabelTitle(chartType),
                         seriesList: data,
                     ): defaultLoading(),
               ),

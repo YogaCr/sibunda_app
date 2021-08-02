@@ -83,6 +83,12 @@ String getBabyChartTypeYLabelFormat(BabyChartType type) {
   }
 }
 
+String getBabyChartXLabelTitle(BabyChartType type) => type != BabyChartType.weightToLen
+    ? Strings.month : Strings.cm;
+
+String getBabyChartXLabelFormat(BabyChartType type) => type != BabyChartType.weightToLen
+    ? Strings.baby_chart_x_label_format : Strings.baby_chart_x_label_format_cm;
+
 
 String getBinaryAnswerYesNoStr(int i) {
   if(i > 0) return Strings.yes;
