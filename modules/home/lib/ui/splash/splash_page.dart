@@ -42,8 +42,10 @@ class SplashPage extends StatelessWidget {
             : HomeRoutes.introPage.build(ctx);
       },
       computation: () async {
+        prind("SplashPage HomeRoutes.introPage.computation() AWAL");
         await ConfigUtil.init();
         await ConfigUtil.initFcm();
+        prind("SplashPage HomeRoutes.introPage.computation() AWAL 2");
 
         final vm = ViewModelProvider.of<SplashVm>(context);
         /*

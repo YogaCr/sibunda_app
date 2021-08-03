@@ -179,7 +179,7 @@ class BabyChartRepoImpl with BabyChartRepo {
           _babyChartResponse[BabyChartType.weight] ??= await _api.getWeightChart(id);
         currentId = id;
         final raw = resp.data.desc;
-        if(raw == null) {
+        if(raw == null || raw.desc == null) {
           return Success(List.empty());
         }
         final data = FormWarningStatus.fromChartResponse(raw, isMother: false);
@@ -201,7 +201,7 @@ class BabyChartRepoImpl with BabyChartRepo {
           _babyChartResponse[BabyChartType.kms] ??= await _api.getKmsChart(id);
         currentId = id;
         final raw = resp.data.desc;
-        if(raw == null) {
+        if(raw == null || raw.desc == null) {
           return Success(List.empty());
         }
         final data = FormWarningStatus.fromChartResponse(raw, isMother: false);
@@ -223,7 +223,7 @@ class BabyChartRepoImpl with BabyChartRepo {
           _babyChartResponse[BabyChartType.len] ??= await _api.getLenChart(id);
         currentId = id;
         final raw = resp.data.desc;
-        if(raw == null) {
+        if(raw == null || raw.desc == null) {
           return Success(List.empty());
         }
         final data = FormWarningStatus.fromChartResponse(raw, isMother: false);
@@ -245,7 +245,7 @@ class BabyChartRepoImpl with BabyChartRepo {
           _babyChartResponse[BabyChartType.weightToLen] ??= await _api.getWeightToLenChart(id);
         currentId = id;
         final raw = resp.data.desc;
-        if(raw == null) {
+        if(raw == null || raw.desc == null) {
           return Success(List.empty());
         }
         final data = FormWarningStatus.fromChartResponse(raw, isMother: false);
@@ -267,7 +267,7 @@ class BabyChartRepoImpl with BabyChartRepo {
           _babyChartResponse[BabyChartType.head] ??= await _api.getHeadCircumChart(id);
         currentId = id;
         final raw = resp.data.desc;
-        if(raw == null) {
+        if(raw == null || raw.desc == null) {
           return Success(List.empty());
         }
         final data = FormWarningStatus.fromChartResponse(raw, isMother: false);
@@ -289,7 +289,7 @@ class BabyChartRepoImpl with BabyChartRepo {
           _babyChartResponse[BabyChartType.bmi] ??= await _api.getBmiChart(id);
         currentId = id;
         final raw = resp.data.desc;
-        if(raw == null) {
+        if(raw == null || raw.desc == null) {
           return Success(List.empty());
         }
         final data = FormWarningStatus.fromChartResponse(raw, isMother: false);
@@ -311,7 +311,7 @@ class BabyChartRepoImpl with BabyChartRepo {
           _babyChartResponse[BabyChartType.dev] ??= await _api.getDevChart(id);
         currentId = id;
         final raw = resp.data.desc;
-        if(raw == null) {
+        if(raw == null || raw.desc == null) {
           return Success(List.empty());
         }
         final data = FormWarningStatus.fromChartResponse(raw, isMother: false);

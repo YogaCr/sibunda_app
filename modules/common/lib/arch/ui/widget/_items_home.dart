@@ -195,7 +195,7 @@ class ItemNotif extends StatelessWidget {
                       children: [
                         Text(
                           title,
-                          style: SibTextStyles.size_0,
+                          style: SibTextStyles.size_0_bold,
                         ),
                         SizedBox(height: 10,),
                         Text(
@@ -293,7 +293,7 @@ class ItemMessage extends StatelessWidget {
                 children: [
                   Text(
                     title,
-                    style: SibTextStyles.size_0,
+                    style: SibTextStyles.size_0_bold,
                     textAlign: TextAlign.center,
                   ),
                   SizedBox(height: 10,),

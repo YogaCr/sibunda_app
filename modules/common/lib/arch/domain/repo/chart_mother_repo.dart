@@ -101,7 +101,7 @@ class MotherChartRepoImpl with MotherChartRepo {
         _chartResponse[MotherChartType.tfu] ??= await _api.getPregnancyTfuChart(pregnancyId);
       currentId = pregnancyId;
       final raw = resp.data.desc;
-      if(raw == null) {
+      if(raw == null || raw.desc == null) {
         return Success(List.empty());
       }
       final data = FormWarningStatus.fromChartResponse(raw, isMother: true);
@@ -120,7 +120,7 @@ class MotherChartRepoImpl with MotherChartRepo {
       _chartResponse[MotherChartType.djj] ??= await _api.getPregnancyDjjChart(pregnancyId);
       currentId = pregnancyId;
       final raw = resp.data.desc;
-      if(raw == null) {
+      if(raw == null || raw.desc == null) {
         return Success(List.empty());
       }
       final data = FormWarningStatus.fromChartResponse(raw, isMother: true);
@@ -139,7 +139,7 @@ class MotherChartRepoImpl with MotherChartRepo {
         _chartResponse[MotherChartType.bmi] ??= await _api.getPregnancyWeightChart(pregnancyId);
       currentId = pregnancyId;
       final raw = resp.data.desc;
-      if(raw == null) {
+      if(raw == null || raw.desc == null) {
         return Success(List.empty());
       }
       final data = FormWarningStatus.fromChartResponse(raw, isMother: true);
@@ -158,7 +158,7 @@ class MotherChartRepoImpl with MotherChartRepo {
         _chartResponse[MotherChartType.map] ??= await _api.getPregnancyMapChart(pregnancyId);
       currentId = pregnancyId;
       final raw = resp.data.desc;
-      if(raw == null) {
+      if(raw == null || raw.desc == null) {
         return Success(List.empty());
       }
       final data = FormWarningStatus.fromChartResponse(raw, isMother: true);
