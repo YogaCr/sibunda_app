@@ -158,7 +158,7 @@ void _observeIsValid({
 }) {
   VarDi.isSessionValid.observe(expirable, (valid) async {
     if(valid != true) {
-      showSnackBar(context, Strings.session_expired);
+      showSnackBar(context, Strings.session_expired, duration: Duration(milliseconds: 2500,),);
       await UseCaseDi.clearUserData();
       await UseCaseDi.toLoginPage(context: context);
     }
