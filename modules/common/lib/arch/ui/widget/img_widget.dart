@@ -17,7 +17,7 @@ Widget buildImgNetwork(
   if(src.endsWith(".svg")) {
     try {
       return SvgPicture.network(src, fit: usedFit, width: width, height: height,
-        placeholderBuilder: (ctx) => loadingBuilder?.call(ctx, null, null) ?? defaultLoading(),
+        placeholderBuilder: (ctx) => loadingBuilder?.call(ctx, null, null) ?? defaultLoading(showText: false),
       );
     } catch(e, stack) {
       prine(e);
@@ -37,7 +37,7 @@ Widget buildImgNetwork(
 
 
 Widget Function(BuildContext context,Widget child, ImageChunkEvent? loadingProgress,) defImgLoadingBuilder() =>
-        (context, child, loadingProgress) => loadingProgress == null ? child : defaultLoading();
+        (context, child, loadingProgress) => loadingProgress == null ? child : defaultLoading(showText: false);
 
 Widget Function(BuildContext context, Object error, StackTrace? stackTrace,) defImgBuilder() =>
         (context, error, stackTrace) => defaultImg();
