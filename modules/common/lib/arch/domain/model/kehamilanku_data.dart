@@ -33,21 +33,21 @@ class PregnancyCheck {
   @JsonKey(name: Const.KEY_HPL)
   final String HPL;
   @JsonKey(name: Const.KEY_WEIGHT)
-  final int motherWeigth; // in kg
+  final num motherWeigth; // in kg
   @JsonKey(name: Const.KEY_WEIGHT_DIFF)
-  final int motherWeigthDiff; // in kg
+  final num motherWeigthDiff; // in kg
   @JsonKey(name: Const.KEY_HEIGHT)
-  final int motherHeight; // in cm
+  final num motherHeight; // in cm
   @JsonKey(name: Const.KEY_TFU)
-  final int TFU;
+  final num TFU;
   @JsonKey(name: Const.KEY_DJJ)
-  final int DJJ;
+  final num DJJ;
   @JsonKey(name: Const.KEY_SYSTOLIC_PRESSURE)
-  final int systolicPressure;
+  final num systolicPressure;
   @JsonKey(name: Const.KEY_DIASTOLIC_PRESSURE)
-  final int diastolicPressure;
+  final num diastolicPressure;
   @JsonKey(name: Const.KEY_MAP)
-  final int MAP;
+  final num MAP;
   @JsonKey(name: Const.KEY_BABY_MOVEMENT)
   final int babyMovement; //movement count //TODO: pasang cek pada vm tuk mrubah format
   @JsonKey(name: Const.KEY_DRUG_PRESCRIPT)

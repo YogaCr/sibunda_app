@@ -1,5 +1,25 @@
 import 'package:core/domain/model/range.dart';
+import 'package:core/util/_consoles.dart';
 import 'package:flutter/material.dart';
+
+T getOrDefault<T>(T? any, {
+  T Function()? orElse,
+}) {
+  final res = tryGetOrDefault(any, orElse: orElse);
+  if(res is T) return res;
+  final msg = "Can't get default value of `$T` with current `any` value of '$any'";
+  prine(msg);
+  throw msg;
+}
+T? tryGetOrDefault<T>(T? any, {
+  T Function()? orElse,
+}) {
+  if(any is T) return any;
+  if(T is int || T is num) return 0 as T;
+  if(T is double) return 0.0 as T;
+  if(T is String) return "<null>" as T;
+  return orElse?.call();
+}
 
 int parseInt(source, { int radix = 10, int Function(dynamic)? onError }) {
   final res = tryParseInt(source, radix: radix, onError: onError);
@@ -31,7 +51,15 @@ num parseNum(source, { num Function(dynamic)? onError }) {
 }
 num? tryParseNum(source, { num Function(dynamic)? onError }) {
   if(source is num) return source;
-  if(source is String) return onError == null ? num.tryParse(source) : num.parse(source, onError);
+  //if(source is String) return onError == null ? num.tryParse(source) : num.parse(source, onError);
+  if(source is String) {
+    final res = onError == null ? num.tryParse(source) : num.parse(source, onError);
+    if(res != null) return res;
+    if(source.contains(",")) {
+      source = source.replaceAll(",", ".");
+      return onError == null ? num.tryParse(source) : num.parse(source, onError);
+    }
+  }
 
   if(onError != null) {
     return onError(source);
@@ -49,7 +77,14 @@ double parseDouble(source, { double Function(dynamic)? onError }) {
 double? tryParseDouble(source, { double Function(dynamic)? onError }) {
   if(source is double) return source;
   if(source is num) return source.toDouble();
-  if(source is String) return onError == null ? double.tryParse(source) : double.parse(source, onError);
+  if(source is String) {
+    final res = onError == null ? double.tryParse(source) : double.parse(source, onError);
+    if(res != null) return res;
+    if(source.contains(",")) {
+      source = source.replaceAll(",", ".");
+      return onError == null ? double.tryParse(source) : double.parse(source, onError);
+    }
+  }
 
   if(onError != null) {
     return onError(source);

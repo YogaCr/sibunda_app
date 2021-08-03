@@ -123,6 +123,13 @@ class BabyCheckFormVm extends FormAuthVmGroup {
     final body = BabyMonthlyFormBody.fromJson(growthMap);
     final res = await _saveBabyCheckForm(body);
     //prind("BabyCheckFormVm res = $res");
+    /*
+    if(res is Success<bool>) {
+      if(res.data) {
+        final answer = BabyMonthlyForm.fr
+      }
+    }
+     */
     return res is Success<bool> ? Success("ok") : Fail();
   }
 

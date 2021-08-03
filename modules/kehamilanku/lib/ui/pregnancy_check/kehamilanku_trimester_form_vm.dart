@@ -255,15 +255,16 @@ class KehamilankuCheckFormVm extends FormAuthVmGroup {
       case Const.KEY_HPL: return response?.toString();
 
       case Const.KEY_WEEK:
+      case Const.KEY_BABY_MOVEMENT: return parseInt(response);
+
       case Const.KEY_WEIGHT:
       case Const.KEY_WEIGHT_DIFF:
       case Const.KEY_HEIGHT:
-      case Const.KEY_BABY_MOVEMENT:
       case Const.KEY_TFU:
       case Const.KEY_DJJ:
       case Const.KEY_SYSTOLIC_PRESSURE:
       case Const.KEY_DIASTOLIC_PRESSURE:
-      case Const.KEY_MAP: return parseInt(response);
+      case Const.KEY_MAP: return parseNum(response);
     }
     return super.mapResponse(groupPosition, key, response);
   }
@@ -273,15 +274,15 @@ class KehamilankuCheckFormVm extends FormAuthVmGroup {
     //prind("PregTrimFormVm validateField() group=$groupPosition key=$inputKey resp=$response");
     switch(inputKey) {
       case Const.KEY_WEEK:
+      case Const.KEY_BABY_MOVEMENT: return tryParseInt(response) != null;
       case Const.KEY_WEIGHT:
       case Const.KEY_WEIGHT_DIFF:
       case Const.KEY_HEIGHT:
-      case Const.KEY_BABY_MOVEMENT:
       case Const.KEY_TFU:
       case Const.KEY_DJJ:
       case Const.KEY_SYSTOLIC_PRESSURE:
       case Const.KEY_DIASTOLIC_PRESSURE:
-      case Const.KEY_MAP: return tryParseInt(response) != null;
+      case Const.KEY_MAP: return tryParseNum(response) != null;
       case Const.KEY_IMG_USG: return true; // this param is optional.
     }
     return super.validateField(groupPosition, inputKey, response);

@@ -29,21 +29,21 @@ class PregnancyCheckBody {
   @JsonKey(name: Const.KEY_HPL)
   final String HPL;
   @JsonKey(name: Const.KEY_WEIGHT)
-  final int motherWeigth; // in kg
+  final num motherWeigth; // in kg
   @JsonKey(name: Const.KEY_WEIGHT_DIFF)
-  final int motherWeigthDiff; // in kg
+  final num motherWeigthDiff; // in kg
   @JsonKey(name: Const.KEY_HEIGHT)
-  final int motherHeight; // in cm
+  final num motherHeight; // in cm
   @JsonKey(name: Const.KEY_TFU)
-  final int TFU;
+  final num TFU;
   @JsonKey(name: Const.KEY_DJJ)
-  final int DJJ;
+  final num DJJ;
   @JsonKey(name: Const.KEY_SYSTOLIC_PRESSURE)
-  final int systolicPressure;
+  final num systolicPressure;
   @JsonKey(name: Const.KEY_DIASTOLIC_PRESSURE)
-  final int diastolicPressure;
+  final num diastolicPressure;
   @JsonKey(name: Const.KEY_MAP)
-  final int MAP;
+  final num MAP;
   @JsonKey(name: Const.KEY_BABY_MOVEMENT)
   final int babyMovement;
   @JsonKey(name: Const.KEY_DRUG_PRESCRIPT)
@@ -87,15 +87,17 @@ class PregnancyCheckBody {
   });
 
   factory PregnancyCheckBody.fromJson(Map<String, dynamic> map) {
-    map[Const.KEY_WEIGHT] = tryParseInt(map[Const.KEY_WEIGHT]);
-    map[Const.KEY_WEIGHT_DIFF] = tryParseInt(map[Const.KEY_WEIGHT_DIFF]);
-    map[Const.KEY_HEIGHT] = tryParseInt(map[Const.KEY_HEIGHT]);
-    map[Const.KEY_TFU] = tryParseInt(map[Const.KEY_TFU]);
-    map[Const.KEY_DJJ] = tryParseInt(map[Const.KEY_DJJ]);
-    map[Const.KEY_SYSTOLIC_PRESSURE] = tryParseInt(map[Const.KEY_SYSTOLIC_PRESSURE]);
-    map[Const.KEY_DIASTOLIC_PRESSURE] = tryParseInt(map[Const.KEY_DIASTOLIC_PRESSURE]);
-    map[Const.KEY_MAP] = tryParseInt(map[Const.KEY_MAP]);
+    // /*
+    map[Const.KEY_WEIGHT] = tryParseNum(map[Const.KEY_WEIGHT]);
+    map[Const.KEY_WEIGHT_DIFF] = tryParseNum(map[Const.KEY_WEIGHT_DIFF]);
+    map[Const.KEY_HEIGHT] = tryParseNum(map[Const.KEY_HEIGHT]);
+    map[Const.KEY_TFU] = tryParseNum(map[Const.KEY_TFU]);
+    map[Const.KEY_DJJ] = tryParseNum(map[Const.KEY_DJJ]);
+    map[Const.KEY_SYSTOLIC_PRESSURE] = tryParseNum(map[Const.KEY_SYSTOLIC_PRESSURE]);
+    map[Const.KEY_DIASTOLIC_PRESSURE] = tryParseNum(map[Const.KEY_DIASTOLIC_PRESSURE]);
+    map[Const.KEY_MAP] = tryParseNum(map[Const.KEY_MAP]);
     map[Const.KEY_BABY_MOVEMENT] = tryParseInt(map[Const.KEY_BABY_MOVEMENT]);
+    // */
     return _$PregnancyCheckBodyFromJson(map);
   }
   Map<String, dynamic> toJson() => _$PregnancyCheckBodyToJson(this);

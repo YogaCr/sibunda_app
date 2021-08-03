@@ -246,6 +246,9 @@ class _MonthlyCheckFormPage extends StatelessWidget {
                   ),
                 )); //showSnackBar(ctx, "Berhasil bro", backgroundColor: Colors.green)
                 if(res == true) {
+                  if(year == 1 && month == 0) {
+                    vm.getBabyFormAnswer(forceLoad: true,);
+                  }
                   vm.getWarningList(forceLoad: true,);
                   scrollControl.animateTo( 0,
                     duration: Duration(seconds: 1),
