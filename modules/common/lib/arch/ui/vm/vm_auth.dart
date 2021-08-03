@@ -176,9 +176,11 @@ void _observeError({
     if(error != null) {
       final msg = "Error outside async `Fail` catcher";
 
+      /*
       prine("=========== $msg ===========");
       prine(error);
       prine("=========== $msg =========== end");
+       */
 
       if(isAutoToastOnError) {
         final failure = Fail.fromError(
