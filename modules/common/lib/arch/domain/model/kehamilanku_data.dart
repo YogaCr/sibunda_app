@@ -251,11 +251,13 @@ class PregnancyBabySize {
   final String sizeString;
   final double? babyLen;
   final double? babyWeight;
+  final ImgData? img;
 
   PregnancyBabySize({
     required this.sizeString,
     required this.babyWeight,
     required this.babyLen,
+    this.img,
   });
 
   factory PregnancyBabySize.fromResponse(PregnancyCheckFetusGrowthWarningResponse response) =>
@@ -263,6 +265,10 @@ class PregnancyBabySize {
         sizeString: response.desc!,
         babyLen: response.length?.toDouble(),
         babyWeight: response.weight?.toDouble(),
+        img: response.imgLink != null ? ImgData(
+          link: response.imgLink!,
+          src: ImgSrc.network,
+        ) : dummyImg,
       );
 }
 

@@ -299,20 +299,20 @@ class ItemMotherRecomFood extends StatelessWidget {
 ///*
 /// Used in mother pregnancy check form.
 class ItemMotherBabySizeOverview extends StatelessWidget {
-  final Widget image;
+  final ImgData img;
   final String sizeString;
   final double? babyLen;
   final double? babyWeight;
 
   ItemMotherBabySizeOverview({
-    required this.image,
+    required this.img,
     required this.sizeString,
     this.babyLen,
     this.babyWeight,
   });
 
   ItemMotherBabySizeOverview.fromData(PregnancyBabySize data):
-    image = Container(color: Manifest.theme.colorPrimary,),
+    img = data.img ?? dummyImg,
     sizeString = data.sizeString, //?? "<null>",
     babyLen = data.babyLen, // ?? -1,
     babyWeight = data.babyWeight // ?? -1
@@ -325,7 +325,10 @@ class ItemMotherBabySizeOverview extends StatelessWidget {
       child: Container(
         height: 70,
         width: 60,
-        child: image,
+        child: SibImages.resolve(
+          img,
+          fit: BoxFit.contain,
+        ),
       ),
     );
 

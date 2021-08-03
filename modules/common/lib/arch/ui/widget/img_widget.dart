@@ -13,6 +13,7 @@ Widget buildImgNetwork(
       double? height,
 }) {
   final usedFit = fit ?? BoxFit.cover;
+  prind("buildImgNetwork src= $src src.endsWith(\".svg\")= ${src.endsWith(".svg")}");
   if(src.endsWith(".svg")) {
     try {
       return SvgPicture.network(src, fit: usedFit, width: width, height: height,
