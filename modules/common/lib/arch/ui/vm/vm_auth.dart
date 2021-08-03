@@ -174,15 +174,15 @@ void _observeError({
     //final msg = "Error when call async task in VM `$type`, `key` = '$key', `failure` = '$failure'";
     //prine(msg);
     if(error != null) {
-      final msg = "Error outside async `Fail` catcher";
-
       /*
+      final msg = "Error outside async `Fail` catcher";
       prine("=========== $msg ===========");
       prine(error);
       prine("=========== $msg =========== end");
        */
 
       if(isAutoToastOnError) {
+        final msg = "Error outside async `Fail` catcher";
         final failure = Fail.fromError(
           details: error,
           msg: msg,

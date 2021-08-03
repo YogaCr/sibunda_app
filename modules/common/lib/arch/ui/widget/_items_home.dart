@@ -295,13 +295,11 @@ class ItemMessage extends StatelessWidget {
                   Text(
                     title,
                     style: SibTextStyles.size_0_bold,
-                    textAlign: TextAlign.center,
                   ),
                   SizedBox(height: 10,),
                   Text(
                     content,
                     style: SibTextStyles.size_min_1,
-                    textAlign: TextAlign.center,
                   ),
                   SizedBox(height: 10,),
                 ],
