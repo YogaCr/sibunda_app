@@ -7,6 +7,7 @@ import 'package:common/arch/di/usecase_di.dart';
 import 'package:common/arch/domain/dummy_data.dart';
 import 'package:common/arch/domain/model/auth.dart';
 import 'package:common/arch/ui/widget/form_controller.dart';
+import 'package:common/arch/ui/widget/popup_widget.dart';
 import 'package:common/util/firebase_util.dart';
 import 'package:common/util/net.dart';
 import 'package:common/util/prefs.dart';
@@ -28,12 +29,17 @@ class ConfigUtil {
 
   //static final MutableLiveData<FormGroupInterceptor> formInterceptorLiveData = MutableLiveData();
 
-  static final isAutoToastEnabled = true;
-
-  static final isMobileOnly = true;
+  static const isAutoToastEnabled = true;
+  static const isAutoErrorExposureEnabled = false;
+  static const isMobileOnly = true;
 
   static init() async {
     WidgetsFlutterBinding.ensureInitialized();
+    //WidgetsBinding.instance.add
+    FlutterError.onError = (details) {
+      FlutterError.presentError(details);
+      VarDi.error.value = details;
+    };
     await initializeDateFormatting("id_ID");
     if(TestUtil.isDummy) {
       await TestUtil.init();

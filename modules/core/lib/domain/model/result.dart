@@ -1,5 +1,6 @@
 
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 
 abstract class Result<T> extends Equatable {
   final int code;
@@ -38,6 +39,19 @@ class Fail<T> extends Result<T> {
     StackTrace? stack,
   }): stack = stack ?? StackTrace.current,
         super(code ?? 1);
+
+  factory Fail.fromError({
+    required FlutterErrorDetails details,
+    int? code,
+    String? msg,
+    data,
+  }) => Fail(
+    error: details.exception,
+    stack: details.stack,
+    data: data,
+    msg: msg,
+    code: code,
+  );
 
   @override
   List<Object?> get props => [code, msg, error, data];

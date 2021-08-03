@@ -1,6 +1,7 @@
 import 'package:common/arch/domain/model/auth.dart';
 import 'package:core/ui/base/live_data.dart';
 import 'package:core/util/_consoles.dart';
+import 'package:flutter/material.dart';
 
 class VarDi {
   VarDi._();
@@ -23,6 +24,7 @@ class VarDi {
   static final motherNik = MutableLiveData<String>();
 
   static final isSessionValid = MutableLiveData<bool>();
+  static final error = MutableLiveData<FlutterErrorDetails>();
 
   static clear({
     bool includeSession = true,

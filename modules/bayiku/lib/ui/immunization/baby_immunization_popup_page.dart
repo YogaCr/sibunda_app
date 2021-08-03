@@ -38,7 +38,7 @@ class BabyImmunizationPopupPage extends StatelessWidget {
           if(success) {
             //final resp = vm.getResponse().responseGroups.values.first;
             final date = vm.responseGroupList[0][Const.KEY_IMMUNIZATION_DATE]!.response.value! as DateTime;
-            final noBatch = parseInt(vm.responseGroupList[0][Const.KEY_NO_BATCH]!.response.value);
+            final noBatch = vm.responseGroupList[0][Const.KEY_NO_BATCH]!.response.value.toString();
 
             final res = BabyImmunizationPopupResult(
               date: syncFormatTime(date),

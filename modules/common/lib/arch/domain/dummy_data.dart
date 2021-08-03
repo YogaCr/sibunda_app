@@ -115,6 +115,10 @@ final dummyImg_smillingCat = ImgData(link: "_smiling_cat.jpg", package: GlobalRo
 final dummyImg_profile_sm = ImgData(link: "pic_profile_example.png", package: GlobalRoutes.common, src: ImgSrc.asset,);
 final dummyImg_pick = ImgData(link: "ic_plus_color.png", package: GlobalRoutes.common, src: ImgSrc.asset,);
 final dummyImg_profile = ImgData(link: "ic_profile.png", package: GlobalRoutes.common, src: ImgSrc.asset,);
+final dummyImg_profile_preset = ImgData(
+  link: "https://cdn0-production-images-kly.akamaized.net/2lCN2IHOucR23-xxbX3dKF-_ob4=/640x640/smart/filters:quality(75):strip_icc():format(jpeg)/kly-media-production/medias/1623940/original/078187600_1497434832-1.JPG.png",
+  src: ImgSrc.network,
+);
 final dummyImg_babyYellow = ImgData(link: "pic_baby_yellow_part.png", package: GlobalRoutes.bayiku, src: ImgSrc.asset,);
 
 final dummyEmail = "a@a.a";

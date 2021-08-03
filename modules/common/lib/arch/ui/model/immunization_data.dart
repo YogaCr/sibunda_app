@@ -1,6 +1,6 @@
 class BabyImmunizationPopupResult {
   final String date;
-  final int noBatch;
+  final String noBatch;
 
   BabyImmunizationPopupResult({
     required this.date,
