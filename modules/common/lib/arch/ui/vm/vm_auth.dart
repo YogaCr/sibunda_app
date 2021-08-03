@@ -192,10 +192,14 @@ void _observeError({
     }
   });
   VarDi.isSessionValid.observe(expirable, (valid) async {
-    if(valid != true) {
+    prind("VarDi.isSessionValid.observe valid= $valid");
+    if(valid == false) { //This will make `null` as initial state, not unauthenticated.
       showSnackBar(context, Strings.session_expired);
       await UseCaseDi.clearUserData();
       await UseCaseDi.toLoginPage(context: context);
+      Future.delayed(Duration(milliseconds: 200), () {
+        VarDi.isSessionValid.value = null;
+      });
     }
   });
 }
@@ -207,7 +211,7 @@ void Function(String, Fail) _getOnFail({
 }) => (String key, Fail failure) {
   final msg = "Error when call async task in VM `$type`, `key` = '$key', `failure` = '$failure'";
   prine(msg);
-  if(VarDi.isSessionValid.value == true
+  if(VarDi.isSessionValid.value != false // when some async process failed because of unauthenticated, then don't show error popup.
       && isAutoToastOnFail
       && (skippedKeyToToastOnFail == null || !skippedKeyToToastOnFail.contains(key))
   ) {
