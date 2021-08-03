@@ -116,7 +116,7 @@ final dummyImg_profile_sm = ImgData(link: "pic_profile_example.png", package: Gl
 final dummyImg_pick = ImgData(link: "ic_plus_color.png", package: GlobalRoutes.common, src: ImgSrc.asset,);
 final dummyImg_profile = ImgData(link: "ic_profile.png", package: GlobalRoutes.common, src: ImgSrc.asset,);
 final dummyImg_profile_preset = ImgData(
-  link: "https://cdn0-production-images-kly.akamaized.net/2lCN2IHOucR23-xxbX3dKF-_ob4=/640x640/smart/filters:quality(75):strip_icc():format(jpeg)/kly-media-production/medias/1623940/original/078187600_1497434832-1.JPG.png",
+  link: "https://cdn.popbela.com/content-images/post/20180626/18095091-1852239135027406-6035530276199727104-n-b2395d94b5924b9c4f5e6a866acf7c99_750x500.jpg",
   src: ImgSrc.network,
 );
 final dummyImg_babyYellow = ImgData(link: "pic_baby_yellow_part.png", package: GlobalRoutes.bayiku, src: ImgSrc.asset,);
