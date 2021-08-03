@@ -173,14 +173,20 @@ void _observeError({
   VarDi.error.observe(expirable, (error) async {
     //final msg = "Error when call async task in VM `$type`, `key` = '$key', `failure` = '$failure'";
     //prine(msg);
-    if(error != null && isAutoToastOnError) {
-      final failure = Fail.fromError(
-        details: error,
-        msg: "Error outside async `Fail` catcher",
-      );
-      //showToast(msg: msg, bgColor: red, textColor: white, len: Toast.LENGTH_LONG);
-      showErrorPopup(context: context, error: failure,);
-      //Fluttertoast.showToast(msg: msg, backgroundColor: red, toastLength: Toast.LENGTH_LONG);
+    if(error != null) {
+      final msg = "Error outside async `Fail` catcher";
+
+      prine("=========== $msg ===========");
+      prine(error);
+      prine("=========== $msg =========== end");
+
+      if(isAutoToastOnError) {
+        final failure = Fail.fromError(
+          details: error,
+          msg: msg,
+        );
+        showErrorPopup(context: context, error: failure,);
+      }
     }
   });
   VarDi.isSessionValid.observe(expirable, (valid) async {
