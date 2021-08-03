@@ -4,6 +4,7 @@ import 'package:common/arch/ui/widget/form_controller.dart';
 import 'package:common/arch/ui/widget/form_faker.dart';
 import 'package:common/arch/ui/widget/form_faker_enabler.dart';
 import 'package:common/config/_config.dart';
+import 'package:common/res/theme/_theme.dart';
 import 'package:common/test/__common_test_const.dart';
 import 'package:common/util/providers.dart';
 import 'package:common/value/const_values.dart';
@@ -62,12 +63,12 @@ class HomeRoutes extends ModuleRoute {
     await TestUtil.initSession();
   });
   static final introPage = SibRoute("IntroPage", IntroPage, (ctx) => NoAppBarFrame(
-    statusBarColor: Manifest.theme.colorBackground,
+    statusBarColor: black_trans_most3,
     body: IntroPage(),
     padding: EdgeInsets.all(20),
   ));
   static final loginPage = SibRoute("LoginPage", LoginPage, (ctx) =>  MainFrame(
-    statusBarColor: Manifest.theme.colorBackground,
+    statusBarColor: black_trans_most3,
     body: LoginPage().inVmProvider([
       (ctx) => HomeVmDi.loginFormVm,
     ]),
@@ -77,7 +78,7 @@ class HomeRoutes extends ModuleRoute {
   static final getStartedFormMainPage = SibRoute("GetStartedFormMainPage", GetStartedFormMainPage, (ctx) {
     //final FormGroupInterceptor? interceptor = ConfigUtil.formInterceptor;
     return MainFrame(
-      statusBarColor: Manifest.theme.colorBackground,
+      statusBarColor: black_trans_most3,
       body: FormFakerEnabler(
         showInDefault: TestUtil.isDummy,
         //interceptor: interceptor,

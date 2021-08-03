@@ -5,6 +5,7 @@ import 'package:common/test/__common_test_const.dart';
 import 'package:flutter/material.dart';
 
 import 'package:common/config/manifest.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:home/config/home_routes.dart';
 
@@ -14,6 +15,9 @@ void main() {
   //WidgetsFlutterBinding.ensureInitialized();
   //await ConfigUtil.init();
   //TestUtil.initDummySeesion();
+  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+    statusBarColor: Colors.transparent,
+  ));
   runApp(MyApp());
 }
 

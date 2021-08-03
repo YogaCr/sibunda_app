@@ -39,7 +39,7 @@ class SibDio {
     LogInterceptor? interceptor,
   }) {
     final dio = preExisting ?? Dio(SibDio.defaultBaseOptions());
-    dio.interceptors.add(AuthInterceptor());
+    dio.interceptors.insert(0, AuthInterceptor());
     if(session != null) {
       dio.options.headers[Const.HEADER_AUTH] = session.toAuthString();
     }

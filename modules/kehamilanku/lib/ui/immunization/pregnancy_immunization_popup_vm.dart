@@ -7,6 +7,7 @@ import 'package:common/arch/ui/vm/vm_auth.dart';
 import 'package:common/value/const_values.dart';
 import 'package:core/domain/model/result.dart';
 import 'package:core/ui/base/live_data.dart';
+import 'package:core/util/_consoles.dart';
 import 'package:flutter/material.dart';
 import 'package:kehamilanku/core/domain/usecase/mother_immunization_use_case.dart';
 
@@ -47,25 +48,31 @@ class PregnancyImmunizationPopupVm extends FormAuthVmGroup {
   }
   @override
   Future<Result<String>> doSubmitJob() async {
-    final nikRes = await _getMotherNik();
-    if(nikRes is Success<String>) {
-      final nik = nikRes.data;
-      final respMap = getResponse().responseGroups.values.first;
-      final data = ImmunizationConfirmData(
-        immunization: immunization,
-        responsibleName: respMap[Const.KEY_RESPONSIBLE_NAME],
-        date: respMap[Const.KEY_IMMUNIZATION_DATE],
-        place: respMap[Const.KEY_IMMUNIZATION_PLACE],
-        noBatch: respMap[Const.KEY_NO_BATCH] ?? -1,
-      );
-
-      final res = await _confirmMotherImmunization(nik, data);
-      if(res is Success<bool>) {
-        _date.value = responseGroupList.first[Const.KEY_IMMUNIZATION_DATE]!.response.value;
-        return Success("ok");
+    try {
+      final nikRes = await _getMotherNik();
+      if(nikRes is Success<String>) {
+        final nik = nikRes.data;
+        final respMap = getResponse().responseGroups.values.first;
+        final data = ImmunizationConfirmData(
+          immunization: immunization,
+          responsibleName: respMap[Const.KEY_RESPONSIBLE_NAME],
+          date: respMap[Const.KEY_IMMUNIZATION_DATE],
+          place: respMap[Const.KEY_IMMUNIZATION_PLACE],
+          noBatch: respMap[Const.KEY_NO_BATCH] ?? "",
+        );
+        final res = await _confirmMotherImmunization(nik, data);
+        if(res is Success<bool>) {
+          _date.value = responseGroupList.first[Const.KEY_IMMUNIZATION_DATE]!.response.value;
+          return Success("ok");
+        }
       }
+    } catch(e, stack) {
+      final msg = "Can't send pregnancy immunization";
+      prine("$msg; e= $e");
+      prine(stack);
+      return Fail(msg: msg, error: e, stack: stack,);
     }
-    return Fail();
+    return Fail(msg: "Can't send pregnancy immunization. Something error",);
   }
 
   @override

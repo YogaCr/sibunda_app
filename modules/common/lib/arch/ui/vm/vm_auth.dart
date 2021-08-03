@@ -35,8 +35,9 @@ abstract class AsyncAuthVm extends AsyncVm with AuthVm {
       addOnFailTask(this, (key, failure) {
         final msg = "Error when call async task in VM `$runtimeType`, `key` = '$key', `failure` = '$failure'";
         prine(msg);
-        if(isAutoToastOnFail &&
-            (skippedKeyToToastOnFail == null || !skippedKeyToToastOnFail!.contains(key))
+        if(VarDi.isSessionValid.value == true
+            && isAutoToastOnFail
+            && (skippedKeyToToastOnFail == null || !skippedKeyToToastOnFail!.contains(key))
         ) {
           showToast(msg: msg, bgColor: red, textColor: white, len: Toast.LENGTH_LONG);
           showErrorPopup(context: _context!, error: failure.copy(msg: msg),);
@@ -77,8 +78,9 @@ abstract class FormAuthVm extends FormVm with AuthVm {
       addOnFailTask(this, (key, failure) {
         final msg = "Error when call async task in VM `$runtimeType`, `key` = '$key', `failure` = '$failure'";
         prine(msg);
-        if(isAutoToastOnFail &&
-            (skippedKeyToToastOnFail == null || !skippedKeyToToastOnFail!.contains(key))
+        if(VarDi.isSessionValid.value == true
+            && isAutoToastOnFail
+            && (skippedKeyToToastOnFail == null || !skippedKeyToToastOnFail!.contains(key))
         ) {
           showToast(msg: msg, bgColor: red, textColor: white, len: Toast.LENGTH_LONG);
           showErrorPopup(context: _context!, error: failure.copy(msg: msg),);
@@ -117,8 +119,9 @@ abstract class FormAuthVmGroup extends FormVmGroup with AuthVm {
       addOnFailTask(this, (key, failure) {
         final msg = "Error when call async task in VM `$runtimeType`, `key` = '$key', `failure` = '$failure'";
         prine(msg);
-        if(isAutoToastOnFail &&
-            (skippedKeyToToastOnFail == null || !skippedKeyToToastOnFail!.contains(key))
+        if(VarDi.isSessionValid.value == true
+            && isAutoToastOnFail
+            && (skippedKeyToToastOnFail == null || !skippedKeyToToastOnFail!.contains(key))
         ) {
           showToast(msg: msg, bgColor: red, textColor: white, len: Toast.LENGTH_LONG);
           showErrorPopup(context: _context!, error: failure.copy(msg: msg),);
