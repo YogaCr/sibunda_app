@@ -60,7 +60,7 @@ Map<String, dynamic> _$BabyFormWarningDataResponseToJson(
 BabyFormWarningDescResponse _$BabyFormWarningDescResponseFromJson(
     Map<String, dynamic> json) {
   return BabyFormWarningDescResponse(
-    desc: json['desc'] as String,
+    desc: json['desc'] as String?,
     isNormal: json['is_normal'] as bool,
   );
 }

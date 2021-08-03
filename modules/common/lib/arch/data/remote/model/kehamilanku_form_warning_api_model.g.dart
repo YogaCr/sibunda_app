@@ -81,7 +81,7 @@ PregnancyFormWarningDescResponse _$PregnancyFormWarningDescResponseFromJson(
     Map<String, dynamic> json) {
   return PregnancyFormWarningDescResponse(
     type: json['type'] as int,
-    desc: json['desc'] as String,
+    desc: json['desc'] as String?,
     isNormal: json['is_normal'] as bool,
   );
 }
