@@ -65,7 +65,7 @@ class BabyFormMenuData {
 
   factory BabyFormMenuData.fromResponse(BabyHomeChildYearFormResponse response) => BabyFormMenuData(
     year: response.year,
-    monthStart: (response.year -1) *12,
+    monthStart: (response.year -1) *12 +(response.year == 1 ? 0 : 1),
     monthEnd: response.year *12,
     id: response.id,
     img: ImgData(

@@ -22,23 +22,31 @@ class FormWarningStatus {
   factory FormWarningStatus.fromBabyResponse(BabyFormWarningDescResponse response, {
     int? i,
   }) => FormWarningStatus(
-    desc: response.desc,
+    desc: response.desc ?? "<ada_warning_tapi_desc_null>",
     action: "Cari faskes terdekat",
     isSafe: response.isNormal,
     img: i != null ? getDefaultAssetImg(
       babyWarningImgList[i % babyWarningImgList.length],
     ) : dummyImg,
   );
+  static FormWarningStatus? fromBabyResponseStatic(BabyFormWarningDescResponse response, {
+    int? i,
+  }) => response.desc != null ? FormWarningStatus.fromBabyResponse(response, i: i) : null;
+
   factory FormWarningStatus.fromPregnancyResponse(PregnancyFormWarningDescResponse response, {
     int? i,
   }) => FormWarningStatus(
-    desc: response.desc,
+    desc: response.desc ?? "<ada_warning_tapi_desc_null>",
     action: "Cari faskes terdekat",
     isSafe: response.isNormal,
     img: i != null ? getDefaultAssetImg(
       pregnancyWarningImgList[i % pregnancyWarningImgList.length],
     ) : dummyImg,
   );
+  static FormWarningStatus? fromPregnancyResponseStatic(PregnancyFormWarningDescResponse response, {
+    int? i,
+  }) => response.desc != null ? FormWarningStatus.fromPregnancyResponse(response, i: i) : null;
+
   factory FormWarningStatus.fromCovidCheckResponse(CovidCheckFormDataResponse response,) => FormWarningStatus(
     desc: response.result_desc,
     action: "Cari faskes terdekat",

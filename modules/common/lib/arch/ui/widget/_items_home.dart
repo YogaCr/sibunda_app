@@ -290,6 +290,7 @@ class ItemMessage extends StatelessWidget {
             Align(
               alignment: Alignment.topCenter,
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     title,

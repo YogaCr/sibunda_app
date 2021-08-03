@@ -83,7 +83,7 @@ class PregnancyCheckFetusGrowthWarningResponse extends Equatable  {
 @JsonSerializable()
 class PregnancyFormWarningDescResponse extends Equatable {
   final int type;
-  final String desc;
+  final String? desc;
   @JsonKey(name: Const.KEY_IS_NORMAL)
   final bool isNormal;
   PregnancyFormWarningDescResponse({
@@ -91,7 +91,8 @@ class PregnancyFormWarningDescResponse extends Equatable {
     required this.desc,
     required this.isNormal,
   });
-  factory PregnancyFormWarningDescResponse.fromJson(Map<String, dynamic> map) => _$PregnancyFormWarningDescResponseFromJson(map);
+  factory PregnancyFormWarningDescResponse.fromJson(Map<String, dynamic> map) =>
+      _$PregnancyFormWarningDescResponseFromJson(map);
 
   @override
   List<Object?> get props => [type, desc];

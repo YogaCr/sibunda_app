@@ -18,25 +18,28 @@ List<FormUiGroupData> formDataListToUi(List<FormGroupData> data) =>
     data.map((e) => FormUiGroupData.fromModel(e)).toList(growable: false);
 
 List<FormWarningStatus> responseToMotherFormWarning(PregnancyCheckFormWarningDataResponse response) {
+  //final resp = <PregnancyFormWarningDescResponse>[];
   return [
-    FormWarningStatus.fromPregnancyResponse(response.weight, i: 0),
-    FormWarningStatus.fromPregnancyResponse(response.djj, i: 1),
-    FormWarningStatus.fromPregnancyResponse(response.tfu, i: 2),
-    FormWarningStatus.fromPregnancyResponse(response.momPulse, i: 3),
-    FormWarningStatus.fromPregnancyResponse(response.babyMovement, i: 4),
-  ];
+    FormWarningStatus.fromPregnancyResponseStatic(response.weight, i: 0),
+    FormWarningStatus.fromPregnancyResponseStatic(response.djj, i: 1),
+    FormWarningStatus.fromPregnancyResponseStatic(response.tfu, i: 2),
+    FormWarningStatus.fromPregnancyResponseStatic(response.momPulse, i: 3),
+    FormWarningStatus.fromPregnancyResponseStatic(response.babyMovement, i: 4),
+  ].whereType<FormWarningStatus>()
+      .toList(growable: false);
 }
 List<FormWarningStatus> responseToBabyFormGrowthWarning(BabyFormWarningDataResponse response) {
   return [
-    FormWarningStatus.fromBabyResponse(response.weight, i: 0),
-    FormWarningStatus.fromBabyResponse(response.len, i: 1),
-    FormWarningStatus.fromBabyResponse(response.weightToLen, i: 2),
-    FormWarningStatus.fromBabyResponse(response.headCircum, i: 3),
-    FormWarningStatus.fromBabyResponse(response.imt, i: 4),
-  ];
+    FormWarningStatus.fromBabyResponseStatic(response.weight, i: 0),
+    FormWarningStatus.fromBabyResponseStatic(response.len, i: 1),
+    FormWarningStatus.fromBabyResponseStatic(response.weightToLen, i: 2),
+    FormWarningStatus.fromBabyResponseStatic(response.headCircum, i: 3),
+    FormWarningStatus.fromBabyResponseStatic(response.imt, i: 4),
+  ].whereType<FormWarningStatus>()
+      .toList(growable: false);
 }
 List<FormWarningStatus> responseToBabyFormDevWarning(BabyFormWarningDataResponse response) {
-  if(response.dev == null) return List.empty(growable: false);
+  if(response.dev?.desc == null) return List.empty(growable: false);
   return [
     FormWarningStatus.fromBabyResponse(response.dev!, i: 5),
   ];

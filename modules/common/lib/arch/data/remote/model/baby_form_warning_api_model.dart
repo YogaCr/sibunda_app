@@ -63,7 +63,7 @@ class BabyFormWarningDataResponse {
 
 @JsonSerializable()
 class BabyFormWarningDescResponse {
-  final String desc;
+  final String? desc;
   @JsonKey(name: Const.KEY_IS_NORMAL)
   final bool isNormal;
 
