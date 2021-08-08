@@ -43,7 +43,7 @@ class GetStartedFormMainVm extends AsyncAuthVm {
       _initConfig = initConfig, super(context: context) {
     signUpFormVm = SignUpFormVm(
       saveSignupData: _signup,
-      checkEmailAvailability: UseCaseDi.checkEmailAvailability,
+      checkEmailAvailability: UseCaseDi.obj.checkEmailAvailability,
     );
     motherVm = MotherFormVm(_saveMotherData);
     fatherVm = FatherFormVm(_saveFatherData);

@@ -4,9 +4,12 @@ import 'package:education/ui/detail/education_detail_vm.dart';
 import 'package:education/ui/home/education_home_vm.dart';
 import 'package:flutter/material.dart';
 
+
 class EducationVmDi {
   EducationVmDi._();
 
+  static EducationVmDiObj obj = EducationVmDiObjImpl();
+/*
   static EducationHomeVm educationHomeVm({BuildContext? context,}) => EducationHomeVm(
     context: context,
     getMotherNik: UseCaseDi.getMotherNik,
@@ -16,5 +19,26 @@ class EducationVmDi {
   static EducationDetailVm educationDetailVm({BuildContext? context,}) => EducationDetailVm(
     context: context,
     getEducationDetail: EducationUseCaseDi.getEducationDetail,
+  );
+ */
+}
+
+
+abstract class EducationVmDiObj {
+  EducationHomeVm educationHomeVm({BuildContext? context,});
+  EducationDetailVm educationDetailVm({BuildContext? context,});
+}
+class EducationVmDiObjImpl extends EducationVmDiObj {
+  @override
+  EducationHomeVm educationHomeVm({BuildContext? context,}) => EducationHomeVm(
+    context: context,
+    getMotherNik: UseCaseDi.obj.getMotherNik,
+    getEducationMainPanelData: EducationUseCaseDi.obj.getEducationMainPanelData,
+    getEducationHomeTipsData: EducationUseCaseDi.obj.getEducationHomeTipsData,
+  );
+  @override
+  EducationDetailVm educationDetailVm({BuildContext? context,}) => EducationDetailVm(
+    context: context,
+    getEducationDetail: EducationUseCaseDi.obj.getEducationDetail,
   );
 }

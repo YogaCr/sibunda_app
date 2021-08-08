@@ -39,7 +39,7 @@ class BabyRoutes extends ModuleRoute {
 
   static final babyHomePage = SibRoute("BabyHomePage", BabyHomePage, (ctx) => MainFrame(
     body: BabyHomePage().inVmProvider([
-          (ctx) => BabyVmDi.babyHomeVm(context: ctx),
+          (ctx) => BabyVmDi.obj.babyHomeVm(context: ctx),
     ]),
   ));
   static final babyCheckPage = _BabyCheckFormPage.obj;
@@ -69,7 +69,7 @@ class _BabyCheckFormPage {
           body: FormFakerEnabler(
             showInDefault: TestUtil.isDummy,
             builder: (ctx, interceptor) => BabyCheckFormPage(interceptor: interceptor,).inVmProvider([
-                  (ctx) => BabyVmDi.babyCheckFormVm(
+                  (ctx) => BabyVmDi.obj.babyCheckFormVm(
                     context: ctx,
                     babyCredential: babyCredential,
                   ),
@@ -96,7 +96,7 @@ class _BabyNeonantalServicePageRoute {
           showInDefault: TestUtil.isDummy,
           //interceptor: interceptor,
           builder: (ctx, interceptor) => NeonatalServicePage(interceptor: interceptor,).inVmProvider([
-                (ctx) => BabyVmDi.neonatalServiceVm(
+                (ctx) => BabyVmDi.obj.neonatalServiceVm(
                   context: ctx,
                   checkUpId: checkUpId,
                 ),
@@ -129,7 +129,7 @@ class _BabyImmunizationPopupRoute {
     //_route.goToPage(context, args: {Const.KEY_TRIMESTER : data});
     final _route = SibRoute("BabyImmunizationPopup", BabyImmunizationPopupPage, (ctx) => MainFrame(
       body: BabyImmunizationPopupPage().inVmProvider([
-            (ctx) => BabyVmDi.immunizationPopupVm(
+            (ctx) => BabyVmDi.obj.immunizationPopupVm(
               context: ctx,
               immunization: immunization,
               babyCredential: babyCredential,
@@ -154,7 +154,7 @@ class _BabyChartPageRoute {
   }) {
     final route = SibRoute("BabyChartPage", BabyChartPage, (ctx) => MainFrame(
       body: BabyChartPage().inVmProvider([
-            (ctx) => BabyVmDi.chartVm(
+            (ctx) => BabyVmDi.obj.chartVm(
               context: ctx,
               babyCredential: babyCredential,
             ),
@@ -174,7 +174,7 @@ class _BabyImmunizationPageRoute {
   }) {
     final route = SibRoute("BabyImmunizationPage", BabyImmunizationPage, (ctx) => MainFrame(
       body: BabyImmunizationPage().inVmProvider([
-            (ctx) => BabyVmDi.babyImmunizationVm(
+            (ctx) => BabyVmDi.obj.babyImmunizationVm(
               context: ctx,
               babyCredential: babyCredential,
             ),
@@ -194,7 +194,7 @@ class _BabyGrowthChartPageRoute {
   }) {
     final route = SibRoute("BabyGrowthChartMenuVm", BabyGrowthChartMenuPage, (ctx) => MainFrame(
       body: BabyGrowthChartMenuPage().inVmProvider([
-            (ctx) => BabyVmDi.growthChartMenuVm(
+            (ctx) => BabyVmDi.obj.growthChartMenuVm(
               context: ctx,
               babyCredential: babyCredential,
             ),

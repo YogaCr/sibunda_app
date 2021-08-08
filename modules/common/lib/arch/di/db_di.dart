@@ -9,7 +9,9 @@ import 'package:moor/moor.dart';
 
 class DbDi {
   DbDi._();
+  static DbDiObj obj = DbDiObjImpl();
 
+/*
   static reconstruct() async {
     prind("DbDi.reconstruct()");
     final __db = _db;
@@ -32,4 +34,39 @@ class DbDi {
   static CityDao get cityDao => db.cityDao;
   static CheckUpIdDao get checkUpIdDao => db.checkUpIdDao;
   static PregnancyDao get pregnancyDao => db.pregnancyDao;
+ */
+}
+
+
+abstract class DbDiObj {
+  Future<AppDatabase> reconstruct();
+
+  AppDatabase get db;
+
+  CredentialDao get credentialDao => db.credentialDao;
+  ProfileDao get profileDao => db.profileDao;
+  RoleDao get roleDao => db.roleDao;
+  ProfileTypeDao get profileTypeDao => db.profileTypeDao;
+  CityDao get cityDao => db.cityDao;
+  CheckUpIdDao get checkUpIdDao => db.checkUpIdDao;
+  PregnancyDao get pregnancyDao => db.pregnancyDao;
+}
+
+class DbDiObjImpl extends DbDiObj {
+  @override
+  Future<AppDatabase> reconstruct() async {
+    prind("DbDi.reconstruct()");
+    final __db = _db;
+    if(__db != null) {
+      await __db.reset();
+      await Migrator(__db).createAll();
+      __db.close();
+      _db = null;
+    }
+    return db;
+  }
+
+  AppDatabase? _db;
+  @override
+  AppDatabase get db => _db ??= constructDb();
 }

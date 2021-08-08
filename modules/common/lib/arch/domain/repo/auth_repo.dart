@@ -55,19 +55,19 @@ class AuthRepoImpl with AuthRepo {
 
   AuthRepoImpl({
     required AuthApi api,
-    //required DataApi dataApi,
+    required DataApi? dataApi,
     required AccountLocalSrc accountLocalSrc,
     required PregnancyLocalSrc pregnancyLocalSrc,
     required CheckUpLocalSrc checkUpLocalSrc,
   }):
     _api = api,
-    //_dataApi = dataApi,
+    _dataApi = dataApi,
     _accountLocalSrc = accountLocalSrc,
     _pregnancyLocalSrc = pregnancyLocalSrc,
     _checkUpLocalSrc = checkUpLocalSrc
   ;
 
-  DataApi getDataApi() => _dataApi ??= ApiDi.dataApi;
+  //DataApi getDataApi() => _dataApi ??= ApiDi.dataApi;
 
   @override
   Future<Result<bool>> saveSignupData(SignUpData signup) async => Success(true); //For now, this is just for gymmic. it is because `SignUpData` is stored together with other get started related data.
@@ -262,8 +262,11 @@ class AuthRepoImpl with AuthRepo {
 
   @override
   Future<Result<List<BatchProfileServer>>> getBio() async {
+    if(_dataApi == null) {
+      throw "Can't get bio with `_dataApi == null`";
+    }
     try {
-      final res = await getDataApi().getBio();
+      final res = await _dataApi!.getBio();
       if(res.code != 200) {
         return Fail(code: res.code, msg: "msg= '${res.message}', status= '${res.status}'",);
       }

@@ -29,7 +29,7 @@ class CovidRoutes extends ModuleRoute {
 
   static final covidHomePage = SibRoute("CovidHomePage", CovidHomePage, (ctx) => MainFrame(
     body: CovidHomePage().inVmProvider([
-      (ctx) => CovidVmDi.covidHomeVm(context: ctx),
+      (ctx) => CovidVmDi.obj.covidHomeVm(context: ctx),
     ]),
   ));
   static final covidCheckPage = _CovidCheckPageRoute.obj;
@@ -46,7 +46,7 @@ class _CovidCheckPageRoute {
         showInDefault: TestUtil.isDummy,
         //interceptor: interceptor,
         builder: (ctx, interceptor) => CovidCheckPage(interceptor: interceptor,).inVmProvider([
-              (ctx) => CovidVmDi.checkVm(context: ctx),
+              (ctx) => CovidVmDi.obj.checkVm(context: ctx),
         ]),
       ),
     );

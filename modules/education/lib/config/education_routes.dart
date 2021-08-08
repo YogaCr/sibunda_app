@@ -30,7 +30,7 @@ class EducationRoutes extends ModuleRoute {
 
   static final educationHomePage = SibRoute("EducationHomePage", EducationHomePage, (ctx) => MainFrame(
     body: EducationHomePage().inVmProvider([
-      (ctx) => EducationVmDi.educationHomeVm(context: ctx),
+      (ctx) => EducationVmDi.obj.educationHomeVm(context: ctx),
     ]),
   ));
   static final detailPage = _EducationDetailPageRoute.obj;
@@ -42,7 +42,7 @@ class _EducationDetailPageRoute {
 
   final _route = SibRoute("EducationDetailPage", EducationDetailPage, (ctx) => MainFrame(
     body: EducationDetailPage().inVmProvider([
-      (ctx) => EducationVmDi.educationDetailVm(context: ctx),
+      (ctx) => EducationVmDi.obj.educationDetailVm(context: ctx),
     ]),
   ));
 

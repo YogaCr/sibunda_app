@@ -11,7 +11,7 @@ AppDatabase constructDb({bool logStatements = false}) {
 Future<bool> destroyDb({bool logStatements = false}) async {
   try {
     //await constructDb(logStatements: logStatements).dropAllTable();
-    return await DbDi.db.dropAllTable();
+    return await DbDi.obj.db.dropAllTable();
   } catch(e, stack) {
     prine(stack);
     return false;

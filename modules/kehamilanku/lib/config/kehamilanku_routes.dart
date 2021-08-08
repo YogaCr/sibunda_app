@@ -42,7 +42,7 @@ class KehamilankuRoutes extends ModuleRoute {
 
   static final kehamilankuHomePage = SibRoute("KehamilankuHomePage", KehamilankuHomePage, (ctx) => MainFrame(
     body: KehamilankuHomePage().inVmProvider([
-      (ctx) => KehamilankuVmDi.kehamilankuHomeVm(context: ctx),
+      (ctx) => KehamilankuVmDi.obj.kehamilankuHomeVm(context: ctx),
     ]),
   ));
   static final pregnancyCheckPage = _PregnancyCheckPageRoute.obj;
@@ -72,7 +72,7 @@ class _PregnancyCheckPageRoute {
         body: FormFakerEnabler(
           showInDefault: TestUtil.isDummy,
           builder: (ctx, interceptor) => KehamilankuTrimesterFormPage(interceptor: interceptor,).inVmProvider([
-                (ctx) => KehamilankuVmDi.checkFormVm(
+                (ctx) => KehamilankuVmDi.obj.checkFormVm(
               context: ctx,
               pregnancyCred: pregnancyCred,
             ),
@@ -97,7 +97,7 @@ class _PregnancyImmunizationPageRoute {
   }) {
     final route = SibRoute("PregnancyImmunizationPage", PregnancyImmunizationPage, (ctx) => MainFrame(
       body: PregnancyImmunizationPage().inVmProvider([
-            (ctx) => KehamilankuVmDi.immunizationVm(
+            (ctx) => KehamilankuVmDi.obj.immunizationVm(
               context: ctx,
               pregnancyCred: pregnancyCred
             ),
@@ -113,7 +113,7 @@ class _PregnancyImmunizationPopupRoute {
 /*
   final SibRoute _route = SibRoute("PregnancyImmunizationPopup", PregnancyImmunizationPopupPage, (ctx) => MainFrame(
     body: PregnancyImmunizationPopupPage().inVmProvider([
-          (ctx) => KehamilankuVmDi.immunizationVm,
+          (ctx) => KehamilankuVmDi.obj.immunizationVm,
     ]),
   ));
  */
@@ -127,7 +127,7 @@ class _PregnancyImmunizationPopupRoute {
     //_route.goToPage(context, args: {Const.KEY_TRIMESTER : data});
     final _route = SibRoute("PregnancyImmunizationPopup", PregnancyImmunizationPopupPage, (ctx) => MainFrame(
       body: PregnancyImmunizationPopupPage().inVmProvider([
-            (ctx) => KehamilankuVmDi.immunizationPopupVm(
+            (ctx) => KehamilankuVmDi.obj.immunizationPopupVm(
               immunization: immunization,
               context: ctx,
               pregnancyCred: pregnancyCred,
@@ -151,7 +151,7 @@ class _PregnancyEvalChartMenuPageRoute {
   }) {
     final route = SibRoute("MotherPregEvalChartMenuPage", MotherPregEvalChartMenuPage, (ctx) => MainFrame(
       body: MotherPregEvalChartMenuPage().inVmProvider([
-            (ctx) => KehamilankuVmDi.pregEvalChartMenuVm(
+            (ctx) => KehamilankuVmDi.obj.pregEvalChartMenuVm(
               context: ctx,
               pregnancyCred: pregnancyCred,
             ),
@@ -172,7 +172,7 @@ class _MotherChartPageRoute {
   }) {
     final _route = SibRoute("MotherChartPage", MotherChartPage, (ctx) => MainFrame(
       body: MotherChartPage().inVmProvider([
-            (ctx) => KehamilankuVmDi.motherChartVm(
+            (ctx) => KehamilankuVmDi.obj.motherChartVm(
               context: ctx,
               pregnancyCred: pregnancyCred,
             ),

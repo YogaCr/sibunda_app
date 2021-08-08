@@ -73,7 +73,7 @@ class ConfigUtil {
       prind("ConfigUtil initFcm() AWAL 2");
       FirebaseMessaging.onBackgroundMessage(fcmBackgroundHandler);
       prind("ConfigUtil initFcm() AWAL 3");
-      final saveFcmToken = UseCaseDi.saveFcmToken;
+      final saveFcmToken = UseCaseDi.obj.saveFcmToken;
       prind("ConfigUtil initFcm() AWAL 4");
       final vapidKey = kIsWeb ? Const.FCM_WEB_PUSH_CERT : null;
       FirebaseMessaging.instance.getToken(vapidKey: vapidKey,)
@@ -172,8 +172,8 @@ class TestUtil {
   }
   static initDb() async {
     try {
-      await DbDi.roleDao.insertAll(userRoles);
-      await DbDi.profileTypeDao.insertAll(profileTypes);
+      await DbDi.obj.roleDao.insertAll(userRoles);
+      await DbDi.obj.profileTypeDao.insertAll(profileTypes);
     } catch(e, stack) {
       prinw("Error when calling `initDb()`, e= $e");
       prine(stack);
@@ -183,8 +183,8 @@ class TestUtil {
   static initDummyPrefs() async {
     try {
       await initPrefs();
-      await LocalSrcDi.accountSrc.saveCurrentEmail(dummyEmail);
-      await LocalSrcDi.accountSrc.saveSession(VarDi.session);
+      await LocalSrcDi.obj.accountSrc.saveCurrentEmail(dummyEmail);
+      await LocalSrcDi.obj.accountSrc.saveSession(VarDi.session);
       VarDi.motherNik.value = dummyProfileMother.nik;
       //LocalSrcDi.accountSrc.saveBatchProfile(userId: userId, userRole: userRole, signup: signup, mother: mother, father: father, child: child)
     } catch(e) {
@@ -194,13 +194,13 @@ class TestUtil {
   static initDummyDb() async {
     prind("`initDummyDb()` AWAL");
     try {
-      await DbDi.db.reset();
+      await DbDi.obj.db.reset();
       //final cities = await DbDi.cityDao.get();
       //prind("`initDummyDb()` cities = $cities");
       //await DbDi.cityDao.insertAll(dummyCities);
       await initDb();
-      await DbDi.credentialDao.insertAll([dummyCredential]);
-      await DbDi.profileDao.insertAll([
+      await DbDi.obj.credentialDao.insertAll([dummyCredential]);
+      await DbDi.obj.profileDao.insertAll([
         dummyProfileMother, dummyProfileFather, dummyProfileChild,
       ]);
     } catch(e, stack) {

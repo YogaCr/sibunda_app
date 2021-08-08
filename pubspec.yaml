@@ -81,6 +81,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
+  mockito: ^5.0.14
   build_runner: any
   freezed: ^0.14.2
   flutter_launcher_icons: ^0.9.0

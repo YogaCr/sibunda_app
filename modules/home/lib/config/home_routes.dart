@@ -57,7 +57,7 @@ class HomeRoutes extends ModuleRoute {
 
   static final splashPage = SibRoute("SplashPage", SplashPage, (ctx) => NoAppBarFrame(
     body: SplashPage().inVmProvider([
-          (ctx) => HomeVmDi.splashVm,
+          (ctx) => HomeVmDi.obj.splashVm,
     ]),
   ), onPreBuild: (ctx) async {
     await TestUtil.initSession();
@@ -70,7 +70,7 @@ class HomeRoutes extends ModuleRoute {
   static final loginPage = SibRoute("LoginPage", LoginPage, (ctx) =>  MainFrame(
     statusBarColor: black_trans_most3,
     body: LoginPage().inVmProvider([
-      (ctx) => HomeVmDi.loginFormVm,
+      (ctx) => HomeVmDi.obj.loginFormVm,
     ]),
     padding: EdgeInsets.all(20),
   ));
@@ -83,7 +83,7 @@ class HomeRoutes extends ModuleRoute {
         showInDefault: TestUtil.isDummy,
         //interceptor: interceptor,
         builder: (ctx, interceptor) => GetStartedFormMainPage(interceptor: interceptor,).inVmProvider([
-              (ctx) => HomeVmDi.getStartedFormMainVm(context: ctx,),
+              (ctx) => HomeVmDi.obj.getStartedFormMainVm(context: ctx,),
         ]),
       ),
     );
@@ -91,39 +91,39 @@ class HomeRoutes extends ModuleRoute {
   //============ Get started forms ==========
   static final signUpPage = SibRoute("SignUpPage", SignUpPage, (ctx) =>  PlainBackFrame(
     body: SignUpPage().inVmProvider([
-          (ctx) => HomeVmDi.signUpFormVm,
+          (ctx) => HomeVmDi.obj.signUpFormVm,
     ]),
     padding: EdgeInsets.all(20),
   ));
   static final motherFormPage = SibRoute("MotherFormPage", MotherFormPage, (ctx) =>  PlainBackFrame(
     body: MotherFormPage().inVmProvider([
-      (ctx) => HomeVmDi.motherFormVm,
+      (ctx) => HomeVmDi.obj.motherFormVm,
     ]),
     padding: EdgeInsets.all(20),
   ));
   static final fatherFormPage = SibRoute("FatherFormPage", FatherFormPage, (ctx) =>  PlainBackFrame(
     body: FatherFormPage().inVmProvider([
-      (ctx) => HomeVmDi.fatherFormVm,
+      (ctx) => HomeVmDi.obj.fatherFormVm,
     ]),
     padding: EdgeInsets.all(20),
   ));
   static final doMotherHavePregnancyPage = SibRoute("DoMotherHavePregnancyPage", DoMotherHavePregnancyPage, (ctx) =>  PlainBackFrame(
     body: DoMotherHavePregnancyPage().inVmProvider([
-      (ctx) => HomeVmDi.doMotherHavePregnancyVm,
+      (ctx) => HomeVmDi.obj.doMotherHavePregnancyVm,
     ]),
     padding: EdgeInsets.all(20),
   ));
   static final motherHplPage = _MotherHplPageRoute.obj;
   static final childrenCountPage = SibRoute("ChildrenCountPage", ChildrenCountPage, (ctx) =>  PlainBackFrame(
     body: ChildrenCountPage().inVmProvider([
-          (ctx) => HomeVmDi.childrenCountVm,
-    ]), //.inVmProvider([(ctx) => HomeVmDi.childFormVm,]),
+          (ctx) => HomeVmDi.obj.childrenCountVm,
+    ]), //.inVmProvider([(ctx) => HomeVmDi.obj.childFormVm,]),
     padding: EdgeInsets.all(20),
   ));
   static final childFormPage = _ChildFormPageRoute.obj;
   static final newAccountConfirmPage = SibRoute("NewAccountConfirmPage", NewAccountConfirmPage, (ctx) =>  PlainBackFrame(
     body: NewAccountConfirmPage().inVmProvider([
-      (ctx) => HomeVmDi.getStartedFormMainVm(context: ctx,),
+      (ctx) => HomeVmDi.obj.getStartedFormMainVm(context: ctx,),
     ]),
     padding: EdgeInsets.all(20),
   ));
@@ -131,12 +131,12 @@ class HomeRoutes extends ModuleRoute {
 
   static final homePage = SibRoute("HomePage", HomePage, (ctx) =>  MainFrame(
     body: HomePage().inVmProvider([
-      (ctx) => HomeVmDi.homeVm(context: ctx),
+      (ctx) => HomeVmDi.obj.homeVm(context: ctx),
     ]), //.inVmProvider([(ctx) =
   ));
   static final homeNotifAndMessagePage = SibRoute("HomeNotifAndMessagePage", HomeNotifAndMessagePage, (ctx) =>  MainFrame(
     body: HomeNotifAndMessagePage().inVmProvider([
-      (ctx) => HomeVmDi.notifAndMessageVm(context: ctx),
+      (ctx) => HomeVmDi.obj.notifAndMessageVm(context: ctx),
     ]), //.inVmProvider([(ctx) => H
   ));
 }
@@ -158,7 +158,7 @@ class _ChildFormPageRoute {
         showInDefault: TestUtil.isDummy,
         //interceptor: interceptor,
         builder: (ctx, interceptor) => ChildFormPage(interceptor: interceptor,).inVmProvider([
-          (ctx) => HomeVmDi.childFormVm(
+          (ctx) => HomeVmDi.obj.childFormVm(
             context: ctx,
             childCount: childCount,
             pregnancyId: pregnancyId,
@@ -186,7 +186,7 @@ class _MotherHplPageRoute {
   SibRoute getRoute() => SibRoute("MotherHplPage", MotherHplPage, (ctx) =>  PlainBackFrame(
     statusBarColor: Manifest.theme.colorBackground,
     body: MotherHplPage().inVmProvider([
-          (ctx) => HomeVmDi.motherHplVm(context: ctx,),
+          (ctx) => HomeVmDi.obj.motherHplVm(context: ctx,),
     ]), //.inVmProvider([(ctx) => HomeVmDi.childFormVm,]),
     padding: EdgeInsets.all(20),
   ));

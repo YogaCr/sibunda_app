@@ -17,7 +17,7 @@ class CityPickerIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkResponse(
       onTap: () async {
-        final selected = await showCitySelectionPopup(context: context, dao: DbDi.cityDao,);
+        final selected = await showCitySelectionPopup(context: context, dao: DbDi.obj.cityDao,);
         onItemSelected?.call(selected);
       },
       child: Icon(Icons.place_outlined,),
@@ -38,7 +38,7 @@ class BabyPickerIcon extends StatelessWidget {
       onTap: () async {
         final selected = await showBabySelectionPopup(
           context: context,
-          getBornBabyList: UseCaseDi.getBornBabyList,
+          getBornBabyList: UseCaseDi.obj.getBornBabyList,
         );
         onItemSelected?.call(selected);
       },

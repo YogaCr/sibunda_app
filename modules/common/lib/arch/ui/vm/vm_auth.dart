@@ -159,8 +159,8 @@ void _observeIsValid({
   VarDi.isSessionValid.observe(expirable, (valid) async {
     if(valid != true) {
       showSnackBar(context, Strings.session_expired, duration: Duration(milliseconds: 2500,),);
-      await UseCaseDi.clearUserData();
-      await UseCaseDi.toLoginPage(context: context);
+      await UseCaseDi.obj.clearUserData();
+      await UseCaseDi.obj.toLoginPage(context: context);
     }
   });
 }
@@ -195,8 +195,8 @@ void _observeError({
     prind("VarDi.isSessionValid.observe valid= $valid");
     if(valid == false) { //This will make `null` as initial state, not unauthenticated.
       showSnackBar(context, Strings.session_expired);
-      await UseCaseDi.clearUserData();
-      await UseCaseDi.toLoginPage(context: context);
+      await UseCaseDi.obj.clearUserData();
+      await UseCaseDi.obj.toLoginPage(context: context);
       Future.delayed(Duration(milliseconds: 200), () {
         VarDi.isSessionValid.value = null;
       });
