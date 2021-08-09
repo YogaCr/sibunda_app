@@ -40,17 +40,19 @@ class ConfigUtil {
   }) async {
     if(isTest != true) {
       WidgetsFlutterBinding.ensureInitialized();
+      //WidgetsBinding.instance.add
+      await initializeDateFormatting("id_ID");
     }
-    //WidgetsBinding.instance.add
     FlutterError.onError = (details) {
       FlutterError.presentError(details);
       VarDi.error.value = details;
     };
-    await initializeDateFormatting("id_ID");
-    if(isTest ?? TestUtil.isDummy) {
-      await TestUtil.init(isAllOffline: isAllOffline);
+    if(TestUtil.isDummy && isTest != true) {
+      await TestUtil.init();
       await TestUtil.initDummyPrefs();
       await TestUtil.initDummyDb();
+    } else if(isTest == true) {
+      await TestUtil.init(isTest: isTest,);
     } else {
       await Prefs.loadPrefs();
       await TestUtil.initDb();
@@ -163,9 +165,11 @@ class TestUtil {
     return _dummySession!;
   }
 
-  static init({ bool? isAllOffline, }) async {
-    await initPrefs();
-    await initSession(isOffline: isAllOffline,);
+  static init({ bool? isTest, }) async {
+    if(isTest != true) {
+      await initPrefs();
+    }
+    await initSession(isOffline: isTest == true,);
     VarDi.motherNik.value = "10129";
     VarDi.pregnancyWeek.value = 1;
   }

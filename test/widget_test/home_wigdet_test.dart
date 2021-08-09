@@ -27,7 +27,7 @@ _menuBtnNavTest() {
           Builder(builder: HomeRoutes.homePage.builder)
         )
       );
-      await tester.pumpAndSettle();
+      await tester.pump();
 
       final btn = find.byKey(HomeKeys.home_btnMenu_pregnancy).first;
       await tester.tap(btn);
