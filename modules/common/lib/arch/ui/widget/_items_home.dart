@@ -93,12 +93,16 @@ class ItemDashboardMenu extends StatelessWidget {
   ItemDashboardMenu({
     required this.img,
     required this.text,
-    this.onClick
-  });
+    this.onClick,
+    Key? key,
+  }): super(key: key);
 
-  ItemDashboardMenu.fromData(HomeMenu data, {this.onClick}):
+  ItemDashboardMenu.fromData(HomeMenu data, {
+    this.onClick,
+    Key? key,
+  }):
       img = data.img,
-      text = data.name
+      text = data.name, super(key: key)
   ;
 
   @override

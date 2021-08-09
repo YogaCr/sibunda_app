@@ -48,3 +48,15 @@ class FirebaseRepoImpl with FirebaseRepo {
     }
   }
 }
+
+
+class FirebaseRepoDummy with FirebaseRepo {
+  FirebaseRepoDummy._();
+  static final obj = FirebaseRepoDummy._();
+
+  @override
+  Future<Result<String>> getFcmToken() async => Success(Const.DUMMY_FCM_TOKEN);
+
+  @override
+  Future<Result<bool>> saveFcmToken(String token) async => Success(true);
+}

@@ -196,7 +196,7 @@ class TopBarProfileFrame extends StatelessWidget {
     final children = <Widget>[
       Container(
         margin: !withTopOffset ? EdgeInsets.only(top: stdTopMargin) : null,
-        child: Expanded(child: body,),
+        child: body,
       ),
       RoundedTopNavBarProfile(
         name: name,
@@ -255,10 +255,8 @@ class TopBarTabFrame extends StatelessWidget {
     final children = <Widget>[
       Container(
         margin: !withTopOffset ? EdgeInsets.only(top: stdTopMargin) : null,
-        child: Expanded(
-          child: TabBarView(
-            children: tabViews,
-          ),
+        child: TabBarView(
+          children: tabViews,
         ),
       ),
       RoundedTopNavBarTitleAndBack(

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:common/arch/di/config_di.dart';
 import 'package:common/arch/di/data_source_di.dart';
 import 'package:common/arch/di/db_di.dart';
+import 'package:common/arch/di/repo_di.dart';
 import 'package:common/arch/di/usecase_di.dart';
 import 'package:common/arch/domain/dummy_data.dart';
 import 'package:common/arch/domain/model/auth.dart';
@@ -33,16 +34,21 @@ class ConfigUtil {
   static const isAutoErrorExposureEnabled = false;
   static const isMobileOnly = true;
 
-  static init() async {
-    WidgetsFlutterBinding.ensureInitialized();
+  static init({
+    bool? isTest,
+    bool? isAllOffline,
+  }) async {
+    if(isTest != true) {
+      WidgetsFlutterBinding.ensureInitialized();
+    }
     //WidgetsBinding.instance.add
     FlutterError.onError = (details) {
       FlutterError.presentError(details);
       VarDi.error.value = details;
     };
     await initializeDateFormatting("id_ID");
-    if(TestUtil.isDummy) {
-      await TestUtil.init();
+    if(isTest ?? TestUtil.isDummy) {
+      await TestUtil.init(isAllOffline: isAllOffline);
       await TestUtil.initDummyPrefs();
       await TestUtil.initDummyDb();
     } else {
@@ -108,6 +114,10 @@ class ConfigUtil {
       prine(stack);
     }
   }
+
+  static resetRepoDi() {
+    RepoDi.obj = RepoDiObjImpl();
+  }
 }
 
 class TestUtil {
@@ -153,14 +163,16 @@ class TestUtil {
     return _dummySession!;
   }
 
-  static init() async {
+  static init({ bool? isAllOffline, }) async {
     await initPrefs();
-    await initSession();
+    await initSession(isOffline: isAllOffline,);
     VarDi.motherNik.value = "10129";
     VarDi.pregnancyWeek.value = 1;
   }
-  static initSession() async {
-    final session = await getDummySession();
+  static initSession({ bool? isOffline }) async {
+    final session = isOffline != true
+        ? await getDummySession()
+        : dummySessionData1;
     VarDi.session = session;
   }
   static initDummySeesion() {

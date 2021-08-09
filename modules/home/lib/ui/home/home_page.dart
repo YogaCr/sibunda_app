@@ -18,6 +18,7 @@ import 'package:core/ui/base/live_data_observer.dart';
 import 'package:core/ui/base/view_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:home/config/home_key.dart';
 import 'package:home/config/home_routes.dart';
 import 'package:home/ui/home/home_vm.dart';
 
@@ -32,6 +33,7 @@ class HomePage extends StatelessWidget {
       ..getTipsList();
 
     final actionBtnChild = InkWell(
+      key: HomeKeys.home_btnNotif,
       onTap: () => HomeRoutes.homeNotifAndMessagePage.goToPage(context),
       child: Icon(
         Icons.notifications_none_rounded,
@@ -46,6 +48,7 @@ class HomePage extends StatelessWidget {
         liveData: vm.profile,
         builder: (ctx, data) => data != null
             ? InkWell(
+              key: HomeKeys.home_btnProfile_top,
               child: ItemProfile.fromData(data),
               onTap: () => HomeRoutes.obj.goToModule(context, GlobalRoutes.profile),
             ) : defaultLoading(),
@@ -164,6 +167,7 @@ class HomePage extends StatelessWidget {
               builder: (ctx, data) => data?.isNotEmpty == true ? Column(
                 children: [
                   InkWell(
+                    key: HomeKeys.home_btnInfo_list,
                     onTap: () => HomeRoutes.obj.goToModule(context, GlobalRoutes.education),
                     child: Container(
                       alignment: Alignment.center,
@@ -182,6 +186,7 @@ class HomePage extends StatelessWidget {
         ),
       ]),
       bottomBar: MiddleBtnBottomNavBar(
+        midBtnKey: HomeKeys.home_btnInfo_bottom,
         midBtnOnClick: () => HomeRoutes.obj.goToModule(context, GlobalRoutes.education),
         midBtnChild: Padding(
           padding: EdgeInsets.all(3),
@@ -246,6 +251,11 @@ class _StatusList extends StatelessWidget {
 
 class _MenuList extends StatelessWidget {
   final List<HomeMenu> dataList;
+  final keyList = <Key>[
+    HomeKeys.home_btnMenu_pregnancy,
+    HomeKeys.home_btnMenu_baby,
+    HomeKeys.home_btnMenu_covid,
+  ];
 
   _MenuList(this.dataList);
 
@@ -255,11 +265,12 @@ class _MenuList extends StatelessWidget {
       height: 100,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: List.generate(dataList.length, (index) {
-          final data = dataList[index];
+        children: List.generate(dataList.length, (i) {
+          final data = dataList[i];
           return ItemDashboardMenu.fromData(
             data,
             onClick: () => HomeRoutes.obj.goToModule(context, data.moduleName),
+            key: keyList[i % keyList.length],
           );
         }
       ),),

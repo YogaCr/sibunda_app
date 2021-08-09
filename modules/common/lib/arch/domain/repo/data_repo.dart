@@ -1,6 +1,7 @@
 import 'package:common/arch/data/local/db/app_db.dart';
 import 'package:common/arch/data/local/source/data_local_source.dart';
 import 'package:common/arch/data/remote/api/data_api.dart';
+import 'package:common/arch/domain/dummy_data.dart';
 import 'package:common/arch/domain/model/_model_template.dart';
 import 'package:core/domain/model/result.dart';
 import 'package:core/util/_consoles.dart';
@@ -54,4 +55,17 @@ class DataRepoImpl with DataRepo {
   Future<Result<bool>> saveCities(List<IdStringModel> data) => _localSrc.saveCities(
     data.map((e) => CityEntity(id: e.id, name: e.name)).toList(growable: false),
   );
+}
+
+class DataRepoDummy with DataRepo {
+  DataRepoDummy._();
+  static final obj = DataRepoDummy._();
+
+  @override
+  Future<Result<List<IdStringModel>>> getCities() async => Success(
+    dummyCities.map<IdStringModel>((e) => IdStringModel(id: e.id, name: e.name)).toList(growable: false),
+  );
+
+  @override
+  Future<Result<bool>> saveCities(List<IdStringModel> data) async => Success(true);
 }

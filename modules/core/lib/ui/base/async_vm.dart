@@ -130,12 +130,16 @@ abstract class AsyncVm extends ViewModel {
   }
 
   @nonVirtual
-  void cancelJob(String key) {
+  void cancelJob(String key, {
+    bool immediatelyRemove = true,
+  }) {
     final pair = _jobMap[key];
     if(pair != null) {
       pair.item1.cancel();
       pair.item2.value = false;
-      _jobMap.remove(key);
+      if(immediatelyRemove) {
+        _jobMap.remove(key);
+      }
     }
   }
 
@@ -166,7 +170,7 @@ abstract class AsyncVm extends ViewModel {
   @mustCallSuper
   void dispose() {
     for(final key in _jobMap.keys) {
-      cancelJob(key);
+      cancelJob(key, immediatelyRemove: false);
     }
     _jobMap.clear();
   }

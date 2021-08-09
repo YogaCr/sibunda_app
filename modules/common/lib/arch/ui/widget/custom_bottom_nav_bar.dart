@@ -7,12 +7,14 @@ class MiddleBtnBottomNavBar extends StatelessWidget {
   final List<BottomNavigationBarItem> items;
   final Widget? midBtnChild;
   final void Function()? midBtnOnClick;
+  final Key? midBtnKey;
 
   MiddleBtnBottomNavBar({
     required this.midBtnChild,
     required this.items,
     this.onTap,
     this.midBtnOnClick,
+    this.midBtnKey,
   });
 
   @override
@@ -50,10 +52,11 @@ class MiddleBtnBottomNavBar extends StatelessWidget {
             width: 46,
             margin: EdgeInsets.only(bottom: 42),
             child: FloatingActionButton(
-                elevation: 0,
-                backgroundColor: Manifest.theme.colorPrimary,
-                child: midBtnChild,
-                onPressed: midBtnOnClick,
+              key: midBtnKey,
+              elevation: 0,
+              backgroundColor: Manifest.theme.colorPrimary,
+              child: midBtnChild,
+              onPressed: midBtnOnClick,
             ),
           )
         )
