@@ -101,10 +101,14 @@ class EducationRepoDummy with EducationRepo {
   @override
   Future<Result<TipsDetail>> getEducationDetail(Tips data) async {
     final i = dummyTipsList.indexOf(data);
+    prind("getEducationDetail i= $i data= $data");
     return i >= 0
         ? Success(dummyTipsDetailList[i])
         : Fail();
   }
   @override
-  Future<Result<List<Tips>>> getHomeTipsList(String motherNik) async => Success(dummyTipsList);
+  Future<Result<List<Tips>>> getHomeTipsList(String motherNik) async {
+    prind("getEducationDetail motherNik= $motherNik dummyTipsList= $dummyTipsList");
+    return Success(dummyTipsList);
+  }
 }
