@@ -1,4 +1,5 @@
 import 'package:common/arch/domain/model/img_data.dart';
+import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 import 'form_warning_status.dart';
@@ -27,6 +28,18 @@ class ChartMenuData {
 
 
 class Charts {
+  static final palette = List<Color>.unmodifiable([
+    Color.fromRGBO(75, 135, 185, 1),
+    Color.fromRGBO(192, 108, 132, 1),
+    Color.fromRGBO(246, 114, 128, 1),
+    Color.fromRGBO(248, 177, 149, 1),
+    Color.fromRGBO(116, 180, 155, 1),
+    Color.fromRGBO(0, 168, 181, 1),
+    Color.fromRGBO(73, 76, 162, 1),
+    Color.fromRGBO(255, 205, 96, 1),
+    Color.fromRGBO(255, 240, 219, 1),
+    Color.fromRGBO(238, 238, 238, 1)
+  ]);
   static final dataLabelSetting = DataLabelSettings(
     //isVisible: true,
     showZeroValue: false,
@@ -44,9 +57,18 @@ class Charts {
   static final comparedAnimDuration = 2500.0;
   static final comparedLineWidth = 1.8;
   static final comparedMarker = MarkerSettings(
-    isVisible: true,
+    isVisible: false,
     //borderWidth: 7,
   );
+
+  static Color getLineColor(int i, {
+    bool isObserved = false,
+  }) {
+    if(isObserved) {
+      return palette[i % palette.length];
+    }
+    return palette[i % palette.length].withOpacity(0.6);
+  }
 
   static DataMarkerType getMarkerShape(int i) {
     final list = DataMarkerType.values;
@@ -60,11 +82,14 @@ class Charts {
 
   static MarkerSettings getMarkerSetting(int i, {
     bool isObserved = false,
-  }) => MarkerSettings(
-    isVisible: true,
-    borderWidth: (!isObserved ? comparedMarker : observedMarker).borderWidth,
-    shape: getMarkerShape(i),
-  );
+  }) {
+    final template = !isObserved ? comparedMarker : observedMarker;
+    return MarkerSettings(
+      isVisible: template.isVisible,
+      borderWidth: template.borderWidth,
+      shape: getMarkerShape(i),
+    );
+  }
 
   static double getChartLineWidth({
     required bool isObserved,
@@ -80,17 +105,19 @@ class Charts {
     required List<String> labels,
     required List<num Function(T, int)> yGetters,
     required num Function(T, int) xGetter,
+    int? observedIndex,
   }) {
     if(labels.length != yGetters.length) {
       throw "`labels.length` (${labels.length}) should be same as `getters.length` (${yGetters.length})";
     }
 
-    final lastComparedLimit = labels.length-1;
+    //final lastComparedLimit = labels.length-1;
+    final obsInd = observedIndex ?? labels.length-1;
     return List.generate(labels.length, (i) {
       final label = labels[i];
       //final key = keyList_sd[i];
       final getter = yGetters[i];
-      final isObserved = i >= lastComparedLimit;
+      final isObserved = i == obsInd;
 
       return LineSeries(
         dataLabelSettings: Charts.dataLabelSetting,
@@ -98,6 +125,7 @@ class Charts {
         name: label,
         animationDuration: Charts.getAnimDuration(isObserved: isObserved),
         width: Charts.getChartLineWidth(isObserved: isObserved),
+        color: getLineColor(i, isObserved: isObserved),
         dataSource: dataList,
         xValueMapper: xGetter,
         yValueMapper: getter,
