@@ -3,6 +3,7 @@ import 'package:common/arch/domain/dummy_data.dart';
 import 'package:common/arch/domain/model/profile_data.dart';
 import 'package:common/arch/ui/vm/form_vm_group.dart';
 import 'package:common/arch/ui/widget/_items_kehamilanku.dart';
+import 'package:common/arch/ui/widget/custom_top_nav_bar.dart';
 import 'package:common/arch/ui/widget/popup_widget.dart';
 import 'package:common/config/keys.dart';
 import 'package:common/test/__common_test_const.dart';
@@ -22,8 +23,11 @@ import 'package:kehamilanku/ui/pregnancy_check/kehamilanku_trimester_form_vm.dar
 import '../util/test_util.dart';
 
 void main() {
+  //FlutterError.onError = null;
   TestUtil_Dev.init();
   ConfigUtil.init(isTest: true, isAllOffline: true,);
+  //TestWidgetsFlutterBinding.ensureInitialized();
+  //ConfigUtil.initFlutterErrorHandling(isTest: true);
 
   WidgetController.hitTestWarningShouldBeFatal = true;
   _babyOverlayTest();
@@ -63,6 +67,15 @@ _babyOverlayTest() {
 
 _trimesterTest() {
   group("Trimester test group", () {
+    /*
+    setUp(() {
+      ConfigUtil.initFlutterErrorHandling(isTest: true);
+      FlutterError.onError = (detail) {
+        print("FlutterError.onError detail= $detail");
+      };
+    });
+     */
+
     testWidgets("Given `kehamilanku_home_page`, "
         "When trimester menu button is pressed, "
         "Then enter `trimester_page`.",
@@ -82,17 +95,34 @@ _trimesterTest() {
         "Then success popup appears.",
       (tester) async {
         //await _setUpPregnancyHomePage(tester);
+        ConfigUtil.initFlutterErrorHandling(isTest: true);
+
         final firstTrimester = dummyTrimesterList[0];
         final week = firstTrimester.startWeek;
+        BuildContext? context;
 
+        print("test firstTrimester= $firstTrimester week= $week");
+
+        await pumpWidgetWithSibRoute(
+          tester: tester,
+          pumper: (ctx) => KehamilankuRoutes.pregnancyCheckPage.go(
+            context: context = ctx,
+            data: firstTrimester,
+            pregnancyCred: dummyProfileCred,
+            isLastTrimester: false,
+          ),
+        );
+
+        /*
         await tester.pumpWidget(
           defaultTestAppSibRoute((ctx) => KehamilankuRoutes.pregnancyCheckPage.build(
-            context: ctx,
+            context: context = ctx,
             data: firstTrimester,
             pregnancyCred: dummyProfileCred,
             isLastTrimester: false,
           ),),
         );
+         */
         //await tester.pumpAndSettle();
 
         final vmProviderFinder = find.byType(ViewModelProvider);
@@ -118,6 +148,13 @@ _trimesterTest() {
           KehamilankuKeys.home_btnTrimesterSubmission(week),
         ).first;
 
+        print("test btn.evaluate().toList()= ${btn.evaluate().toList()}");
+
+        expect(btn, findsOneWidget);
+
+        await tester.ensureVisible(btn);
+        await tester.pumpAndSettle();
+
         await tester.tap(btn);
 
         await tester.pumpAndSettle();
@@ -136,8 +173,35 @@ _immunizationTest() {
         await _setUpPregnancyHomePage(tester);
 
         final btn = find.byKey(KehamilankuKeys.home_btnImmunization).first;
-        await tester.ensureVisible(btn);
+        final btnRect = tester.getRect(btn);
+        /*
+        final dragGesture = await tester.startGesture(Offset(200, 400));
+        await dragGesture.moveBy(Offset(0, -300)); //135.0, 648.0, 478.0, 691.0
+        await dragGesture.up();
+        // */
+
+        //final from = tester.getCenter(btn);
+        await tester.dragFrom(Offset(200, 400), Offset(0, -300));
+
+        //tester.ensureVisible(btn);
         await tester.pumpAndSettle();
+
+        final btnRect2 = tester.getRect(btn);
+
+        print("btnRect= $btnRect btnRect2= $btnRect2");
+
+        final topBar = find.byType(RoundedTopNavBarBg).first;
+        //final bottomBar = find.byType(BottomNavigationBar).first;
+
+        //final menuBtn = find.byKey(HomeKeys.home_btnMenu_pregnancy).first;
+
+        //final menuBtnRect = tester.getRect(menuBtn);
+        final topBarRect = tester.getRect(topBar);
+        //final bottomBarRect = tester.getRect(bottomBar);
+        //print("topBarRect= $topBarRect bottomBarRect= $bottomBarRect menuBtnRect= $menuBtnRect");
+        print("topBarRect= $topBarRect btnRect= $btnRect");
+
+        //await tester.ensureVisible(btn);
 
         await tester.tap(btn);
 

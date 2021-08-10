@@ -69,7 +69,7 @@ class KehamilankuCheckFormVm extends FormAuthVmGroup {
     });
  */
     _isBabyBorn.observe(this, (isBorn) {
-      //prind("PregTrimesterVm _isBabyBorn.observe() isBorn= $isBorn");
+      prind("PregTrimesterVm _isBabyBorn.observe() isBorn= $isBorn");
       setFormEnabled(isEnabled: isBorn != true);
     }, tag: toString());
     onSubmit.observe(this, (success) {
@@ -380,7 +380,7 @@ class KehamilankuCheckFormVm extends FormAuthVmGroup {
         week: week,
       );
       _getPregnancyCheck(checkUpWeek).then((value) {
-        prind("getPregnancyCheck() _getPregnancyCheck() value = $value");
+        prind("getPregnancyCheck() _getPregnancyCheck() value= $value checkUpWeek= $checkUpWeek");
         if(value is Success<PregnancyCheck>) {
           final data = value.data;
           _pregnancyCheck.value = data;

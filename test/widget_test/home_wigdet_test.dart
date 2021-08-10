@@ -137,8 +137,12 @@ _infoNavTest() {
         print("scroll2= ${scroll2.single} scroll3= $scroll3 scroll3.size = ${scroll3.length}");
          */
         //await tester.ensureVisible(btn);
+        /*
         final dragGesture = await tester.startGesture(Offset(0, 500));
         await dragGesture.moveBy(Offset(0, -300));
+        await dragGesture.up();
+         */
+        await tester.dragFrom(Offset(0, 500), Offset(0, -300));
         await tester.pumpAndSettle();
 
         final btnRect2 = tester.getRect(btn);

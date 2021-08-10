@@ -77,3 +77,4 @@ bool isInitialPage(BuildContext context) => !Navigator.canPop(context);
 
 T? getRawArgs<T>(BuildContext context) => ModalRoute.of(context)?.settings.arguments as T?;
 T? getArgs<T>(BuildContext context, String key) => (ModalRoute.of(context)?.settings.arguments as Map?)?[key] as T?;
+//aa(){ModalRoute.of(context)?.settings = ;}

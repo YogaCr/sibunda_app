@@ -217,7 +217,7 @@ class _WeeklyFormPage extends StatelessWidget {
                   vm: vm,
                   interceptor: interceptor,
                   predicate: () {
-                    //prind("_WeeklyFormPage FormVmGroupObserver<KehamilankuCheckFormVm>.predicate() week = $week vm.currentWeek.value = ${vm.currentWeek.value}");
+                    prind("_WeeklyFormPage FormVmGroupObserver<KehamilankuCheckFormVm>.predicate() week = $week vm.currentWeek.value = ${vm.currentWeek.value} vm.isFormReady= ${vm.isFormReady}");
                     return vm.currentWeek.value == week;
                     //|| vm.currentWeek.value == week;
                     //|| vm.currentWeek.value == week -1
@@ -258,11 +258,14 @@ class _WeeklyFormPage extends StatelessWidget {
                     }
                   },
                   submitBtnMargin: EdgeInsets.only(bottom: 20, top: 10,),
-                  submitBtnBuilder: (ctx, canProceed) => TxtBtn(
-                    Strings.submit_check_form,
-                    key: KehamilankuKeys.home_btnTrimesterSubmission(week),
-                    color: canProceed == true ? pink_300 : grey,
-                  ),
+                  submitBtnBuilder: (ctx, canProceed) {
+                    prind("KehamilankuFormPage submitBtnBuilder KehamilankuKeys.home_btnTrimesterSubmission(week) = ${KehamilankuKeys.home_btnTrimesterSubmission(week)} week= $week");
+                    return TxtBtn(
+                      Strings.submit_check_form,
+                      key: KehamilankuKeys.home_btnTrimesterSubmission(week),
+                      color: canProceed == true ? pink_300 : grey,
+                    );
+                  },
                 );
 
                 final children = <Widget>[

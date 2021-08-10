@@ -2,6 +2,7 @@
 import 'package:common/arch/domain/model/_model_template.dart';
 import 'package:common/arch/ui/widget/popup_widget.dart';
 import 'package:common/res/theme/_theme.dart';
+import 'package:core/util/_consoles.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -16,26 +17,40 @@ void showSnackBar(
   BuildContext context, String text, {
   Color? backgroundColor,
   Duration? duration,
-  bool post = true,
+  bool post = false,
+  bool ignoreNotSafeException = true,
 }) {
-  if(post) {
-    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) =>
+  void show() {
+    if(post) {
+      WidgetsBinding.instance?.addPostFrameCallback((timeStamp) =>
+          ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                duration: duration ?? Duration(milliseconds: 1500),
+                backgroundColor: backgroundColor ?? Theme.of(context).errorColor,
+                content: Text(text),
+              )
+          )
+      );
+    } else {
       ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             duration: duration ?? Duration(milliseconds: 1500),
             backgroundColor: backgroundColor ?? Theme.of(context).errorColor,
             content: Text(text),
           )
-      )
-    );
+      );
+    }
+  }
+  if(ignoreNotSafeException) {
+    try {
+      show();
+    } catch(e, stack) {
+      prine("Error calling `showSnackBar`. To make it fatal, pass `ignoreNotSafeException: true` to `showSnackBar()`.");
+      prine("e= $e");
+      prine(stack);
+    }
   } else {
-    ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          duration: duration ?? Duration(milliseconds: 1500),
-          backgroundColor: backgroundColor ?? Theme.of(context).errorColor,
-          content: Text(text),
-        )
-    );
+    show();
   }
 }
 

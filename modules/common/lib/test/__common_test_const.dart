@@ -43,10 +43,9 @@ class ConfigUtil {
       //WidgetsBinding.instance.add
       await initializeDateFormatting("id_ID");
     }
-    FlutterError.onError = (details) {
-      FlutterError.presentError(details);
-      VarDi.error.value = details;
-    };
+    if(isTest == true) {
+      initFlutterErrorHandling(isTest: isTest,);
+    }
     if(TestUtil.isDummy && isTest != true) {
       await TestUtil.init();
       await TestUtil.initDummyPrefs();
@@ -58,6 +57,38 @@ class ConfigUtil {
       await TestUtil.initDb();
       await TestUtil.initDummySeesion(); // Just to pretend;
     }
+  }
+
+  static initFlutterErrorHandling({
+    bool? isTest,
+  }) {
+    FlutterError.onError = (details, {
+      bool forceReport = false,
+    }) {
+      prind("FlutterError.onError details= $details");
+      if(isTest != true) {
+        FlutterError.presentError(details);
+      } else {
+        bool isOverflowError = false;
+        final exc = details.exception;
+        if(exc is FlutterError) {
+          isOverflowError = exc.diagnostics.any((e) {
+            final eStr = e.value.toString();
+            prind("exc.diagnostics.any = eStr= $eStr");
+            return eStr.startsWith("A RenderFlex overflowed by");
+          });
+        }
+
+        if(isOverflowError) {
+          prine("Overflow error during test, thus ignore");
+          prine(details);
+          //prine(details.stack);
+        } else {
+          FlutterError.presentError(details);
+        }
+      }
+      VarDi.error.value = details;
+    };
   }
 
   static initFcm() async {
@@ -119,6 +150,9 @@ class ConfigUtil {
 
   static resetRepoDi() {
     RepoDi.obj = RepoDiObjImpl();
+  }
+  static resetUseCaseDi() {
+    UseCaseDi.obj = UseCaseDiObjImpl();
   }
 }
 

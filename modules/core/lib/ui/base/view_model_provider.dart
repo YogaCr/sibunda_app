@@ -1,6 +1,41 @@
 part of 'view_model.dart';
 
 
+T? _getCachedViewModel<T extends ViewModel>(List<ViewModel> viewModels) {
+  prind("ViewModelStore.getCachedViewModel() T= '$T' _viewModels= $viewModels");
+  return viewModels.firstWhereOrNull((it) => it.runtimeType == T) as T?;
+}
+
+T _getViewModel<T extends ViewModel>({
+  required BuildContext context,
+  required List<ViewModel> viewModels,
+  required List<ViewModel Function(BuildContext)> creators,
+}) {
+  T? vm = viewModels.firstWhereOrNull((it) => it.runtimeType == T) as T?;
+  //print("vm = $vm");
+  if(vm == null) {
+    //final creators = _viewModelCreators;
+    //print("creators = $creators");
+    int i = viewModels.length -1;
+    int creatorsLen = creators.length;
+    while(++i < creatorsLen) {
+      //print("while creatorsLen = $creatorsLen i = $i");
+      final newVm = creators[i](context);
+      viewModels.add(newVm);
+      prind("ViewModelStore newVm= '$newVm' is stored");
+      if(newVm.runtimeType == T) {
+        vm = newVm as T;
+        break;
+      }
+    }
+    //print("vm AKHIR = $vm");
+    if(vm == null) {
+      throw "No ViewModel type '$T' in BuildContext $context";
+    }
+  }
+  return vm;
+}
+
 class ViewModelStore extends InheritedWidget {
   ViewModelStore({
     required List<ViewModel> viewModels,
@@ -15,36 +50,14 @@ class ViewModelStore extends InheritedWidget {
   final List<ViewModel> _viewModels;
   final List<ViewModel Function(BuildContext)> _viewModelCreators;
 
-  T? getCachedViewModel<T extends ViewModel>() {
-    prind("ViewModelStore.getCachedViewModel() T= '$T' _viewModels= $_viewModels");
-    return _viewModels.firstWhereOrNull((it) => it.runtimeType == T) as T?;
-  }
+  T? getCachedViewModel<T extends ViewModel>() => _getCachedViewModel(_viewModels);
 
-  T getViewModel<T extends ViewModel>(BuildContext context) {
-    T? vm = _viewModels.firstWhereOrNull((it) => it.runtimeType == T) as T?;
-    //print("vm = $vm");
-    if(vm == null) {
-      //final creators = _viewModelCreators;
-      //print("creators = $creators");
-      int i = _viewModels.length -1;
-      int creatorsLen = _viewModelCreators.length;
-      while(++i < creatorsLen) {
-        //print("while creatorsLen = $creatorsLen i = $i");
-        final newVm = _viewModelCreators[i](context);
-        _viewModels.add(newVm);
-        prind("ViewModelStore newVm= '$newVm' is stored");
-        if(newVm.runtimeType == T) {
-          vm = newVm as T;
-          break;
-        }
-      }
-      //print("vm AKHIR = $vm");
-      if(vm == null) {
-        throw "No ViewModel type '$T' in BuildContext $context";
-      }
-    }
-    return vm;
-  }
+  T getViewModel<T extends ViewModel>(BuildContext context) =>
+      _getViewModel(
+        context: context,
+        viewModels: _viewModels,
+        creators: _viewModelCreators,
+      );
 
   @override
   bool updateShouldNotify(ViewModelStore oldWidget) => _viewModels != oldWidget._viewModels;
@@ -109,7 +122,7 @@ class ViewModelProviderState extends State<ViewModelProvider> {
   final List<ViewModel Function(BuildContext)> creators;
   final Widget child;
   final Key? key;
-  List<ViewModel> _viewModels = [];
+  final List<ViewModel> _viewModels = [];
 
   ViewModelProviderState({
     required this.creators,
@@ -117,11 +130,14 @@ class ViewModelProviderState extends State<ViewModelProvider> {
     this.key,
   });
 
-  T? getCachedViewModel<T extends ViewModel>() {
-    prind("_ViewModelProviderState.getCachedViewModel() T= '$T' _viewModels= $_viewModels");
-    return _viewModels.firstWhereOrNull((it) => it.runtimeType == T) as T?;
-  }
+  T? getCachedViewModel<T extends ViewModel>() => _getCachedViewModel(_viewModels);
 
+  T getViewModel<T extends ViewModel>(BuildContext context) =>
+      _getViewModel(
+        context: context,
+        viewModels: _viewModels,
+        creators: creators,
+      );
 
   @override
   void dispose() {

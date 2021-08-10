@@ -294,7 +294,7 @@ class PregnancyRepoDummy with PregnancyRepo {
   Future<Result<MotherPregnancyAgeOverview>> getMotherPregnancyAgeOverview(int pregnancyId) async => Success(dummyPregnancyAgeOverview);
 
   @override
-  Future<Result<PregnancyCheck>> getPregnancyCheck(PregnancyCheckUpWeek checkUpWeek) async => Success(dummyPregnancyCheck(checkUpWeek.week));
+  Future<Result<PregnancyCheck>> getPregnancyCheck(PregnancyCheckUpWeek checkUpWeek) async => Fail(); //Success(dummyPregnancyCheck(checkUpWeek.week));
   @override
   Future<Result<int>> savePregnancyCheck(int pregnancyId, PregnancyCheck data, int trimester) async => Success(1);
   @override
