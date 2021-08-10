@@ -23,11 +23,8 @@ import 'package:kehamilanku/ui/pregnancy_check/kehamilanku_trimester_form_vm.dar
 import '../util/test_util.dart';
 
 void main() {
-  //FlutterError.onError = null;
   TestUtil_Dev.init();
   ConfigUtil.init(isTest: true, isAllOffline: true,);
-  //TestWidgetsFlutterBinding.ensureInitialized();
-  //ConfigUtil.initFlutterErrorHandling(isTest: true);
 
   WidgetController.hitTestWarningShouldBeFatal = true;
   _babyOverlayTest();

@@ -1,3 +1,4 @@
+import 'package:bayiku/config/baby_keys.dart';
 import 'package:bayiku/config/baby_routes.dart';
 import 'package:bayiku/ui/home/baby_home_vm.dart';
 import 'package:common/arch/domain/dummy_data.dart';
@@ -57,6 +58,7 @@ class BabyHomePage extends StatelessWidget {
       withTopOffset: true,
       title: Strings.my_baby,
       topBarChild: BabyOverlayControlBtn(
+        key: BabyKeys.home_btnBabySelection,
         text: Strings.my_baby,
         visibilityController: overlayVisibility,
       ),
