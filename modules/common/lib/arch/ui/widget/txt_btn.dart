@@ -25,8 +25,9 @@ class TxtBtn extends StatelessWidget {
         this.color,
         this.minHeight = 0,
         this.minWidth = 0,
+        Key? key,
       }
-      ): _onTap = onTap;
+      ): _onTap = onTap, super(key: key,);
 
   @override
   Widget build(BuildContext context) {

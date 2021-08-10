@@ -25,6 +25,7 @@ import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kehamilanku/config/kehamilanku_keys.dart';
 import 'package:kehamilanku/config/kehamilanku_routes.dart';
 import 'package:kehamilanku/ui/home/kehamilanku_home_vm.dart';
 
@@ -58,6 +59,7 @@ class KehamilankuHomePage extends StatelessWidget {
       title: Strings.my_pregnancy,
       withTopOffset: true,
       topBarChild: BabyOverlayControlBtn(
+        key: KehamilankuKeys.home_btnBabySelection,
         text: Strings.my_pregnancy,
         visibilityController: overlayVisibility,
       ),
@@ -222,6 +224,7 @@ class _PregnancyHomePageWithData extends StatelessWidget {
                 liveData: vm.selectedProfile,
                 builder: (ctx, data) => ItemHomeImmunization.fromData(
                   motherHomeImmunization_ui,
+                  btnKey: KehamilankuKeys.home_btnImmunization,
                   onBtnClick: data != null ? () => KehamilankuRoutes.immunizationPage.go(
                     context: context,
                     pregnancyCred: data,
@@ -239,33 +242,41 @@ class _PregnancyHomePageWithData extends StatelessWidget {
             ),
             LiveDataObserver<ProfileCredential>(
               liveData: vm.selectedProfile,
-              builder: (ctx, data) => data != null ? Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Flexible(
-                    flex: 10,
-                    child: ItemHomeGraphMenu.fromData(
-                      pregnancyHomeGraphMenu[0],
-                      onClick: () => KehamilankuRoutes.pregEvalChartMenuPage.go(
-                        context: ctx,
-                        pregnancyCred: data,
+              builder: (ctx, data) {
+                if(data == null) {
+                  return defaultLoading();
+                }
+
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Flexible(
+                      flex: 10,
+                      child: ItemHomeGraphMenu.fromData(
+                        pregnancyHomeGraphMenu[0],
+                        key: KehamilankuKeys.home_btnChartPregnancyEval,
+                        onClick: () => KehamilankuRoutes.pregEvalChartMenuPage.go(
+                          context: ctx,
+                          pregnancyCred: data,
+                        ),
                       ),
                     ),
-                  ),
-                  Spacer(flex: 1,),
-                  Flexible(
-                    flex: 10,
-                    child: ItemHomeGraphMenu.fromData(
-                      pregnancyHomeGraphMenu[1],
-                      onClick: () => KehamilankuRoutes.chartPage.go(
-                        context: ctx,
-                        type: MotherChartType.bmi,
-                        pregnancyCred: data,
+                    Spacer(flex: 1,),
+                    Flexible(
+                      flex: 10,
+                      child: ItemHomeGraphMenu.fromData(
+                        pregnancyHomeGraphMenu[1],
+                        key: KehamilankuKeys.home_btnChartWeight,
+                        onClick: () => KehamilankuRoutes.chartPage.go(
+                          context: ctx,
+                          type: MotherChartType.bmi,
+                          pregnancyCred: data,
+                        ),
                       ),
                     ),
-                  ),
-                ],
-              ) : defaultLoading(),
+                  ],
+                );
+              },
             ),
             Container(
               margin: EdgeInsets.symmetric(vertical: 20),
@@ -304,12 +315,13 @@ class _MotherTrimesterList extends StatelessWidget {
   @override
   Widget build(BuildContext context) => SliverList(
     delegate: SliverChildBuilderDelegate(
-          (c, i) {
+      (c, i) {
         final data = dataList[i];
         return Container(
           margin: EdgeInsets.symmetric(vertical: 5),
           child: ItemMotherTrimester.fromData(
             data,
+            key: KehamilankuKeys.home_btnTrimester(i),
             onClick: () => KehamilankuRoutes.pregnancyCheckPage.go(
               context: c,
               data: data,

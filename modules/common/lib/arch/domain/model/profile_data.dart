@@ -24,6 +24,9 @@ class ProfileCredential with _$ProfileCredential {
 
   factory ProfileCredential.fromBabyOverlay(BabyOverlayData data) =>
       ProfileCredential(id: data.id, nik: data.nik,);
+
+  factory ProfileCredential.fromProfile(Profile data) =>
+      ProfileCredential(id: data.id, nik: data.nik,);
 }
 
 class Profile {

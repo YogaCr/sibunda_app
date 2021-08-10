@@ -9,6 +9,7 @@ import 'package:core/domain/model/range.dart';
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
+part 'immunization.g.dart';
 
 class ImmunizationData extends Equatable {
   final String name;
@@ -183,3 +184,37 @@ class ImmunizationConfirmData {
     required this.noBatch,
   });
 }
+
+@JsonSerializable()
+class ImmunizationFill {
+  @JsonKey(name: Const.KEY_RESPONSIBLE_NAME)
+  final String responsibleName;
+  @JsonKey(name: Const.KEY_IMMUNIZATION_DATE)
+  final String date;
+  @JsonKey(name: Const.KEY_IMMUNIZATION_PLACE)
+  final String place;
+  @JsonKey(name: Const.KEY_NO_BATCH)
+  final String noBatch;
+
+  ImmunizationFill({
+    required this.responsibleName,
+    required this.date,
+    required this.place,
+    this.noBatch = "",
+  });
+
+  factory ImmunizationFill.fromJson(Map<String, dynamic> map) => _$ImmunizationFillFromJson(map);
+  Map<String, dynamic> toJson() => _$ImmunizationFillToJson(this);
+}
+
+/*
+aaf() {
+  final data = ImmunizationConfirmData(
+    immunization: immunization,
+    responsibleName: respMap[Const.KEY_RESPONSIBLE_NAME],
+    date: respMap[Const.KEY_IMMUNIZATION_DATE],
+    place: respMap[Const.KEY_IMMUNIZATION_PLACE],
+    noBatch: respMap[Const.KEY_NO_BATCH] ?? "",
+  );
+}
+ */

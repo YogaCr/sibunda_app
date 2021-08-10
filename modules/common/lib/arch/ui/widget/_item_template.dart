@@ -179,12 +179,14 @@ class ItemPanelWithButton extends StatelessWidget {
   final String action;
   /// If null, the button will automatically disappear.
   final void Function()? onBtnClick;
+  final Key? btnKey;
 
   ItemPanelWithButton({
     required this.img,
     required this.title, // = "Jangan lupa ikut imunisasi ya Bunda",
     required this.action, // = "Lihat imunisasi Bunda",
     this.onBtnClick,
+    this.btnKey,
   });
 
   @override
@@ -216,6 +218,7 @@ class ItemPanelWithButton extends StatelessWidget {
         TxtBtn(
           action,
           onTap: onBtnClick,
+          key: btnKey,
         ),
       );
     }
@@ -257,14 +260,16 @@ class ItemHomeGraphMenu extends StatelessWidget {
     required this.img,
     required this.text,
     this.onClick,
-  });
+    Key? key,
+  }): super(key: key,);
 
   ItemHomeGraphMenu.fromData(
       HomeGraphMenu data,{
       this.onClick,
+      Key? key,
   }):
     text = data.name,
-    img = data.img
+    img = data.img, super(key: key,)
   ;
 
   @override

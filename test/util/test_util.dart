@@ -24,3 +24,15 @@ Widget defaultTestApp(
     body: child,
   ) : child,
 );
+
+Widget defaultTestAppSibRoute(
+  Widget Function(BuildContext) builder, {
+  bool withScaffold = false,
+}) {
+  final child = Builder(builder: builder,);
+  return MaterialApp(
+    home: withScaffold ? Scaffold(
+      body: child,
+    ) : child,
+  );
+}

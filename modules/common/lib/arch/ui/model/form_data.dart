@@ -77,6 +77,7 @@ class FormUiImgPicker extends FormUiData {
   );
 
   factory FormUiImgPicker.fromModel(FormData data,) {
+    /*
     final options = data.options?.map((e) => e.label).toList(growable: false);
     final selectedItems = <int>{};
     if(options == null) {
@@ -88,6 +89,7 @@ class FormUiImgPicker extends FormUiData {
         }
       }
     }
+     */
     return FormUiImgPicker(
       key: data.key,
       question: data.question,

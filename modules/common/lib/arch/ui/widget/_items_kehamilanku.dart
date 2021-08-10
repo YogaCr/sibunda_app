@@ -146,13 +146,17 @@ class ItemMotherTrimester extends StatelessWidget {
     required this.pregnancyAgeStart,
     required this.pregnancyAgeEnd,
     this.onClick,
-  });
+    Key? key,
+  }): super(key: key,);
 
-  ItemMotherTrimester.fromData(MotherTrimester data, { this.onClick }):
+  ItemMotherTrimester.fromData(MotherTrimester data, {
+    this.onClick,
+    Key? key,
+  }):
     img = data.img,
     trimester = data.trimester,
     pregnancyAgeStart = data.startWeek,
-    pregnancyAgeEnd = data.endWeek
+    pregnancyAgeEnd = data.endWeek, super(key: key,)
   ;
 
   @override
@@ -436,7 +440,8 @@ class BabyOverlayControlBtn extends StatelessWidget {
     required this.text,
     required this.visibilityController,
     this.onClick,
-  });
+    Key? key,
+  }): super(key: key,);
 
   @override
   Widget build(BuildContext context) {

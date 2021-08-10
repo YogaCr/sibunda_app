@@ -23,6 +23,7 @@ import 'package:core/ui/base/view_model.dart';
 import 'package:core/util/_consoles.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:kehamilanku/config/kehamilanku_keys.dart';
 import 'package:kehamilanku/config/kehamilanku_routes.dart';
 import 'package:kehamilanku/ui/pregnancy_check/kehamilanku_trimester_form_vm.dart';
 
@@ -42,8 +43,13 @@ class KehamilankuTrimesterFormPage extends StatelessWidget {
     final trimester = getArgs<MotherTrimester>(context, Const.KEY_TRIMESTER)!;
     final startWeek = trimester.startWeek;
     final weekCount = trimester.endWeek - startWeek +1;
+
+    prind("KehamilankuTrimesterFormPage isLastTrimester= $isLastTrimester trimester= $trimester");
+
     final vm = ViewModelProvider.of<KehamilankuCheckFormVm>(context)
       ..initVm();
+
+    prind("KehamilankuTrimesterFormPage vm= $vm");
 
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
       await Future.delayed(Duration(milliseconds: 500));
@@ -254,6 +260,7 @@ class _WeeklyFormPage extends StatelessWidget {
                   submitBtnMargin: EdgeInsets.only(bottom: 20, top: 10,),
                   submitBtnBuilder: (ctx, canProceed) => TxtBtn(
                     Strings.submit_check_form,
+                    key: KehamilankuKeys.home_btnTrimesterSubmission(week),
                     color: canProceed == true ? pink_300 : grey,
                   ),
                 );

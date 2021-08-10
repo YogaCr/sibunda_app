@@ -2,6 +2,7 @@ import 'package:bayiku/config/baby_routes.dart';
 import 'package:common/arch/ui/model/immunization_data.dart';
 import 'package:common/arch/ui/widget/_basic_widget.dart';
 import 'package:common/arch/ui/widget/form_generic_vm_group_observer.dart';
+import 'package:common/arch/ui/widget/popup_widget.dart';
 import 'package:common/config/_config.dart';
 import 'package:common/res/theme/_theme.dart';
 import 'package:common/util/times.dart';
@@ -10,6 +11,7 @@ import 'package:common/util/ui.dart';
 import 'package:common/value/const_values.dart';
 import 'package:core/ui/base/view_model.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 import 'baby_immunization_popup_vm.dart';
 
@@ -36,6 +38,13 @@ class BabyImmunizationPopupPage extends StatelessWidget {
         },
         onSubmit: (ctx, success) async {
           if(success) {
+            await showDialog<bool>(context: context, builder: (ctx) => AlertDialog(
+              content: PopupSuccess(
+                msg: "Data Imunisasi Bunda berhasil disimpan",
+                actionMsg: "Kembali ke menu",
+                onActionClick: () => Navigator.pop(context), //() => backPage(context, backStep: 2),
+              ),
+            )); //showSnackBar(ctx, "Berhasil bro", backgroundColor: Colors.green)
             //final resp = vm.getResponse().responseGroups.values.first;
             final date = vm.responseGroupList[0][Const.KEY_IMMUNIZATION_DATE]!.response.value! as DateTime;
             final noBatch = vm.responseGroupList[0][Const.KEY_NO_BATCH]!.response.value.toString();

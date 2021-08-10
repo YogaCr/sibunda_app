@@ -60,26 +60,51 @@ class _PregnancyCheckPageRoute {
   _PregnancyCheckPageRoute._();
   static final obj = _PregnancyCheckPageRoute._();
 
+  SibRoute getRoute({
+    required MotherTrimester data,
+    required ProfileCredential pregnancyCred,
+    required bool isLastTrimester,
+  }) => SibRoute("PregnancyCheckPage", KehamilankuTrimesterFormPage, (ctx) {
+    //final FormGroupInterceptor? interceptor = ConfigUtil.formInterceptor;
+    return MainFrame(
+      body: FormFakerEnabler(
+        showInDefault: TestUtil.isDummy,
+        builder: (ctx, interceptor) => KehamilankuTrimesterFormPage(interceptor: interceptor,).inVmProvider([
+              (ctx) => KehamilankuVmDi.obj.checkFormVm(
+            context: ctx,
+            pregnancyCred: pregnancyCred,
+          ),
+        ]),
+      ),
+    );
+  });
+
+
+  Widget build({
+    required BuildContext context,
+    required MotherTrimester data,
+    required ProfileCredential pregnancyCred,
+    required bool isLastTrimester,
+  }) {
+    final route = getRoute(
+      data: data,
+      pregnancyCred: pregnancyCred,
+      isLastTrimester: isLastTrimester,
+    );
+    return route.build(context);
+  }
+
   void go({
     required BuildContext context,
     required MotherTrimester data,
     required ProfileCredential pregnancyCred,
     required bool isLastTrimester,
   }) {
-    final SibRoute _route = SibRoute("PregnancyCheckPage", KehamilankuTrimesterFormPage, (ctx) {
-      //final FormGroupInterceptor? interceptor = ConfigUtil.formInterceptor;
-      return MainFrame(
-        body: FormFakerEnabler(
-          showInDefault: TestUtil.isDummy,
-          builder: (ctx, interceptor) => KehamilankuTrimesterFormPage(interceptor: interceptor,).inVmProvider([
-                (ctx) => KehamilankuVmDi.obj.checkFormVm(
-              context: ctx,
-              pregnancyCred: pregnancyCred,
-            ),
-          ]),
-        ),
-      );
-    });
+    final SibRoute _route = getRoute(
+      data: data,
+      pregnancyCred: pregnancyCred,
+      isLastTrimester: isLastTrimester,
+    );
     _route.goToPage(context, args: {
       Const.KEY_TRIMESTER : data,
       Const.KEY_IS_LAST_TRIMESTER: isLastTrimester,
@@ -91,18 +116,30 @@ class _PregnancyImmunizationPageRoute {
   _PregnancyImmunizationPageRoute._();
   static final obj = _PregnancyImmunizationPageRoute._();
 
+  SibRoute getRoute({
+    required ProfileCredential pregnancyCred,
+  }) => SibRoute("PregnancyImmunizationPage", PregnancyImmunizationPage, (ctx) => MainFrame(
+    body: PregnancyImmunizationPage().inVmProvider([
+          (ctx) => KehamilankuVmDi.obj.immunizationVm(
+          context: ctx,
+          pregnancyCred: pregnancyCred
+      ),
+    ]),
+  ));
+
+  Widget build({
+    required BuildContext context,
+    required ProfileCredential pregnancyCred,
+  }) {
+    final route = getRoute(pregnancyCred: pregnancyCred,);
+    return route.build(context);
+  }
+
   void go({
     required BuildContext context,
     required ProfileCredential pregnancyCred,
   }) {
-    final route = SibRoute("PregnancyImmunizationPage", PregnancyImmunizationPage, (ctx) => MainFrame(
-      body: PregnancyImmunizationPage().inVmProvider([
-            (ctx) => KehamilankuVmDi.obj.immunizationVm(
-              context: ctx,
-              pregnancyCred: pregnancyCred
-            ),
-      ]),
-    ));
+    final route = getRoute(pregnancyCred: pregnancyCred,);
     route.goToPage(context);
   }
 }

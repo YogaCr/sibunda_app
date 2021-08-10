@@ -3,6 +3,7 @@ import 'package:common/arch/ui/model/immunization.dart';
 import 'package:common/arch/ui/widget/_basic_widget.dart';
 import 'package:common/arch/ui/widget/_item_immunization.dart';
 import 'package:common/arch/ui/widget/_item_template.dart';
+import 'package:common/config/keys.dart';
 import 'package:common/res/theme/_theme.dart';
 import 'package:core/ui/base/live_data.dart';
 import 'package:core/ui/base/live_data_observer.dart';
@@ -64,6 +65,7 @@ class ImmunizationListGroupView extends StatelessWidget {
             margin: EdgeInsets.symmetric(vertical: 5),
             child: ItemImmunizationFill.fromData(
               immunization,
+              btnKey: CommonKeys.getBtnImmunizationItem(immunization.core.occurrenceId),
               onBtnClick: () => onBtnClick?.call(groupIndex2, childIndex2),
             ),
 /*

@@ -67,6 +67,7 @@ class _FormFakerEnablerState extends State<FormFakerEnabler> {
         );
       },
     );
+    prind("_FormFakerEnablerState.build() core= $core");
 
     final enabler = GestureDetector(
       onTap: () {

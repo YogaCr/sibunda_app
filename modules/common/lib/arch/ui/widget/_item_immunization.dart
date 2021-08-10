@@ -16,6 +16,7 @@ class ItemHomeImmunization extends StatelessWidget {
   final String title;
   final String action;
   final void Function()? onBtnClick;
+  final Key? btnKey;
 /*
   ItemHomeImmunization({
     required this.img,
@@ -25,18 +26,24 @@ class ItemHomeImmunization extends StatelessWidget {
   });
  */
 
-  ItemHomeImmunization.fromData(
-      HomeImmunizationData data, {
-        this.onBtnClick,
-      }):
+  ItemHomeImmunization.fromData(HomeImmunizationData data, {
+    this.onBtnClick,
+    this.btnKey,
+  }):
         title = data.title,
         action = data.action,
-        img = data.img
+        img = data.img, super()
   ;
 
   @override
   Widget build(BuildContext context) {
-    return ItemPanelWithButton(img: img, title: title, action: action, onBtnClick: onBtnClick,);
+    return ItemPanelWithButton(
+      img: img,
+      title: title,
+      action: action,
+      onBtnClick: onBtnClick,
+      btnKey: btnKey,
+    );
   }
 }
 
@@ -46,6 +53,7 @@ class ItemImmunizationFill extends StatelessWidget {
   final String? descLeft;
   final String? descRight;
   final void Function()? onBtnClick;
+  final Key? btnKey;
 
   ItemImmunizationFill({
     required this.immunizationName,
@@ -53,11 +61,13 @@ class ItemImmunizationFill extends StatelessWidget {
     this.descLeft,
     this.descRight,
     this.onBtnClick,
+    this.btnKey,
   });
 
   factory ItemImmunizationFill.fromData(
       UiImmunizationListItem data, {
       void Function()? onBtnClick,
+      Key? btnKey,
   }) {
     final detail = data.detail;
     String? descRight;
@@ -83,6 +93,7 @@ class ItemImmunizationFill extends StatelessWidget {
       descLeft: descLeft,
       descRight: descRight,
       onBtnClick: onBtnClick,
+      btnKey: btnKey,
     );
   }
 
@@ -113,6 +124,7 @@ class ItemImmunizationFill extends StatelessWidget {
           style: SibTextStyles.size_min_1.copyWith(color: txtColor),
         ),
         InkWell(
+          key: btnKey,
           borderRadius: BorderRadius.all(Radius.circular(10)),
           onTap: onBtnClick,
           child: Ink(

@@ -58,6 +58,8 @@ dependencies:
 
   common:
     path: modules/common
+  core:
+    path: modules/core
   auth:
     path: modules/auth
   bayiku:

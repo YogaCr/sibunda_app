@@ -186,7 +186,7 @@ class MotherPregnancyAgeOverview {
   });
 }
 
-class MotherTrimester {
+class MotherTrimester extends Equatable {
   final int id;
   final int trimester;
   final int startWeek;
@@ -215,6 +215,9 @@ class MotherTrimester {
       ),
     );
   }
+
+  @override
+  List<Object?> get props => [id, trimester, startWeek, endWeek];
 }
 
 class MotherFoodRecom {
