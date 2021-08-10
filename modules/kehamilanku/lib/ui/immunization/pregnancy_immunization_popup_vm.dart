@@ -4,6 +4,7 @@ import 'package:common/arch/domain/model/profile_data.dart';
 import 'package:common/arch/domain/usecase/mother_usecase.dart';
 import 'package:common/arch/ui/model/form_data.dart';
 import 'package:common/arch/ui/vm/vm_auth.dart';
+import 'package:common/util/type_util.dart';
 import 'package:common/value/const_values.dart';
 import 'package:core/domain/model/result.dart';
 import 'package:core/ui/base/live_data.dart';
@@ -62,7 +63,7 @@ class PregnancyImmunizationPopupVm extends FormAuthVmGroup {
         );
         final res = await _confirmMotherImmunization(nik, data);
         if(res is Success<bool>) {
-          _date.value = responseGroupList.first[Const.KEY_IMMUNIZATION_DATE]!.response.value;
+          _date.value = parseDate(responseGroupList.first[Const.KEY_IMMUNIZATION_DATE]!.response.value);
           return Success("ok");
         }
       }

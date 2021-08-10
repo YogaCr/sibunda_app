@@ -99,43 +99,22 @@ _trimesterTest() {
 
         final firstTrimester = dummyTrimesterList[0];
         final week = firstTrimester.startWeek;
-        BuildContext? context;
-
-        print("test firstTrimester= $firstTrimester week= $week");
 
         await pumpWidgetWithSibRoute(
           tester: tester,
           pumper: (ctx) => KehamilankuRoutes.pregnancyCheckPage.go(
-            context: context = ctx,
+            context: ctx,
             data: firstTrimester,
             pregnancyCred: dummyProfileCred,
             isLastTrimester: false,
           ),
         );
 
-        /*
-        await tester.pumpWidget(
-          defaultTestAppSibRoute((ctx) => KehamilankuRoutes.pregnancyCheckPage.build(
-            context: context = ctx,
-            data: firstTrimester,
-            pregnancyCred: dummyProfileCred,
-            isLastTrimester: false,
-          ),),
-        );
-         */
-        //await tester.pumpAndSettle();
-
         final vmProviderFinder = find.byType(ViewModelProvider);
-        //final vmStoreFinder = find.byType(ViewModelStore);
         expect(vmProviderFinder, findsOneWidget);
 
         final vmProviderState = tester.state(vmProviderFinder) as ViewModelProviderState;
-/*
-        final vmStore2 = vmStoreFinder.evaluate();
-        print("vmStore2 = ${vmStore2.toList()} widget = ${vmStore2.map((e) => e.widget).toList()}");
 
-        final vmStore = vmStoreFinder.evaluate().single.widget as ViewModelStore;
- */
         final vm = vmProviderState.getCachedViewModel<KehamilankuCheckFormVm>();
         expect(vm, isNotNull);
 
@@ -147,8 +126,6 @@ _trimesterTest() {
         final btn = find.byKey(
           KehamilankuKeys.home_btnTrimesterSubmission(week),
         ).first;
-
-        print("test btn.evaluate().toList()= ${btn.evaluate().toList()}");
 
         expect(btn, findsOneWidget);
 
@@ -173,7 +150,7 @@ _immunizationTest() {
         await _setUpPregnancyHomePage(tester);
 
         final btn = find.byKey(KehamilankuKeys.home_btnImmunization).first;
-        final btnRect = tester.getRect(btn);
+        //final btnRect = tester.getRect(btn);
         /*
         final dragGesture = await tester.startGesture(Offset(200, 400));
         await dragGesture.moveBy(Offset(0, -300)); //135.0, 648.0, 478.0, 691.0
@@ -186,20 +163,20 @@ _immunizationTest() {
         //tester.ensureVisible(btn);
         await tester.pumpAndSettle();
 
-        final btnRect2 = tester.getRect(btn);
+        //final btnRect2 = tester.getRect(btn);
 
-        print("btnRect= $btnRect btnRect2= $btnRect2");
+        //print("btnRect= $btnRect btnRect2= $btnRect2");
 
-        final topBar = find.byType(RoundedTopNavBarBg).first;
+        //final topBar = find.byType(RoundedTopNavBarBg).first;
         //final bottomBar = find.byType(BottomNavigationBar).first;
 
         //final menuBtn = find.byKey(HomeKeys.home_btnMenu_pregnancy).first;
 
         //final menuBtnRect = tester.getRect(menuBtn);
-        final topBarRect = tester.getRect(topBar);
+        //final topBarRect = tester.getRect(topBar);
         //final bottomBarRect = tester.getRect(bottomBar);
         //print("topBarRect= $topBarRect bottomBarRect= $bottomBarRect menuBtnRect= $menuBtnRect");
-        print("topBarRect= $topBarRect btnRect= $btnRect");
+        //print("topBarRect= $topBarRect btnRect= $btnRect");
 
         //await tester.ensureVisible(btn);
 
@@ -216,6 +193,8 @@ _immunizationTest() {
         //await _setUpPregnancyHomePage(tester);
         //final firstTrimester = dummyTrimesterList[0];
         //final week = firstTrimester.startWeek;
+        ConfigUtil.initFlutterErrorHandling(isTest: true);
+
         final immunizationData = motherImmunizationList.firstWhere((e) => e.date == null);
 
         await tester.pumpWidget(
@@ -224,6 +203,7 @@ _immunizationTest() {
             pregnancyCred: dummyProfileCred,
           ),),
         );
+        await tester.pumpAndSettle();
 
         final immunizationBtnFinder = find.byKey(
           CommonKeys.getBtnImmunizationItem(immunizationData.occurrenceId),
@@ -276,6 +256,9 @@ _chartNavTest() {
 
         final btn = find.byKey(KehamilankuKeys.home_btnChartPregnancyEval).first;
 
+        await tester.dragFrom(Offset(200, 400), Offset(0, -300));
+        await tester.pumpAndSettle();
+
         await tester.tap(btn);
 
         await tester.pumpAndSettle();
@@ -289,6 +272,9 @@ _chartNavTest() {
         await _setUpPregnancyHomePage(tester);
 
         final btn = find.byKey(KehamilankuKeys.home_btnChartWeight).first;
+
+        await tester.dragFrom(Offset(200, 400), Offset(0, -300));
+        await tester.pumpAndSettle();
 
         await tester.tap(btn);
 
