@@ -262,11 +262,13 @@ class AuthRepoImpl with AuthRepo {
 
   @override
   Future<Result<List<BatchProfileServer>>> getBio() async {
+    /*
     if(_dataApi == null) {
       throw "Can't get bio with `_dataApi == null`";
     }
+     */
     try {
-      final res = await _dataApi!.getBio();
+      final res = await (_dataApi ??= ApiDi.obj.dataApi).getBio();
       if(res.code != 200) {
         return Fail(code: res.code, msg: "msg= '${res.message}', status= '${res.status}'",);
       }

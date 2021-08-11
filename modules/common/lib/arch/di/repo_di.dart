@@ -156,7 +156,8 @@ class RepoDiObjImpl extends RepoDiObj {
   @override
   AuthRepo get authRepo => AuthRepoImpl(
     api: ApiDi.obj.authApi,
-    dataApi: ApiDi.obj.dataApi,
+    //dataApi: ApiDi.obj.dataApi,
+    dataApi: null,
     accountLocalSrc: LocalSrcDi.obj.accountSrc,
     pregnancyLocalSrc: LocalSrcDi.obj.pregnancySrc,
     checkUpLocalSrc: LocalSrcDi.obj.checkUpSrc,

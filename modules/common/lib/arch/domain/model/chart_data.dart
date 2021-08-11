@@ -1,4 +1,5 @@
 import 'package:common/arch/domain/model/img_data.dart';
+import 'package:common/res/theme/_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
@@ -29,16 +30,16 @@ class ChartMenuData {
 
 class Charts {
   static final palette = List<Color>.unmodifiable([
-    Color.fromRGBO(75, 135, 185, 1),
-    Color.fromRGBO(192, 108, 132, 1),
-    Color.fromRGBO(246, 114, 128, 1),
-    Color.fromRGBO(248, 177, 149, 1),
+    Color.fromRGBO(118, 154, 186, 1.0),
+    Color.fromRGBO(174, 108, 192, 1.0),
+    Color.fromRGBO(24, 100, 94, 1.0),
+    Color.fromRGBO(255, 240, 54, 1.0),
     Color.fromRGBO(116, 180, 155, 1),
     Color.fromRGBO(0, 168, 181, 1),
     Color.fromRGBO(73, 76, 162, 1),
-    Color.fromRGBO(255, 205, 96, 1),
+    Color.fromRGBO(234, 154, 69, 1.0),
     Color.fromRGBO(255, 240, 219, 1),
-    Color.fromRGBO(238, 238, 238, 1)
+    Color.fromRGBO(250, 176, 176, 1.0)
   ]);
   static final dataLabelSetting = DataLabelSettings(
     //isVisible: true,
@@ -48,8 +49,9 @@ class Charts {
   /// In millis
   static final observedAnimDuration = comparedAnimDuration * 2.3;
   static final observedLineWidth = 3.0;
+  static final observedLineColor = pink_300;
   static final observedMarker = MarkerSettings(
-    isVisible: true,
+    isVisible: false,
     //borderWidth: 12,
   );
 
@@ -65,7 +67,7 @@ class Charts {
     bool isObserved = false,
   }) {
     if(isObserved) {
-      return palette[i % palette.length];
+      return observedLineColor;
     }
     return palette[i % palette.length].withOpacity(0.6);
   }
