@@ -5,6 +5,7 @@ import 'package:common/arch/ui/widget/custom_bottom_nav_bar.dart';
 import 'package:common/arch/ui/widget/custom_top_nav_bar.dart';
 import 'package:common/config/keys.dart';
 import 'package:common/test/__common_test_const.dart';
+import 'package:core/util/_consoles.dart';
 import 'package:covid19/ui/home/covid_home_page.dart';
 import 'package:education/ui/detail/education_detail_page.dart';
 import 'package:education/ui/home/education_home_page.dart';
@@ -30,8 +31,8 @@ void main() {
   _profileNavTest();
 }
 
-
 Future<void> _setUpHomePage(WidgetTester tester) async {
+  ConfigUtil.initFlutterErrorHandling(isTest: true);
   await tester.pumpWidget(
     defaultTestApp(
       Builder(builder: HomeRoutes.homePage.builder),
@@ -42,6 +43,9 @@ Future<void> _setUpHomePage(WidgetTester tester) async {
 
 _menuBtnNavTest() {
   group("Menu btn nav test group", () {
+    tearDown(() {
+      TestUtil_Dev.postTestResult();
+    });
 
     testWidgets("Given home page, "
         "When 'kehamilanku' menu button is pressed, "
@@ -98,6 +102,10 @@ _menuBtnNavTest() {
 
 _infoNavTest() {
   group("Info nav test group", () {
+    tearDown(() {
+      TestUtil_Dev.postTestResult();
+    });
+
     testWidgets("Given home page, "
         "When info menu button is clicked, "
         "Then `info_home_page` is shown.",
@@ -184,6 +192,10 @@ _infoNavTest() {
 
 _notifNavTest() {
   group("Notification nav test group", () {
+    tearDown(() {
+      TestUtil_Dev.postTestResult();
+    });
+
     testWidgets("Given home page, "
         "When notification button is clicked, "
         "Then `notif_page` is shown.",
@@ -207,6 +219,10 @@ _notifNavTest() {
 
 _profileNavTest() {
   group("Profile nav test group", () {
+    tearDown(() {
+      TestUtil_Dev.postTestResult();
+    });
+
     testWidgets("Given home page, "
         "When profile photo is clicked, "
         "Then `profile_home_page` is shown.",

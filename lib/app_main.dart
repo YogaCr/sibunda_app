@@ -1,13 +1,8 @@
-import 'package:common/arch/di/config_di.dart';
 import 'package:common/res/string/_string.dart';
-import 'package:common/res/theme/_theme.dart';
 import 'package:common/test/__common_test_const.dart';
 import 'package:flutter/material.dart';
 
 import 'package:common/config/manifest.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:home/config/home_routes.dart';
 
 import 'config/app_routes.dart';
 
@@ -15,9 +10,7 @@ void main() {
   //WidgetsFlutterBinding.ensureInitialized();
   //await ConfigUtil.init();
   //TestUtil.initDummySeesion();
-  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-    statusBarColor: Colors.transparent,
-  ));
+  ConfigUtil.initSystemNav();
   runApp(SiApp());
 }
 

@@ -20,6 +20,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter/services.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
 class ConfigUtil {
@@ -59,32 +60,48 @@ class ConfigUtil {
     }
   }
 
+  static initSystemNav() {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+    ));
+  }
+
   static initFlutterErrorHandling({
     bool? isTest,
   }) {
+    final prevErrorHandler = FlutterError.onError;
     FlutterError.onError = (details, {
       bool forceReport = false,
     }) {
-      prind("FlutterError.onError details= $details");
+      prind("FlutterError.onError isTest= $isTest details= $details");
       if(isTest != true) {
         FlutterError.presentError(details);
       } else {
-        bool isOverflowError = false;
+        prind("FlutterError.onError ELSE!!!");
+        //bool isOverflowError = false;
+        final overflowMsg = "A RenderFlex overflowed by";
+        final imgMsg = "Unable to load asset: assets/images/";
+
+        bool isIgnored = false;
+
         final exc = details.exception;
         if(exc is FlutterError) {
-          isOverflowError = exc.diagnostics.any((e) {
+          isIgnored = exc.diagnostics.any((e) {
             final eStr = e.value.toString();
-            prind("exc.diagnostics.any = eStr= $eStr");
-            return eStr.startsWith("A RenderFlex overflowed by");
+            prind("exc.diagnostics.any = eStr= $eStr e.value.type= ${e.value.runtimeType}");
+            return eStr.contains(overflowMsg)
+              || eStr.contains(imgMsg);
           });
         }
+        prind("FlutterError.onError isIgnored= $isIgnored");
 
-        if(isOverflowError) {
-          prine("Overflow error during test, thus ignore");
+        if(isIgnored) {
+          prine("Ignored error during test, thus ignore");
           prine(details);
           //prine(details.stack);
         } else {
-          FlutterError.presentError(details);
+          //FlutterError.presentError(details);
+          prevErrorHandler?.call(details);
         }
       }
       VarDi.error.value = details;
@@ -95,7 +112,6 @@ class ConfigUtil {
     prind("ConfigUtil initFcm() AWAL kIsWeb= $kIsWeb");
     if(kIsWeb) return;
     try {
-
       if(!kIsWeb) {
         final option = kIsWeb ? FirebaseOptions(
           apiKey: "AIzaSyAKJ6eEXLl039Ta9les33IBpTUMpAuv0KA",
@@ -111,6 +127,9 @@ class ConfigUtil {
 
       prind("ConfigUtil initFcm() AWAL 2");
       FirebaseMessaging.onBackgroundMessage(fcmBackgroundHandler);
+      FirebaseMessaging.onMessageOpenedApp.listen(fcmBackgroundHandler);
+
+      //FirebaseMessaging.(fcmBackgroundHandler);
       prind("ConfigUtil initFcm() AWAL 3");
       final saveFcmToken = UseCaseDi.obj.saveFcmToken;
       prind("ConfigUtil initFcm() AWAL 4");
@@ -118,7 +137,7 @@ class ConfigUtil {
       FirebaseMessaging.instance.getToken(vapidKey: vapidKey,)
           .then(prind)
           .catchError((e) => prine(e));
-      prind("ConfigUtil initFcm() sblum await token");
+      prind("ConfigUtil initFcm() sblum await token vapidKey= $vapidKey");
       final token = await FirebaseMessaging.instance.getToken(vapidKey: vapidKey,);
       prind("ConfigUtil initFcm() token = $token");
       if(token != null) {

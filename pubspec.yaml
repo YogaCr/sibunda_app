@@ -82,6 +82,10 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_driver:
+    sdk: flutter
+  integration_test:
+    sdk: flutter
 
   mockito: ^5.0.14
   build_runner: any
