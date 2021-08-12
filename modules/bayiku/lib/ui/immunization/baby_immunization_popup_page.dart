@@ -40,7 +40,7 @@ class BabyImmunizationPopupPage extends StatelessWidget {
           if(success) {
             await showDialog<bool>(context: context, builder: (ctx) => AlertDialog(
               content: PopupSuccess(
-                msg: "Data Imunisasi Bunda berhasil disimpan",
+                msg: "Data Imunisasi Bayi berhasil disimpan",
                 actionMsg: "Kembali ke menu",
                 onActionClick: () => Navigator.pop(context), //() => backPage(context, backStep: 2),
               ),

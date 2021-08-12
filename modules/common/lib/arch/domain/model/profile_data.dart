@@ -55,7 +55,7 @@ class Profile {
     nik: entity.nik,
     name: entity.name,
     email: email,
-    img: dummyImg_profile_preset, //dummyImg_profile,
+    img: dummyImg_profile, //dummyImg_profile_preset, //
     birthDate: entity.birthDate,
   );
 }
