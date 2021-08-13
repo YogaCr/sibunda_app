@@ -488,14 +488,18 @@ class ItemProfile extends StatelessWidget {
   final String name;
   final String? desc;
   final ImgData img;
+  final Color? nameColor;
 
   ItemProfile({
     required this.name,
     required this.img,
     this.desc,
+    this.nameColor,
   });
 
-  ItemProfile.fromData(Profile data,):
+  ItemProfile.fromData(Profile data, {
+    this.nameColor,
+  }):
     name = data.name,
     desc = "${calculateYearAge(data.birthDate)} tahun", //data.email,
     img = data.img
@@ -503,9 +507,12 @@ class ItemProfile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
+    var nameTextStyle = SibTextStyles.size_plus_2_colorOnPrimary;
+    if(nameColor != null) {
+      nameTextStyle = nameTextStyle.copyWith(color: nameColor);
+    }
     final txtChildren = <Widget>[
-      Text(name, style: SibTextStyles.size_plus_2_colorOnPrimary,),
+      Text(name, style: nameTextStyle,),
     ];
     if(desc != null){
       txtChildren.add(
