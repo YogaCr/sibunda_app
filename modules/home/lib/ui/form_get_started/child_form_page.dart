@@ -1,5 +1,6 @@
 
 import 'package:common/arch/domain/model/img_data.dart';
+import 'package:common/arch/domain/model/profile_data.dart';
 import 'package:common/arch/ui/widget/_basic_widget.dart';
 import 'package:common/arch/ui/widget/form_controller.dart';
 import 'package:common/arch/ui/widget/form_generic_vm_group_observer.dart';
@@ -44,8 +45,10 @@ class ChildFormPage extends StatelessWidget {
       throw "Can't have list with negative int, `childCount` = '$childCount'";
     }
      */
+    final credential = getArgs<ProfileCredential>(context, Const.KEY_CREDENTIAL);
 
     final vm = ViewModelProvider.of<ChildFormVm>(context)
+      ..getChildData(credential: credential,)
       //..childCount.value = childCount
 /*
       ..onActiveInParent = () {

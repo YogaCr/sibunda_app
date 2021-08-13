@@ -3,6 +3,7 @@ import 'package:common/arch/di/repo_di.dart';
 import 'package:common/arch/domain/usecase/auth_usecase.dart';
 import 'package:common/arch/domain/usecase/baby_usecase.dart';
 import 'package:common/arch/domain/usecase/data_usecase.dart';
+import 'package:common/arch/domain/usecase/family_usecase.dart';
 import 'package:common/arch/domain/usecase/firebase_usecase.dart';
 import 'package:common/arch/domain/usecase/mother_usecase.dart';
 import 'package:common/arch/domain/usecase/profile_usecase.dart';
@@ -53,6 +54,7 @@ abstract class UseCaseDiObj {
   SaveFcmToken get saveFcmToken;
 
   GetCityList get getCityList;
+  GetCityById get getCityById;
   IsLoggedIn get isLoggedIn;
   CheckEmailAvailability get checkEmailAvailability;
   Logout get logout;
@@ -64,6 +66,10 @@ abstract class UseCaseDiObj {
   GetMotherNik get getMotherNik;
   GetBabyNik get getBabyNik;
   GetProfile get getProfile;
+  GetFamilyProfile get getFamilyProfile;
+  GetMotherData get getMotherData;
+  GetFatherData get getFatherData;
+  GetChildData get getChildData;
   GetCurrentEmail get getCurrentEmail;
   GetPregnancyCheckUpId get getPregnancyCheckUpId;
   /*
@@ -91,6 +97,8 @@ class UseCaseDiObjImpl extends UseCaseDiObj {
   @override
   GetCityList get getCityList => GetCityListImpl(RepoDi.obj.dataRepo);
   @override
+  GetCityById get getCityById => GetCityByIdImpl(RepoDi.obj.dataRepo);
+  @override
   IsLoggedIn get isLoggedIn => IsLoggedInImpl(RepoDi.obj.authRepo);
   @override
   CheckEmailAvailability get checkEmailAvailability => CheckEmailAvailabilityImpl(RepoDi.obj.authRepo);
@@ -110,6 +118,14 @@ class UseCaseDiObjImpl extends UseCaseDiObj {
   GetBabyNik get getBabyNik => GetBabyNikImpl(RepoDi.obj.myBabyRepo);
   @override
   GetProfile get getProfile => GetProfileImpl(RepoDi.obj.profileRepo);
+  @override
+  GetFamilyProfile get getFamilyProfile => GetFamilyProfileImpl(RepoDi.obj.profileRepo);
+  @override
+  GetMotherData get getMotherData => GetMotherDataImpl(RepoDi.obj.motherRepo);
+  @override
+  GetFatherData get getFatherData => GetFatherDataImpl(RepoDi.obj.fatherRepo);
+  @override
+  GetChildData get getChildData => GetChildDataImpl(RepoDi.obj.childRepo);
   @override
   GetCurrentEmail get getCurrentEmail => GetCurrentEmailImpl(RepoDi.obj.profileRepo);
   @override

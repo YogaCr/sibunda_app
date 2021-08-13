@@ -6,6 +6,7 @@ import 'package:common/value/const_values.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:profile/di/profile_vm_di.dart';
 import 'package:profile/ui/edit/profile_edit_page.dart';
+import 'package:profile/ui/edit_family/edit_family_home_page.dart';
 import 'package:profile/ui/home/profile_home_page.dart';
 
 class ProfileRoutes extends ModuleRoute {
@@ -31,6 +32,11 @@ class ProfileRoutes extends ModuleRoute {
     ]),
   ));
   static final profileEditPage = _ProfileEditPageRoute.obj;
+  static final familyEditPage = SibRoute("EditFamilyHomePage", EditFamilyHomePage, (ctx) => MainFrame(
+    body: EditFamilyHomePage().inVmProvider([
+          (ctx) => ProfileVmDi.obj.editFamilyHomeVm(context: ctx),
+    ]),
+  ));
 }
 
 

@@ -70,7 +70,7 @@ class SignUpPage extends StatelessWidget {
                   curve: Curves.easeOut,
                 );
               } else {
-                HomeRoutes.motherFormPage.goToPage(context);
+                HomeRoutes.motherFormPage.go(context: context);
               }
             } else {
               showSnackBar(context, "Gagal", backgroundColor: Colors.red);

@@ -8,6 +8,7 @@ import 'package:common/arch/domain/model/chart_data.dart';
 import 'package:common/arch/domain/model/chart_data_mother.dart';
 import 'package:common/arch/domain/model/kehamilanku_data.dart';
 import 'package:common/arch/domain/model/mother.dart';
+import 'package:common/arch/domain/model/profile_data.dart';
 import 'package:common/value/const_values.dart';
 import 'package:common/value/db_const.dart';
 import 'package:core/domain/model/result.dart';
@@ -18,7 +19,7 @@ import '../dummy_data.dart';
 
 mixin MotherRepo {
   Future<Result<String>> getMotherNik();
-  Future<Result<Mother>> getMotherData(String nik);
+  Future<Result<Mother>> getMotherData(ProfileCredential credential);
   Future<Result<bool>> saveMotherData(Mother data);
 
   //Future<Result<List<MotherHomeData>>> getMotherHomeData();
@@ -71,9 +72,11 @@ class MotherRepoImpl with MotherRepo {
   }
 
   @override @mayChangeInFuture
-  Future<Result<Mother>> getMotherData(String nik) async {
+  Future<Result<Mother>> getMotherData(ProfileCredential credential) async => Success(dummyMother);
+  /*
+  async {
     final map = dummyMother.toJson;
-    final res = await _accountLocalSrc.getProfileByNik(nik, type: DbConst.TYPE_MOTHER);
+    final res = await _accountLocalSrc.getProfileByNik(credential.nik, type: DbConst.TYPE_MOTHER);
     if(res is Success<ProfileEntity>) {
       final prof = res.data;
       map[Const.KEY_NAME_INDO] = prof.name;
@@ -86,6 +89,7 @@ class MotherRepoImpl with MotherRepo {
       return Fail();
     }
   }
+   */
 
   @override @mayChangeInFuture
   Future<Result<bool>> saveMotherData(Mother data) async => Success(true);
@@ -172,7 +176,7 @@ class MotherRepoDummy with MotherRepo {
   @override
   Future<Result<String>> getMotherNik() async => Success("0123012");
   @override
-  Future<Result<Mother>> getMotherData(String nik) async => Success(dummyMother);
+  Future<Result<Mother>> getMotherData(ProfileCredential credential) async => Success(dummyMother);
   @override
   Future<Result<bool>> saveMotherData(Mother data) async => Success(true);
 /*

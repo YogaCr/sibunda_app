@@ -7,6 +7,7 @@ import 'package:common/arch/domain/model/img_data.dart';
 import 'package:common/util/type_util.dart';
 import 'package:common/value/const_values.dart';
 import 'package:common/value/db_const.dart';
+import 'package:equatable/equatable.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'profile_data.freezed.dart';
@@ -29,7 +30,7 @@ class ProfileCredential with _$ProfileCredential {
       ProfileCredential(id: data.id, nik: data.nik,);
 }
 
-class Profile {
+class Profile extends Equatable {
   /// Server id
   final int id;
   final String nik;
@@ -47,6 +48,15 @@ class Profile {
     required this.img,
   });
 
+  Profile.empty():
+    id = -1,
+    nik = "",
+    name = "",
+    email = "",
+    birthDate = DateTime.now(),
+    img = dummyImg_profile
+  ;
+
   factory Profile.fromEntity({
     required ProfileEntity entity,
     required String email,
@@ -58,6 +68,9 @@ class Profile {
     img: dummyImg_profile, //dummyImg_profile_preset, //
     birthDate: entity.birthDate,
   );
+
+  @override
+  List<Object?> get props => [id, nik, name, email, birthDate, img];
 }
 
 

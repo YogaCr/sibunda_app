@@ -16,7 +16,7 @@ import '../dummy_data.dart';
 
 
 mixin ChildRepo {
-  //Future<Result<Child>> getChildData(String nik);
+  Future<Result<Child>> getChildData(ProfileCredential credential);
   Future<Result<bool>> saveChildrenData({
     required List<Child> data,
     required String email,
@@ -49,6 +49,8 @@ class ChildRepoImpl with ChildRepo {
     _dataApi = dataApi
   ;
 
+  @override
+  Future<Result<Child>> getChildData(ProfileCredential credential) async => Success(dummyChild);
   @override
   Future<Result<bool>> saveChildrenData({
     required List<Child> data,
@@ -169,9 +171,8 @@ class ChildRepoDummy with ChildRepo {
   ChildRepoDummy._();
   static final obj = ChildRepoDummy._();
 
-  //@override
-  //Future<Result<Child>> getChildData(String nik) async => Success(dummyChild);
-
+  @override
+  Future<Result<Child>> getChildData(ProfileCredential credential) async => Success(dummyChild);
   @override
   Future<Result<bool>> saveChildrenData({
     required List<Child> data,

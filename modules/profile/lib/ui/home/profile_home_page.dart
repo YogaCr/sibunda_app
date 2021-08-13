@@ -99,16 +99,17 @@ class _MenuList extends StatelessWidget {
             title: Text("Edit Profil"),
           ),
         ),
+        InkWell(
+          onTap: () => ProfileRoutes.familyEditPage.goToPage(context),
+          child: ListTile(
+            leading: SibImages.get("ic_wallet.png", package: "common"),
+            title: Text("Edit Data Keluarga"),
+          ),
+        ),
         Visibility(
           visible: false,
           child: Column(
             children: [
-              InkWell(
-                child: ListTile(
-                  leading: SibImages.get("ic_wallet.png", package: "common"),
-                  title: Text("Edit Data Profil"),
-                ),
-              ),
               InkWell(
                 child: ListTile(
                   leading: SibImages.get("ic_verified.png", package: "common"),

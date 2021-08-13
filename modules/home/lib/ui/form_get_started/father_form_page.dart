@@ -1,6 +1,7 @@
 
 import 'package:common/arch/domain/dummy_data.dart';
 import 'package:common/arch/domain/model/img_data.dart';
+import 'package:common/arch/domain/model/profile_data.dart';
 import 'package:common/arch/ui/widget/_basic_widget.dart';
 import 'package:common/arch/ui/widget/form_controller.dart';
 import 'package:common/arch/ui/widget/form_generic_vm_group_observer.dart';
@@ -8,6 +9,7 @@ import 'package:common/arch/ui/widget/form_vm_observer.dart';
 import 'package:common/arch/ui/widget/picker_icon_widget.dart';
 import 'package:common/res/string/_string.dart';
 import 'package:common/res/theme/_theme.dart';
+import 'package:common/util/navigations.dart';
 import 'package:common/util/ui.dart';
 import 'package:common/value/const_values.dart';
 import 'package:core/ui/base/live_data_observer.dart';
@@ -27,7 +29,12 @@ class FatherFormPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final vm = ViewModelProvider.of<FatherFormVm>(context);
+    final canSkip = getArgs<bool>(context, Const.KEY_CAN_SKIP) != false;
+    final credential = getArgs<ProfileCredential>(context, Const.KEY_CREDENTIAL);
+
+    final vm = ViewModelProvider.of<FatherFormVm>(context)
+      ..getFatherData(credential: credential,);
+
     return Column(
       children: [
         Text(
@@ -42,7 +49,17 @@ class FatherFormPage extends StatelessWidget {
             onImgPick: (file) => vm.imgProfile.value = file != null
                 ? ImgData.fromXFile(file) : null,
           ),
-        ).withMargin(EdgeInsets.only(top: 10, bottom: 20,)),
+        ).withMargin(EdgeInsets.only(top: 10, bottom: 10,)),
+        if(canSkip) Padding(
+          padding: EdgeInsets.only(top: 10, bottom: 20,),
+          child: TxtLink(
+            Strings.skip,
+            onTap: () {
+              vm.isDataPresent.value = false;
+              _toNextPage(context);
+            },
+          ),
+        ),
         FormVmGroupObserver<FatherFormVm>(
           showHeader: false,
           interceptor: interceptor,
@@ -66,15 +83,7 @@ class FatherFormPage extends StatelessWidget {
           },
           onSubmit: (ctx, success) {
             if(success) {
-              if(pageControll != null) {
-                pageControll!.animateToPage(
-                  pageControll!.page!.toInt() +1,
-                  duration: Duration(milliseconds: 500),
-                  curve: Curves.easeOut,
-                );
-              } else {
-                HomeRoutes.doMotherHavePregnancyPage.goToPage(context);
-              }
+              _toNextPage(ctx);
             } else {
               showSnackBar(ctx, "Terjadi kesalahan");
             }
@@ -88,5 +97,17 @@ class FatherFormPage extends StatelessWidget {
         ),
       ],
     ).insideScroll();
+  }
+
+  void _toNextPage(BuildContext context) {
+    if(pageControll != null) {
+      pageControll!.animateToPage(
+        pageControll!.page!.toInt() +1,
+        duration: Duration(milliseconds: 500),
+        curve: Curves.easeOut,
+      );
+    } else {
+      HomeRoutes.doMotherHavePregnancyPage.goToPage(context);
+    }
   }
 }

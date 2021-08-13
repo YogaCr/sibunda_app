@@ -3,6 +3,8 @@ import 'package:common/arch/domain/model/_model_template.dart';
 import 'package:common/arch/domain/model/child.dart';
 import 'package:common/arch/domain/model/img_data.dart';
 import 'package:common/arch/domain/model/profile_data.dart';
+import 'package:common/arch/domain/usecase/data_usecase.dart';
+import 'package:common/arch/domain/usecase/family_usecase.dart';
 import 'package:common/arch/domain/usecase/profile_usecase.dart';
 import 'package:common/arch/ui/model/form_data.dart';
 import 'package:common/arch/ui/vm/form_vm.dart';
@@ -24,19 +26,42 @@ import 'package:tuple/tuple.dart';
 
 class ChildFormVm extends FormAuthVmGroup {
   static const saveBatchChildrenKey = "saveBatchChildren";
+  static const getChildDataKey = "getChildData";
 
   ChildFormVm({
     BuildContext? context,
     //required SaveChildData saveChildData,
     required SaveChildrenData saveChildrenData,
     required GetCurrentEmail getCurrentEmail,
+    required GetChildData getChildData,
+    required GetCityById getCityById,
     required this.childCount,
     required this.pregnancyId,
   }):
     //_saveChildData = saveChildData,
     _saveChildrenData = saveChildrenData,
-    _getCurrentEmail = getCurrentEmail, super(context: context)
+    _getCurrentEmail = getCurrentEmail,
+    _getChildData = getChildData,
+    _getCityById = getCityById, super(context: context)
   {
+    _currentChild.observe(this, (data) async {
+      if(data != null) {
+        final map = data.toJson;
+        map[Const.KEY_BIRTH_DATE] = parseDate(map[Const.KEY_BIRTH_DATE]);
+        map[Const.KEY_JKN_START_DATE] = parseDate(map[Const.KEY_JKN_START_DATE]);
+        final cityRes = await _getCityById(map[Const.KEY_BIRTH_PLACE]);
+        if(cityRes is Success<IdStringModel>) {
+          final data = cityRes.data;
+          map[Const.KEY_BIRTH_PLACE] = data;
+        } else {
+          doOnFailTask(getChildDataKey, cityRes as Fail);
+          return;
+        }
+        patchResponse([map]);
+      } else {
+        resetResponses();
+      }
+    }, tag: toString());
     _currentPage.observe(this, (page) {
       Map<String, dynamic>? map;
       if(page != null) {
@@ -88,6 +113,8 @@ class ChildFormVm extends FormAuthVmGroup {
   //final SaveChildData _saveChildData; //Now, we use `SaveChildrenData` for batch saving
   final SaveChildrenData _saveChildrenData;
   final GetCurrentEmail _getCurrentEmail;
+  final GetChildData _getChildData;
+  final GetCityById _getCityById;
 /*
   int? _childCount;
   int get childCount {
@@ -120,6 +147,8 @@ class ChildFormVm extends FormAuthVmGroup {
   final MutableLiveData<List<Child?>> _children = MutableLiveData();
   final MutableLiveData<List<IdStringModel?>> _birthPlaces = MutableLiveData();
 
+  final MutableLiveData<Child> _currentChild = MutableLiveData();
+
   final MutableLiveData<bool> _onSaveBatch = MutableLiveData(false);
   LiveData<bool> get onSaveBatch => _onSaveBatch;
 
@@ -127,9 +156,12 @@ class ChildFormVm extends FormAuthVmGroup {
 
   //LiveData<List<Child>> get children => _children;
 
+  ProfileCredential? _currentCredential;
+
   @override
   List<LiveData> get liveDatas => [
     _currentPage, _children, _onSaveBatch, imgProfile,
+    _currentChild,
   ];
 
 
@@ -274,6 +306,26 @@ class ChildFormVm extends FormAuthVmGroup {
         fail = (emailRes as Fail<String>);
       }
       return fail;
+    });
+  }
+
+  void getChildData({
+    required ProfileCredential? credential,
+    bool forceLoad = false,
+  }) {
+    if(!forceLoad && credential == _currentCredential) return;
+    if(credential == null) {
+      _currentCredential = null;
+      return;
+    }
+    startJob(getChildDataKey, (isActive) async {
+      final res = await _getChildData(credential);
+      if(res is Success<Child>) {
+        _currentChild.value = res.data;
+        _currentCredential = credential;
+      } else {
+        return res as Fail;
+      }
     });
   }
 }

@@ -291,7 +291,7 @@ class _WeeklyFormPage extends StatelessWidget {
                             final isSaved = await KehamilankuRoutes.obj.goToExternalRouteBuilder(
                               context,
                               GlobalRoutes.home_childFormPage,
-                              builderArgs: GlobalRoutes.makeHomeChildFormPageData(
+                              builderArgs: GlobalRoutes.makeHomeChildFormPageBuilderData(
                                 pregnancyId: vm.pregnancyId,
                               ),
                             );

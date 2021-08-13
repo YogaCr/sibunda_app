@@ -94,7 +94,7 @@ class KehamilankuHomePage extends StatelessWidget {
             final isSaved = await KehamilankuRoutes.obj.goToExternalRouteBuilder(
               context,
               GlobalRoutes.home_childFormPage,
-              builderArgs: GlobalRoutes.makeHomeChildFormPageData(),
+              builderArgs: GlobalRoutes.makeHomeChildFormPageBuilderData(),
             );
             if(isSaved == true) {
               vm..bornBabyList.observeOnce((babyList) {

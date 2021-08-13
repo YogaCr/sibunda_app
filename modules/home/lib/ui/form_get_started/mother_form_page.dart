@@ -2,6 +2,7 @@
 import 'package:common/arch/di/db_di.dart';
 import 'package:common/arch/domain/dummy_data.dart';
 import 'package:common/arch/domain/model/img_data.dart';
+import 'package:common/arch/domain/model/profile_data.dart';
 import 'package:common/arch/ui/widget/_basic_widget.dart';
 import 'package:common/arch/ui/widget/form_controller.dart';
 import 'package:common/arch/ui/widget/form_generic_vm_group_observer.dart';
@@ -11,10 +12,12 @@ import 'package:common/arch/ui/widget/picker_icon_widget.dart';
 import 'package:common/arch/ui/widget/popup_widget.dart';
 import 'package:common/res/string/_string.dart';
 import 'package:common/res/theme/_theme.dart';
+import 'package:common/util/navigations.dart';
 import 'package:common/util/ui.dart';
 import 'package:common/value/const_values.dart';
 import 'package:core/ui/base/live_data_observer.dart';
 import 'package:core/ui/base/view_model.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:home/config/home_routes.dart';
@@ -31,7 +34,12 @@ class MotherFormPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final vm = ViewModelProvider.of<MotherFormVm>(context);
+    final canSkip = getArgs<bool>(context, Const.KEY_CAN_SKIP) != false;
+    final credential = getArgs<ProfileCredential>(context, Const.KEY_CREDENTIAL);
+
+    final vm = ViewModelProvider.of<MotherFormVm>(context)
+      ..getMotherData(credential: credential,);
+
     return Column(
       children: [
         Text(
@@ -45,7 +53,17 @@ class MotherFormPage extends StatelessWidget {
             onImgPick: (file) => vm.imgProfile.value = file != null
                 ? ImgData.fromXFile(file) : null,
           ),
-        ).withMargin(EdgeInsets.only(top: 10, bottom: 20,)),
+        ).withMargin(EdgeInsets.only(top: 10, bottom: 10,)),
+        if(canSkip) Padding(
+          padding: EdgeInsets.only(top: 10, bottom: 20,),
+          child: TxtLink(
+            Strings.skip,
+            onTap: () {
+              vm.isDataPresent.value = false;
+              _toNextPage(context);
+            },
+          ),
+        ),
         FormVmGroupObserver<MotherFormVm>(
           vm: vm,
           showHeader: false,
@@ -70,15 +88,7 @@ class MotherFormPage extends StatelessWidget {
           },
           onSubmit: (ctx, success) {
             if(success) {
-              if(pageControll != null) {
-                pageControll!.animateToPage(
-                  pageControll!.page!.toInt() +1,
-                  duration: Duration(milliseconds: 500),
-                  curve: Curves.easeOut,
-                );
-              } else {
-                HomeRoutes.fatherFormPage.goToPage(context);
-              }
+              _toNextPage(ctx);
             } else {
               showSnackBar(context, "Gagal",);
             }
@@ -271,5 +281,17 @@ class MotherFormPage extends StatelessWidget {
  */
       ],
     ).insideScroll();
+  }
+
+  void _toNextPage(BuildContext context) {
+    if(pageControll != null) {
+      pageControll!.animateToPage(
+        pageControll!.page!.toInt() +1,
+        duration: Duration(milliseconds: 500),
+        curve: Curves.easeOut,
+      );
+    } else {
+      HomeRoutes.fatherFormPage.go(context: context);
+    }
   }
 }

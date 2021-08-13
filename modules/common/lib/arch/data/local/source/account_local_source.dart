@@ -59,6 +59,7 @@ mixin AccountLocalSrc {
   Future<Result<int>> getChildId(String nik);
 
   Future<Result<Profile>> getProfile(String email);
+  Future<Result<Map<int, List<Profile>>>> getFamilyProfile(String email);
   Future<Result<Profile>> getProfileByServerId(int serverId);
 
   Future<Result<bool>> saveCurrentEmail(String email);
@@ -413,6 +414,20 @@ class AccountLocalSrcImpl with AccountLocalSrc {
     }
     final profile = Profile.fromEntity(entity: prof, email: email);
     return Success(profile);
+  }
+  @override
+  Future<Result<Map<int, List<Profile>>>> getFamilyProfile(String email) async {
+    final cred = await _credentialDao.getByEmail(email);
+    final profRaw = await _profileDao.getProfilesByEmail(email);
+    if(cred == null || profRaw.isEmpty) {
+      return Fail();
+    }
+    final res = profRaw.map((key, rawProfs) {
+      final profs = rawProfs.map((e) => Profile.fromEntity(entity: e, email: email))
+        .toList(growable: false);
+      return MapEntry(key, profs);
+    });
+    return Success(res);
   }
   @override
   Future<Result<Profile>> getProfileByServerId(int serverId) async {

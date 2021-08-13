@@ -25,6 +25,8 @@ class GlobalRoutes {
   static const profile = "profile";
 
   static const home_loginPage = "$home.loginPage";
+  static const home_motherFormPage = "$home.motherFormPage";
+  static const home_fatherFormPage = "$home.fatherFormPage";
   static const home_childFormPage = "$home.childFormPage";
   static const home_motherHplPage = "$home.motherHplPage";
   static const education_detailPage = "$education.detailPage";
@@ -32,13 +34,31 @@ class GlobalRoutes {
   static Map<String, dynamic> makeEducationDetailPageData(Tips data) => {
     Const.KEY_DATA : data,
   };
+  static Map<String, dynamic> makeHomeMotherFatherFormPageData({
+    bool? canSkip,
+    ProfileCredential? credential,
+  }) => {
+    Const.KEY_CAN_SKIP: canSkip,
+    Const.KEY_CREDENTIAL : credential,
+  };
   static Map<String, dynamic> makeHomeChildFormPageData({
+    bool? isEdit,
+    ProfileCredential? credential,
+  }) {
+    return {
+      Const.KEY_IS_EDIT: isEdit,
+      Const.KEY_CREDENTIAL : credential,
+    };
+  }
+  static Map<String, dynamic> makeHomeChildFormPageBuilderData({
     LiveData<int>? childCountLiveData,
     int? childCount,
+    bool? isEdit,
     ProfileCredential? pregnancyId,
   }) {
     final liveData = childCountLiveData ?? MutableLiveData(childCount ?? 1);
     return {
+      Const.KEY_IS_EDIT: isEdit,
       Const.KEY_DATA : liveData,
       Const.KEY_PREGNANCY_ID : pregnancyId,
     };

@@ -6,6 +6,7 @@ import 'package:core/util/_consoles.dart';
 
 mixin DataLocalSource {
   Future<Result<List<CityEntity>>> getCities();
+  Future<Result<CityEntity>> getCityById(int id);
   Future<Result<bool>> saveCities(List<CityEntity> data);
 }
 
@@ -26,6 +27,14 @@ class DataLocalSourceImpl with DataLocalSource {
       prine(stack);
       return Fail(msg: "Error calling `DataLocalSource.getCities()`", error: e);
     }
+  }
+  @override
+  Future<Result<CityEntity>> getCityById(int id) async {
+    final res = await _cityDao.getById(id);
+    if(res == null) {
+      return Fail(msg: "Can't get city by `id` of '$id'");
+    }
+    return Success(res);
   }
   @override
   Future<Result<bool>> saveCities(List<CityEntity> data) async {

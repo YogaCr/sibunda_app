@@ -99,8 +99,12 @@ abstract class HomeVmDiObj {
   });
   SignUpFormVm get signUpFormVm;
   LoginFormVm get loginFormVm;
-  MotherFormVm get motherFormVm;
-  FatherFormVm get fatherFormVm;
+  MotherFormVm motherFormVm({
+    BuildContext? context,
+  });
+  FatherFormVm fatherFormVm({
+    BuildContext? context,
+  });
   MotherHplVm motherHplVm({
     BuildContext? context,
   });
@@ -144,9 +148,23 @@ class HomeVmDiObjImpl extends HomeVmDiObj {
     getFcmToken: UseCaseDi.obj.getFcmToken,
   );
   @override
-  MotherFormVm get motherFormVm => MotherFormVm(HomeUseCaseDi.obj.saveMotherData);
+  MotherFormVm motherFormVm({
+    BuildContext? context,
+  }) => MotherFormVm(
+    context: context,
+    saveMotherData: HomeUseCaseDi.obj.saveMotherData,
+    getMotherData: UseCaseDi.obj.getMotherData,
+    getCityById: UseCaseDi.obj.getCityById,
+  );
   @override
-  FatherFormVm get fatherFormVm => FatherFormVm(HomeUseCaseDi.obj.saveFatherData);
+  FatherFormVm fatherFormVm({
+    BuildContext? context,
+  }) => FatherFormVm(
+    context: context,
+    saveFatherData: HomeUseCaseDi.obj.saveFatherData,
+    getFatherData: UseCaseDi.obj.getFatherData,
+    getCityById: UseCaseDi.obj.getCityById,
+  );
   @override
   MotherHplVm motherHplVm({
     BuildContext? context,
@@ -176,6 +194,8 @@ class HomeVmDiObjImpl extends HomeVmDiObj {
     getCurrentEmail: UseCaseDi.obj.getCurrentEmail,
     childCount: childCount ?? MutableLiveData(1),
     saveChildrenData: HomeUseCaseDi.obj.saveChildrenData,
+    getChildData: UseCaseDi.obj.getChildData,
+    getCityById: UseCaseDi.obj.getCityById,
   );
   @override
   HomeVm homeVm({BuildContext? context,}) => HomeVm(

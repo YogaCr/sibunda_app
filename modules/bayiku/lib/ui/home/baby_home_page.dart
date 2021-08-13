@@ -97,7 +97,7 @@ class BabyHomePage extends StatelessWidget {
             final isSaved = await BabyRoutes.obj.goToExternalRouteBuilder(
               context,
               GlobalRoutes.home_childFormPage,
-              builderArgs: GlobalRoutes.makeHomeChildFormPageData(),
+              builderArgs: GlobalRoutes.makeHomeChildFormPageBuilderData(),
             );
             prind("Baby add isSaved= $isSaved");
             if(isSaved == true) {

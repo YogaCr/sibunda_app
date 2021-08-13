@@ -12,8 +12,8 @@ mixin SaveSignUpData {
 mixin SignUpAndRegisterOtherData {
   Future<Result<bool>> call({
     required SignUpData signup,
-    required Mother mother,
-    required Father father,
+    required Mother? mother,
+    required Father? father,
     required List<Child> children,
     required DateTime? motherHpl,
   });
@@ -33,8 +33,8 @@ class SignUpAndRegisterOtherDataImpl with SignUpAndRegisterOtherData {
   @override
   Future<Result<bool>> call({
     required SignUpData signup,
-    required Mother mother,
-    required Father father,
+    required Mother? mother,
+    required Father? father,
     required List<Child> children,
     required DateTime? motherHpl,
   }) => _repo.signup(

@@ -28,8 +28,8 @@ mixin AuthRepo {
   Future<Result<bool>> saveSignupData(SignUpData signup);
   Future<Result<bool>> signup({
     required SignUpData signup,
-    required Mother mother,
-    required Father father,
+    required Mother? mother,
+    required Father? father,
     required List<Child> children,
     required DateTime? motherHpl,
   });
@@ -77,8 +77,8 @@ class AuthRepoImpl with AuthRepo {
   @override
   Future<Result<bool>> signup({
     required SignUpData signup,
-    required Mother mother,
-    required Father father,
+    required Mother? mother,
+    required Father? father,
     required List<Child> children,
     required DateTime? motherHpl,
   }) async {
@@ -354,8 +354,8 @@ class AuthDummyRepo with AuthRepo {
   @override
   Future<Result<bool>> signup({
     required SignUpData signup,
-    required Mother mother,
-    required Father father,
+    required Mother? mother,
+    required Father? father,
     required List<Child> children,
     required DateTime? motherHpl,
   }) async => Success(true, 200);

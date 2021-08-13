@@ -35,6 +35,8 @@ class GetStartedFormMainPage extends StatelessWidget {
   Widget build(BuildContext context) {
     vm = ViewModelProvider.of<GetStartedFormMainVm>(context);
 
+    pageControl.addListener(_onPageChange);
+
     return ViewModelProvider(
       creators: [
         (ctx) => vm.signUpFormVm,
@@ -122,6 +124,27 @@ class GetStartedFormMainPage extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  void _onPageChange() {
+    if(vm.isActive) {
+      final page = pageControl.page;
+      if(page != null) {
+        int pageInt;
+        if(page == (pageInt = page.toInt())) {
+          switch(pageInt) {
+            case 1: // for mother data page
+              vm.motherVm.isDataPresent.value = true;
+              break;
+            case 2: // for father data page
+              vm.fatherVm.isDataPresent.value = true;
+              break;
+          }
+        }
+      }
+    } else {
+      pageControl.removeListener(_onPageChange);
+    }
   }
 
   /// Returns `true` if [controller] is not in page 0 currently

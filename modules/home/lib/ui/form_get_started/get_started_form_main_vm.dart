@@ -1,9 +1,13 @@
 import 'package:common/arch/di/usecase_di.dart';
+import 'package:common/arch/domain/model/_model_template.dart';
 import 'package:common/arch/domain/model/auth.dart';
 import 'package:common/arch/domain/model/child.dart';
 import 'package:common/arch/domain/model/father.dart';
 import 'package:common/arch/domain/model/mother.dart';
+import 'package:common/arch/domain/model/profile_data.dart';
 import 'package:common/arch/domain/usecase/auth_usecase.dart';
+import 'package:common/arch/domain/usecase/data_usecase.dart';
+import 'package:common/arch/domain/usecase/family_usecase.dart';
 import 'package:common/arch/domain/usecase/firebase_usecase.dart';
 import 'package:common/arch/domain/usecase/mother_usecase.dart';
 import 'package:common/arch/domain/usecase/profile_usecase.dart';
@@ -45,8 +49,18 @@ class GetStartedFormMainVm extends AsyncAuthVm {
       saveSignupData: _signup,
       checkEmailAvailability: UseCaseDi.obj.checkEmailAvailability,
     );
-    motherVm = MotherFormVm(_saveMotherData);
-    fatherVm = FatherFormVm(_saveFatherData);
+    motherVm = MotherFormVm(
+      context: context,
+      saveMotherData: _saveMotherData,
+      getMotherData: _GetMotherDataImpl(),
+      getCityById: _GetCityByIdImpl(),
+    );
+    fatherVm = FatherFormVm(
+      context: context,
+      saveFatherData: _saveFatherData,
+      getFatherData: _GetFatherDataImpl(),
+      getCityById: _GetCityByIdImpl(),
+    );
     motherHplVm = MotherHplVm(
       getMotherNik: _getMotherNikDummy,
       saveMotherHpl: _saveMotherHplForChild,
@@ -61,6 +75,8 @@ class GetStartedFormMainVm extends AsyncAuthVm {
       getCurrentEmail: _getCurrentEmailDummy,
       childCount: childrenCountVm.childrenCount,
       saveChildrenData: _saveChildrenData,
+      getChildData: _GetChildDataImpl(),
+      getCityById: _GetCityByIdImpl(),
       pregnancyId: null,
     );
     childrenCountVm.childrenCount.observe(this, (count) {
@@ -144,13 +160,24 @@ class GetStartedFormMainVm extends AsyncAuthVm {
     prind("sendData()");
     return startJob(sendDataKey, (isActive) async {
       final signup = _signup.data.value;
-      final mother = _saveMotherData.data.value;
-      final father = _saveFatherData.data.value;
+
+      final isMotherPresent = motherVm.isDataPresent.value != false;
+      var mother = isMotherPresent ? _saveMotherData.data.value : null;
+
+      final isFatherPresent = fatherVm.isDataPresent.value != false;
+      var father = isFatherPresent ? _saveFatherData.data.value : null;
+
       final children = _saveChildrenData.data.value;
       prind("sendData() Current data (signup=$signup), (mother=$mother), (father=$father), (children=$children)");
 
-      if(signup == null || mother == null || father == null || children == null) {
-        throw "`signup`, `mother`, `father`, `child` are both non-nullable.\n Current data (signup=$signup), (mother=$mother), (father=$father), (children=$children)";
+      if(signup == null || /*mother == null || father == null ||*/ children == null) {
+        throw "`signup` and `child` are both non-nullable.\n Current data (signup=$signup), (children=$children)";
+      }
+      if(father == null && isFatherPresent) {
+        throw "`father` is null and not nullable";
+      }
+      if(mother == null && isMotherPresent) {
+        throw "`mother` is null and not nullable";
       }
       final res1 = await _signUpAndRegisterOtherData(
         signup: signup,
@@ -244,6 +271,12 @@ class _SaveFatherDataImpl with SaveFatherData {
     return Success(true);
   }
 }
+class _GetFatherDataImpl with GetFatherData {
+  @override
+  Future<Result<Father>> call(ProfileCredential credential) {
+    throw UnimplementedError("`_GetFatherDataImpl.call()` shouldn't be used");
+  }
+}
 
 class _SaveMotherDataImpl with SaveMotherData {
   final MutableLiveData<Mother> _data = MutableLiveData();
@@ -252,6 +285,26 @@ class _SaveMotherDataImpl with SaveMotherData {
   Future<Result<bool>> call(Mother data) async {
     _data.value = data;
     return Success(true);
+  }
+}
+class _GetMotherDataImpl with GetMotherData {
+  @override
+  Future<Result<Mother>> call(ProfileCredential credential) {
+    throw UnimplementedError("`_GetMotherDataImpl.call()` shouldn't be used");
+  }
+}
+
+class _GetChildDataImpl with GetChildData {
+  @override
+  Future<Result<Child>> call(ProfileCredential credential) {
+    throw UnimplementedError("`_GetChildDataImpl.call()` shouldn't be used");
+  }
+}
+
+class _GetCityByIdImpl with GetCityById {
+  @override
+  Future<Result<IdStringModel>> call(int id) {
+    throw UnimplementedError("`_GetCityByIdImpl.call()` shouldn't be used");
   }
 }
 

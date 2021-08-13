@@ -901,6 +901,10 @@ final dummyProfileMother = ProfileEntity(
   birthPlace: 1,
   nik: dummyMotherNik,
 );
+final dummyProfileMother_domain = Profile.fromEntity(
+  entity: dummyProfileMother,
+  email: dummyCredential.email,
+);
 final dummyProfileFather = ProfileEntity(
   userId: dummyCredential.id,
   type: DbConst.TYPE_FATHER,
@@ -909,6 +913,10 @@ final dummyProfileFather = ProfileEntity(
   birthDate: DateTime.now(),
   birthPlace: 1,
   nik: dummyFatherNik,
+);
+final dummyProfileFather_domain = Profile.fromEntity(
+  entity: dummyProfileFather,
+  email: dummyCredential.email,
 );
 final dummyProfileChild = ProfileEntity(
   userId: dummyCredential.id,
@@ -919,6 +927,10 @@ final dummyProfileChild = ProfileEntity(
   birthPlace: 1,
   nik: dummyChild.nik,
 );
+final dummyProfileChild_domain = Profile.fromEntity(
+  entity: dummyProfileChild,
+  email: dummyCredential.email,
+);
 final dummyProfileChild2 = ProfileEntity(
   userId: dummyCredential.id,
   type: DbConst.TYPE_CHILD,
@@ -927,6 +939,10 @@ final dummyProfileChild2 = ProfileEntity(
   birthDate: parseDate(dummyChild2.birthDate),
   birthPlace: 1,
   nik: dummyChild2.nik,
+);
+final dummyProfileChild2_domain = Profile.fromEntity(
+  entity: dummyProfileChild2,
+  email: dummyCredential.email,
 );
 final dummyProfileChild3 = ProfileEntity(
   userId: dummyCredential.id,
@@ -937,6 +953,10 @@ final dummyProfileChild3 = ProfileEntity(
   birthPlace: 1,
   nik: dummyChild3.nik,
 );
+final dummyProfileChild3_domain = Profile.fromEntity(
+  entity: dummyProfileChild3,
+  email: dummyCredential.email,
+);
 final dummyProfileChild4 = ProfileEntity(
   userId: dummyCredential.id,
   type: DbConst.TYPE_CHILD,
@@ -945,6 +965,10 @@ final dummyProfileChild4 = ProfileEntity(
   birthDate: parseDate(dummyChild4.birthDate),
   birthPlace: 1,
   nik: dummyChild4.nik,
+);
+final dummyProfileChild4_domain = Profile.fromEntity(
+  entity: dummyProfileChild4,
+  email: dummyCredential.email,
 );
 
 

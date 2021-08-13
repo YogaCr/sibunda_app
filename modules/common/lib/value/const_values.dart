@@ -33,6 +33,7 @@ class Const {
   static const KEY_ID = "id";
   static const KEY_DATA = "data";
   static const KEY_PREGNANCY_ID = "pregnancy_id";
+  static const KEY_IS_EDIT = "is_edit";
   static const KEY_LOAD_LAST = "load_last"; // type bool
   static const KEY_IS_LAST_TRIMESTER = "is_last_trimester"; // type bool
   static const KEY_IMG = "img";
@@ -51,6 +52,9 @@ class Const {
   static const KEY_CLIENT_SECRET = "client_secret";
   static const KEY_SESSION = "_session_";
   static const KEY_ACTIVE_EMAIL = "_active_email_";
+  static const KEY_CAN_SKIP = "can_skip";
+  static const KEY_PROFILE = "profile";
+  static const KEY_CREDENTIAL = "credential";
 
   static const KEY_USER_GROUP_ID = "user_group_id";
   static const KEY_TOKEN_TYPE = "token_type";

@@ -8,6 +8,7 @@ import 'package:core/util/_consoles.dart';
 
 mixin DataRepo {
   Future<Result<List<IdStringModel>>> getCities();
+  Future<Result<IdStringModel>> getCityById(int id);
   Future<Result<bool>> saveCities(List<IdStringModel> data);
 }
 
@@ -52,6 +53,17 @@ class DataRepoImpl with DataRepo {
     }
   }
   @override
+  Future<Result<IdStringModel>> getCityById(int id) async {
+    final res = await _localSrc.getCityById(id);
+    if(res is Success<CityEntity>) {
+      final data = res.data;
+      final obj = IdStringModel(id: data.id, name: data.name);
+      return Success(obj);
+    } else {
+      return (res as Fail).copy();
+    }
+  }
+  @override
   Future<Result<bool>> saveCities(List<IdStringModel> data) => _localSrc.saveCities(
     data.map((e) => CityEntity(id: e.id, name: e.name)).toList(growable: false),
   );
@@ -65,6 +77,18 @@ class DataRepoDummy with DataRepo {
   Future<Result<List<IdStringModel>>> getCities() async => Success(
     dummyCities.map<IdStringModel>((e) => IdStringModel(id: e.id, name: e.name)).toList(growable: false),
   );
+  @override
+  Future<Result<IdStringModel>> getCityById(int id) async {
+    try {
+      final city = dummyCities.firstWhere((e) => e.id == id);
+      final data = IdStringModel(id: city.id, name: city.name,);
+      return Success(data);
+    } catch(e, stack) {
+      prine(e);
+      prine(stack);
+      return Fail(msg: "Can't get city by `id` of '$id'");
+    }
+  }
 
   @override
   Future<Result<bool>> saveCities(List<IdStringModel> data) async => Success(true);

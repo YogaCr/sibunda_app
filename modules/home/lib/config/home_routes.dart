@@ -29,6 +29,14 @@ import 'package:home/ui/splash/splash_page.dart';
 class HomeRoutes extends ModuleRoute {
   HomeRoutes._(): super(GlobalRoutes.manager) {
     exportRoute(GlobalRoutes.home_loginPage, HomeRoutes.loginPage);
+    exportRoute(
+      GlobalRoutes.home_motherFormPage,
+      HomeRoutes.motherFormPage.getRoute(),
+    );
+    exportRoute(
+      GlobalRoutes.home_fatherFormPage,
+      HomeRoutes.fatherFormPage.getRoute(),
+    );
     exportRouteBuilder(
       GlobalRoutes.home_childFormPage,
       (args) => HomeRoutes.childFormPage.getRoute(
@@ -50,7 +58,7 @@ class HomeRoutes extends ModuleRoute {
   @override
   Set<SibRoute> get routes => {
     introPage, signUpPage, loginPage,
-    motherFormPage, fatherFormPage,
+    //motherFormPage, fatherFormPage,
     doMotherHavePregnancyPage, childrenCountPage,
     homePage, homeNotifAndMessagePage,
   };
@@ -95,18 +103,8 @@ class HomeRoutes extends ModuleRoute {
     ]),
     padding: EdgeInsets.all(20),
   ));
-  static final motherFormPage = SibRoute("MotherFormPage", MotherFormPage, (ctx) =>  PlainBackFrame(
-    body: MotherFormPage().inVmProvider([
-      (ctx) => HomeVmDi.obj.motherFormVm,
-    ]),
-    padding: EdgeInsets.all(20),
-  ));
-  static final fatherFormPage = SibRoute("FatherFormPage", FatherFormPage, (ctx) =>  PlainBackFrame(
-    body: FatherFormPage().inVmProvider([
-      (ctx) => HomeVmDi.obj.fatherFormVm,
-    ]),
-    padding: EdgeInsets.all(20),
-  ));
+  static final motherFormPage = _MotherFormPageRoute.obj;
+  static final fatherFormPage = _FatherFormPageRoute.obj;
   static final doMotherHavePregnancyPage = SibRoute("DoMotherHavePregnancyPage", DoMotherHavePregnancyPage, (ctx) =>  PlainBackFrame(
     body: DoMotherHavePregnancyPage().inVmProvider([
       (ctx) => HomeVmDi.obj.doMotherHavePregnancyVm,
@@ -141,6 +139,49 @@ class HomeRoutes extends ModuleRoute {
   ));
 }
 
+
+class _MotherFormPageRoute {
+  _MotherFormPageRoute._();
+  static final obj = _MotherFormPageRoute._();
+
+  SibRoute getRoute() {
+    return SibRoute("MotherFormPage", MotherFormPage, (ctx) =>  PlainBackFrame(
+      body: MotherFormPage().inVmProvider([
+            (ctx) => HomeVmDi.obj.motherFormVm(context: ctx),
+      ]),
+      padding: EdgeInsets.all(20),
+    ));
+  }
+
+  void go({
+    required BuildContext context,
+    bool? canSkip,
+  }) {
+    final route = getRoute();
+    route.goToPage(context, args: {Const.KEY_CAN_SKIP: canSkip});
+  }
+}
+class _FatherFormPageRoute {
+  _FatherFormPageRoute._();
+  static final obj = _FatherFormPageRoute._();
+
+  SibRoute getRoute() {
+    return SibRoute("FatherFormPage", FatherFormPage, (ctx) =>  PlainBackFrame(
+      body: FatherFormPage().inVmProvider([
+            (ctx) => HomeVmDi.obj.fatherFormVm(context: ctx),
+      ]),
+      padding: EdgeInsets.all(20),
+    ));
+  }
+
+  void go({
+    required BuildContext context,
+    bool? canSkip,
+  }) {
+    final route = getRoute();
+    route.goToPage(context, args: {Const.KEY_CAN_SKIP: canSkip});
+  }
+}
 
 class _ChildFormPageRoute {
   _ChildFormPageRoute._();

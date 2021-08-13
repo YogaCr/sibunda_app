@@ -3,6 +3,7 @@ import 'package:common/arch/data/local/source/account_local_source.dart';
 import 'package:common/arch/data/remote/api/data_api.dart';
 import 'package:common/arch/data/remote/model/data_api_model.dart';
 import 'package:common/arch/domain/model/profile_data.dart';
+import 'package:common/value/db_const.dart';
 import 'package:core/domain/model/result.dart';
 import 'package:core/util/_consoles.dart';
 
@@ -12,6 +13,7 @@ mixin ProfileRepo {
   static const CODE_PSWD_MISMATCH = 404;
 
   Future<Result<Profile>> getProfile(String email);
+  Future<Result<Map<int, List<Profile>>>> getFamilyProfile(String email);
   Future<Result<String>> getCurrentEmail();
   Future<Result<bool>> saveProfile(AccountData data, String? oldPswd);
   /// Check if [password] is same as saved in local.
@@ -32,6 +34,8 @@ class ProfileRepoImpl with ProfileRepo {
 
   @override
   Future<Result<Profile>> getProfile(String email) => _localSrc.getProfile(email);
+  @override
+  Future<Result<Map<int, List<Profile>>>> getFamilyProfile(String email) => _localSrc.getFamilyProfile(email);
   @override
   Future<Result<String>> getCurrentEmail() => _localSrc.getCurrentEmail();
   @override
@@ -88,4 +92,15 @@ class ProfileRepoDummy with ProfileRepo {
   Future<Result<bool>> saveProfile(AccountData data, String? oldPswd) async => Success(true);
   @override
   Future<Result<bool>> checkCurrentPswd(String password) async => Success(true);
+  @override
+  Future<Result<Map<int, List<Profile>>>> getFamilyProfile(String email) async => Success({
+    DbConst.TYPE_MOTHER: [dummyProfileMother_domain],
+    DbConst.TYPE_FATHER: [dummyProfileFather_domain],
+    DbConst.TYPE_CHILD: [
+      dummyProfileChild_domain,
+      dummyProfileChild2_domain,
+      dummyProfileChild3_domain,
+      dummyProfileChild4_domain,
+    ],
+  });
 }

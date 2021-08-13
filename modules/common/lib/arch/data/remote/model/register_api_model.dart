@@ -13,8 +13,8 @@ part 'register_api_model.g.dart';
 // ============ Body =============
 class RegisterBody {
   final SignUpData signup;
-  final Mother mother;
-  final Father father;
+  final Mother? mother;
+  final Father? father;
   final List<Child> children;
   final DateTime? motherHpl;
 
@@ -29,8 +29,8 @@ class RegisterBody {
   /// This method is a signature that be used by retrofit library to convert it to JSON body.
   Map<String, dynamic> toJson() {
     var signupMap = signup.toJson;
-    var motherMap = mother.toJson;
-    var fatherMap = father.toJson;
+    var motherMap = mother?.toJson;
+    var fatherMap = father?.toJson;
     var childMaps = children.map((e) => e.toJson).toList(growable: false);
 /*
     motherMap[Const.KEY_SALARY] = motherMap[Const.KEY_SALARY].toString();
@@ -41,14 +41,18 @@ class RegisterBody {
     childMap[Const.KEY_BIRTH_PLACE] = 1104;
  */
 
-    motherMap = addPrefixToMapKeys(motherMap, "bunda_");
-    fatherMap = addPrefixToMapKeys(fatherMap, "ayah_");
+    if(motherMap != null) {
+      motherMap = addPrefixToMapKeys(motherMap, "bunda_");
+    }
+    if(fatherMap != null) {
+      fatherMap = addPrefixToMapKeys(fatherMap, "ayah_");
+    }
 
     return <String, dynamic>{
       ...signupMap,
       Const.KEY_RE_PSWD: signup.password,
-      ...motherMap,
-      ...fatherMap,
+      if(motherMap != null) ...motherMap,
+      if(fatherMap != null) ...fatherMap,
       Const.KEY_CHILD: childMaps,
       "janin_hpl": motherHpl?.toString(),
 /*
