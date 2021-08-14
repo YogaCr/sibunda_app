@@ -40,7 +40,7 @@ class FatherFormPage extends StatelessWidget {
     return Column(
       children: [
         Text(
-          Strings.fill_father_data,
+          !isEdit ? Strings.fill_father_data : Strings.edit_father_data,
           style: SibTextStyles.header1,
         ).withMargin(EdgeInsets.only(top: 60)),
         //ImgPick().withMargin(EdgeInsets.only(top: 10, bottom: 14)),

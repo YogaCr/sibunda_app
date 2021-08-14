@@ -45,7 +45,7 @@ class MotherFormPage extends StatelessWidget {
     return Column(
       children: [
         Text(
-          Strings.fill_mother_data,
+          !isEdit ? Strings.fill_mother_data : Strings.edit_mother_data,
           style: SibTextStyles.header1,
         ).withMargin(EdgeInsets.only(top: 60)),
         LiveDataObserver<ImgData>(

@@ -29,7 +29,7 @@ class Child {
   @JsonKey(name: Const.KEY_BABY_COHORT_REG)
   final String babyCohortRegistNo;
   @JsonKey(name: Const.KEY_TODDLER_COHORT_REG)
-  final String toddlerCohortRegistNo;
+  final String? toddlerCohortRegistNo;
   @JsonKey(name: Const.KEY_HOSPITAL_MEDIC_NO)
   final String hospitalMedicalNumber;
 
@@ -61,7 +61,7 @@ class Child {
     birthCertificateNo: map[Const.KEY_BIRTH_CERT_NO]!,
     jknStartDate: map[Const.KEY_JKN_START_DATE]!,
     babyCohortRegistNo: map[Const.KEY_BABY_COHORT_REG]!,
-    toddlerCohortRegistNo: map[Const.KEY_TODDLER_COHORT_REG]!,
+    toddlerCohortRegistNo: map[Const.KEY_TODDLER_COHORT_REG],
     hospitalMedicalNumber: map[Const.KEY_HOSPITAL_MEDIC_NO]!,
   );
 

@@ -19,7 +19,7 @@ Child _$ChildFromJson(Map<String, dynamic> json) {
     jkn: json['no_jkn'] as String,
     jknStartDate: json['tanggal_berlaku_jkn'] as String,
     babyCohortRegistNo: json['no_kohort'] as String,
-    toddlerCohortRegistNo: json['nomor_register_kohort_balita'] as String,
+    toddlerCohortRegistNo: json['nomor_register_kohort_balita'] as String?,
     hospitalMedicalNumber: json['no_catatan_medik'] as String,
   );
 }

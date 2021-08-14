@@ -72,7 +72,22 @@ class MotherRepoImpl with MotherRepo {
   }
 
   @override @mayChangeInFuture
-  Future<Result<Mother>> getMotherData(ProfileCredential credential) async => Success(dummyMother);
+  Future<Result<Mother>> getMotherData(ProfileCredential credential) async {
+    try {
+      final res = await _dataApi.getBio();
+      if(res.code != 200) {
+        return Fail(msg: "Can't get mother data from server with `credential` of '$credential'", code: res.code);
+      }
+      final map = res.data.first.toJson();
+      final data = Mother.fromJson(map);
+      return Success(data);
+    } catch(e, stack) {
+      final msg = "Error calling `getMotherData`";
+      prine("$msg; e= $e");
+      prine(stack);
+      return Fail(msg: msg, error: e, stack: stack);
+    }
+  }
   /*
   async {
     final map = dummyMother.toJson;

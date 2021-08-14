@@ -36,8 +36,10 @@ class GlobalRoutes {
   };
   static Map<String, dynamic> makeHomeMotherFatherFormPageData({
     bool? canSkip,
+    bool? isEdit,
     ProfileCredential? credential,
   }) => {
+    Const.KEY_IS_EDIT: isEdit,
     Const.KEY_CAN_SKIP: canSkip,
     Const.KEY_CREDENTIAL : credential,
   };

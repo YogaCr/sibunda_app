@@ -56,7 +56,7 @@ class _FamilyProfileList extends StatelessWidget {
               child: Padding(
                 padding: EdgeInsets.all(5),
                 child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 5, vertical: 10,),
+                  padding: EdgeInsets.symmetric(vertical: 10,),
                   decoration: BoxDecoration(
                     color: grey_calm,
                     borderRadius: BorderRadius.circular(10),
@@ -87,6 +87,7 @@ class _FamilyProfileList extends StatelessWidget {
           context, GlobalRoutes.home_motherFormPage,
           args: GlobalRoutes.makeHomeMotherFatherFormPageData(
             canSkip: false,
+            isEdit: true,
             credential: ProfileCredential.fromProfile(profile),
           ),
         );
@@ -96,6 +97,7 @@ class _FamilyProfileList extends StatelessWidget {
           context, GlobalRoutes.home_fatherFormPage,
           args: GlobalRoutes.makeHomeMotherFatherFormPageData(
             canSkip: false,
+            isEdit: true,
             credential: ProfileCredential.fromProfile(profile),
           ),
         );

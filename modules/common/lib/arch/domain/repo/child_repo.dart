@@ -6,6 +6,7 @@ import 'package:common/arch/data/local/source/account_local_source.dart';
 import 'package:common/arch/data/remote/api/data_api.dart';
 import 'package:common/arch/data/remote/model/baby_add_api_model.dart';
 import 'package:common/arch/domain/model/child.dart';
+import 'package:common/arch/domain/model/father.dart';
 import 'package:common/arch/domain/model/profile_data.dart';
 import 'package:common/util/type_util.dart';
 import 'package:common/value/db_const.dart';
@@ -50,7 +51,23 @@ class ChildRepoImpl with ChildRepo {
   ;
 
   @override
-  Future<Result<Child>> getChildData(ProfileCredential credential) async => Success(dummyChild);
+  Future<Result<Child>> getChildData(ProfileCredential credential) async {
+    try {
+      final res = await _dataApi.getBio();
+      if(res.code != 200) {
+        return Fail(msg: "Can't get child data from server with `credential` of '$credential'", code: res.code);
+      }
+      final map = res.data.first.kia_anak.firstWhere((e) => e.id == credential.id).toJson();
+      prind("child map= $map");
+      final data = Child.fromJson(map);
+      return Success(data);
+    } catch(e, stack) {
+      final msg = "Error calling `getChildData`";
+      prine("$msg; e= $e");
+      prine(stack);
+      return Fail(msg: msg, error: e, stack: stack);
+    }
+  }
   @override
   Future<Result<bool>> saveChildrenData({
     required List<Child> data,

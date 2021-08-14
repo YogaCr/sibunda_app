@@ -170,7 +170,7 @@ class _ChildSingleFormPage extends StatelessWidget {
     return Column(
       children: [
         Text(
-          Strings.fill_child_data +"\n(${page+1})",
+          (!isEdit ? Strings.fill_child_data : Strings.edit_child_data) +"\n(${page+1})",
           style: SibTextStyles.header1,
           textAlign: TextAlign.center,
         ).withMargin(EdgeInsets.only(top: 60)),

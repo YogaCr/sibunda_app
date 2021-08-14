@@ -65,6 +65,9 @@ class Strings {
   static const fill_mother_data = "Isi Data Bunda";
   static const fill_father_data = "Isi Data Ayah";
   static const fill_child_data = "Isi Data Bayi Bunda";
+  static const edit_mother_data = "Edit Data Bunda";
+  static const edit_father_data = "Edit Data Ayah";
+  static const edit_child_data = "Edit Data Bayi Bunda";
   static const confirm_new_account = "Konfirmasi Akun Baru";
   static const create_my_account = "Buat Akun Saya";
 

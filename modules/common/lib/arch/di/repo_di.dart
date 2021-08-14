@@ -193,7 +193,9 @@ class RepoDiObjImpl extends RepoDiObj {
     pregnancyLocalSrc: LocalSrcDi.obj.pregnancySrc,
   ); //MotherRepoDummy.obj;
   @override
-  FatherRepo get fatherRepo => FatherRepoImpl();
+  FatherRepo get fatherRepo => FatherRepoImpl(
+    dataApi: ApiDi.obj.dataApi,
+  );
   @override
   ChildRepo get childRepo => ChildRepoImpl(
     accountLocalSrc: LocalSrcDi.obj.accountSrc,
