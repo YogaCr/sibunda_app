@@ -6,6 +6,7 @@ import 'package:common/arch/ui/widget/form_controller.dart';
 import 'package:common/arch/ui/widget/form_generic_vm_group_observer.dart';
 import 'package:common/arch/ui/widget/form_vm_observer.dart';
 import 'package:common/arch/ui/widget/picker_icon_widget.dart';
+import 'package:common/config/manifest.dart';
 import 'package:common/res/string/_string.dart';
 import 'package:common/res/theme/_theme.dart';
 import 'package:common/util/navigations.dart';
@@ -46,6 +47,7 @@ class ChildFormPage extends StatelessWidget {
     }
      */
     final credential = getArgs<ProfileCredential>(context, Const.KEY_CREDENTIAL);
+    final isEdit = getArgs<bool>(context, Const.KEY_IS_EDIT) == true;
 
     final vm = ViewModelProvider.of<ChildFormVm>(context)
       ..getChildData(credential: credential,)
@@ -131,6 +133,7 @@ class ChildFormPage extends StatelessWidget {
             innerPageControll: innerPageControll,
             pageControll: pageControll,
             onlySinglePage: onlySinglePage,
+            isEdit: isEdit,
           ),
         ),
       ) : defaultLoading();
@@ -150,6 +153,7 @@ class _ChildSingleFormPage extends StatelessWidget {
   final FormGroupInterceptor? interceptor;
   final ChildFormVm vm;
   final int page;
+  final bool isEdit;
 
   _ChildSingleFormPage({
     required this.vm,
@@ -158,6 +162,7 @@ class _ChildSingleFormPage extends StatelessWidget {
     required this.pageControll,
     required this.interceptor,
     required this.onlySinglePage,
+    required this.isEdit,
   });
 
   @override
@@ -250,10 +255,13 @@ class _ChildSingleFormPage extends StatelessWidget {
             }
           },
           submitBtnMargin: !onlySinglePage ? EdgeInsets.only(bottom: 15,) : null,
-          submitBtnBuilder: (ctx, canProceed) => FloatingActionButton(
+          submitBtnBuilder: (ctx, canProceed) => !isEdit ? FloatingActionButton(
             child: Icon(Icons.arrow_forward_rounded,),
             backgroundColor: canProceed == true ? pink_300 : grey,
             onPressed: null, //canProceed == true ? null : () => showSnackBar(context, "Masih ada yg blum valid",),
+          ) : TxtBtn(
+            Strings.update_data,
+            color: canProceed == true ? Manifest.theme.colorPrimary : grey,
           ),
         ),
       ],

@@ -69,6 +69,15 @@ class Profile extends Equatable {
     birthDate: entity.birthDate,
   );
 
+  Profile copyWithNewName(String name) => Profile(
+    id: id,
+    nik: nik,
+    name: name,
+    email: email,
+    birthDate: birthDate,
+    img: img,
+  );
+
   @override
   List<Object?> get props => [id, nik, name, email, birthDate, img];
 }

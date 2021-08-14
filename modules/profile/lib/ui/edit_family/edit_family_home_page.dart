@@ -56,14 +56,17 @@ class _FamilyProfileList extends StatelessWidget {
               child: Padding(
                 padding: EdgeInsets.all(5),
                 child: Container(
-                  padding: EdgeInsets.all(10),
+                  padding: EdgeInsets.symmetric(horizontal: 5, vertical: 10,),
                   decoration: BoxDecoration(
-                    color: grey,
+                    color: grey_calm,
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: ItemProfile.fromData(
                     data[i],
-                    nameColor: Colors.black,
+                    nameColor: i <= 1
+                        ? Manifest.theme.colorPrimary
+                        : Colors.black,
+                    descColor: Colors.black,
                   ),
                 ),
               ),

@@ -1,5 +1,6 @@
 import 'package:common/arch/domain/model/profile_data.dart';
 import 'package:common/arch/domain/repo/profile_repo.dart';
+import 'package:common/res/string/_string.dart';
 import 'package:common/value/db_const.dart';
 import 'package:core/domain/model/result.dart';
 import 'package:collection/collection.dart';
@@ -44,8 +45,10 @@ class GetFamilyProfileImpl with GetFamilyProfile {
     }
     final data = res.data;
 
-    final mother = data[DbConst.TYPE_MOTHER]?.firstOrNull ?? Profile.empty();
-    final father = data[DbConst.TYPE_FATHER]?.firstOrNull ?? Profile.empty();
+    final mother = (data[DbConst.TYPE_MOTHER]?.firstOrNull ?? Profile.empty())
+        .copyWithNewName(Strings.mother);
+    final father = (data[DbConst.TYPE_FATHER]?.firstOrNull ?? Profile.empty())
+        .copyWithNewName(Strings.father);
 
     final children = data[DbConst.TYPE_CHILD];
 

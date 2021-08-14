@@ -489,16 +489,19 @@ class ItemProfile extends StatelessWidget {
   final String? desc;
   final ImgData img;
   final Color? nameColor;
+  final Color? descColor;
 
   ItemProfile({
     required this.name,
     required this.img,
     this.desc,
     this.nameColor,
+    this.descColor,
   });
 
   ItemProfile.fromData(Profile data, {
     this.nameColor,
+    this.descColor,
   }):
     name = data.name,
     desc = "${calculateYearAge(data.birthDate)} tahun", //data.email,
@@ -511,6 +514,11 @@ class ItemProfile extends StatelessWidget {
     if(nameColor != null) {
       nameTextStyle = nameTextStyle.copyWith(color: nameColor);
     }
+    var descTextStyle = SibTextStyles.size_min_1.copyWith(color: yellow);
+    if(descColor != null) {
+      descTextStyle = descTextStyle.copyWith(color: descColor);
+    }
+
     final txtChildren = <Widget>[
       Text(name, style: nameTextStyle,),
     ];
@@ -520,7 +528,7 @@ class ItemProfile extends StatelessWidget {
           margin: EdgeInsets.only(top: 10,),
           child: Text(
             desc!,
-            style: SibTextStyles.size_min_1.copyWith(color: yellow),
+            style: descTextStyle,
           ),
         ),
       );

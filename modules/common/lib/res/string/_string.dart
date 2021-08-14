@@ -49,6 +49,7 @@ class Strings {
   static const session_expired = "Sesi Anda telah habis. Harap login ulang.";
 
   static const mother = "Bunda";
+  static const father = "Ayah";
   static const baby = "Bayi";
   static const baby_candidate = "Calon Bayi";
   static const add_baby = "Tambah Bayi";
@@ -159,4 +160,6 @@ class Strings {
   static const my_pregnancy =  "Kehamilanku";
   static const my_baby =  "Bayiku";
   static const covid_19 =  "Covid-19";
+
+  static const update_data =  "Update Data";
 }

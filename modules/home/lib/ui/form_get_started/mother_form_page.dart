@@ -10,6 +10,7 @@ import 'package:common/arch/ui/widget/form_vm_observer.dart';
 import 'package:common/arch/ui/widget/img_pick.dart';
 import 'package:common/arch/ui/widget/picker_icon_widget.dart';
 import 'package:common/arch/ui/widget/popup_widget.dart';
+import 'package:common/config/manifest.dart';
 import 'package:common/res/string/_string.dart';
 import 'package:common/res/theme/_theme.dart';
 import 'package:common/util/navigations.dart';
@@ -36,6 +37,7 @@ class MotherFormPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final canSkip = getArgs<bool>(context, Const.KEY_CAN_SKIP) != false;
     final credential = getArgs<ProfileCredential>(context, Const.KEY_CREDENTIAL);
+    final isEdit = getArgs<bool>(context, Const.KEY_IS_EDIT) == true;
 
     final vm = ViewModelProvider.of<MotherFormVm>(context)
       ..getMotherData(credential: credential,);
@@ -94,10 +96,13 @@ class MotherFormPage extends StatelessWidget {
             }
           },
           submitBtnMargin: EdgeInsets.only(bottom: 15,),
-          submitBtnBuilder: (ctx, canProceed) => FloatingActionButton(
+          submitBtnBuilder: (ctx, canProceed) => !isEdit ? FloatingActionButton(
             child: Icon(Icons.arrow_forward_rounded,),
             backgroundColor: canProceed == true ? pink_300 : grey,
             onPressed: null, //canProceed == true ? null : () => showSnackBar(context, "Ada yg blum valid"),
+          ) : TxtBtn(
+            Strings.update_data,
+            color: canProceed == true ? Manifest.theme.colorPrimary : grey,
           ),
         ),
 /*
