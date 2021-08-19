@@ -128,18 +128,6 @@ class MotherHplPage extends StatelessWidget {
             );
           },
         ),
-        /*
-        LiveDataObserver<bool>(
-          liveData: vm.canProceed,
-          builder: (ctx, canProceed) => TxtBtn(
-            Strings.save,
-            color: canProceed == true ? Manifest.theme.colorPrimary : grey,
-            onTap: () => canProceed == true
-                ? vm.proceed()
-                : showSnackBar(ctx, Strings.there_still_invalid_fields), //canProceed != true ? null : () => _moveToNext(context),
-          ),
-        ),
-         */
       ],
     ).withMargin(EdgeInsets.only(right: 24, left: 24));
   }

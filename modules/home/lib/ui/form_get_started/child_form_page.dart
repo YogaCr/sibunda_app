@@ -40,12 +40,6 @@ class ChildFormPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     prind("ChildFormPage.build()");
-    /*
-    final childCount = getArgs<int>(context, Const.KEY_DATA) ?? 1;
-    if(childCount < 0) {
-      throw "Can't have list with negative int, `childCount` = '$childCount'";
-    }
-     */
     final credential = getArgs<ProfileCredential>(context, Const.KEY_CREDENTIAL);
     final isEdit = getArgs<bool>(context, Const.KEY_IS_EDIT) == true;
 
@@ -76,19 +70,6 @@ class ChildFormPage extends StatelessWidget {
         }
       });
 
-    //vm.childCount = childCount ?? MutableLiveData();
-/*
-    if(childCount != null) {
-      childCount!.observe(vm.childCount, (count) {
-        vm.childCount.value = count;
-      });
-      if(childCount!.value != null) {
-        vm.childCount.value = childCount!.value;
-      }
-    } else {
-      vm.childCount.value = defaultChildCount;
-    }
- */
     bool isBuilt = false;
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
       innerPageControll.jumpToPage(0);
@@ -258,7 +239,7 @@ class _ChildSingleFormPage extends StatelessWidget {
           submitBtnBuilder: (ctx, canProceed) => !isEdit ? FloatingActionButton(
             child: Icon(Icons.arrow_forward_rounded,),
             backgroundColor: canProceed == true ? pink_300 : grey,
-            onPressed: null, //canProceed == true ? null : () => showSnackBar(context, "Masih ada yg blum valid",),
+            onPressed: null,
           ) : TxtBtn(
             Strings.update_data,
             color: canProceed == true ? Manifest.theme.colorPrimary : grey,

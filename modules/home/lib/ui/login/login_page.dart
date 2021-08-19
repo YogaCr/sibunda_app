@@ -55,7 +55,6 @@ class LoginPage extends StatelessWidget {
               showSnackBar(ctx, "Terjadi kesalahan");
             }
           },
-          ///*
           onFailSubmitBtnBuilder: (ctx, key, fail, btn) {
             prinw("LoginPage onFailSubmitBtnBuilder: key= $key fail= $fail");
             if(fail.code == 400) {
@@ -68,7 +67,6 @@ class LoginPage extends StatelessWidget {
             }
             return btn;
           },
-          // */
           submitBtnBuilder: (ctx, canProceed) {
             if(canProceed == true) {
               errorMsgController.value = null;

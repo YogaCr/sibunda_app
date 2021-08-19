@@ -30,7 +30,6 @@ class SignUpPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //final bloc = ViewModelProvider.of<SignUpFormBloc>(context);
     final vm = ViewModelProvider.of<SignUpFormVm>(context);
     return Column(
       children: [
@@ -76,16 +75,9 @@ class SignUpPage extends StatelessWidget {
               showSnackBar(context, "Gagal", backgroundColor: Colors.red);
             }
           },
-/*
-          preSubmitBtnBuilder: (ctx, key) => Container(
-            padding: EdgeInsets.all(10),
-            color: Colors.yellow,
-            child: Text("Sending..."),
-          ),
- */
           submitBtnBuilder: (ctx, canProceed) => FloatingActionButton(
             backgroundColor: canProceed == true ? pink_300 : grey,
-            onPressed: null, //canProceed == true ? null : () => showSnackBar(context, "Ada yg blum valid",),
+            onPressed: null,
             child: Icon(Icons.arrow_forward_rounded),
           ),
         ),

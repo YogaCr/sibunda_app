@@ -11,35 +11,6 @@ class KehamilankuUseCaseDi {
   KehamilankuUseCaseDi._();
 
   static KehamilankuUseCaseDiObj obj = KehamilankuUseCaseDiObjImpl();
-  //static GetMotherNik get getMotherNik => GetMotherNikImpl(RepoDi.motherRepo);
-/*
-  static GetPregnancyAgeOverview get getPregnancyAgeOverview => GetPregnancyAgeOverviewImpl(RepoDi.pregnancyRepo);
-  static GetTrimesterList get getTrimesterList => GetTrimesterListImpl(RepoDi.pregnancyRepo);
-  static GetMotherFoodRecomList get getMotherFoodRecomList => GetMotherFoodRecomListImpl(RepoDi.pregnancyRepo);
-
-  static GetPregnancyCheckForm get getPregnancyCheckForm => GetPregnancyCheckFormImpl(RepoDi.formFieldRepo);
-  static SavePregnancyCheck get savePregnancyCheck => SavePregnancyCheckImpl(RepoDi.pregnancyRepo);
-  static SaveUsgImg get saveUsgImg => SaveUsgImgImpl(RepoDi.pregnancyRepo);
-  static GetPregnancyCheck get getPregnancyCheck => GetPregnancyCheckImpl(RepoDi.pregnancyRepo);
-  static GetMotherFormWarningStatus get getMotherFormWarningStatus => GetMotherFormWarningStatusImpl(RepoDi.pregnancyRepo);
-  static GetPregnancyBabySize get getPregnancyBabySize => GetPregnancyBabySizeImpl(RepoDi.pregnancyRepo);
-
-  static GetPregnancyImmunizationConfirmForm get getPregnancyImmunizationConfirmForm => GetPregnancyImmunizationConfirmFormImpl(RepoDi.formFieldRepo);
-  static GetMotherImmunizationOverview get getMotherImmunizationOverview => GetMotherImmunizationOverviewImpl(RepoDi.immunizationRepo);
-  static GetMotherImmunizationGroupList get getMotherImmunizationGroupList => GetMotherImmunizationGroupListImpl(RepoDi.immunizationRepo);
-  static ConfirmMotherImmunization get confirmMotherImmunization => ConfirmMotherImmunizationImpl(RepoDi.immunizationRepo);
-
-  static GetMotherPregEvalGraphMenu get getMotherPregEvalGraphMenu => GetMotherPregEvalGraphMenuImpl(RepoDi.pregnancyRepo);
-
-  static GetMotherTfuChart get getMotherTfuChart => GetMotherTfuChartImpl(RepoDi.motherChartRepo);
-  static GetMotherDjjChart get getMotherDjjChart => GetMotherDjjChartImpl(RepoDi.motherChartRepo);
-  static GetMotherBmiChart get getMotherBmiChart => GetMotherBmiChartImpl(RepoDi.motherChartRepo);
-  static GetMotherMapChart get getMotherMapChart => GetMotherMapChartImpl(RepoDi.motherChartRepo);
-  static GetMotherTfuChartWarning get getMotherTfuChartWarning => GetMotherTfuChartWarningImpl(RepoDi.motherChartRepo);
-  static GetMotherDjjChartWarning get getMotherDjjChartWarning => GetMotherDjjChartWarningImpl(RepoDi.motherChartRepo);
-  static GetMotherBmiChartWarning get getMotherBmiChartWarning => GetMotherBmiChartWarningImpl(RepoDi.motherChartRepo);
-  static GetMotherMapChartWarning get getMotherMapChartWarning => GetMotherMapChartWarningImpl(RepoDi.motherChartRepo);
- */
 }
 
 
@@ -77,7 +48,6 @@ abstract class KehamilankuUseCaseDiObj {
 
 class KehamilankuUseCaseDiObjImpl extends KehamilankuUseCaseDiObj {
 
-  //static GetMotherNik get getMotherNik => GetMotherNikImpl(RepoDi.motherRepo);
   @override
   GetPregnancyAgeOverview get getPregnancyAgeOverview => GetPregnancyAgeOverviewImpl(RepoDi.obj.pregnancyRepo);
   @override

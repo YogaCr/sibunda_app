@@ -68,18 +68,8 @@ class KehamilankuHomeVm extends AsyncAuthVm {
         prind("BabyHomeVm unbornIndex= $unbornIndex");
         if(unbornIndex >= 0) {
           selectedIndex.value = unbornIndex;
-          //selectedBabyData = _unbornBabyList.value![unbornIndex];
         } else {
           throw "Something error. `ageOverview.value` is not null, but there's no selected baby";
-          /*
-          final bornIndex = _bornBabyList.value!.indexWhere((e) => e.id == babyCred.id);
-          prind("BabyHomeVm bornIndex= $bornIndex");
-          if(bornIndex < 0) {
-            throw "Something error. `ageOverview.value` is not null, but there's no selected baby";
-          }
-          //selectedBabyData = _bornBabyList.value![bornIndex];
-          selectedIndex.value = bornIndex +(_unbornBabyList.value?.length ?? 0);
-           */
         }
         prind("BabyHomeVm selectedIndex= $selectedIndex");
       }

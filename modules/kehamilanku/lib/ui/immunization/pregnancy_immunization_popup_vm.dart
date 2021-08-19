@@ -86,9 +86,4 @@ class PregnancyImmunizationPopupVm extends FormAuthVmGroup {
       return List.empty();
     }
   }
-/*
-  @override
-  Future<bool> validateField(int groupPosition, String inputKey, response) async =>
-      (response as String).isNotEmpty;
- */
 }

@@ -29,7 +29,6 @@ import 'package:home/ui/signup/sign_up_vm.dart';
 
 import 'children_count_vm.dart';
 
-///*
 class GetStartedFormMainVm extends AsyncAuthVm {
   static const sendDataKey = "sendData";
 
@@ -188,22 +187,6 @@ class GetStartedFormMainVm extends AsyncAuthVm {
       );
       prind("sendData() res1= $res1");
 
-      /*
-      if(!doMotherHavePregnancyVm.isHplDeleted) {
-        final hpl = _saveMotherHplForChild.data.value;
-        if(hpl == null) {
-          throw "`hpl` can't be null when `isHplDeleted` == false";
-        }
-        final res2 = await _saveMotherHpl(hpl);
-        prind("sendData() res2= $res2");
-
-        if(res2 is Fail<bool>) {
-          _onSubmit.value = false;
-          return res2.copy(msg: "Can't save mother HPL");
-        }
-      }
-       */
-
       _onSubmit.value = res1 is Success<bool>;
       if(res1 is Fail<bool>) {
         return res1;
@@ -221,8 +204,6 @@ class GetStartedFormMainVm extends AsyncAuthVm {
     motherHplVm.dispose();
   }
 }
-
-// */
 
 
 /// 'Cause in this context (signup), email isn't needed.
@@ -320,17 +301,6 @@ class _SaveMotherHplImpl with SaveMotherHpl {
     return Success(true);
   }
 }
-/*
-class _SaveLastChildBirthDateImpl with SaveLastChildBirthDate {
-  final MutableLiveData<DateTime> _data = MutableLiveData();
-  LiveData<DateTime> get data => _data;
-  @override
-  Future<Result<bool>> call(DateTime date) async {
-    _data.value = date;
-    return Success(true);
-  }
-}
- */
 
 class _SaveChildrenCountImpl with SaveChildrenCount {
   final MutableLiveData<int> _data = MutableLiveData();

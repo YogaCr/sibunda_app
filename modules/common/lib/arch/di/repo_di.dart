@@ -21,86 +21,6 @@ class RepoDi {
   RepoDi._();
 
   static RepoDiObj obj = RepoDiObjImpl();
-/*
-  static FirebaseRepo get firebaseRepo => FirebaseRepoImpl(
-    sharedPref: Prefs.prefs,
-  );
-
-  static DataRepo get dataRepo => DataRepoImpl(
-    localSrc: LocalSrcDi.dataSrc,
-    api: ApiDi.dataApi,
-  );
-
-  static AuthRepo get authRepo => AuthRepoImpl(
-    api: ApiDi.authApi,
-    //dataApi: ApiDi.dataApi,
-    accountLocalSrc: LocalSrcDi.accountSrc,
-    pregnancyLocalSrc: LocalSrcDi.pregnancySrc,
-    checkUpLocalSrc: LocalSrcDi.checkUpSrc,
-  ); //AuthDummyRepo.obj; //
-
-  static ProfileRepo get profileRepo => ProfileRepoImpl(
-    localSrc: LocalSrcDi.accountSrc,
-    dataApi: ApiDi.dataApi,
-  ); //ProfileRepoDummy.obj; //ProfileRepoImpl(localSrc: LocalSrcDi.accountSrc); //
-  static HomeStatusRepo get homeStatusRepo => HomeStatusRepoImpl(homeApi: ApiDi.homeApi); //HomeStatusRepoDummy.obj;
-  static HomeMenuRepo get homeMenuRepo => HomeMenuRepoDummy.obj;
-  //static TipsRepo get tipsRepo => TipsRepoDummy.obj;
-  static EducationRepo get educationRepo => EducationRepoImpl(homeApi: ApiDi.homeApi); //EducationRepoDummy.obj;
-  static NotifRepo get notifRepo => NotifRepoImpl(api: ApiDi.homeApi); //NotifRepoDummy.obj;
-
-  static FormFieldRepo get formFieldRepo => FormFieldRepoImpl(
-    babyApi: ApiDi.babyApi,
-    covidApi: ApiDi.covidApi,
-  ); //FormFieldRepoDummy.obj;
-
-  //static FamilyRepo getFamilyRepo() => FamilyDummyRepo();
-  static MotherRepo get motherRepo => MotherRepoImpl(
-    dataApi: ApiDi.dataApi,
-    accountLocalSrc: LocalSrcDi.accountSrc,
-    pregnancyLocalSrc: LocalSrcDi.pregnancySrc,
-  ); //MotherRepoDummy.obj;
-  static FatherRepo get fatherRepo => FatherRepoDummy.obj;
-  static ChildRepo get childRepo => ChildRepoImpl(
-    accountLocalSrc: LocalSrcDi.accountSrc,
-    profileDao: DbDi.profileDao,
-    pregnancyDao: DbDi.pregnancyDao,
-    dataApi: ApiDi.dataApi,
-  ); //ChildRepoDummy.obj;
-  static PregnancyRepo get pregnancyRepo => PregnancyRepoImpl(
-    api: ApiDi.kehamilankuApi,
-    checkUpLocalSrc: LocalSrcDi.checkUpSrc,
-  ); //PregnancyRepoDummy.obj; //
-  //static MotherFoodRecomRepo get foodRepo => MotherFoodRecomRepoDummy.obj;
-  //static MotherHomeRepo get pregnancyRepo => MotherPregnancyRepoDummy.obj;
-  //static PregnancyCheckRepo get pregnancyCheckRepo => PregnancyCheckRepoDummy.obj;
-  //static FormWarningStatusRepo get formWarningStatusRepo => FormWarningStatusRepoDummy.obj;
-  static ImmunizationRepo get immunizationRepo => ImmunizationRepoImpl(
-    pregnancyApi: ApiDi.kehamilankuApi,
-    babyApi: ApiDi.babyApi,
-    accountLocalSrc: LocalSrcDi.accountSrc,
-  ); //ImmunizationRepoDummy.obj;
-
-  static MyBabyRepo get myBabyRepo => MyBabyRepoImpl(
-    api: ApiDi.babyApi,
-    accountLocalSrc: LocalSrcDi.accountSrc,
-    checkUpLocalSrc: LocalSrcDi.checkUpSrc,
-    pregnancyLocalSrc: LocalSrcDi.pregnancySrc,
-  ); //MyBabyRepoDummy.obj;
-
-  static CovidRepo get covidRepo => CovidRepoImpl(
-    api: ApiDi.covidApi,
-    accountLocalSrc: LocalSrcDi.accountSrc,
-  ); //CovidRepoDummy.obj;
-
-  static BabyChartRepo get babyChartRepo => BabyChartRepoImpl(
-    api: ApiDi.babyApi,
-    accountLocalSrc: LocalSrcDi.accountSrc,
-  ); //BabyChartRepoDummy.obj;
-  static MotherChartRepo get motherChartRepo => MotherChartRepoImpl(
-    api: ApiDi.kehamilankuApi,
-  ); //MotherChartRepoDummy.obj;
- */
 }
 
 
@@ -110,34 +30,34 @@ abstract class RepoDiObj {
 
   DataRepo get dataRepo;
 
-  AuthRepo get authRepo; //AuthDummyRepo.obj; //
+  AuthRepo get authRepo;
 
-  ProfileRepo get profileRepo; //ProfileRepoDummy.obj; //ProfileRepoImpl(localSrc: LocalSrcDi.accountSrc); //
-  HomeStatusRepo get homeStatusRepo; //HomeStatusRepoDummy.obj;
+  ProfileRepo get profileRepo;
+  HomeStatusRepo get homeStatusRepo;
   HomeMenuRepo get homeMenuRepo;
   //static TipsRepo get tipsRepo => TipsRepoDummy.obj;
-  EducationRepo get educationRepo; //EducationRepoDummy.obj;
-  NotifRepo get notifRepo; //NotifRepoDummy.obj;
+  EducationRepo get educationRepo;
+  NotifRepo get notifRepo;
 
-  FormFieldRepo get formFieldRepo; //FormFieldRepoDummy.obj;
+  FormFieldRepo get formFieldRepo;
 
   //static FamilyRepo getFamilyRepo() => FamilyDummyRepo();
-  MotherRepo get motherRepo; //MotherRepoDummy.obj;
+  MotherRepo get motherRepo;
   FatherRepo get fatherRepo;
-  ChildRepo get childRepo; //ChildRepoDummy.obj;
-  PregnancyRepo get pregnancyRepo; //PregnancyRepoDummy.obj; //
+  ChildRepo get childRepo;
+  PregnancyRepo get pregnancyRepo;
   //static MotherFoodRecomRepo get foodRepo => MotherFoodRecomRepoDummy.obj;
   //static MotherHomeRepo get pregnancyRepo => MotherPregnancyRepoDummy.obj;
   //static PregnancyCheckRepo get pregnancyCheckRepo => PregnancyCheckRepoDummy.obj;
   //static FormWarningStatusRepo get formWarningStatusRepo => FormWarningStatusRepoDummy.obj;
-  ImmunizationRepo get immunizationRepo; //ImmunizationRepoDummy.obj;
+  ImmunizationRepo get immunizationRepo;
 
-  MyBabyRepo get myBabyRepo; //MyBabyRepoDummy.obj;
+  MyBabyRepo get myBabyRepo;
 
-  CovidRepo get covidRepo; //CovidRepoDummy.obj;
+  CovidRepo get covidRepo;
 
-  BabyChartRepo get babyChartRepo; //BabyChartRepoDummy.obj;
-  MotherChartRepo get motherChartRepo; //MotherChartRepoDummy.obj;
+  BabyChartRepo get babyChartRepo;
+  MotherChartRepo get motherChartRepo;
 }
 
 

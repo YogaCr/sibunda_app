@@ -81,12 +81,6 @@ class ChildFormVm extends FormAuthVmGroup {
       }
       prind("_currentPage.observe map= $map");
       resetResponses();
-      /*
-      try {
-      } catch(e, stack) {
-        prine("ChildFormVm rest response error; e= $e");
-        prine(stack);
-      }*/
       if(map != null) {
         patchResponse([map]);
         //return;
@@ -115,22 +109,6 @@ class ChildFormVm extends FormAuthVmGroup {
   final GetCurrentEmail _getCurrentEmail;
   final GetChildData _getChildData;
   final GetCityById _getCityById;
-/*
-  int? _childCount;
-  int get childCount {
-    if(_childCount == null) {
-      throw "`childCount` is not initialized";
-    }
-    return _childCount!;
-  }
-  set childCount(v) {
-    if(_childCount != null) {
-      throw "`childCount` can only be initialized once";
-    }
-    _children = MutableLiveData(List.generate(v, (index) => null));
-    _childCount = v;
-  }
- */
 
   int? _pageInParent;
   int? get pageInParent => _pageInParent;
@@ -329,42 +307,3 @@ class ChildFormVm extends FormAuthVmGroup {
     });
   }
 }
-
-/*
-class ChildFormVm extends FormTxtVm {
-  ChildFormVm(this._useCase) : super(keyLabelList: [
-    Tuple2(Const.KEY_NAME, Strings.name),
-    Tuple2(Const.KEY_NIK, Strings.nik),
-    Tuple2(Const.KEY_JKN, Strings.jkn),
-    Tuple2(Const.KEY_BLOOD_TYPE, Strings.blood_type),
-    Tuple2(Const.KEY_BIRTH_PLACE, Strings.birth_place),
-    Tuple2(Const.KEY_BIRTH_DATE, Strings.birth_date),
-    Tuple2(Const.KEY_CHILD_ORDER, Strings.child_order),
-    Tuple2(Const.KEY_GENDER, Strings.gender),
-    Tuple2(Const.KEY_BIRTH_CERT_NO, Strings.birth_cert_no),
-    Tuple2(Const.KEY_JKN_START_DATE, Strings.jkn_start_date),
-    Tuple2(Const.KEY_BABY_COHORT_REG, Strings.baby_cohort_no),
-    Tuple2(Const.KEY_TODDLER_COHORT_REG, Strings.toddler_cohort_no),
-    Tuple2(Const.KEY_HOSPITAL_MEDIC_NO, Strings.hospital_medic_no),
-  ]);
-  
-  final SaveChildData _useCase;
-  @override
-  List<LiveData> get liveDatas => [];
-
-  @override
-  Future<Result<String>> doSubmitJob() async {
-    final txtMap = getResponseMap(mappedKey: {Const.KEY_CHILD_ORDER}, mapper: (key, txt) => int.parse(txt));
-    final data = Child.fromJson(txtMap);
-    return await _useCase(data).then<Result<String>>((value) => value is Success<bool> ? Success("") : value as Fail<String>);
-  }
-
-  @override
-  Future<bool> validateField(String inputKey, response) async {
-    switch(inputKey) {
-      case Const.KEY_CHILD_ORDER: return int.tryParse(response) != null;
-    }
-    return response.isNotEmpty;
-  }
-}
- */

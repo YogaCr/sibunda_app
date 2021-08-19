@@ -23,14 +23,6 @@ class SplashPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-/*
-      ..isLoggedIn.observeOnce((isLoggedIn) {
-        if(isLoggedIn != true) {
-          HomeRoutes.homePage.goToPage(context, clearPrevs: true);
-        }
-      }, immediatelyGet: false)
- */
-
     return SplashScreen(
       child: SplashIconPage(),
       pageBuilder: (ctx) {

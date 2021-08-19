@@ -28,7 +28,6 @@ import 'package:kehamilanku/config/kehamilanku_routes.dart';
 import 'package:kehamilanku/ui/pregnancy_check/kehamilanku_trimester_form_vm.dart';
 
 class KehamilankuTrimesterFormPage extends StatelessWidget {
-  //final scrollCtrl = ScrollController();
   final pageController = PageController();
   final FormGroupInterceptor? interceptor;
 
@@ -57,26 +56,16 @@ class KehamilankuTrimesterFormPage extends StatelessWidget {
       pageController.notifyListeners();
     });
 
-    //vm.currentWeek.value = startWeek;
-    //vm.initPage(week: startWeek);
     vm.currentTrimesterId = trimester.id;
 
     pageController.addListener(() {
       final page = pageController.page;
-      //prind("pageController page= $page double = ${pageController.page}");
       if(page != null) {
-        //prind("pageController MASUK ===========");
         int pageInt;
         if(page == (pageInt = page.toInt())) {
           final week = pageInt +startWeek;
-          prind("pageController MASUK =========== INT page= $page week = $week");
+          //prind("pageController MASUK =========== INT page= $page week = $week");
           vm.initPage(week: week);
-/*
-          vm..currentWeek.value = week
-            ..getPregnancyCheck(week: week, forceLoad: true)
-            ..getPregnancyBabySize(week: week, forceLoad: true)
-            ..getMotherFormWarningStatus(week: week, forceLoad: true);
- */
         }
       }
     });
@@ -135,13 +124,9 @@ class _WeeklyFormPage extends StatelessWidget {
         SliverList(
           delegate: SliverChildListDelegate.fixed([
             LiveDataObserver<int>(
-              liveData: vm.currentWeek, //, vm.isBabyBorn, /*vm.isBabySizeInit*/],
+              liveData: vm.currentWeek,
               builder: (ctx, currentWeek) {
-                //final int? currentWeek = dataList[0];
                 if(currentWeek != week) return defaultLoading();
-                //final bool? isBorn = dataList[1];
-                //final bool? isBabySizeInit = dataList[2];
-                //prind("MultiLiveDataObserver dataList= $dataList"); //isBabySizeInit= $isBabySizeInit
 
                 final babySize = MultiLiveDataObserver<dynamic>(
                   liveDataList: [vm.pregnancyBabySize, vm.isBabySizeInit,],
@@ -152,10 +137,7 @@ class _WeeklyFormPage extends StatelessWidget {
                   builder: (ctx, dataList2) {
                     final PregnancyBabySize? babySize = dataList2[0];
                     final bool? isBabySizeInit = dataList2[1];
-                    //if(currentWeek != wee)
-                    //final bool? isBabySizeInit = dataList2[1];
-                    //final PregnancyBabySize? babySize = dataList2[0];
-                    prind("LiveDataObserver<PregnancyBabySize> isBabySizeInit= $isBabySizeInit babySize= $babySize week = $week");
+                    //prind("LiveDataObserver<PregnancyBabySize> isBabySizeInit= $isBabySizeInit babySize= $babySize week = $week");
                     if(babySize == null) {
                       if(isBabySizeInit == true) return defaultEmptyWidget();
                       return defaultLoading();
@@ -164,15 +146,6 @@ class _WeeklyFormPage extends StatelessWidget {
                   },
                 );
 
-                /*
-                LiveDataObserver<List<FormWarningStatus>>(
-                  liveData: vm.formWarningStatusList,
-                  predicate: (data) => vm.currentWeek.value == week,
-                  initBuilder: (ctx) => defaultLoading(),
-                  immediatelyBuildState: vm.currentWeek.value == week,
-                  builder: (ctx, data) =>
-                );
-                 */
                 final analysis = LiveDataObserver<List<FormWarningStatus>>(
                   liveData: vm.formWarningStatusList,
                   predicate: (data) => vm.currentWeek.value == week,
@@ -204,15 +177,6 @@ class _WeeklyFormPage extends StatelessWidget {
                   },
                 );
 
-                /*
-                if(isLastTrimester
-                    && isBorn != true
-                    && vm.pregnancyBabySize.value != null
-                ) {
-                  children.insert(1, );
-                }
-                 */
-
                 final form = FormVmGroupObserver<KehamilankuCheckFormVm>(
                   vm: vm,
                   interceptor: interceptor,
@@ -234,7 +198,7 @@ class _WeeklyFormPage extends StatelessWidget {
                           actionMsg: "Lihat hasil pemeriksaan",
                           onActionClick: () => Navigator.pop(context, true), //() => backPage(context, backStep: 2),
                         ),
-                      )); //showSnackBar(ctx, "Berhasil bro", backgroundColor: Colors.green)
+                      ));
                       if(res == true) {
                         vm.getMotherFormWarningStatus(week: week, forceLoad: true,);
                         vm.getPregnancyBabySize(week: week, forceLoad: true,);
@@ -272,7 +236,7 @@ class _WeeklyFormPage extends StatelessWidget {
                   babySize, analysis, form,
                 ];
 
-                prind("MultiLiveDataObserver isLastTrimester= $isLastTrimester vm.pregnancyBabySize= ${vm.pregnancyBabySize}"); //isBabySizeInit= $isBabySizeInit
+                //prind("MultiLiveDataObserver isLastTrimester= $isLastTrimester vm.pregnancyBabySize= ${vm.pregnancyBabySize}"); //isBabySizeInit= $isBabySizeInit
                 if(isLastTrimester) {
                   children.insert(1, MultiLiveDataObserver<dynamic>(
                     liveDataList: [vm.isBabyBorn, vm.pregnancyCheck,],

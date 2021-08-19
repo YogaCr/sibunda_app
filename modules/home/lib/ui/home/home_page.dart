@@ -95,22 +95,6 @@ class HomePage extends StatelessWidget {
                 );
               },
             ),
-            /*
-            AsyncVmObserver<HomeVm, List<HomeStatus>>(
-              liveDataGetter: (vm2) => vm2.homeStatusList,
-              builder: (ctx, data) => _StatusList(data ?? List.empty()),
-            ),
-             */
-/*
-            buildReactiveBlocBuilder<
-                HomeBloc, HomeState, OnHomeStatusDataChanged, List<HomeStatus>
-            >(
-              stateDataGetter: (state) => state.data,
-              blocDataGetter: (bloc) => bloc.statusList,
-              builder: (data) => _StatusList(data),
-            ),
-*/
-// */
             LiveDataObserver<List<HomeMenu>>(
               liveData: vm.homeMenuList,
               builder: (ctx, data) {
@@ -130,13 +114,6 @@ class HomePage extends StatelessWidget {
                 );
               },
             ),
-            /*
-            AsyncVmObserver<HomeVm, List<HomeMenu>>(
-              vm: vm,
-              liveDataGetter: (vm2) => vm2.homeMenuList,
-              builder: (ctx, data) => _MenuList(data ?? List.empty()),
-            ),
-             */
             LiveDataObserver<List<Tips>>(
               liveData: vm.homeTipsList,
               builder: (ctx, data) => data?.isNotEmpty == true ? Container(
@@ -277,32 +254,3 @@ class _MenuList extends StatelessWidget {
     );
   }
 }
-
-
-/*
-class _TipsList extends StatelessWidget {
-  final List<Tips> dataList;
-
-  _TipsList(this.dataList);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: 10),
-      child: Column(
-        children: List.generate(dataList.length, (index) => InkWell(
-          onTap: () => HomeRoutes.obj.goToExternalRoute(
-            context, GlobalRoutes.education_detailPage,
-            args: GlobalRoutes.makeEducationDetailPageData(dataList[index]),
-          ),
-          child: Container(
-            margin: EdgeInsets.symmetric(vertical: 10),
-            child: ItemTips.fromData(dataList[index]),
-          ),
-        ),
-        ),
-      ),
-    );
-  }
-}
- */

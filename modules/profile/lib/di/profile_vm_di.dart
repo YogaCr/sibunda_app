@@ -9,20 +9,6 @@ import 'package:profile/ui/home/profile_home_vm.dart';
 class ProfileVmDi {
   ProfileVmDi._();
   static ProfileVmDiObj obj = ProfileVmDiObjImpl();
-/*
-  static ProfileHomeVm profileHomeVm({BuildContext? context,}) => ProfileHomeVm(
-    context: context,
-    getCurrentEmail: UseCaseDi.getCurrentEmail,
-    getProfile: UseCaseDi.getProfile,
-    logout: UseCaseDi.logout,
-    toLoginPage: UseCaseDi.toLoginPage,
-  );
-  static ProfileEditVm profileEditVm({BuildContext? context,}) => ProfileEditVm(
-    context: context,
-    checkEmailAvailability: UseCaseDi.checkEmailAvailability,
-    saveProfile: ProfileUseCaseDi.saveProfile,
-  );
- */
 }
 
 

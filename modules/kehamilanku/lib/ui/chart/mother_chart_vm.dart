@@ -67,21 +67,9 @@ class MotherChartVm extends AsyncAuthVm {
 
   void loadChart(MotherChartType type, { bool forceLoad = false }) {
     if(!forceLoad && type == _currentType) return;
-    //prind("MotherChartVm res2 = $res2 \n res3 = $res3");
     startJob(loadChartKey, (isActive) async {
-      /*
-      //final res1 = await _getCurrentMotherPregnancyId();
-      if(res1 is Success<int?>) {
-      } else {
-        return res1 as Fail;
-      }
-       */
       final pregnancyId = this.pregnancyId.id;
-      /*
-      if(pregnancyId == null) {
-        throw "Currently mother is not pregnant (pregnancyId == null)";
-      }
-       */
+
       Result res2;
 
       Result<List<FormWarningStatus>> res3;
@@ -104,11 +92,10 @@ class MotherChartVm extends AsyncAuthVm {
       prind("MotherChartVm res2 = $res2 \n res3 = $res3");
 
       if(res3 is! Success<List<FormWarningStatus>>) {
-        return res3 as Fail; //TODO: Cek apakah operator is! itu benar
+        return res3 as Fail;
       }
 
       if(res2 is Success) {
-        //final List rawDataList = res2.data;
         List<LineSeries<dynamic, num>> seriesList;
 
         switch(type) {

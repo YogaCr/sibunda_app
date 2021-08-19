@@ -17,12 +17,8 @@ class ChildrenCountVm extends AsyncVm {
     _init();
   }
 
-  //final SaveLastChildBirthDate _saveLastChildBirthDate;
   final SaveChildrenCount _saveChildrenCount;
 
-  //final MutableLiveData<DateTime> _lastChildBirthDate = MutableLiveData();
-
-  //final TextEditingController lastChildBirthDateTxtControl = TextEditingController();
 
   final MutableLiveData<bool> _canProceed = MutableLiveData();
   final MutableLiveData<bool> _onSubmit = MutableLiveData();
@@ -76,11 +72,4 @@ class ChildrenCountVm extends AsyncVm {
       }
     });
   }
-/*
-  @override
-  void dispose() {
-    super.dispose();
-    lastChildBirthDateTxtControl.dispose();
-  }
- */
 }

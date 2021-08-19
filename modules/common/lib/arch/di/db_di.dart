@@ -10,31 +10,6 @@ import 'package:moor/moor.dart';
 class DbDi {
   DbDi._();
   static DbDiObj obj = DbDiObjImpl();
-
-/*
-  static reconstruct() async {
-    prind("DbDi.reconstruct()");
-    final __db = _db;
-    if(__db != null) {
-      await __db.reset();
-      await Migrator(__db).createAll();
-      __db.close();
-      _db = null;
-    }
-    return db;
-  }
-
-  static AppDatabase? _db;
-  static AppDatabase get db => _db ??= constructDb();
-
-  static CredentialDao get credentialDao => db.credentialDao;
-  static ProfileDao get profileDao => db.profileDao;
-  static RoleDao get roleDao => db.roleDao;
-  static ProfileTypeDao get profileTypeDao => db.profileTypeDao;
-  static CityDao get cityDao => db.cityDao;
-  static CheckUpIdDao get checkUpIdDao => db.checkUpIdDao;
-  static PregnancyDao get pregnancyDao => db.pregnancyDao;
- */
 }
 
 
