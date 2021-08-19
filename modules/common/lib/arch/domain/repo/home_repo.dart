@@ -30,7 +30,7 @@ class HomeStatusRepoImpl with HomeStatusRepo {
       return Success(list);
     } catch(e, stack) {
       prine(stack);
-      return Fail(msg: "Error calling `getHomeStatusList()`", error: e);
+      return Fail(msg: "Error calling `getHomeStatusList()`", error: e, stack: stack,);
     }
   }
 }

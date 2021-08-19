@@ -68,7 +68,12 @@ class HomeDashboardDataWarningResponse {
     required this.is_normal,
   });
 
-  factory HomeDashboardDataWarningResponse.fromJson(Map<String, dynamic> map) => _$HomeDashboardDataWarningResponseFromJson(map);
+  factory HomeDashboardDataWarningResponse.fromJson(Map<String, dynamic> map) {
+    if(map["desc"] == null) {
+      map["desc"] = "<null>";
+    }
+    return _$HomeDashboardDataWarningResponseFromJson(map);
+  }
   Map<String, dynamic> toJson() => _$HomeDashboardDataWarningResponseToJson(this);
 }
 

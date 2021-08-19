@@ -36,13 +36,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.6.1"
-  auth:
-    dependency: "direct main"
-    description:
-      path: "modules/auth"
-      relative: true
-    source: path
-    version: "1.0.0+1"
   bayiku:
     dependency: "direct main"
     description:
@@ -598,13 +591,6 @@ packages:
       relative: true
     source: path
     version: "1.0.0+1"
-  keluargaku:
-    dependency: "direct main"
-    description:
-      path: "modules/keluargaku"
-      relative: true
-    source: path
-    version: "1.0.0+1"
   logger:
     dependency: transitive
     description:
@@ -661,13 +647,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.0"
-  notif:
-    dependency: "direct main"
-    description:
-      path: "modules/notif"
-      relative: true
-    source: path
-    version: "1.0.0+1"
   numerus:
     dependency: transitive
     description:
