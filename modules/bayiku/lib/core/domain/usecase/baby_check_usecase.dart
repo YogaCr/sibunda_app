@@ -131,22 +131,6 @@ class GetBabyCheckFormAnswerImpl with GetBabyCheckFormAnswer {
           return Fail(msg: msg, error: res3.error);
         }
       }
-      /*
-      final res2 = await _repo.getBabyNik();
-      if(res2 is Success<Map<int, String>>) {
-        prind("GetBabyCheckFormAnswerImpl data = ${data.toJson()}");
-        final babyNik = res2.data[babyId];
-        if(data.id == null) {
-          throw "Something wrong with `BabyMonthlyFormBody.id`, it's null.";
-        }
-        if(babyNik == null) {
-          throw "Can't get `babyNik` with `babyId` of '$babyId'";
-        }
-      else {
-        return Fail(msg: "Can't get baby NIK to save form check up id to local");
-      }
-       */
-      //return Success(true);
     }
     return res;
   }

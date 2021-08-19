@@ -9,18 +9,6 @@ class EducationVmDi {
   EducationVmDi._();
 
   static EducationVmDiObj obj = EducationVmDiObjImpl();
-/*
-  static EducationHomeVm educationHomeVm({BuildContext? context,}) => EducationHomeVm(
-    context: context,
-    getMotherNik: UseCaseDi.getMotherNik,
-    getEducationMainPanelData: EducationUseCaseDi.getEducationMainPanelData,
-    getEducationHomeTipsData: EducationUseCaseDi.getEducationHomeTipsData,
-  );
-  static EducationDetailVm educationDetailVm({BuildContext? context,}) => EducationDetailVm(
-    context: context,
-    getEducationDetail: EducationUseCaseDi.getEducationDetail,
-  );
- */
 }
 
 

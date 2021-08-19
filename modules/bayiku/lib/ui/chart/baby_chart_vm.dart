@@ -74,10 +74,7 @@ class BabyChartVm extends AsyncAuthVm {
 
   LiveData<List<LineSeries<dynamic, num>>> get seriesList => _seriesList;
   LiveData<List<FormWarningStatus>> get warningList => _warningList;
-/*
-  GetLineSeries? _getLineSeries;
-  GetChartWarning? _getChartWarning;
-*/
+
   BabyChartType? _currentType;
 
   @override
@@ -90,11 +87,7 @@ class BabyChartVm extends AsyncAuthVm {
     startJob(loadChartKey, (isActive) async {
       prind("BabyChartVm startJob AWAL =====");
       final babyNik = credential.nik; //res1.data[babyId];
-      /*
-        if(babyNik == null) {
-          throw "No such `babyNik` with `babyId` of '$babyId'";
-        }
-         */
+
       Result res2;
 
       Result<List<FormWarningStatus>> res3;

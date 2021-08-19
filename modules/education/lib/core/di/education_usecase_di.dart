@@ -7,12 +7,6 @@ class EducationUseCaseDi {
   EducationUseCaseDi._();
 
   static EducationUseCaseDiObj obj = EducationUseCaseDiObjImpl();
-/*
-  static GetEducationMainPanelData get getEducationMainPanelData => GetEducationMainPanelDataImpl(RepoDi.educationRepo);
-  static GetEducationHomeTipsData get getEducationHomeTipsData => GetEducationHomeTipsDataImpl(RepoDi.educationRepo);
-
-  static GetEducationDetail get getEducationDetail => GetEducationDetailImpl(RepoDi.educationRepo);
- */
 }
 
 abstract class EducationUseCaseDiObj {

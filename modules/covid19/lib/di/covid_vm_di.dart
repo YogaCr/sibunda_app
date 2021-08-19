@@ -9,25 +9,6 @@ class CovidVmDi {
   CovidVmDi._();
 
   static CovidVmDiObj obj = CovidVmDiObjImpl();
-/*
-  static CovidHomeVm covidHomeVm({BuildContext? context,}) => CovidHomeVm(
-    context: context,
-    getMotherNik: UseCaseDi.getMotherNik,
-    getCovidHomeCheckHistory: CovidUseCaseDi.getCovidHomeCheckHistory,
-    getCovidHomeMenu: CovidUseCaseDi.getCovidHomeMenu,
-    getCovidHomeOverview: CovidUseCaseDi.getCovidHomeOverview,
-  );
-  static CovidCheckVm checkVm({BuildContext? context,}) => CovidCheckVm(
-    context: context,
-    getMotherNik: UseCaseDi.getMotherNik,
-    getBornBabyList: UseCaseDi.getBornBabyList,
-    //getBabyNik: UseCaseDi.getBabyNik,
-    getCovidMotherCheckFormData: CovidUseCaseDi.getCovidMotherCheckFormData,
-    getCovidBabyCheckFormData: CovidUseCaseDi.getCovidBabyCheckFormData,
-    submitCovidMotherCheckForm: CovidUseCaseDi.submitCovidMotherCheckForm,
-    submitCovidBabyCheckForm: CovidUseCaseDi.submitCovidBabyCheckForm,
-  );
- */
 }
 
 abstract class CovidVmDiObj {

@@ -9,25 +9,6 @@ class LocalSrcDi {
   LocalSrcDi._();
 
   static LocalSrcDiObj obj = LocalSrcDiObjImpl();
-  /*
-  static AccountLocalSrc get accountSrc => AccountLocalSrcImpl(
-    credentialDao: DbDi.credentialDao,
-    profileDao: DbDi.profileDao,
-    profileTypeDao: DbDi.profileTypeDao,
-    pregnancyDao: DbDi.pregnancyDao,
-    sharedPref: Prefs.prefs,
-    pregnancyLocalSrc: LocalSrcDi.pregnancySrc,
-  );
-  static PregnancyLocalSrc get pregnancySrc => PregnancyLocalSrcImpl(
-    sharedPref: Prefs.prefs,
-    profileDao: DbDi.profileDao,
-    pregnancyDao: DbDi.pregnancyDao,
-  );
-  static CheckUpLocalSrc get checkUpSrc => CheckUpLocalSrcImpl(
-    checkUpIdDao: DbDi.checkUpIdDao,
-  );
-  static DataLocalSource get dataSrc => DataLocalSourceImpl(cityDao: DbDi.cityDao);
-   */
 }
 
 

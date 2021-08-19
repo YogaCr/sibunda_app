@@ -112,13 +112,7 @@ class _BabyNeonantalServicePageRoute {
 class _BabyImmunizationPopupRoute {
   _BabyImmunizationPopupRoute._();
   static final obj = _BabyImmunizationPopupRoute._();
-/*
-  final SibRoute _route = SibRoute("BabyImmunizationPopup", BabyImmunizationPopupPage, (ctx) => MainFrame(
-    body: BabyImmunizationPopupPage().inVmProvider([
-          (ctx) => KehamilankuVmDi.immunizationVm,
-    ]),
-  ));
- */
+
   /// Returns future String. String is for date confirmation. If null, then
   /// it means the confirmation is not successful.
   Future<BabyImmunizationPopupResult?> popup({
@@ -126,7 +120,6 @@ class _BabyImmunizationPopupRoute {
     required ImmunizationData immunization,
     required ProfileCredential babyCredential,
   }) {
-    //_route.goToPage(context, args: {Const.KEY_TRIMESTER : data});
     final _route = SibRoute("BabyImmunizationPopup", BabyImmunizationPopupPage, (ctx) => MainFrame(
       body: BabyImmunizationPopupPage().inVmProvider([
             (ctx) => BabyVmDi.obj.immunizationPopupVm(

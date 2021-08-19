@@ -19,12 +19,6 @@ class BabyImmunizationPopupPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    /*
-    final babyNik = getArgs<String>(context, Const.KEY_DATA);
-    if(babyNik == null) {
-      throw "`BabyImmunizationPage` needs `babyNik` arg";
-    }
-     */
     final vm = ViewModelProvider.of<BabyImmunizationPopupVm>(context)
       ..init();
 
@@ -44,8 +38,8 @@ class BabyImmunizationPopupPage extends StatelessWidget {
                 actionMsg: "Kembali ke menu",
                 onActionClick: () => Navigator.pop(context), //() => backPage(context, backStep: 2),
               ),
-            )); //showSnackBar(ctx, "Berhasil bro", backgroundColor: Colors.green)
-            //final resp = vm.getResponse().responseGroups.values.first;
+            ));
+
             final date = vm.responseGroupList[0][Const.KEY_IMMUNIZATION_DATE]!.response.value! as DateTime;
             final noBatch = vm.responseGroupList[0][Const.KEY_NO_BATCH]!.response.value.toString();
 
@@ -54,7 +48,7 @@ class BabyImmunizationPopupPage extends StatelessWidget {
               noBatch: noBatch,
             );
             BabyRoutes.immunizationPopup.backPage(ctx, res);
-            //showSnackBar(ctx, "Berhasil mengonfirmasi");
+            showSnackBar(ctx, "Berhasil mengonfirmasi");
           } else {
             showSnackBar(ctx, "Terjadi kesalahan saat mengonfirmasi");
           }

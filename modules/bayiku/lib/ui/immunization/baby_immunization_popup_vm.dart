@@ -41,12 +41,6 @@ class BabyImmunizationPopupVm extends FormAuthVmGroup {
 
   @override
   Future<Result<String>> doSubmitJob() async {
-    /*
-    final nik = babyNik.value;
-    if(nik == null) {
-      throw "`babyNik.value` still null";
-    }
-     */
     final respMap = getResponse().responseGroups.values.first;
     final data = ImmunizationConfirmData(
       immunization: immunization.copy(
@@ -78,15 +72,6 @@ class BabyImmunizationPopupVm extends FormAuthVmGroup {
       return List.empty();
     }
   }
-/*
-  @override
-  Future<bool> validateField(int groupPosition, String inputKey, response) async {
-    switch(inputKey) {
-      case Const.KEY_NO_BATCH: return int.tryParse(response) != null; //No batch can be alphabet
-    }
-    return super.validateField(groupPosition, inputKey, response);
-  }
- */
   
   @override
   Set<String>? get mappedKey => {

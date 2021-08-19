@@ -147,12 +147,6 @@ class NeonatalServiceVm extends FormAuthVmGroup {
     return super.validateField(groupPosition, inputKey, response);
   }
 
-/*
-  @override
-  Future<bool> validateField(int groupPosition, String inputKey, response) async {
-    return (response as String).isNotEmpty;
-  }
- */
 
   @protected
   void getAnswer({ bool forceLoad = false }) {

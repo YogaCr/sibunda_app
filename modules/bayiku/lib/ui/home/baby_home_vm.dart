@@ -43,14 +43,6 @@ class BabyHomeVm extends AsyncAuthVm {
         if(babyCred == null) {
           throw "Something error. `babyCred` is null";
         }
-        /*
-        final unbornIndex = _unbornBabyList.value!.indexWhere((e) => e.id == babyCred.id);
-        prind("BabyHomeVm unbornIndex= $unbornIndex");
-        if(unbornIndex >= 0) {
-          selectedIndex.value = unbornIndex;
-          selectedBabyData = _unbornBabyList.value![unbornIndex];
-        } else {}
-         */
         final bornIndex = _bornBabyList.value!.indexWhere((e) => e.id == babyCred.id);
         prind("BabyHomeVm bornIndex= $bornIndex");
         if(bornIndex < 0) {
@@ -79,8 +71,6 @@ class BabyHomeVm extends AsyncAuthVm {
   LiveData<List<BabyOverlayData>> get bornBabyList => _bornBabyList;
   LiveData<List<BabyOverlayData>> get unbornBabyList => _unbornBabyList;
   LiveData<ProfileCredential> get babyCredential => _babyCredential;
-
-  //String get babyNik => dummyProfileChild.nik; //TODO: babyNik: tuk smtr ini kyk gini.
 
   final MutableLiveData<int> selectedIndex = MutableLiveData();
   BabyOverlayData? selectedBabyData;

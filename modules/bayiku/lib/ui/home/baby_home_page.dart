@@ -69,18 +69,12 @@ class BabyHomePage extends StatelessWidget {
         unbornBabyList: vm.unbornBabyList,
         onItemClick: (baby, isBorn) {
           if(!isBorn) { // unborn baby must always be 1. Off course though.
-            //backPage(context);
             BabyRoutes.obj.goToModule(
               context,
               GlobalRoutes.kehamilanku,
               replaceCurrent: true,
               args: {Const.KEY_DATA: ProfileCredential.fromBabyOverlay(baby)},
             );
-            /*
-            Future.delayed(Duration(milliseconds: 700), () {
-              BabyRoutes.obj.goToModule(context, GlobalRoutes.kehamilanku);
-            });
-             */
           } else {
             final cred = ProfileCredential.fromBabyOverlay(baby);
             if(cred != vm.babyCredential.value) {
@@ -89,11 +83,9 @@ class BabyHomePage extends StatelessWidget {
               overlayVisibility.value = false;
             }
           }
-          //showSnackBar(context, "Nama= ${baby.name} isBorn= $isBorn");
         },
         onAddItemClick: (isBorn) async {
           if(isBorn) {
-            //final oldBabyCount = vm.bornBabyList.value?.length;
             final isSaved = await BabyRoutes.obj.goToExternalRouteBuilder(
               context,
               GlobalRoutes.home_childFormPage,

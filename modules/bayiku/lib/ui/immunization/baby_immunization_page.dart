@@ -21,12 +21,7 @@ class BabyImmunizationPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    /*
-    final babyNik = getArgs<String>(context, Const.KEY_DATA);
-    if(babyNik == null) {
-      throw "`BabyImmunizationPage` needs `babyNik` arg";
-    }
-     */
+
     final vm = ViewModelProvider.of<BabyImmunizationVm>(context)
       //..babyNik.value = babyNik
       ..getImmunizationOverview()
@@ -50,13 +45,11 @@ class BabyImmunizationPage extends StatelessWidget {
                   ),
                   AsyncVmObserver<BabyImmunizationVm, List<UiImmunizationListGroup>>(
                     liveDataGetter: (vm) => vm.immunizationGroups,
-                    //liveDataGetter: (vm2) => vm2.immunizationGroups,
                     onFailBuilder: (ctx, key, fail) => key == BabyImmunizationVm.getImmunizationGroupsKey
                         ? defaultError() : null,
                     builder: (ctx, data) => data != null ? ImmunizationListGroupView(
                       data,
                       onBtnClick: (group, child) async {
-                        //showSnackBar(ctx, "group= $group child= $child");
                         final immData = data[group].immunizationList[child].core;
                         if(immData.date != null) {
                           showSnackBar(ctx, "Immunisasi sudah dilakukan", backgroundColor: Colors.green);
