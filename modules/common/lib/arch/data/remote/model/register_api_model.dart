@@ -19,10 +19,10 @@ class RegisterBody {
   final DateTime? motherHpl;
 
   RegisterBody({
-    required this.motherHpl,
+    this.motherHpl,
     required this.signup,
-    required this.mother,
-    required this.father,
+    this.mother,
+    this.father,
     required this.children,
   });
 
@@ -71,7 +71,7 @@ class RegisterResponse extends Equatable {
   final String message;
   final String status;
   final int code;
-  final UserResponse user;
+  final UserResponse? user;
 
   RegisterResponse({
     required this.message,

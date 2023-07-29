@@ -163,6 +163,7 @@ class Strings {
   static const my_pregnancy =  "Kehamilanku";
   static const my_baby =  "Bayiku";
   static const covid_19 =  "Covid-19";
+  static const qa = "Tanya Jawab";
 
   static const update_data =  "Update Data";
 }

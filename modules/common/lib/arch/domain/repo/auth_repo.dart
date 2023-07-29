@@ -1,5 +1,7 @@
 // User and Auth related repository.
 
+import 'dart:developer';
+
 import 'package:collection/collection.dart';
 import 'package:common/arch/data/local/source/account_local_source.dart';
 import 'package:common/arch/data/local/source/check_up_local_source.dart';
@@ -90,6 +92,7 @@ class AuthRepoImpl with AuthRepo {
       motherHpl: motherHpl,
     );
     try {
+      log("regis data : "+body.toJson().toString());
       final res = await _api.register(body);
       if(res.code != 200) {
         return Fail(code: res.code, msg: res.message);

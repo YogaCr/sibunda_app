@@ -110,7 +110,7 @@ final babyWarningImgList = <String>[
 
 final imgPlaceholder = ImgData(link: "img_placeholder.png", package: GlobalRoutes.common, src: ImgSrc.asset);
 
-final dummyImg = ImgData(link: "", src: ImgSrc.asset,);
+final dummyImg = ImgData(link: "http://127.0.0.1/res/img/home/tips_1.png", src: ImgSrc.asset,);
 final dummyImg_smillingCat = ImgData(link: "_smiling_cat.jpg", package: GlobalRoutes.common, src: ImgSrc.asset,);
 final dummyImg_profile_sm = ImgData(link: "pic_profile_example.png", package: GlobalRoutes.common, src: ImgSrc.asset,);
 final dummyImg_pick = ImgData(link: "ic_plus_color.png", package: GlobalRoutes.common, src: ImgSrc.asset,);
@@ -339,6 +339,9 @@ final dummyMenuList = <HomeMenu>[
   ),
   HomeMenu(name: Strings.covid_19, moduleName: GlobalRoutes.covid19,
     img: ImgData(link: "menu_covid19.png", package: GlobalRoutes.common, src: ImgSrc.asset,),
+  ),
+  HomeMenu(name: Strings.qa, moduleName: GlobalRoutes.qa,
+    img: ImgData(link: "menu_qa.png", package: GlobalRoutes.common, src: ImgSrc.asset,),
   ),
 ];
 

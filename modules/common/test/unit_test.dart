@@ -34,7 +34,7 @@ void main() async {
   final secret = "5xnEHfLiRiyyRGrez97iEmqzTB4h48IWr5DnHEuO";
   final clientId = "2";
   final fcmToken = "ini token";
-  //remote_host=https://sibunda.amirmb.com
+  //remote_host=http://127.0.0.1
 
   await signUpTest(name, email, pswd);
   final token = await login(email, pswd, secret, clientId, fcmToken);

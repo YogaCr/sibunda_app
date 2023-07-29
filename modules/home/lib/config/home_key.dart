@@ -7,6 +7,8 @@ class HomeKeys {
   static const home_btnMenu_baby = Key("btn_menu_baby");
   static const home_btnMenu_covid = Key("btn_menu_covid");
 
+  static const home_btnMenu_qa = Key("btn_menu_qa");
+
   static const home_btnInfo_bottom = Key("btn_info_bottom");
   static const home_btnInfo_list = Key("btn_info_list");
 

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:common/arch/domain/model/education_data.dart';
 import 'package:common/arch/domain/model/home_data.dart';
 import 'package:common/arch/domain/model/profile_data.dart';

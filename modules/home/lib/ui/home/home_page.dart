@@ -232,6 +232,7 @@ class _MenuList extends StatelessWidget {
     HomeKeys.home_btnMenu_pregnancy,
     HomeKeys.home_btnMenu_baby,
     HomeKeys.home_btnMenu_covid,
+    HomeKeys.home_btnMenu_qa,
   ];
 
   _MenuList(this.dataList);

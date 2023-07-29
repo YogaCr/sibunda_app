@@ -72,6 +72,8 @@ dependencies:
     path: modules/kehamilanku
   profile:
     path: modules/profile
+  question_answering:
+    path: modules/question_answering
 
 dev_dependencies:
   flutter_test:

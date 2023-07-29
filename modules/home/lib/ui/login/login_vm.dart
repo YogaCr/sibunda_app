@@ -41,17 +41,18 @@ class LoginFormVm extends FormVmGroup {
 
     var token = Const.DUMMY_FCM_TOKEN;
     final fcmTokenRes = await _getFcmToken();
-    if(fcmTokenRes is Success<String>) {
-      token = fcmTokenRes.data;
-    } else {
-      final msg = "Can't get FCM token from local, register with dummy one.";
-      if(!ConfigUtil.isMobileOnly || !kIsWeb) {
-        prine(msg);
-        return Fail(msg: msg);
-      } else {
-        prinw(msg);
-      }
-    }
+    // TODO: fix FCM Token
+    // if(fcmTokenRes is Success<String>) {
+    //   token = fcmTokenRes.data;
+    // } else {
+    //   final msg = "Can't get FCM token from local, register with dummy one.";
+    //   if(!ConfigUtil.isMobileOnly || !kIsWeb) {
+    //     prine(msg);
+    //     return Fail(msg: msg);
+    //   } else {
+    //     prinw(msg);
+    //   }
+    // }
     final data = LoginData(email: email, password: password, fcmToken: token,);
     final res = await _login(data);
     prind("LoginVm.doSubmitJob() res= $res");

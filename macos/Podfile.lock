@@ -1,0 +1,164 @@
+PODS:
+  - Firebase/CoreOnly (9.6.0):
+    - FirebaseCore (= 9.6.0)
+  - Firebase/Messaging (9.6.0):
+    - Firebase/CoreOnly
+    - FirebaseMessaging (~> 9.6.0)
+  - firebase_core (1.24.0):
+    - Firebase/CoreOnly (~> 9.6.0)
+    - FlutterMacOS
+  - firebase_messaging (10.0.9):
+    - Firebase/CoreOnly (~> 9.6.0)
+    - Firebase/Messaging (~> 9.6.0)
+    - firebase_core
+    - FlutterMacOS
+  - FirebaseCore (9.6.0):
+    - FirebaseCoreDiagnostics (~> 9.0)
+    - FirebaseCoreInternal (~> 9.0)
+    - GoogleUtilities/Environment (~> 7.7)
+    - GoogleUtilities/Logger (~> 7.7)
+  - FirebaseCoreDiagnostics (9.6.0):
+    - GoogleDataTransport (< 10.0.0, >= 9.1.4)
+    - GoogleUtilities/Environment (~> 7.7)
+    - GoogleUtilities/Logger (~> 7.7)
+    - nanopb (< 2.30910.0, >= 2.30908.0)
+  - FirebaseCoreInternal (9.6.0):
+    - "GoogleUtilities/NSData+zlib (~> 7.7)"
+  - FirebaseInstallations (9.6.0):
+    - FirebaseCore (~> 9.0)
+    - GoogleUtilities/Environment (~> 7.7)
+    - GoogleUtilities/UserDefaults (~> 7.7)
+    - PromisesObjC (~> 2.1)
+  - FirebaseMessaging (9.6.0):
+    - FirebaseCore (~> 9.0)
+    - FirebaseInstallations (~> 9.0)
+    - GoogleDataTransport (< 10.0.0, >= 9.1.4)
+    - GoogleUtilities/AppDelegateSwizzler (~> 7.7)
+    - GoogleUtilities/Environment (~> 7.7)
+    - GoogleUtilities/Reachability (~> 7.7)
+    - GoogleUtilities/UserDefaults (~> 7.7)
+    - nanopb (< 2.30910.0, >= 2.30908.0)
+  - FlutterMacOS (1.0.0)
+  - FMDB (2.7.5):
+    - FMDB/standard (= 2.7.5)
+  - FMDB/standard (2.7.5)
+  - GoogleDataTransport (9.2.0):
+    - GoogleUtilities/Environment (~> 7.7)
+    - nanopb (< 2.30910.0, >= 2.30908.0)
+    - PromisesObjC (< 3.0, >= 1.2)
+  - GoogleUtilities/AppDelegateSwizzler (7.10.0):
+    - GoogleUtilities/Environment
+    - GoogleUtilities/Logger
+    - GoogleUtilities/Network
+  - GoogleUtilities/Environment (7.10.0):
+    - PromisesObjC (< 3.0, >= 1.2)
+  - GoogleUtilities/Logger (7.10.0):
+    - GoogleUtilities/Environment
+  - GoogleUtilities/Network (7.10.0):
+    - GoogleUtilities/Logger
+    - "GoogleUtilities/NSData+zlib"
+    - GoogleUtilities/Reachability
+  - "GoogleUtilities/NSData+zlib (7.10.0)"
+  - GoogleUtilities/Reachability (7.10.0):
+    - GoogleUtilities/Logger
+  - GoogleUtilities/UserDefaults (7.10.0):
+    - GoogleUtilities/Logger
+  - nanopb (2.30909.0):
+    - nanopb/decode (= 2.30909.0)
+    - nanopb/encode (= 2.30909.0)
+  - nanopb/decode (2.30909.0)
+  - nanopb/encode (2.30909.0)
+  - path_provider_macos (0.0.1):
+    - FlutterMacOS
+  - PromisesObjC (2.1.1)
+  - shared_preferences_macos (0.0.1):
+    - FlutterMacOS
+  - sqflite (0.0.2):
+    - FlutterMacOS
+    - FMDB (>= 2.7.5)
+  - sqlite3 (3.39.4):
+    - sqlite3/common (= 3.39.4)
+  - sqlite3/common (3.39.4)
+  - sqlite3/fts5 (3.39.4):
+    - sqlite3/common
+  - sqlite3/perf-threadsafe (3.39.4):
+    - sqlite3/common
+  - sqlite3/rtree (3.39.4):
+    - sqlite3/common
+  - sqlite3_flutter_libs (0.0.1):
+    - FlutterMacOS
+    - sqlite3 (~> 3.39.4)
+    - sqlite3/fts5
+    - sqlite3/perf-threadsafe
+    - sqlite3/rtree
+  - wakelock_macos (0.0.1):
+    - FlutterMacOS
+
+DEPENDENCIES:
+  - firebase_core (from `Flutter/ephemeral/.symlinks/plugins/firebase_core/macos`)
+  - firebase_messaging (from `Flutter/ephemeral/.symlinks/plugins/firebase_messaging/macos`)
+  - FlutterMacOS (from `Flutter/ephemeral`)
+  - path_provider_macos (from `Flutter/ephemeral/.symlinks/plugins/path_provider_macos/macos`)
+  - shared_preferences_macos (from `Flutter/ephemeral/.symlinks/plugins/shared_preferences_macos/macos`)
+  - sqflite (from `Flutter/ephemeral/.symlinks/plugins/sqflite/macos`)
+  - sqlite3_flutter_libs (from `Flutter/ephemeral/.symlinks/plugins/sqlite3_flutter_libs/macos`)
+  - wakelock_macos (from `Flutter/ephemeral/.symlinks/plugins/wakelock_macos/macos`)
+
+SPEC REPOS:
+  trunk:
+    - Firebase
+    - FirebaseCore
+    - FirebaseCoreDiagnostics
+    - FirebaseCoreInternal
+    - FirebaseInstallations
+    - FirebaseMessaging
+    - FMDB
+    - GoogleDataTransport
+    - GoogleUtilities
+    - nanopb
+    - PromisesObjC
+    - sqlite3
+
+EXTERNAL SOURCES:
+  firebase_core:
+    :path: Flutter/ephemeral/.symlinks/plugins/firebase_core/macos
+  firebase_messaging:
+    :path: Flutter/ephemeral/.symlinks/plugins/firebase_messaging/macos
+  FlutterMacOS:
+    :path: Flutter/ephemeral
+  path_provider_macos:
+    :path: Flutter/ephemeral/.symlinks/plugins/path_provider_macos/macos
+  shared_preferences_macos:
+    :path: Flutter/ephemeral/.symlinks/plugins/shared_preferences_macos/macos
+  sqflite:
+    :path: Flutter/ephemeral/.symlinks/plugins/sqflite/macos
+  sqlite3_flutter_libs:
+    :path: Flutter/ephemeral/.symlinks/plugins/sqlite3_flutter_libs/macos
+  wakelock_macos:
+    :path: Flutter/ephemeral/.symlinks/plugins/wakelock_macos/macos
+
+SPEC CHECKSUMS:
+  Firebase: 5ae8b7cf8efce559a653aef0ad95bab3f427c351
+  firebase_core: 970bc7db019f0985976324d90cdc370527c31461
+  firebase_messaging: 4bbe8b971f399e46b71c64eeac0bc2950614a163
+  FirebaseCore: 2082fffcd855f95f883c0a1641133eb9bbe76d40
+  FirebaseCoreDiagnostics: 99a495094b10a57eeb3ae8efa1665700ad0bdaa6
+  FirebaseCoreInternal: bca76517fe1ed381e989f5e7d8abb0da8d85bed3
+  FirebaseInstallations: 0a115432c4e223c5ab20b0dbbe4cbefa793a0e8e
+  FirebaseMessaging: a4d7910e4af663c9cbfc1071c5bef34651690949
+  FlutterMacOS: ae6af50a8ea7d6103d888583d46bd8328a7e9811
+  FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
+  GoogleDataTransport: 1c8145da7117bd68bbbed00cf304edb6a24de00f
+  GoogleUtilities: bad72cb363809015b1f7f19beb1f1cd23c589f95
+  nanopb: b552cce312b6c8484180ef47159bc0f65a1f0431
+  path_provider_macos: 3c0c3b4b0d4a76d2bf989a913c2de869c5641a19
+  PromisesObjC: ab77feca74fa2823e7af4249b8326368e61014cb
+  shared_preferences_macos: a64dc611287ed6cbe28fd1297898db1336975727
+  sqflite: a5789cceda41d54d23f31d6de539d65bb14100ea
+  sqlite3: 401936402fe5aa242c07f87fccfee5fc2b606f45
+  sqlite3_flutter_libs: db076bb9ff5f17c4e32bdebdec78c382703c71e1
+  wakelock_macos: bc3f2a9bd8d2e6c89fee1e1822e7ddac3bd004a9
+
+PODFILE CHECKSUM: 9cb733f201bccf903ae6da6a23d2f0e7b3a0ea89
+
+COCOAPODS: 1.11.3

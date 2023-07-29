@@ -5,6 +5,7 @@ import 'package:education/config/education_routes.dart';
 import 'package:home/config/home_routes.dart';
 import 'package:kehamilanku/config/kehamilanku_routes.dart';
 import 'package:profile/config/profile_routes.dart';
+import 'package:question_answering/config/qa_routes.dart';
 
 class AppRoutes extends ModuleRoute {
   AppRoutes._(): super(GlobalRoutes.manager) {
@@ -19,6 +20,7 @@ class AppRoutes extends ModuleRoute {
     BabyRoutes.obj;
     EducationRoutes.obj;
     ProfileRoutes.obj;
+    QaRoutes.obj;
   }
 
   @override

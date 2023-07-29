@@ -6,7 +6,7 @@ import 'package:core/util/_consoles.dart';
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 
-const REMOTE_HOST = "https://sibunda.amirmb.com";
+const REMOTE_HOST = "http://127.0.0.1";
 const ENDPOINT_LOGIN = "$REMOTE_HOST/api/auth/login";
 const ENDPOINT_REGISTER = "$REMOTE_HOST/api/auth/register";
 const ENDPOINT_LOGOUT = "$REMOTE_HOST/api/auth/logout";

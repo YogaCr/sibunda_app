@@ -35,7 +35,7 @@ class MotherFormPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final canSkip = getArgs<bool>(context, Const.KEY_CAN_SKIP) != false;
+    final canSkip = false;
     final credential = getArgs<ProfileCredential>(context, Const.KEY_CREDENTIAL);
     final isEdit = getArgs<bool>(context, Const.KEY_IS_EDIT) == true;
 

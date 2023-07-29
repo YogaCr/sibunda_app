@@ -119,10 +119,12 @@ final dummyMenuList = <HomeMenu>[
   HomeMenu(name: Strings.my_pregnancy, imgLink: "",),
   HomeMenu(name: Strings.my_baby, imgLink: "",),
   HomeMenu(name: Strings.covid_19, imgLink: "",),
+  HomeMenu(name: Strings.qa, imgLink: "",),
+
 ];
 
 final dummyTipsList = <HomeTips>[
-  HomeTips(desc: "Nih Bun 5 Makanan Rekomendasi untuk Bunda Hamil Trimester 2", kind: "Kehamilan", imgLink: "",),
+  HomeTips(desc: "Nih Bun 5 Makanan Rekomendasi untuk Bunda Hamil Trimester 2", kind: "Kehamilan", imgLink: "https://dkk.sukoharjokab.go.id/piranti/sukoharjo/assets/gallery/images/JKN-Logo.jpg",),
   HomeTips(desc: "Perkembangan Janin Usia 9 Minggu Kehamilan, Yuk Bun Ketahui Selengkapnya!", kind: "Kehamilan", imgLink: "",),
   HomeTips(desc: "Yuk Bun Ketahui Pola Asuh Bayi Baru Lahir Sampai Usia 1,5 Tahun", kind: "Kehamilan", imgLink: "",),
   HomeTips(desc: "Bagaimana Cara Memberikan ASI ke Bayi Baru Lahir 0-28 Hari (Neonatus)?", kind: "Kehamilan", imgLink: "",),

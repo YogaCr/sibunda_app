@@ -10,7 +10,7 @@ class Const {
   static const KEY_CTX = "context";
   static const KEY_ONLY_SINGLE_PAGE = "only_single_page";
 
-  static const REMOTE_HOST = "https://sibunda.amirmb.com";
+  static const REMOTE_HOST = "http://127.0.0.1";
   static const ENDPOINT_ROOT = "$REMOTE_HOST/api";
   static const ENDPOINT_AUTH = "$ENDPOINT_ROOT/auth";
   static const ENDPOINT_PREGNANCY = "$ENDPOINT_ROOT/kehamilanku";

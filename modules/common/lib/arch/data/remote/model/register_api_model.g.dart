@@ -11,7 +11,7 @@ RegisterResponse _$RegisterResponseFromJson(Map<String, dynamic> json) {
     message: json['message'] as String,
     status: json['status'] as String,
     code: json['code'] as int,
-    user: UserResponse.fromJson(json['user'] as Map<String, dynamic>),
+    user:json.containsKey('user')? UserResponse.fromJson(json['user'] as Map<String, dynamic>):null,
   );
 }
 
